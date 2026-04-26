@@ -1,0 +1,5 @@
+# Supabase local development configuration.
+# Run `supabase init` to generate the full config once the Supabase CLI is installed.
+# See: https://supabase.com/docs/guides/cli/config
+#
+# project_id = "project-vintage"
