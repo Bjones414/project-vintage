@@ -1,2 +1,7 @@
-// PCarMarket URL parser — parses a PCarMarket listing page into RawListing.
-// Stub — implement in V1.
+// TODO Phase 4+: implement
+import { PlatformNotSupportedError } from './types'
+import type { CanonicalListing } from './types'
+
+export async function parsePCarMarketListing(_url: string): Promise<CanonicalListing> {
+  throw new PlatformNotSupportedError('pcarmarket')
+}

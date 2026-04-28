@@ -13,7 +13,9 @@
       "Bash(cp /tmp/vintage-scaffold/app/favicon.ico /c/Users/blake/projects/project-vintage/app/favicon.ico)",
       "Bash(npm install *)",
       "Bash(git check-ignore *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(npx tsc *)",
+      "Bash(node -e \"const p = require\\('./package.json'\\); console.log\\('cheerio:', p.dependencies.cheerio\\)\")"
     ]
   }
 }

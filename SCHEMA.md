@@ -55,6 +55,7 @@ CREATE TABLE listings (
     listed_date             date,
     ended_date              date,
     status                  text NOT NULL DEFAULT 'active'          CHECK (status IN ('active', 'sold', 'no_sale', 'withdrawn')),
+    listing_status          text                                    CHECK (listing_status IN ('live', 'sold', 'no-sale', 'unknown')),  -- Parsed from page: 'live' | 'sold' | 'no-sale' | 'unknown'
 
     -- Pricing
     asking_price            integer,                                -- In smallest currency unit (cents for USD)

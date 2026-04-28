@@ -1,2 +1,218 @@
-// Bring a Trailer URL parser — parses a BaT listing page into RawListing.
-// Stub — implement in V1.
+import { load } from 'cheerio'
+import type { CanonicalListing } from './types'
+
+const BAT_HOSTNAME = 'bringatrailer.com'
+
+function parseMileageValue(raw: string): number | null {
+  if (/k$/i.test(raw)) {
+    const n = parseInt(raw.slice(0, -1), 10)
+    return isNaN(n) ? null : n * 1000
+  }
+  const n = parseInt(raw.replace(/,/g, ''), 10)
+  return isNaN(n) ? null : n
+}
+
+export async function parseBaTListing(url: string): Promise<CanonicalListing> {
+  try {
+    // Step 1 — Validate and normalize URL
+    let parsed: URL
+    try {
+      parsed = new URL(url)
+    } catch {
+      throw new Error(`Invalid URL: ${url}`)
+    }
+    const hostname = parsed.hostname.replace(/^www\./, '')
+    if (hostname !== BAT_HOSTNAME) {
+      throw new Error(`Expected a bringatrailer.com URL, got: ${parsed.hostname}`)
+    }
+    parsed.protocol = 'https:'
+    const normalizedUrl = parsed.href.replace(/\/$/, '')
+
+    // Step 2 — Fetch page
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 30_000)
+    let html: string
+    try {
+      const response = await fetch(normalizedUrl, {
+        signal: controller.signal,
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ProjectVintage/1.0)' },
+      })
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status} ${response.statusText} fetching ${normalizedUrl}`)
+      }
+      html = await response.text()
+    } finally {
+      clearTimeout(timeoutId)
+    }
+
+    const $ = load(html)
+
+    // Step 3 — Extract JSON-LD Product schema
+    let title = ''
+    let description: string | null = null
+    let image_urls: string[] = []
+    let sold_price_cents: number | null = null
+    let productSchema: Record<string, unknown> | null = null
+
+    $('script[type="application/ld+json"]').each((_, el) => {
+      let entry: unknown
+      try {
+        entry = JSON.parse($(el).html() ?? '')
+      } catch {
+        return
+      }
+      if (typeof entry !== 'object' || entry === null) return
+      const obj = entry as Record<string, unknown>
+      if (obj['@type'] !== 'Product') return
+
+      productSchema = obj
+      if (typeof obj['name'] === 'string') title = obj['name']
+      if (typeof obj['description'] === 'string') description = obj['description']
+
+      const rawImage = obj['image']
+      if (typeof rawImage === 'string') {
+        image_urls = [rawImage]
+      } else if (Array.isArray(rawImage)) {
+        image_urls = rawImage.filter((i): i is string => typeof i === 'string')
+      }
+
+      const offersRaw = obj['offers']
+      const offers =
+        Array.isArray(offersRaw)
+          ? (offersRaw[0] as Record<string, unknown> | undefined)
+          : (offersRaw as Record<string, unknown> | undefined)
+      if (offers && offers['priceCurrency'] === 'USD') {
+        const price = offers['price']
+        if (typeof price === 'number') {
+          sold_price_cents = Math.round(price * 100)
+        } else if (typeof price === 'string' && price !== '') {
+          const n = parseFloat(price)
+          if (!isNaN(n)) sold_price_cents = Math.round(n * 100)
+        }
+      }
+    })
+
+    // Step 4 — Extract lot number from meta description
+    const metaDesc = $('meta[name="description"]').attr('content') ?? ''
+    const lotMatch = metaDesc.match(/Lot #([\d,]+)/)
+    let source_listing_id: string
+    if (lotMatch?.[1]) {
+      source_listing_id = lotMatch[1].replace(/,/g, '')
+    } else {
+      const pathSegments = parsed.pathname.split('/').filter(Boolean)
+      source_listing_id = pathSegments[pathSegments.length - 1] ?? ''
+    }
+
+    // Step 5 — Parse title into year / make / model
+    let year: number | null = null
+    let make: string | null = null
+    let model: string | null = null
+    const titleMatch = title.match(/^(\d{4})\s+(.+)$/)
+    if (titleMatch) {
+      const parsedYear = parseInt(titleMatch[1], 10)
+      year = parsedYear >= 1900 && parsedYear <= 2030 ? parsedYear : null
+      const parts = titleMatch[2].split(/\s+/)
+      make = parts[0] ?? null
+      // TODO: improve model/trim splitting for Porsche naming conventions
+      model = parts.slice(1).join(' ') || null
+    }
+
+    // Step 6 — Extract VIN from "Chassis:" bullet in any <li>
+    // BaT labels the VIN as "Chassis" with the value wrapped in an <a> tag.
+    let vin: string | null = null
+    $('li').each((_, el) => {
+      const match = $(el).text().match(/Chassis:\s*([A-HJ-NPR-Z0-9]{17})/i)
+      if (match) {
+        vin = match[1]
+        return false
+      }
+    })
+
+    // Step 7 — Extract specs from the Listing Details <ul>
+    // BaT uses an unlabeled bullet list rather than a <dl> for vehicle details.
+    let mileage: number | null = null
+    let transmission: string | null = null
+    let exterior_color: string | null = null
+    let interior_color: string | null = null
+
+    const headingEl = $('*').filter((_, el) => {
+      const clone = $(el).clone()
+      clone.children().remove()
+      return /listing details/i.test(clone.text())
+    }).first()
+
+    const detailsUl = headingEl.next('ul').length > 0
+      ? headingEl.next('ul')
+      : headingEl.nextAll('ul').first()
+
+    detailsUl.find('li').each((_, el) => {
+      const text = $(el).text().trim()
+
+      const mileageMatch = text.match(/(\d{1,3}(?:,\d{3})*|\d+k)\s*Miles/i)
+      if (mileageMatch) {
+        mileage = parseMileageValue(mileageMatch[1])
+        return
+      }
+
+      if (/\b(Manual|Automatic|PDK|Tiptronic)\b/.test(text)) {
+        transmission = text
+        return
+      }
+
+      const paintMatch = text.match(/^(.+?)\s+Paint$/i)
+      if (paintMatch) {
+        exterior_color = paintMatch[1].trim()
+        return
+      }
+
+      if (/upholstery/i.test(text)) {
+        interior_color = text
+      }
+    })
+
+    // Step 8 — Determine listing status from page text
+    const bodyText = $('body').text()
+    let listing_status: CanonicalListing['listing_status'] = 'unknown'
+    if (/Current Bid/i.test(bodyText)) {
+      listing_status = 'live'
+    } else if (/Sold for/i.test(bodyText)) {
+      listing_status = 'sold'
+    } else if (/Bid to|Reserve Not Met/i.test(bodyText)) {
+      listing_status = 'no-sale'
+    }
+
+    // Step 9 — Assemble CanonicalListing
+    return {
+      source_platform: 'bring-a-trailer',
+      source_url: normalizedUrl,
+      source_listing_id,
+      title,
+      year,
+      make,
+      model,
+      trim: null,
+      vin,
+      mileage,
+      engine: null,
+      transmission,
+      exterior_color,
+      interior_color,
+      sold_price_cents,
+      listing_status,
+      bid_count: null,
+      reserve_met: null,
+      auction_end_date: null,
+      seller_info: null,
+      description,
+      modification_notes: null,
+      image_urls,
+      raw_data: {
+        json_ld: productSchema,
+      },
+    }
+  } catch (error) {
+    throw new Error(
+      `Failed to parse BaT listing at ${url}: ${error instanceof Error ? error.message : String(error)}`
+    )
+  }
+}
