@@ -21,6 +21,11 @@ function formatPrice(cents: number | null): string {
   }).format(cents / 100)
 }
 
+function vinLabel(vin: string | null): string {
+  if (vin && vin.length === 17 && /^[A-HJ-NPR-Z0-9]{17}$/.test(vin)) return 'VIN'
+  return 'Chassis'
+}
+
 function formatMileage(miles: number | null): string {
   if (miles === null) return 'N/A'
   return new Intl.NumberFormat('en-US').format(miles) + ' mi'
@@ -121,7 +126,7 @@ export default function AnalyzePage() {
               <dd className="font-medium">{formatPrice(listing.sold_price_cents)}</dd>
             </div>
             <div>
-              <dt className="text-gray-500">VIN</dt>
+              <dt className="text-gray-500">{vinLabel(listing.vin)}</dt>
               <dd className="font-mono text-xs">{listing.vin ?? 'N/A'}</dd>
             </div>
             <div>

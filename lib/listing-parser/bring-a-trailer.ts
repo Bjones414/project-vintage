@@ -107,7 +107,7 @@ export async function parseBaTListing(url: string): Promise<CanonicalListing> {
     let year: number | null = null
     let make: string | null = null
     let model: string | null = null
-    const titleMatch = title.match(/^(\d{4})\s+(.+)$/)
+    const titleMatch = title.match(/(\d{4})\s+(.+)$/)
     if (titleMatch) {
       const parsedYear = parseInt(titleMatch[1], 10)
       year = parsedYear >= 1900 && parsedYear <= 2030 ? parsedYear : null
@@ -121,7 +121,7 @@ export async function parseBaTListing(url: string): Promise<CanonicalListing> {
     // BaT labels the VIN as "Chassis" with the value wrapped in an <a> tag.
     let vin: string | null = null
     $('li').each((_, el) => {
-      const match = $(el).text().match(/Chassis:\s*([A-HJ-NPR-Z0-9]{17})/i)
+      const match = $(el).text().match(/Chassis:\s*([A-HJ-NPR-Z0-9]{6,17})/i)
       if (match) {
         vin = match[1]
         return false
@@ -170,15 +170,31 @@ export async function parseBaTListing(url: string): Promise<CanonicalListing> {
       }
     })
 
-    // Step 8 — Determine listing status from page text
-    const bodyText = $('body').text()
+    // Step 8 — Determine listing status by matching status phrases adjacent to a USD price.
+    // BaT pages embed an i18n dictionary inside <script> tags listing all
+    // status phrases as raw translation values. The dictionary is identical
+    // across all listings regardless of state. Strip scripts/styles first
+    // and require a dollar amount adjacent to each phrase — the rendered
+    // hero always renders "Current Bid: USD $X" with the price; dictionary
+    // entries are bare phrases without prices.
+    const cleaned = $.root().clone()
+    cleaned.find('script, style').remove()
+    const visibleText = cleaned.find('body').text()
+
+    const priceTail = String.raw`[\s:]*(?:USD\s*)?\$[\d,]+`
+    const matchers: Array<[CanonicalListing['listing_status'], RegExp]> = [
+      ['sold', new RegExp(`Sold for${priceTail}`, 'i')],
+      ['no-sale', new RegExp(`Bid to${priceTail}`, 'i')],
+      ['live', new RegExp(`Current Bid${priceTail}`, 'i')],
+    ]
+    const found = matchers
+      .map(([label, re]) => [label, visibleText.search(re)] as [CanonicalListing['listing_status'], number])
+      .filter(([, pos]) => pos !== -1)
+      .sort((a, b) => a[1] - b[1])
+
     let listing_status: CanonicalListing['listing_status'] = 'unknown'
-    if (/Current Bid/i.test(bodyText)) {
-      listing_status = 'live'
-    } else if (/Sold for/i.test(bodyText)) {
-      listing_status = 'sold'
-    } else if (/Bid to|Reserve Not Met/i.test(bodyText)) {
-      listing_status = 'no-sale'
+    if (found.length > 0) {
+      listing_status = found[0][0]
     }
 
     // Step 9 — Assemble CanonicalListing

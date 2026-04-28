@@ -50,8 +50,6 @@ export async function POST(request: NextRequest) {
   // Upsert via service-role client (bypasses RLS — writes to listings are service-role only)
   // NOTE: Supabase DB types are a placeholder (Database = unknown) until `supabase gen types`
   // is run against the real project. Casting through unknown here is safe — remove when typed.
-  console.log('SERVICE KEY present:', !!process.env.SUPABASE_SERVICE_ROLE_KEY)
-  console.log('SUPABASE URL present:', !!process.env.NEXT_PUBLIC_SUPABASE_URL)
   const supabaseAdmin = createSupabaseAdmin(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
