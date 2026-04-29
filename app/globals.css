@@ -1,3 +1,47 @@
+/* Google Fonts — Source Serif 4 (variable, replaces Source Serif Pro; supports weight 500),
+   Inter, and JetBrains Mono. @import must precede all other statements. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400;1,8..60,500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ─── Design token CSS variables (V1 light mode) ─────────────────────────────
+   All hex values sourced directly from DESIGN.md. Dark mode variables are
+   deferred to V1.5 — do not add them here yet.
+   ──────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --bg-canvas:   #FAF8F3;
+  --bg-surface:  #FFFFFF;
+  --bg-elevated: #F5F2EA;
+
+  /* Text */
+  --text-primary:    #2C2A24;
+  --text-secondary:  #3D3A30;
+  --text-tertiary:   #6B6557;
+  --text-quaternary: #8B7D5E;
+  --text-muted:      #B4B2A9;
+
+  /* Accents */
+  --accent-primary:   #8B6914;
+  --accent-secondary: #B4A875;
+
+  /* Severity (desaturated — never bright/saturated equivalents) */
+  --severity-positive: #1D9E75;
+  --severity-caution:  #BA7517;
+  --severity-concern:  #A32D2D;
+
+  /* Borders */
+  --border-default: #D4CFC0;
+  --border-subtle:  #E8E2D5;
+}
+
+/* ─── Base body styles ───────────────────────────────────────────────────────
+   Inter is the UI default (sans). Serif is opt-in per element via font-serif.
+   ──────────────────────────────────────────────────────────────────────────── */
+body {
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: "Inter", system-ui, sans-serif;
+}
