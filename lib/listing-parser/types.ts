@@ -26,9 +26,11 @@ export interface CanonicalListing {
   exterior_color: string | null
   interior_color: string | null
   sold_price_cents: number | null  // dollars * 100, integer only, never float
+  high_bid_cents: number | null    // current bid in cents; coexists with sold_price_cents
   listing_status: 'live' | 'sold' | 'no-sale' | 'unknown'
   bid_count: number | null
   reserve_met: boolean | null
+  has_no_reserve: boolean          // true when listing explicitly says "No Reserve"
   auction_end_date: string | null  // ISO 8601
   seller_info: Record<string, unknown> | null
   description: string | null

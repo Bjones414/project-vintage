@@ -58,6 +58,36 @@ function parseMileageValue(raw: string): number | null {
   return isNaN(n) ? null : n
 }
 
+/**
+ * Detects reserve status from visible page text.
+ * "reserve not met" is checked before "reserve met" to prevent substring false-positive.
+ */
+export function detectReserveStatus(visibleText: string): {
+  reserve_met: boolean | null
+  has_no_reserve: boolean
+} {
+  const lower = visibleText.toLowerCase()
+  if (lower.includes('reserve not met')) return { reserve_met: false, has_no_reserve: false }
+  if (lower.includes('reserve met')) return { reserve_met: true, has_no_reserve: false }
+  if (lower.includes('no reserve')) return { reserve_met: null, has_no_reserve: true }
+  return { reserve_met: null, has_no_reserve: false }
+}
+
+/**
+ * Extracts current bid amount in cents from visible page text.
+ * Matches: "Current Bid $48,250", "Current Bid: $48,250", "Current Bid: USD 48,250",
+ *          "Current Bid: USD $1,250,000", "Current Bid $48,250.00"
+ */
+export function extractCurrentBid(visibleText: string): number | null {
+  const m = visibleText.match(
+    /Current\s+Bid\s*:?\s*(?:USD\s*)?\$?([\d,]+(?:\.\d{2})?)/i,
+  )
+  if (!m) return null
+  const amount = parseFloat(m[1].replace(/,/g, ''))
+  if (isNaN(amount)) return null
+  return Math.round(amount * 100)
+}
+
 export async function parseBaTListing(url: string): Promise<CanonicalListing> {
   try {
     // Step 1 — Validate and normalize URL
@@ -246,7 +276,14 @@ export async function parseBaTListing(url: string): Promise<CanonicalListing> {
       listing_status = found[0][0]
     }
 
-    // Step 10 — Assemble CanonicalListing
+    // Step 10 — Reserve status detection.
+    // "reserve not met" must be checked before "reserve met" (substring containment).
+    const { reserve_met, has_no_reserve } = detectReserveStatus(visibleText)
+
+    // Step 11 — Current bid extraction.
+    const high_bid_cents = extractCurrentBid(visibleText)
+
+    // Step 12 — Assemble CanonicalListing
     return {
       source_platform: 'bring-a-trailer',
       source_url: normalizedUrl,
@@ -263,9 +300,11 @@ export async function parseBaTListing(url: string): Promise<CanonicalListing> {
       exterior_color,
       interior_color,
       sold_price_cents,
+      high_bid_cents,
       listing_status,
       bid_count: null,
-      reserve_met: null,
+      reserve_met,
+      has_no_reserve,
       auction_end_date,
       seller_info: null,
       description,

@@ -200,6 +200,7 @@ export type Database = {
           final_price: number | null
           generation: string | null
           generation_id: string | null
+          has_no_reserve: boolean
           high_bid: number | null
           id: string
           interior_color: string | null
@@ -250,6 +251,7 @@ export type Database = {
           final_price?: number | null
           generation?: string | null
           generation_id?: string | null
+          has_no_reserve?: boolean
           high_bid?: number | null
           id?: string
           interior_color?: string | null
@@ -300,6 +302,7 @@ export type Database = {
           final_price?: number | null
           generation?: string | null
           generation_id?: string | null
+          has_no_reserve?: boolean
           high_bid?: number | null
           id?: string
           interior_color?: string | null

@@ -297,7 +297,7 @@ describe('MetricTiles', () => {
       />,
     )
     expect(html).toContain('Reserve')
-    expect(html).toContain('Met')
+    expect(html).toContain('Reserve Met')
   })
 })
 
@@ -364,7 +364,8 @@ describe('ComparableSalesCard', () => {
     const html = renderToString(
       <ComparableSalesCard analysisData={null} viewerTier="anonymous" />,
     )
-    expect(html).toContain('No comparable sales data available')
+    expect(html).toContain('Comparable sales engine in development')
+    expect(html).toContain('see the auction page directly')
   })
 })
 
