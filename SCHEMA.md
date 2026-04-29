@@ -89,6 +89,14 @@ CREATE INDEX listings_updated_at_idx   ON listings (updated_at DESC);
 ## Porsche Reference Tables (Marque-Specific)
 
 ```sql
+-- content_status_t postgres enum — shared by porsche_generations and porsche_color_codes.
+-- generation_editorial uses a TEXT column with a CHECK constraint (added in migration
+-- 20260428090000) and is intentionally kept separate from this enum.
+-- TODO (future): editorial drafts live in generation_editorial; on publish they are
+-- promoted into porsche_generations.notes / notes_full. That promote-on-publish workflow
+-- is out of scope for Phase 5 and will be implemented in a separate migration.
+CREATE TYPE content_status_t AS ENUM ('draft', 'verified', 'published');
+
 -- Porsche factory paint codes with generation applicability.
 -- Used for color-code verification and rarity scoring.
 CREATE TABLE porsche_color_codes (
@@ -100,22 +108,42 @@ CREATE TABLE porsche_color_codes (
     is_special_order            boolean NOT NULL DEFAULT false,     -- Paint-to-Sample or special program
     rarity                      text                                CHECK (rarity IN ('common', 'uncommon', 'rare', 'very_rare')),
     notes                       text,
+    content_status              content_status_t NOT NULL DEFAULT 'draft',
     created_at                  timestamptz NOT NULL DEFAULT now(),
     updated_at                  timestamptz NOT NULL DEFAULT now()
 );
 
 -- Porsche model generations with authoritative year ranges and editorial context.
 -- Defined before porsche_option_codes due to FK dependency.
+-- Phase 4 added: model_family text, production_count integer
+-- Phase 5 added: notes_full, hero image columns, content_status, jsonb shape updates
 CREATE TABLE porsche_generations (
     generation_id               text PRIMARY KEY,                   -- e.g., '964', '993', '996', '997.1', '997.2', '991.1', '991.2', '992'
     model                       text NOT NULL,                      -- e.g., '911', 'Boxster', 'Cayman'
+    model_family                text,                               -- e.g., '911', '718', 'Cayenne' — groups generations for cross-gen queries
     year_start                  smallint NOT NULL,
     year_end                    smallint,                           -- Null if generation is current
     body_styles                 text[],                             -- e.g., ['Coupe', 'Cabriolet', 'Targa']
     engine_type                 text,                               -- 'Air-cooled', 'Water-cooled', 'Hybrid', etc.
-    notes                       text,                               -- Editorial notes on the generation's significance
-    common_issues               jsonb,                              -- Array of {issue, severity, mileage_threshold} objects
-    period_reviews              jsonb,                              -- Array of {publication, year, summary, url} objects
+    notes                       text,                               -- Short editorial summary for initial report card
+    notes_full                  text,                               -- Long-form editorial prose for full report page
+    hero_image_url              text,
+    hero_image_caption          text,
+    hero_image_license          text,
+    production_count            integer,
+    -- jsonb arrays: filter individual entries by their per-entry content_status at the
+    -- APPLICATION LAYER (TypeScript, after fetch). Do not use generated columns or
+    -- SQL-side jsonb filtering for V1 — keeps queries simple, avoids index overhead.
+    common_issues               jsonb NOT NULL DEFAULT '[]',
+    -- Element shape: { title: string, severity: 'low'|'moderate'|'high',
+    --   mileage_threshold: integer|null, body: string,
+    --   content_status: 'draft'|'verified'|'published' }
+    period_reviews              jsonb NOT NULL DEFAULT '[]',
+    -- Element shape: { publication: string, date: 'YYYY-MM', title: string,
+    --   url: string|null, archive_url: string|null, summary: string,
+    --   pull_quote: string|null, pull_quote_attribution: string|null,
+    --   paywalled: boolean, content_status: 'draft'|'verified'|'published' }
+    content_status              content_status_t NOT NULL DEFAULT 'draft',
     created_at                  timestamptz NOT NULL DEFAULT now(),
     updated_at                  timestamptz NOT NULL DEFAULT now()
 );
@@ -255,13 +283,23 @@ CREATE INDEX watched_listings_listing_id_idx ON watched_listings (listing_id);
 
 -- Records every paste-and-go analysis a user runs.
 -- Required to enforce the free-tier 3-per-month limit and to cache results.
+-- Phase 4: user_id made nullable (anonymous analyses allowed for acquisition flow)
+-- Phase 5: findings tracking, normalized confidence score, comp_count denormalization
 CREATE TABLE listing_analyses (
     id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id         uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    user_id         uuid REFERENCES users(id) ON DELETE CASCADE,        -- Nullable: anonymous analyses allowed
     listing_id      uuid REFERENCES listings(id) ON DELETE SET NULL,    -- Null until the listing is saved to our database
     source_url      text NOT NULL,
     source_platform text,
     analysis_data   jsonb NOT NULL,
+    findings        jsonb NOT NULL DEFAULT '[]',
+    -- Element shape: { rule_id: string, category: 'this_car'|'worth_asking'|'watch_closely',
+    --   severity: 'positive'|'caution'|'concern', title: string, body: string,
+    --   qualifier: string|null }
+    finding_count   integer NOT NULL DEFAULT 0,
+    confidence_score numeric(4,3)                                        -- 0.000–1.000 normalized scale; populated by comp engine V1.5+
+                        CHECK (confidence_score IS NULL OR (confidence_score >= 0 AND confidence_score <= 1)),
+    comp_count      integer,                                             -- Denormalized from analysis_data.comps_used for fast filtering
     created_at      timestamptz NOT NULL DEFAULT now()
 );
 
