@@ -38,7 +38,10 @@ export function ComparableSalesCard({ analysisData, viewerTier }: Props) {
   if (total === 0 && sales.length === 0) {
     return (
       <Card title="Comparable Sales">
-        <p className="text-sm text-gray-500">No comparable sales data available.</p>
+        <p className="text-sm text-gray-500">Comparable sales engine in development.</p>
+        <p className="mt-2 text-sm text-gray-400">
+          Until launch, see the auction page directly for context.
+        </p>
       </Card>
     )
   }
