@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import { analyzeUrl } from '@/lib/analyze-url'
 import { createClient } from '@/lib/supabase/client'
+import { AnalyzeLoadingState } from '@/components/analyze/AnalyzeLoadingState'
 
 type Props = {
   userEmail: string | null
@@ -14,26 +15,29 @@ export function TopNav({ userEmail }: Props) {
   const pathname = usePathname()
   const router = useRouter()
   const [url, setUrl] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [loadingPromise, setLoadingPromise] = useState<Promise<string> | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
+  const urlRef = useRef(url)
+  urlRef.current = url
 
   // Hide on the /analyze landing page — it has its own paste field
   if (pathname === '/analyze') return null
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setLoading(true)
     setError(null)
+    const promise = analyzeUrl(urlRef.current.trim())
+    setLoadingPromise(promise)
+  }
 
-    try {
-      const listingId = await analyzeUrl(url)
-      // TODO: smooth transition into /analyze/[id] — results shouldn't pop in cold. Coordinate with the four-step progressive loading state (sequence item 6).
-      router.push(`/analyze/${listingId}`)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error — check your connection and try again')
-      setLoading(false)
-    }
+  function handleSuccess(listingId: string) {
+    router.push(`/analyze/${listingId}`)
+  }
+
+  function handleError(err: Error) {
+    setError(err.message || 'Network error — check your connection and try again')
+    setLoadingPromise(null)
   }
 
   async function handleSignOut() {
@@ -43,6 +47,16 @@ export function TopNav({ userEmail }: Props) {
   }
 
   const initials = userEmail ? userEmail.slice(0, 2).toUpperCase() : null
+
+  if (loadingPromise) {
+    return (
+      <AnalyzeLoadingState
+        promise={loadingPromise}
+        onSuccess={handleSuccess}
+        onError={handleError}
+      />
+    )
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
@@ -109,15 +123,8 @@ export function TopNav({ userEmail }: Props) {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="Paste an auction URL to analyze"
-              disabled={loading}
-              className="w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 disabled:opacity-50 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+              className="w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
             />
-            {loading && (
-              <span
-                aria-hidden="true"
-                className="absolute right-2.5 h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-gray-700"
-              />
-            )}
           </div>
           {error && (
             <p className="mt-1 text-xs text-red-600">{error}</p>

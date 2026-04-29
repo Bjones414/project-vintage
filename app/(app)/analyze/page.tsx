@@ -1,28 +1,42 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { analyzeUrl } from '@/lib/analyze-url'
+import { AnalyzeLoadingState } from '@/components/analyze/AnalyzeLoadingState'
 
 export default function AnalyzePage() {
   const router = useRouter()
   const [url, setUrl] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [loadingPromise, setLoadingPromise] = useState<Promise<string> | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const urlRef = useRef(url)
+  urlRef.current = url
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setLoading(true)
     setError(null)
+    const promise = analyzeUrl(urlRef.current.trim())
+    setLoadingPromise(promise)
+  }
 
-    try {
-      const listingId = await analyzeUrl(url)
-      // Keep loading=true — the redirect fires now and the component unmounts.
-      router.replace(`/analyze/${listingId}`)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error — check your connection and try again')
-      setLoading(false)
-    }
+  function handleSuccess(listingId: string) {
+    router.replace(`/analyze/${listingId}`)
+  }
+
+  function handleError(err: Error) {
+    setError(err.message || 'Network error — check your connection and try again')
+    setLoadingPromise(null)
+  }
+
+  if (loadingPromise) {
+    return (
+      <AnalyzeLoadingState
+        promise={loadingPromise}
+        onSuccess={handleSuccess}
+        onError={handleError}
+      />
+    )
   }
 
   return (
@@ -46,10 +60,9 @@ export default function AnalyzePage() {
         </div>
         <button
           type="submit"
-          disabled={loading}
-          className="self-start rounded-md bg-gray-900 px-5 py-2 text-sm font-medium text-white disabled:opacity-50"
+          className="self-start rounded-md bg-gray-900 px-5 py-2 text-sm font-medium text-white"
         >
-          {loading ? 'Analyzing…' : 'Analyze'}
+          Analyze
         </button>
       </form>
 

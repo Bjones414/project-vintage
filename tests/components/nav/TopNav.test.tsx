@@ -59,7 +59,7 @@ describe('TopNav', () => {
     expect(screen.getByPlaceholderText(/paste an auction url/i)).toBeTruthy()
   })
 
-  it('success path — submits to /api/analyze and pushes to /analyze/[id]', async () => {
+  it('success path — shows loading state with all four steps on submit', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce({
       ok: true,
       json: async () => ({ listingId: 'listing-abc-123' }),
@@ -74,9 +74,13 @@ describe('TopNav', () => {
     )
     await user.keyboard('{Enter}')
 
+    // Loading state replaces the nav — all four steps should be visible
     await waitFor(() => {
-      expect(pushSpy).toHaveBeenCalledWith('/analyze/listing-abc-123')
+      expect(screen.getByText('Identifying the listing')).toBeTruthy()
     })
+    expect(screen.getByText('Parsing the details')).toBeTruthy()
+    expect(screen.getByText('Pulling comparable sales')).toBeTruthy()
+    expect(screen.getByText('Generating your analysis')).toBeTruthy()
   })
 
   it('error path — shows inline error message on failure', async () => {
@@ -100,7 +104,7 @@ describe('TopNav', () => {
     expect(pushSpy).not.toHaveBeenCalled()
   })
 
-  it('disables input while fetch is in-flight', async () => {
+  it('shows loading state (not the nav form) while fetch is in-flight', async () => {
     let resolveFetch!: (v: unknown) => void
     vi.stubGlobal(
       'fetch',
@@ -116,12 +120,12 @@ describe('TopNav', () => {
     )
     await user.keyboard('{Enter}')
 
+    // Loading state is shown; the URL input is no longer in the DOM
     await waitFor(() => {
-      const input = screen.getByPlaceholderText(/paste an auction url/i) as HTMLInputElement
-      expect(input.disabled).toBe(true)
+      expect(screen.getByText('Identifying the listing')).toBeTruthy()
     })
+    expect(screen.queryByPlaceholderText(/paste an auction url/i)).toBeNull()
 
     resolveFetch({ ok: true, json: async () => ({ listingId: 'x' }) })
-    await waitFor(() => expect(pushSpy).toHaveBeenCalled())
   })
 })

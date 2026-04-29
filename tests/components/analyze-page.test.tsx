@@ -85,7 +85,7 @@ describe('AnalyzePage', () => {
     expect(screen.getByPlaceholderText(/bringatrailer/i)).toBeTruthy()
   })
 
-  it('success path — calls router.replace with /analyze/:id', async () => {
+  it('success path — shows loading state with all four steps on submit', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce({
       ok: true,
       json: async () => ({ listingId: 'listing-uuid-999' }),
@@ -100,12 +100,16 @@ describe('AnalyzePage', () => {
     )
     await user.click(screen.getByRole('button', { name: /Analyze/i }))
 
+    // Loading state replaces the form — all four steps should be visible
     await waitFor(() => {
-      expect(replaceSpy).toHaveBeenCalledWith('/analyze/listing-uuid-999')
+      expect(screen.getByText('Identifying the listing')).toBeTruthy()
     })
+    expect(screen.getByText('Parsing the details')).toBeTruthy()
+    expect(screen.getByText('Pulling comparable sales')).toBeTruthy()
+    expect(screen.getByText('Generating your analysis')).toBeTruthy()
   })
 
-  it('success path — button shows Analyzing… while fetch is in-flight', async () => {
+  it('success path — form is replaced by loading state while fetch is in-flight', async () => {
     let resolveFetch!: (v: unknown) => void
     vi.stubGlobal(
       'fetch',
@@ -120,11 +124,14 @@ describe('AnalyzePage', () => {
     await user.type(screen.getByRole('textbox'), 'https://bringatrailer.com/listing/test')
     await user.click(screen.getByRole('button', { name: /Analyze/i }))
 
-    expect(screen.getByRole('button', { name: /Analyzing…/i })).toBeTruthy()
+    // Loading state is visible; the original form button is gone
+    await waitFor(() => {
+      expect(screen.getByText('Identifying the listing')).toBeTruthy()
+    })
+    expect(screen.queryByRole('button', { name: /Analyze/i })).toBeNull()
 
     // Resolve so test teardown is clean
     resolveFetch({ ok: true, json: async () => ({ listingId: 'x' }) })
-    await waitFor(() => expect(replaceSpy).toHaveBeenCalled())
   })
 
   it('error path — displays error message and re-enables submit', async () => {
