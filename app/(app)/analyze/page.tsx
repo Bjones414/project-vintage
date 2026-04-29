@@ -18,7 +18,7 @@ export default function AnalyzePage() {
     try {
       const listingId = await analyzeUrl(url)
       // Keep loading=true — the redirect fires now and the component unmounts.
-      router.replace(`/search/${listingId}`)
+      router.replace(`/analyze/${listingId}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Network error — check your connection and try again')
       setLoading(false)

@@ -14,7 +14,7 @@ import { ColorRarityCard } from '@/components/analyze/ColorRarityCard'
 import { AnonymousSignupCTA } from '@/components/analyze/AnonymousSignupCTA'
 
 type PageProps = {
-  params: { listingId: string }
+  params: { id: string }
 }
 
 export default async function ListingDetailPage({ params }: PageProps) {
@@ -25,7 +25,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
   } = await supabase.auth.getUser()
 
   const [listingResult, userResult] = await Promise.all([
-    supabase.from('listings').select('*').eq('id', params.listingId).single(),
+    supabase.from('listings').select('*').eq('id', params.id).single(),
     user
       ? supabase.from('users').select('role').eq('id', user.id).single()
       : Promise.resolve({ data: null, error: null } as const),

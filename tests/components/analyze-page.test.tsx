@@ -85,7 +85,7 @@ describe('AnalyzePage', () => {
     expect(screen.getByPlaceholderText(/bringatrailer/i)).toBeTruthy()
   })
 
-  it('success path — calls router.replace with /search/:id', async () => {
+  it('success path — calls router.replace with /analyze/:id', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce({
       ok: true,
       json: async () => ({ listingId: 'listing-uuid-999' }),
@@ -101,7 +101,7 @@ describe('AnalyzePage', () => {
     await user.click(screen.getByRole('button', { name: /Analyze/i }))
 
     await waitFor(() => {
-      expect(replaceSpy).toHaveBeenCalledWith('/search/listing-uuid-999')
+      expect(replaceSpy).toHaveBeenCalledWith('/analyze/listing-uuid-999')
     })
   })
 
