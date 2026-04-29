@@ -1,6 +1,7 @@
 // POST /api/analyze
 // Accepts a listing URL, parses it into a CanonicalListing, upserts to the listings table,
-// and returns the result. Enforces auth — free-tier rate limiting deferred to V1.5.
+// creates a listing_analyses row, and returns { listingId, listing }.
+// Enforces auth — free-tier rate limiting deferred to V1.5.
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
@@ -95,8 +96,8 @@ export async function POST(request: NextRequest) {
   // Maps CanonicalListing → listings table columns.
   // Fields with no current DB column (engine, image_urls, bid_count, seller_info,
   // modification_notes, raw_data) are omitted — preserved in CanonicalListing for callers.
-  // NOTE: onConflict: 'source_url' requires CREATE UNIQUE INDEX listings_source_url_idx
-  // ON listings(source_url) — add in the next migration.
+  // onConflict: keyed on the unique constraint (source_platform, source_listing_id)
+  // from SCHEMA.md. source_url alone does not have a unique index.
   const row = {
     source_platform: listing.source_platform,
     source_url: listing.source_url,
@@ -137,17 +138,46 @@ export async function POST(request: NextRequest) {
     }),
   }
 
-  const { error: upsertError } = await supabaseAdmin
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const upsertResult = await (supabaseAdmin
     .from('listings')
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .upsert(row as any, { onConflict: 'source_url' })
+    .upsert(row as any, { onConflict: 'source_platform,source_listing_id' })
+    .select('id')
+    .single() as unknown as Promise<{ data: { id: string } | null; error: { message: string } | null }>)
+  const { data: upsertData, error: upsertError } = upsertResult
 
-  if (upsertError) {
+  if (upsertError || !upsertData) {
     return NextResponse.json(
-      { error: `Database error: ${upsertError.message}` },
+      { error: `Database error: ${upsertError?.message ?? 'Failed to retrieve listing id after upsert'}` },
       { status: 500 }
     )
   }
 
-  return NextResponse.json({ listing }, { status: 200 })
+  const listingId = upsertData.id
+
+  // Record this analysis run. Non-fatal: a failure here does not block the redirect.
+  // analysis_data stores parse metadata; comp engine output will enrich this in a later phase.
+  const analysisResult = await (supabaseAdmin
+    .from('listing_analyses')
+    .insert({
+      user_id: session.user.id,
+      listing_id: listingId,
+      source_url: listing.source_url,
+      source_platform: listing.source_platform,
+      analysis_data: {
+        parsed_at: new Date().toISOString(),
+        listing_status: listing.listing_status,
+      },
+    }) as unknown as Promise<{ error: { message: string } | null }>)
+  const { error: analysisError } = analysisResult
+
+  if (analysisError) {
+    console.error('[api/analyze] listing_analyses insert failed (non-fatal)', {
+      listing_id: listingId,
+      error: analysisError.message,
+    })
+  }
+
+  return NextResponse.json({ listingId, listing }, { status: 200 })
 }

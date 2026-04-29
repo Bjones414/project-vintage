@@ -1,9 +1,121 @@
-// Placeholder: Individual listing detail page with comp analysis
+import { notFound } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
+import { parseAnalysisData } from '@/components/analyze/types'
+import type { ViewerTier } from '@/components/analyze/types'
+import { AnalyzeHeader } from '@/components/analyze/AnalyzeHeader'
+import { VerdictBlock } from '@/components/analyze/VerdictBlock'
+import { MetricTiles } from '@/components/analyze/MetricTiles'
+import { ChassisIdentityCard } from '@/components/analyze/ChassisIdentityCard'
+import { ComparableSalesCard } from '@/components/analyze/ComparableSalesCard'
+import { ActionRow } from '@/components/analyze/ActionRow'
+import { EraCard } from '@/components/analyze/EraCard'
+import { WatchOutsCard } from '@/components/analyze/WatchOutsCard'
+import { ColorRarityCard } from '@/components/analyze/ColorRarityCard'
+import { AnonymousSignupCTA } from '@/components/analyze/AnonymousSignupCTA'
 
-// TODO: When generation_editorial is read for the analyze page, filter on content_status = 'verified'
-// before rendering. Draft content must never reach the user-facing analyze page.
-// Example: .from('generation_editorial').select('*').eq('generation_id', id).eq('content_status', 'verified').single()
+type PageProps = {
+  params: { listingId: string }
+}
 
-export default function ListingDetailPage() {
-  return null;
+export default async function ListingDetailPage({ params }: PageProps) {
+  const supabase = createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  const [listingResult, userResult] = await Promise.all([
+    supabase.from('listings').select('*').eq('id', params.listingId).single(),
+    user
+      ? supabase.from('users').select('role').eq('id', user.id).single()
+      : Promise.resolve({ data: null, error: null } as const),
+  ])
+
+  if (listingResult.error || !listingResult.data) {
+    notFound()
+  }
+
+  const listing = listingResult.data
+
+  const userRole = userResult.data?.role ?? null
+  // TODO: V1 launch — remove role IN ('admin', 'beta') bypass when beta gates flip on
+  const viewerTier: ViewerTier =
+    userRole != null && ['admin', 'beta', 'member'].includes(userRole)
+      ? 'member'
+      : 'anonymous'
+
+  const [generationResult, editorialResult, colorResult, analysisResult] =
+    await Promise.all([
+      listing.generation_id
+        ? supabase
+            .from('porsche_generations')
+            .select('*')
+            .eq('generation_id', listing.generation_id)
+            .single()
+        : Promise.resolve({ data: null, error: null } as const),
+      listing.generation_id
+        ? supabase
+            .from('generation_editorial')
+            .select('*')
+            .eq('generation_id', listing.generation_id)
+            .eq('content_status', 'verified')
+            .maybeSingle()
+        : Promise.resolve({ data: null, error: null } as const),
+      listing.exterior_color_code
+        ? supabase
+            .from('porsche_color_codes')
+            .select('*')
+            .eq('paint_code', listing.exterior_color_code)
+            .maybeSingle()
+        : Promise.resolve({ data: null, error: null } as const),
+      supabase
+        .from('listing_analyses')
+        .select('*')
+        .eq('listing_id', listing.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle(),
+    ])
+
+  const generation = generationResult.data ?? null
+  const editorial = editorialResult.data ?? null
+  const colorData = colorResult.data ?? null
+  const analysisData = parseAnalysisData(analysisResult.data?.analysis_data ?? null)
+
+  return (
+    <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <AnalyzeHeader
+        listing={listing}
+        analysisData={analysisData}
+        viewerTier={viewerTier}
+      />
+      <VerdictBlock analysisData={analysisData} viewerTier={viewerTier} />
+      <MetricTiles
+        listing={listing}
+        analysisData={analysisData}
+        viewerTier={viewerTier}
+      />
+      <div className="mt-6 flex flex-col gap-6 md:flex-row">
+        <div className="flex min-w-0 flex-col gap-6 md:w-[62%]">
+          <ChassisIdentityCard listing={listing} generation={generation} />
+          <ComparableSalesCard analysisData={analysisData} viewerTier={viewerTier} />
+          <ActionRow listing={listing} viewerTier={viewerTier} />
+        </div>
+        <div className="flex min-w-0 flex-col gap-6 md:w-[38%]">
+          <EraCard
+            generation={generation}
+            editorial={editorial}
+            viewerTier={viewerTier}
+          />
+          <WatchOutsCard editorial={editorial} viewerTier={viewerTier} />
+          <ColorRarityCard
+            listing={listing}
+            colorData={colorData}
+            viewerTier={viewerTier}
+          />
+        </div>
+      </div>
+      {viewerTier === 'anonymous' && <AnonymousSignupCTA />}
+    </main>
+  )
 }
