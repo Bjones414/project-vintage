@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/server'
 import { parseListing } from '@/lib/listing-parser'
 import { decodeVin } from '@/lib/vin-decode/nhtsa'
 import { matchGeneration } from '@/lib/generation-match'
+import { runFindingsRules } from '@/lib/findings'
 
 export async function POST(request: NextRequest) {
   // Validate body
@@ -156,6 +157,11 @@ export async function POST(request: NextRequest) {
 
   const listingId = upsertData.id
 
+  const findings = runFindingsRules({
+    listing,
+    generationId: generationResult.generation_id,
+  })
+
   // Record this analysis run. Non-fatal: a failure here does not block the redirect.
   // analysis_data stores parse metadata; comp engine output will enrich this in a later phase.
   const analysisResult = await (supabaseAdmin
@@ -169,6 +175,9 @@ export async function POST(request: NextRequest) {
         parsed_at: new Date().toISOString(),
         listing_status: listing.listing_status,
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      findings: findings as any,
+      finding_count: findings.length,
     }) as unknown as Promise<{ error: { message: string } | null }>)
   const { error: analysisError } = analysisResult
 
