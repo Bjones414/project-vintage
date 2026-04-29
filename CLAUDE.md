@@ -178,3 +178,9 @@ This means:
 - Unit tests cover the comp engine logic and option/color code validators.
 - Scraper normalization is tested via input fixture → expected database row, with the database write mocked.
 - Integration test infrastructure (local Supabase or a test database) is deferred until V1 has paying users.
+
+---
+
+## Design System
+
+All UI work must conform to `DESIGN.md`. Reference mockups at `/design/reference/` are the canonical visual implementation. Deviations require written justification and approval. When in doubt, choose the option that better matches Excellence magazine, not the option that better matches a typical SaaS dashboard.
