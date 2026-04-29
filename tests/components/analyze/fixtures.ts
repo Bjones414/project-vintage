@@ -1,5 +1,6 @@
 import type { Tables } from '@/lib/supabase/types'
 import type { AnalysisData } from '@/components/analyze/types'
+import type { Json } from '@/lib/supabase/types'
 
 // ---------------------------------------------------------------------------
 // Fixture: 2024 Porsche 718 Cayman GT4 RS
@@ -348,4 +349,63 @@ export const ANALYSIS_DATA_930: AnalysisData = {
       source_platform: 'bring-a-trailer',
     },
   ],
+}
+
+// ---------------------------------------------------------------------------
+// Fixture: listing_analyses rows (full database row shape including Phase 5 columns)
+// ---------------------------------------------------------------------------
+
+export const ANALYSIS_ROW_EMPTY: Tables<'listing_analyses'> = {
+  id: 'fixture-analysis-empty-001',
+  listing_id: 'fixture-gt4rs-001',
+  user_id: null,
+  source_url: 'https://bringatrailer.com/listing/2024-porsche-718-cayman-gt4-rs',
+  source_platform: 'bring-a-trailer',
+  analysis_data: {},
+  findings: [] as Json,
+  finding_count: 0,
+  confidence_score: null,
+  comp_count: null,
+  created_at: '2024-09-01T00:00:00.000Z',
+}
+
+const THREE_FINDINGS: Json = [
+  {
+    rule_id: 'mileage_above_median',
+    category: 'worth_asking',
+    severity: 'caution',
+    title: 'Mileage is above average for year and trim',
+    body: 'At 45,200 miles, this example sits above the median for documented 930 Turbo sales at auction. Request a full service history to account for the additional use and verify no deferred maintenance.',
+    qualifier: null,
+  },
+  {
+    rule_id: 'matching_transmission',
+    category: 'this_car',
+    severity: 'positive',
+    title: 'Manual transmission — period correct',
+    body: 'The 930 Turbo was exclusively offered with the 4-speed manual gearbox during this model year. A matching-numbers transmission is a meaningful originality signal for collector value.',
+    qualifier: null,
+  },
+  {
+    rule_id: 'multi_owner_history',
+    category: 'watch_closely',
+    severity: 'concern',
+    title: 'Three prior owners — verify full history',
+    body: 'Three ownership changes is above the median for this generation and configuration. Request complete service records spanning all ownership periods to identify deferred maintenance or unreported incidents.',
+    qualifier: '3 prior owners',
+  },
+]
+
+export const ANALYSIS_ROW_3_FINDINGS: Tables<'listing_analyses'> = {
+  id: 'fixture-analysis-findings-001',
+  listing_id: 'fixture-930-001',
+  user_id: null,
+  source_url: 'https://bringatrailer.com/listing/1988-porsche-930-turbo',
+  source_platform: 'bring-a-trailer',
+  analysis_data: {},
+  findings: THREE_FINDINGS,
+  finding_count: 3,
+  confidence_score: null,
+  comp_count: 8,
+  created_at: '2024-08-15T00:00:00.000Z',
 }

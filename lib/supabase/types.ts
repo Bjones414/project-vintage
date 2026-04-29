@@ -124,7 +124,11 @@ export type Database = {
       listing_analyses: {
         Row: {
           analysis_data: Json
+          comp_count: number | null
+          confidence_score: number | null
           created_at: string
+          finding_count: number
+          findings: Json
           id: string
           listing_id: string | null
           source_platform: string | null
@@ -133,7 +137,11 @@ export type Database = {
         }
         Insert: {
           analysis_data: Json
+          comp_count?: number | null
+          confidence_score?: number | null
           created_at?: string
+          finding_count?: number
+          findings?: Json
           id?: string
           listing_id?: string | null
           source_platform?: string | null
@@ -142,7 +150,11 @@ export type Database = {
         }
         Update: {
           analysis_data?: Json
+          comp_count?: number | null
+          confidence_score?: number | null
           created_at?: string
+          finding_count?: number
+          findings?: Json
           id?: string
           listing_id?: string | null
           source_platform?: string | null

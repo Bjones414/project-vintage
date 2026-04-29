@@ -11,6 +11,7 @@ import { ActionRow } from '@/components/analyze/ActionRow'
 import { EraCard } from '@/components/analyze/EraCard'
 import { WatchOutsCard } from '@/components/analyze/WatchOutsCard'
 import { ColorRarityCard } from '@/components/analyze/ColorRarityCard'
+import { TeaserBlock } from '@/components/analyze/TeaserBlock'
 import { AnonymousSignupCTA } from '@/components/analyze/AnonymousSignupCTA'
 
 type PageProps = {
@@ -105,6 +106,11 @@ export default async function ListingDetailPage({ params }: PageProps) {
           />
         </div>
       </div>
+      <TeaserBlock
+        analysisRow={analysisResult.data ?? null}
+        listingId={listing.id}
+        viewerTier={viewerTier}
+      />
       {viewerTier === 'anonymous' && <AnonymousSignupCTA />}
     </main>
   )

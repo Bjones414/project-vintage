@@ -18,6 +18,8 @@ import {
   COLOR_GUARDS_RED,
   ANALYSIS_DATA_GT4_RS,
   ANALYSIS_DATA_930,
+  ANALYSIS_ROW_EMPTY,
+  ANALYSIS_ROW_3_FINDINGS,
 } from './fixtures'
 
 import { AnalyzeHeader } from '@/components/analyze/AnalyzeHeader'
@@ -29,6 +31,7 @@ import { ComparableSalesCard } from '@/components/analyze/ComparableSalesCard'
 import { EraCard } from '@/components/analyze/EraCard'
 import { WatchOutsCard } from '@/components/analyze/WatchOutsCard'
 import { ColorRarityCard } from '@/components/analyze/ColorRarityCard'
+import { TeaserBlock } from '@/components/analyze/TeaserBlock'
 import { AnonymousSignupCTA } from '@/components/analyze/AnonymousSignupCTA'
 import { parseAnalysisData } from '@/components/analyze/types'
 
@@ -506,6 +509,140 @@ describe('ColorRarityCard', () => {
     )
     expect(html).toContain('Rare or special-order')
     expect(html).not.toContain('>Common<')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// TeaserBlock
+// ---------------------------------------------------------------------------
+describe('TeaserBlock', () => {
+  const LISTING_ID = 'fixture-gt4rs-001'
+
+  it('headline: "Continue with the full analysis." when finding_count is 0', () => {
+    const html = renderToString(
+      <TeaserBlock analysisRow={ANALYSIS_ROW_EMPTY} listingId={LISTING_ID} viewerTier="free" />,
+    )
+    expect(t(html)).toContain('Continue with the full analysis.')
+  })
+
+  it('headline: "Continue with the full analysis." when analysisRow is null', () => {
+    const html = renderToString(
+      <TeaserBlock analysisRow={null} listingId={LISTING_ID} viewerTier="free" />,
+    )
+    expect(t(html)).toContain('Continue with the full analysis.')
+  })
+
+  it('headline: singular "1 thing" for finding_count=1', () => {
+    const row = { ...ANALYSIS_ROW_3_FINDINGS, finding_count: 1 }
+    const html = renderToString(
+      <TeaserBlock analysisRow={row} listingId={LISTING_ID} viewerTier="free" />,
+    )
+    expect(t(html)).toContain('We found 1 thing you should ask the seller')
+    expect(t(html)).not.toContain('things')
+  })
+
+  it('headline: plural "5 things" for finding_count=5', () => {
+    const row = { ...ANALYSIS_ROW_3_FINDINGS, finding_count: 5 }
+    const html = renderToString(
+      <TeaserBlock analysisRow={row} listingId={LISTING_ID} viewerTier="free" />,
+    )
+    expect(t(html)).toContain('We found 5 things you should ask the seller')
+  })
+
+  it('tiles: renders 3 tiles when 3 findings present', () => {
+    const html = renderToString(
+      <TeaserBlock analysisRow={ANALYSIS_ROW_3_FINDINGS} listingId={LISTING_ID} viewerTier="free" />,
+    )
+    expect(html).toContain('Mileage is above average for year and trim')
+    expect(html).toContain('Manual transmission — period correct')
+    expect(html).toContain('Three prior owners — verify full history')
+  })
+
+  it('tiles: renders 1 tile when 1 finding present', () => {
+    const singleFinding = [{
+      rule_id: 'mileage_above_median',
+      category: 'worth_asking',
+      severity: 'caution',
+      title: 'Mileage is above average for year and trim',
+      body: 'At 45,200 miles, this example sits above the median.',
+      qualifier: null,
+    }]
+    const row = { ...ANALYSIS_ROW_3_FINDINGS, findings: singleFinding, finding_count: 1 }
+    const html = renderToString(
+      <TeaserBlock analysisRow={row} listingId={LISTING_ID} viewerTier="free" />,
+    )
+    expect(html).toContain('Mileage is above average for year and trim')
+    expect(html).not.toContain('Manual transmission')
+    expect(html).not.toContain('Three prior owners')
+  })
+
+  it('tiles: renders 0 tiles when no findings', () => {
+    const html = renderToString(
+      <TeaserBlock analysisRow={ANALYSIS_ROW_EMPTY} listingId={LISTING_ID} viewerTier="free" />,
+    )
+    expect(html).not.toContain('Mileage is above average')
+    expect(html).not.toContain('Manual transmission')
+  })
+
+  it('tiles: blur class applied to body text, not to title', () => {
+    const html = renderToString(
+      <TeaserBlock analysisRow={ANALYSIS_ROW_3_FINDINGS} listingId={LISTING_ID} viewerTier="free" />,
+    )
+    expect(html).toContain('blur-sm')
+    expect(html).toContain('select-none')
+    // Title itself appears without blur class (blur is on the body paragraph)
+    expect(html).toContain('Mileage is above average for year and trim')
+  })
+
+  it('"Also in the full report" strip renders regardless of finding count', () => {
+    const htmlEmpty = renderToString(
+      <TeaserBlock analysisRow={ANALYSIS_ROW_EMPTY} listingId={LISTING_ID} viewerTier="free" />,
+    )
+    const htmlWithFindings = renderToString(
+      <TeaserBlock analysisRow={ANALYSIS_ROW_3_FINDINGS} listingId={LISTING_ID} viewerTier="free" />,
+    )
+    expect(htmlEmpty).toContain('Generation deep-dive')
+    expect(htmlEmpty).toContain('Comp set with recency weighting')
+    expect(htmlWithFindings).toContain('Generation deep-dive')
+  })
+
+  it('CTA: anonymous links to /signup with ?next= param', () => {
+    const html = renderToString(
+      <TeaserBlock analysisRow={ANALYSIS_ROW_EMPTY} listingId={LISTING_ID} viewerTier="anonymous" />,
+    )
+    expect(html).toContain(`/signup?next=/analyze/${LISTING_ID}/full`)
+    expect(t(html)).toContain('Sign in for the full analysis')
+  })
+
+  it('CTA: free links to /analyze/[id]/full', () => {
+    const html = renderToString(
+      <TeaserBlock analysisRow={ANALYSIS_ROW_EMPTY} listingId={LISTING_ID} viewerTier="free" />,
+    )
+    expect(html).toContain(`/analyze/${LISTING_ID}/full`)
+    expect(t(html)).toContain('Read the full analysis')
+  })
+
+  it('CTA: pro links to /analyze/[id]/full', () => {
+    const html = renderToString(
+      <TeaserBlock analysisRow={ANALYSIS_ROW_EMPTY} listingId={LISTING_ID} viewerTier="pro" />,
+    )
+    expect(html).toContain(`/analyze/${LISTING_ID}/full`)
+    expect(t(html)).toContain('Read the full analysis')
+  })
+
+  it('"Locked" never appears in rendered output', () => {
+    const html = renderToString(
+      <TeaserBlock analysisRow={ANALYSIS_ROW_3_FINDINGS} listingId={LISTING_ID} viewerTier="anonymous" />,
+    )
+    expect(html).not.toContain('Locked')
+    expect(html).not.toContain('locked')
+  })
+
+  it('affordance: "Sign in to read" appears on finding tiles', () => {
+    const html = renderToString(
+      <TeaserBlock analysisRow={ANALYSIS_ROW_3_FINDINGS} listingId={LISTING_ID} viewerTier="free" />,
+    )
+    expect(html).toContain('Sign in to read')
   })
 })
 
