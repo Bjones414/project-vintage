@@ -79,7 +79,7 @@ describe('AnalyzeLoadingState', () => {
     expect(pulseDot?.className).toContain('motion-reduce:animate-none')
   })
 
-  it('step 2 becomes active and step 1 complete after 2000ms', async () => {
+  it('step 2 becomes active and step 1 complete after 1125ms', async () => {
     const { container } = render(
       <AnalyzeLoadingState
         promise={neverResolves()}
@@ -92,7 +92,7 @@ describe('AnalyzeLoadingState', () => {
     expect(container.querySelectorAll('.bg-amber-100').length).toBe(1)
 
     await act(async () => {
-      vi.advanceTimersByTime(2001)
+      vi.advanceTimersByTime(1126)
       await Promise.resolve() // flush microtasks
     })
 
@@ -129,7 +129,7 @@ describe('AnalyzeLoadingState', () => {
     )
     await act(async () => {
       await Promise.resolve()
-      vi.advanceTimersByTime(12001)
+      vi.advanceTimersByTime(4501)
     })
     expect(onSuccess).toHaveBeenCalledWith('listing-123')
   })
