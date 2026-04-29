@@ -11,22 +11,17 @@ type Props = {
 function MetricTile({
   label,
   value,
-  locked,
+  hint,
 }: {
   label: string
   value: string
-  locked?: boolean
+  hint?: string
 }) {
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-4">
       <p className="text-xs font-medium uppercase tracking-wide text-gray-500">{label}</p>
-      <p className="mt-1 truncate text-xl font-bold text-gray-900">
-        {locked ? (
-          <span className="text-sm font-normal text-gray-400">Free account</span>
-        ) : (
-          value
-        )}
-      </p>
+      <p className="mt-1 truncate text-xl font-bold text-gray-900">{value}</p>
+      {hint && <p className="mt-1 text-xs text-gray-400">{hint}</p>}
     </div>
   )
 }
@@ -58,10 +53,8 @@ export function MetricTiles({ listing, analysisData, viewerTier }: Props) {
       <MetricTile label="Fair Value Range" value={fairValueStr} />
       <MetricTile
         label="Comps Used"
-        value={
-          analysisData?.comps_used != null ? String(analysisData.comps_used) : '—'
-        }
-        locked={viewerTier === 'anonymous'}
+        value={analysisData?.comps_used != null ? String(analysisData.comps_used) : '—'}
+        hint={viewerTier === 'anonymous' ? 'Sign in to see full comparison' : undefined}
       />
       <MetricTile label="Reserve" value={reserveLabel} />
     </div>

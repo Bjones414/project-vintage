@@ -36,7 +36,7 @@ export function ColorRarityCard({ listing, colorData, viewerTier }: Props) {
       {rarityLabel && (
         <p className="mt-1 text-lg font-bold text-gray-900">{rarityLabel}</p>
       )}
-      {viewerTier === 'member' && colorData && (
+      {viewerTier !== 'anonymous' && colorData && (
         <dl className="mt-3 grid grid-cols-2 gap-2 text-sm">
           {colorData.color_family && (
             <div>

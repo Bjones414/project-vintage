@@ -77,30 +77,56 @@ describe('AnalyzeHeader', () => {
 // VerdictBlock
 // ---------------------------------------------------------------------------
 describe('VerdictBlock', () => {
-  it('returns null when analysisData has no lede', () => {
-    const html = renderToString(
-      <VerdictBlock analysisData={null} viewerTier="anonymous" />,
-    )
-    expect(html).toBe('')
+  it('free/pro — returns null when analysisData has no lede', () => {
+    expect(renderToString(
+      <VerdictBlock analysisData={null} viewerTier="free" listingId="test-id" />,
+    )).toBe('')
+    expect(renderToString(
+      <VerdictBlock analysisData={null} viewerTier="pro" listingId="test-id" />,
+    )).toBe('')
   })
 
-  it('anonymous — shows lede, hides confidence', () => {
+  it('anonymous — renders signup CTA regardless of analysisData', () => {
     const html = renderToString(
-      <VerdictBlock analysisData={ANALYSIS_DATA_GT4_RS} viewerTier="anonymous" />,
+      <VerdictBlock analysisData={null} viewerTier="anonymous" listingId="fixture-gt4rs-001" />,
+    )
+    expect(html).not.toBe('')
+    expect(html).toContain('Sign in to see the verdict on this car.')
+    expect(html).toContain("Unlock")
+    expect(html).toContain('/signup?next=/analyze/fixture-gt4rs-001')
+  })
+
+  it('anonymous — CTA link includes correct listingId in next param', () => {
+    const html = renderToString(
+      <VerdictBlock analysisData={ANALYSIS_DATA_GT4_RS} viewerTier="anonymous" listingId="fixture-gt4rs-001" />,
     )
     expect(html).toMatchSnapshot()
-    expect(html).toContain('Confidence and methodology available with a free account')
+    expect(html).toContain('/signup?next=/analyze/fixture-gt4rs-001')
+    // anonymous never shows the verdict lede
+    expect(html).not.toContain('supported by 12 comparable sales')
+    // never shows confidence score
     expect(html).not.toContain('84%')
   })
 
-  it('member — shows lede and full confidence', () => {
+  it('free — shows verdict lede and secondary line, no confidence score', () => {
     const html = renderToString(
-      <VerdictBlock analysisData={ANALYSIS_DATA_GT4_RS} viewerTier="member" />,
+      <VerdictBlock analysisData={ANALYSIS_DATA_GT4_RS} viewerTier="free" listingId="fixture-gt4rs-001" />,
     )
     expect(html).toMatchSnapshot()
-    expect(html).toContain('84%')
+    expect(html).toContain('supported by 12 comparable sales')
+    expect(html).toContain('Reserve met')
+    // confidence_label (text) shown, confidence_score (number) not shown
     expect(html).toContain('high')
-    expect(html).not.toContain('available with a free account')
+    expect(html).not.toContain('84%')
+    expect(html).not.toContain('Sign in to see the verdict')
+  })
+
+  it('pro — same as free for now: shows verdict, no confidence score', () => {
+    const html = renderToString(
+      <VerdictBlock analysisData={ANALYSIS_DATA_GT4_RS} viewerTier="pro" listingId="fixture-gt4rs-001" />,
+    )
+    expect(html).toContain('supported by 12 comparable sales')
+    expect(html).not.toContain('84%')
   })
 })
 
@@ -108,7 +134,7 @@ describe('VerdictBlock', () => {
 // MetricTiles
 // ---------------------------------------------------------------------------
 describe('MetricTiles', () => {
-  it('anonymous — comps count locked', () => {
+  it('anonymous — all tiles show real values; comps tile has sign-in hint', () => {
     const html = renderToString(
       <MetricTiles
         listing={GT4_RS_LISTING}
@@ -117,21 +143,40 @@ describe('MetricTiles', () => {
       />,
     )
     expect(html).toMatchSnapshot()
-    expect(html).toContain('Comps Used')
-    expect(html).toContain('Free account')
-    expect(html).not.toContain('>12<')
+    // Comps count is visible — no locking
+    expect(html).toContain('12')
+    expect(html).toContain('Sign in to see full comparison')
+    // Banned strings
+    expect(html).not.toContain('Free account')
+    expect(html).not.toContain('Locked')
+    expect(html).not.toContain('locked')
   })
 
-  it('member — comps count visible', () => {
+  it('free — all tiles show real values, no hint', () => {
     const html = renderToString(
       <MetricTiles
         listing={GT4_RS_LISTING}
         analysisData={ANALYSIS_DATA_GT4_RS}
-        viewerTier="member"
+        viewerTier="free"
       />,
     )
     expect(html).toContain('12')
     expect(html).not.toContain('Free account')
+    expect(html).not.toContain('Sign in to see full comparison')
+    expect(html).not.toContain('Locked')
+  })
+
+  it('pro — all tiles show real values, no hint', () => {
+    const html = renderToString(
+      <MetricTiles
+        listing={GT4_RS_LISTING}
+        analysisData={ANALYSIS_DATA_GT4_RS}
+        viewerTier="pro"
+      />,
+    )
+    expect(html).toContain('12')
+    expect(html).not.toContain('Sign in to see full comparison')
+    expect(html).not.toContain('Locked')
   })
 
   it('shows sale price for sold listing', () => {
@@ -139,7 +184,7 @@ describe('MetricTiles', () => {
       <MetricTiles
         listing={GT4_RS_LISTING}
         analysisData={null}
-        viewerTier="member"
+        viewerTier="free"
       />,
     )
     expect(html).toContain('Sale Price')
@@ -209,9 +254,9 @@ describe('ComparableSalesCard', () => {
     expect(t(html)).not.toContain('$198,000')
   })
 
-  it('member — shows all comps, no upsell', () => {
+  it('free — shows all comps, no upsell', () => {
     const html = renderToString(
-      <ComparableSalesCard analysisData={ANALYSIS_DATA_GT4_RS} viewerTier="member" />,
+      <ComparableSalesCard analysisData={ANALYSIS_DATA_GT4_RS} viewerTier="free" />,
     )
     expect(html).toContain('$212,000')
     expect(html).toContain('$198,000')
@@ -253,12 +298,12 @@ describe('EraCard', () => {
     expect(html).toContain('Full era guide available with a free account')
   })
 
-  it('member — renders all paragraphs', () => {
+  it('free — renders all paragraphs', () => {
     const html = renderToString(
       <EraCard
         generation={GENERATION_930}
         editorial={EDITORIAL_930_VERIFIED}
-        viewerTier="member"
+        viewerTier="free"
       />,
     )
     expect(t(html)).toContain('1973 Paris Motor Show')
@@ -288,9 +333,9 @@ describe('WatchOutsCard', () => {
     expect(t(html)).toContain('+3 more for members')
   })
 
-  it('member — shows all watch-outs', () => {
+  it('free — shows all watch-outs', () => {
     const html = renderToString(
-      <WatchOutsCard editorial={EDITORIAL_930_VERIFIED} viewerTier="member" />,
+      <WatchOutsCard editorial={EDITORIAL_930_VERIFIED} viewerTier="free" />,
     )
     expect(html).toContain('widow-maker')
     expect(html).toContain('Fuchs alloys')
@@ -325,12 +370,12 @@ describe('ColorRarityCard', () => {
     expect(html).toContain('Color history and context available')
   })
 
-  it('member — shows color stats and special order badge', () => {
+  it('free — shows color stats and special order badge', () => {
     const html = renderToString(
       <ColorRarityCard
         listing={GT4_RS_LISTING}
         colorData={COLOR_SHARK_BLUE}
-        viewerTier="member"
+        viewerTier="free"
       />,
     )
     expect(html).toContain('Paint to Sample')
@@ -343,7 +388,7 @@ describe('ColorRarityCard', () => {
       <ColorRarityCard
         listing={TURBO_930_LISTING}
         colorData={COLOR_GUARDS_RED}
-        viewerTier="member"
+        viewerTier="free"
       />,
     )
     expect(html).toContain('Guards Red')
@@ -405,7 +450,7 @@ describe('integration — analyze page layout', () => {
           analysisData={null}
           viewerTier="anonymous"
         />
-        <VerdictBlock analysisData={null} viewerTier="anonymous" />
+        <VerdictBlock analysisData={null} viewerTier="anonymous" listingId={GT4_RS_LISTING.id} />
         <MetricTiles listing={GT4_RS_LISTING} analysisData={null} viewerTier="anonymous" />
         <div>
           <ChassisIdentityCard listing={GT4_RS_LISTING} generation={GENERATION_982_CAYMAN} />
@@ -428,79 +473,86 @@ describe('integration — analyze page layout', () => {
       </div>,
     )
     expect(html).toMatchSnapshot()
-    // Anonymous sees: chassis, status badge, color name, CTA
+    // Anonymous sees: chassis, status badge, color name, CTA, verdict signup prompt
     expect(html).toContain('WP0AC2A84RS270001')
     expect(html).toContain('Sold')
     expect(html).toContain('Shark Blue')
     expect(html).toContain('Create a free account')
-    // Does NOT see: confidence, methodology
+    expect(html).toContain('Sign in to see the verdict on this car.')
+    // Does NOT see: confidence score number
     expect(html).not.toContain('84%')
+    // "Locked" is banned in user-facing copy
+    expect(html).not.toContain('Locked')
+    // The old MetricTiles lock pattern ("Free account" as a value replacement) is gone
+    expect(html).not.toContain('text-gray-400">Free account')
   })
 
-  it('scenario B: member viewer, 930 Turbo, verified editorial', () => {
+  it('scenario B: free viewer, 930 Turbo, verified editorial', () => {
     const html = renderToString(
       <div>
         <AnalyzeHeader
           listing={TURBO_930_LISTING}
           analysisData={ANALYSIS_DATA_930}
-          viewerTier="member"
+          viewerTier="free"
         />
-        <VerdictBlock analysisData={ANALYSIS_DATA_930} viewerTier="member" />
-        <MetricTiles listing={TURBO_930_LISTING} analysisData={ANALYSIS_DATA_930} viewerTier="member" />
+        <VerdictBlock analysisData={ANALYSIS_DATA_930} viewerTier="free" listingId={TURBO_930_LISTING.id} />
+        <MetricTiles listing={TURBO_930_LISTING} analysisData={ANALYSIS_DATA_930} viewerTier="free" />
         <div>
           <ChassisIdentityCard listing={TURBO_930_LISTING} generation={GENERATION_930} />
-          <ComparableSalesCard analysisData={ANALYSIS_DATA_930} viewerTier="member" />
+          <ComparableSalesCard analysisData={ANALYSIS_DATA_930} viewerTier="free" />
         </div>
         <div>
           <EraCard
             generation={GENERATION_930}
             editorial={EDITORIAL_930_VERIFIED}
-            viewerTier="member"
+            viewerTier="free"
           />
-          <WatchOutsCard editorial={EDITORIAL_930_VERIFIED} viewerTier="member" />
+          <WatchOutsCard editorial={EDITORIAL_930_VERIFIED} viewerTier="free" />
           <ColorRarityCard
             listing={TURBO_930_LISTING}
             colorData={COLOR_GUARDS_RED}
-            viewerTier="member"
+            viewerTier="free"
           />
         </div>
       </div>,
     )
     expect(html).toMatchSnapshot()
-    // Member sees full confidence, all comps, all era paragraphs, all watch-outs
-    expect(html).toContain('76%')
+    // Free tier sees verdict (no score), all comps, all era paragraphs, all watch-outs
+    expect(t(html)).toContain('45,200 miles sold within')
     expect(html).toContain('1973 Paris Motor Show')
     expect(html).toContain('widow-maker')
     expect(html).toContain('Fuchs alloys')
+    expect(html).not.toContain('76%')
     expect(html).not.toContain('available with a free account')
     expect(html).not.toContain('Create a free account')
+    expect(html).not.toContain('Locked')
   })
 
-  it('scenario C: member viewer, 930 Turbo, no verified editorial row', () => {
+  it('scenario C: free viewer, 930 Turbo, no verified editorial row', () => {
     const html = renderToString(
       <div>
         <AnalyzeHeader
           listing={TURBO_930_LISTING}
           analysisData={ANALYSIS_DATA_930}
-          viewerTier="member"
+          viewerTier="free"
         />
-        <VerdictBlock analysisData={ANALYSIS_DATA_930} viewerTier="member" />
-        <MetricTiles listing={TURBO_930_LISTING} analysisData={ANALYSIS_DATA_930} viewerTier="member" />
+        <VerdictBlock analysisData={ANALYSIS_DATA_930} viewerTier="free" listingId={TURBO_930_LISTING.id} />
+        <MetricTiles listing={TURBO_930_LISTING} analysisData={ANALYSIS_DATA_930} viewerTier="free" />
         <div>
           <ChassisIdentityCard listing={TURBO_930_LISTING} generation={GENERATION_930} />
-          <ComparableSalesCard analysisData={ANALYSIS_DATA_930} viewerTier="member" />
+          <ComparableSalesCard analysisData={ANALYSIS_DATA_930} viewerTier="free" />
         </div>
         <div>
           <EraCard
             generation={GENERATION_930}
             editorial={null}
-            viewerTier="member"
+            viewerTier="free"
           />
-          <WatchOutsCard editorial={null} viewerTier="member" />
+          <WatchOutsCard editorial={null} viewerTier="free" />
           <ColorRarityCard
             listing={TURBO_930_LISTING}
             colorData={COLOR_GUARDS_RED}
-            viewerTier="member"
+            viewerTier="free"
           />
         </div>
       </div>,
@@ -508,8 +560,9 @@ describe('integration — analyze page layout', () => {
     expect(html).toMatchSnapshot()
     // No editorial row → development fallback message, no watch-outs
     expect(html).toContain('Era guide for this generation is in development')
-    // Still shows chassis and analysis
+    // Still shows chassis and verdict
     expect(html).toContain('WP0EB0918JS857501')
-    expect(html).toContain('76%')
+    expect(t(html)).toContain('45,200 miles sold within')
+    expect(html).not.toContain('76%')
   })
 })

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { getViewerTier } from '@/lib/auth/viewer-tier'
 import { parseAnalysisData } from '@/components/analyze/types'
-import type { ViewerTier } from '@/components/analyze/types'
 import { AnalyzeHeader } from '@/components/analyze/AnalyzeHeader'
 import { VerdictBlock } from '@/components/analyze/VerdictBlock'
 import { MetricTiles } from '@/components/analyze/MetricTiles'
@@ -20,15 +20,9 @@ type PageProps = {
 export default async function ListingDetailPage({ params }: PageProps) {
   const supabase = createClient()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  const [listingResult, userResult] = await Promise.all([
+  const [listingResult, { tier: viewerTier }] = await Promise.all([
     supabase.from('listings').select('*').eq('id', params.id).single(),
-    user
-      ? supabase.from('users').select('role').eq('id', user.id).single()
-      : Promise.resolve({ data: null, error: null } as const),
+    getViewerTier(),
   ])
 
   if (listingResult.error || !listingResult.data) {
@@ -36,13 +30,6 @@ export default async function ListingDetailPage({ params }: PageProps) {
   }
 
   const listing = listingResult.data
-
-  const userRole = userResult.data?.role ?? null
-  // TODO: V1 launch — remove role IN ('admin', 'beta') bypass when beta gates flip on
-  const viewerTier: ViewerTier =
-    userRole != null && ['admin', 'beta', 'member'].includes(userRole)
-      ? 'member'
-      : 'anonymous'
 
   const [generationResult, editorialResult, colorResult, analysisResult] =
     await Promise.all([
@@ -89,7 +76,11 @@ export default async function ListingDetailPage({ params }: PageProps) {
         analysisData={analysisData}
         viewerTier={viewerTier}
       />
-      <VerdictBlock analysisData={analysisData} viewerTier={viewerTier} />
+      <VerdictBlock
+        analysisData={analysisData}
+        viewerTier={viewerTier}
+        listingId={listing.id}
+      />
       <MetricTiles
         listing={listing}
         analysisData={analysisData}

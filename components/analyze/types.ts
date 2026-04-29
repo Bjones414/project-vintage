@@ -1,6 +1,6 @@
 import type { Json } from '@/lib/supabase/types'
 
-export type ViewerTier = 'anonymous' | 'member'
+export type { ViewerTier } from '@/lib/auth/viewer-tier'
 
 export type ComparableSale = {
   listing_id?: string
