@@ -21,6 +21,7 @@ import {
 } from './fixtures'
 
 import { AnalyzeHeader } from '@/components/analyze/AnalyzeHeader'
+import { LiveStatusPill } from '@/components/analyze/LiveStatusPill'
 import { VerdictBlock } from '@/components/analyze/VerdictBlock'
 import { MetricTiles } from '@/components/analyze/MetricTiles'
 import { ChassisIdentityCard } from '@/components/analyze/ChassisIdentityCard'
@@ -35,7 +36,7 @@ import { parseAnalysisData } from '@/components/analyze/types'
 // AnalyzeHeader
 // ---------------------------------------------------------------------------
 describe('AnalyzeHeader', () => {
-  it('renders GT4 RS listing with sold status', () => {
+  it('renders GT4 RS headline (year + model + trim, no make), subtitle, and sold badge', () => {
     const html = renderToString(
       <AnalyzeHeader
         listing={GT4_RS_LISTING}
@@ -44,12 +45,20 @@ describe('AnalyzeHeader', () => {
       />,
     )
     expect(html).toMatchSnapshot()
-    expect(t(html)).toContain('2024 Porsche 718 Cayman GT4 RS')
+    // Headline: year + model + trim, no hardcoded make
+    expect(t(html)).toContain('2024 718 Cayman GT4 RS')
+    expect(t(html)).not.toContain('Porsche')
+    // Subtitle: color over interior, transmission, generation, mileage
+    expect(t(html)).toContain('Shark Blue over Black')
+    expect(t(html)).toContain('PDK')
+    expect(t(html)).toContain('847 miles')
+    // Status badge for non-live listing
     expect(t(html)).toContain('Sold')
+    // Comps count
     expect(t(html)).toContain('12 comparable sales')
   })
 
-  it('renders 930 Turbo listing with ended time', () => {
+  it('renders 930 Turbo headline and subtitle correctly', () => {
     const html = renderToString(
       <AnalyzeHeader
         listing={TURBO_930_LISTING}
@@ -58,19 +67,103 @@ describe('AnalyzeHeader', () => {
       />,
     )
     expect(html).toMatchSnapshot()
-    expect(html).toContain('1988 Porsche 911 Turbo')
-    expect(html).toContain('2024') // auction_ends_at date is rendered in SSR static form
+    expect(t(html)).toContain('1988 911 Turbo')
+    expect(t(html)).toContain('Guards Red over Black')
+    expect(t(html)).toContain('Manual')
+    expect(t(html)).toContain('930')
+    expect(t(html)).toContain('45,200 miles')
+    expect(html).toContain('2024') // auction_ends_at date rendered in SSR static form
   })
 
   it('omits auction count line when analysisData is null', () => {
     const html = renderToString(
-      <AnalyzeHeader
-        listing={GT4_RS_LISTING}
-        analysisData={null}
-        viewerTier="anonymous"
-      />,
+      <AnalyzeHeader listing={GT4_RS_LISTING} analysisData={null} viewerTier="anonymous" />,
     )
     expect(html).not.toContain('comparable sale')
+  })
+
+  it('drops missing subtitle segments without leaving stray separators', () => {
+    const listingNoInterior = {
+      ...GT4_RS_LISTING,
+      interior_color: null,
+      generation: null,
+    }
+    const html = renderToString(
+      <AnalyzeHeader listing={listingNoInterior} analysisData={null} viewerTier="anonymous" />,
+    )
+    // Subtitle renders exterior only (no "over null"), transmission, mileage
+    expect(t(html)).toContain('Shark Blue')
+    expect(t(html)).not.toContain('over null')
+    expect(t(html)).not.toContain(' · · ')
+  })
+
+  it('renders live pill instead of badge when listing is live', () => {
+    const liveListing = {
+      ...GT4_RS_LISTING,
+      listing_status: 'live',
+      auction_ends_at: '2026-04-29T20:00:00.000Z',
+    }
+    const now = new Date('2026-04-29T12:00:00Z')
+    const html = renderToString(
+      <AnalyzeHeader listing={liveListing} analysisData={null} viewerTier="anonymous" now={now} />,
+    )
+    expect(html).toContain('LIVE')
+    expect(html).toContain('ENDS TODAY')
+    expect(html).not.toContain('Ended')
+    expect(html).not.toContain('Sold')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// LiveStatusPill
+// ---------------------------------------------------------------------------
+describe('LiveStatusPill', () => {
+  const NOW = new Date('2026-04-29T12:00:00Z')
+
+  const liveListing = {
+    ...GT4_RS_LISTING,
+    listing_status: 'live',
+    auction_ends_at: '2026-04-29T20:00:00.000Z', // same day as NOW
+  }
+
+  it('renders when listing_status is live', () => {
+    const html = renderToString(<LiveStatusPill listing={liveListing} now={NOW} />)
+    expect(html).not.toBe('')
+    expect(html).toContain('LIVE')
+    expect(html).toContain('ENDS')
+  })
+
+  it('does not render when listing has ended (sold)', () => {
+    const html = renderToString(<LiveStatusPill listing={GT4_RS_LISTING} now={NOW} />)
+    expect(html).toBe('')
+  })
+
+  it('ENDS TODAY branch when auction ends same day', () => {
+    const html = renderToString(<LiveStatusPill listing={liveListing} now={NOW} />)
+    expect(html).toContain('ENDS TODAY')
+  })
+
+  it('ENDS [WEEKDAY] branch when auction ends within 7 days', () => {
+    const listing = { ...liveListing, auction_ends_at: '2026-05-02T18:00:00.000Z' }
+    const html = renderToString(<LiveStatusPill listing={listing} now={NOW} />)
+    expect(html).toMatch(/ENDS (MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)/)
+  })
+
+  it('ENDS [MON DD] branch when auction ends beyond 7 days', () => {
+    const listing = { ...liveListing, auction_ends_at: '2026-05-15T18:00:00.000Z' }
+    const html = renderToString(<LiveStatusPill listing={listing} now={NOW} />)
+    expect(html).toMatch(/ENDS [A-Z]{3} \d+/)
+    expect(html).not.toContain('TODAY')
+  })
+
+  it('pulsing dot carries motion-reduce class to disable animation', () => {
+    const html = renderToString(<LiveStatusPill listing={liveListing} now={NOW} />)
+    expect(html).toContain('motion-reduce:animate-none')
+  })
+
+  it('pulsing dot also carries animate-pulse for motion-capable viewers', () => {
+    const html = renderToString(<LiveStatusPill listing={liveListing} now={NOW} />)
+    expect(html).toContain('animate-pulse')
   })
 })
 
