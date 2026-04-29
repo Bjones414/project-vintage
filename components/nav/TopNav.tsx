@@ -32,6 +32,7 @@ export function TopNav({ userEmail }: Props) {
   }
 
   function handleSuccess(listingId: string) {
+    setLoadingPromise(null)
     router.push(`/analyze/${listingId}`)
   }
 

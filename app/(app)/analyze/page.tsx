@@ -21,6 +21,7 @@ export default function AnalyzePage() {
   }
 
   function handleSuccess(listingId: string) {
+    setLoadingPromise(null)
     router.replace(`/analyze/${listingId}`)
   }
 
