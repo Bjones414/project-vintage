@@ -58,7 +58,7 @@ describe('AnalyzeHeader', () => {
     )
     expect(html).toMatchSnapshot()
     expect(html).toContain('1988 Porsche 911 Turbo')
-    expect(html).toContain('Ended')
+    expect(html).toContain('2024') // auction_ends_at date is rendered in SSR static form
   })
 
   it('omits auction count line when analysisData is null', () => {

@@ -1,6 +1,6 @@
 import type { Tables } from '@/lib/supabase/types'
 import { Badge } from '@/components/ui/badge'
-import { formatAuctionEndTime } from '@/lib/utils/date'
+import { AuctionCountdown } from './AuctionCountdown'
 import type { AnalysisData, ViewerTier } from './types'
 
 type Props = {
@@ -45,12 +45,8 @@ export function AnalyzeHeader({ listing, analysisData }: Props) {
         )}
       </div>
       {listing.auction_ends_at && (
-        <div className="text-sm text-gray-500 sm:text-right">
-          <span className="font-medium text-gray-700">
-            {listing.listing_status === 'live' ? 'Ends' : 'Ended'}
-          </span>{' '}
-          {/* TODO: Task 6b — replace static time with <AuctionCountdown endsAt={listing.auction_ends_at} /> */}
-          {formatAuctionEndTime(listing.auction_ends_at)}
+        <div className="text-sm sm:text-right">
+          <AuctionCountdown endsAt={listing.auction_ends_at} listingId={listing.id} />
         </div>
       )}
     </div>
