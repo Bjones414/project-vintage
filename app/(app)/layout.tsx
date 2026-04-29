@@ -1,5 +1,16 @@
-// Placeholder: Authenticated app shell layout (nav, sidebar).
-// Will verify session via Supabase server client and redirect to /login if unauthenticated.
-export default function AppLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+import { createClient } from '@/lib/supabase/server'
+import { TopNav } from '@/components/nav/TopNav'
+
+export default async function AppLayout({ children }: { children: React.ReactNode }) {
+  const supabase = createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  return (
+    <>
+      <TopNav userEmail={user?.email ?? null} />
+      {children}
+    </>
+  )
 }
