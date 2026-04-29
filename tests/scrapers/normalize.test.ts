@@ -1,3 +1,4 @@
-// Tests for scraper normalization: input fixture → expected listings insert row.
-// Database write is mocked; only the normalization transform is tested.
-// Stub — add fixture files under tests/scrapers/fixtures/ and implement tests.
+import { describe } from 'vitest'
+
+// Stub — add fixture-based tests as scrapers/normalize.ts is implemented.
+describe.todo('scrapers / normalize')

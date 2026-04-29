@@ -1,2 +1,4 @@
-// Tests for originality flag detection — specifically paint code mismatch detection.
-// Stub — add tests as lib/originality.ts is implemented.
+import { describe } from 'vitest'
+
+// Stub — add tests as lib/originality.ts paint-code logic is implemented.
+describe.todo('originality / color')

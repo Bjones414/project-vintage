@@ -5,6 +5,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
 import { parseListing } from '@/lib/listing-parser'
+import { decodeVin } from '@/lib/vin-decode/nhtsa'
+import { matchGeneration } from '@/lib/generation-match'
 
 export async function POST(request: NextRequest) {
   // Validate body
@@ -31,6 +33,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
   }
 
+  // TODO Task 6: When implementing analyze page gates, watch-list limits, and report counters,
+  // bypass all gates for users with role IN ('admin', 'beta'). Member accounts get the full
+  // V1 free-tier limits.
+  // Load the user's profile here: supabase.from('users').select('role, subscription_tier').eq('id', session.user.id).single()
+
   // Parse listing
   const result = await parseListing(url.trim())
   if (!result.success) {
@@ -55,6 +62,36 @@ export async function POST(request: NextRequest) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
   )
 
+  // VIN decode: runs after parse, before upsert. Returns null for pre-1981 chassis
+  // (non-17-char VINs), malformed VINs, and NHTSA errors — analyze flow continues
+  // regardless. Not moved to a background job yet; awaited in-request per spec.
+  const decoded = listing.vin ? await decodeVin(listing.vin) : null
+
+  // Generation matching: uses decoded VIN data + parsed title to assign a
+  // porsche_generations.generation_id. Errors or null results do not fail the flow.
+  const generationResult = await matchGeneration({
+    decoded_year:       decoded?.year         ?? null,
+    decoded_make:       decoded?.make         ?? null,
+    decoded_model:      decoded?.model        ?? null,
+    decoded_body_class: decoded?.body_class   ?? null,
+    parsed_title:       listing.title         ?? null,
+    parsed_model_family: null,  // Phase 3 BaT parser does not extract model_family yet
+  })
+
+  if (generationResult.needs_review) {
+    console.warn('[api/analyze] generation match needs review', {
+      source_url: listing.source_url,
+      input: {
+        decoded_year:       decoded?.year         ?? null,
+        decoded_make:       decoded?.make         ?? null,
+        decoded_model:      decoded?.model        ?? null,
+        decoded_body_class: decoded?.body_class   ?? null,
+        parsed_title:       listing.title         ?? null,
+      },
+      result: generationResult,
+    })
+  }
+
   // Maps CanonicalListing → listings table columns.
   // Fields with no current DB column (engine, image_urls, bid_count, seller_info,
   // modification_notes, raw_data) are omitted — preserved in CanonicalListing for callers.
@@ -77,7 +114,27 @@ export async function POST(request: NextRequest) {
     listing_status: listing.listing_status,
     reserve_met: listing.reserve_met,
     ended_date: listing.auction_end_date,
+    auction_ends_at: listing.auction_end_date,
+    last_verified_at: new Date().toISOString(),
     raw_description: listing.description,
+    // Generation match — only written when a non-null generation was resolved, so
+    // existing values are not overwritten with null on re-analysis of a listing
+    // where generation matching fails (e.g., unsupported marque).
+    ...(generationResult.generation_id !== null && {
+      generation_id: generationResult.generation_id,
+    }),
+    // VIN decode fields — only written when decode succeeded; omitted otherwise so
+    // existing values (if any) are not overwritten with nulls on re-analysis.
+    ...(decoded !== null && {
+      decoded_year: decoded.year,
+      decoded_make: decoded.make,
+      decoded_model: decoded.model,
+      decoded_body_class: decoded.body_class,
+      decoded_engine: decoded.engine,
+      decoded_plant: decoded.plant,
+      decoded_transmission: decoded.transmission,
+      vin_decode_raw: decoded.raw,
+    }),
   }
 
   const { error: upsertError } = await supabaseAdmin

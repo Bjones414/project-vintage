@@ -3,6 +3,52 @@ import type { CanonicalListing } from './types'
 
 const BAT_HOSTNAME = 'bringatrailer.com'
 
+// Epoch-seconds bounds for a plausible auction end time.
+const TS_MIN = 1262304000  // 2010-01-01T00:00:00Z
+const TS_MAX = 2240524799  // 2040-12-31T23:59:59Z
+
+/**
+ * Three-tier extraction strategy (primary DOM → fallback DOM → JS regex).
+ * Returns an ISO 8601 UTC string or null if extraction fails or looks suspicious.
+ */
+export function extractAuctionEndDate(
+  $: ReturnType<typeof load>,
+  rawHtml: string,
+): string | null {
+  // (a) Live auctions: span.listing-end-time carries data-timestamp.
+  let tsStr: string | undefined =
+    $('span.listing-end-time[data-timestamp]').attr('data-timestamp')
+
+  // (b) Ended auctions: "Auction Ended" stats row, adjacent-sibling span.
+  if (!tsStr) {
+    tsStr = $(
+      'td.listing-stats-label:contains("Auction Ended") + td span[data-timestamp]',
+    ).attr('data-timestamp')
+  }
+
+  // (c) BAT_VMS JS variable fallback — take MAX across all bid end_timestamp values.
+  if (!tsStr) {
+    const re = /"end_timestamp":(\d{10,13})/g
+    let maxTs = -Infinity
+    let m: RegExpExecArray | null
+    while ((m = re.exec(rawHtml)) !== null) {
+      const v = parseInt(m[1], 10)
+      if (v > maxTs) maxTs = v
+    }
+    if (isFinite(maxTs)) tsStr = String(maxTs)
+  }
+
+  if (!tsStr) return null
+
+  const ts = parseInt(tsStr, 10)
+  if (isNaN(ts) || ts < TS_MIN || ts > TS_MAX) {
+    console.warn('[BaT parser] suspicious auction end timestamp, ignoring:', tsStr)
+    return null
+  }
+
+  return new Date(ts * 1000).toISOString()
+}
+
 function parseMileageValue(raw: string): number | null {
   if (/k$/i.test(raw)) {
     const n = parseInt(raw.slice(0, -1), 10)
@@ -170,7 +216,10 @@ export async function parseBaTListing(url: string): Promise<CanonicalListing> {
       }
     })
 
-    // Step 8 — Determine listing status by matching status phrases adjacent to a USD price.
+    // Step 8 — Extract auction end date (three-tier: primary DOM, fallback DOM, regex)
+    const auction_end_date = extractAuctionEndDate($, html)
+
+    // Step 9 — Determine listing_status by matching status phrases adjacent to a USD price.
     // BaT pages embed an i18n dictionary inside <script> tags listing all
     // status phrases as raw translation values. The dictionary is identical
     // across all listings regardless of state. Strip scripts/styles first
@@ -197,7 +246,7 @@ export async function parseBaTListing(url: string): Promise<CanonicalListing> {
       listing_status = found[0][0]
     }
 
-    // Step 9 — Assemble CanonicalListing
+    // Step 10 — Assemble CanonicalListing
     return {
       source_platform: 'bring-a-trailer',
       source_url: normalizedUrl,
@@ -217,7 +266,7 @@ export async function parseBaTListing(url: string): Promise<CanonicalListing> {
       listing_status,
       bid_count: null,
       reserve_met: null,
-      auction_end_date: null,
+      auction_end_date,
       seller_info: null,
       description,
       modification_notes: null,

@@ -1,2 +1,4 @@
-// Unit tests for Porsche-specific comp engine overrides (lib/comp-engine/porsche.ts).
-// Stub — add tests as porsche.ts is implemented.
+import { describe } from 'vitest'
+
+// Stub — add tests as lib/comp-engine/porsche.ts is implemented.
+describe.todo('comp-engine / porsche')

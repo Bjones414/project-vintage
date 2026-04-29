@@ -1,2 +1,4 @@
-// Unit tests for the marque-agnostic comp engine (lib/comp-engine/default.ts).
-// Stub — add tests as the comp engine is implemented.
+import { describe } from 'vitest'
+
+// Stub — add tests as lib/comp-engine/default.ts is implemented.
+describe.todo('comp-engine / default')

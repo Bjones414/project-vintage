@@ -56,3 +56,5 @@ supabase/.temp/
 
 # Misc
 *.log
+# Claude Code per-developer settings
+.claude/
