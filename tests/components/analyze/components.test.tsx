@@ -11,6 +11,7 @@ import {
   TURBO_930_LISTING,
   GENERATION_982_CAYMAN,
   GENERATION_930,
+  GENERATION_993_PUBLISHED,
   EDITORIAL_982_CAYMAN_VERIFIED,
   EDITORIAL_930_VERIFIED,
   COLOR_SHARK_BLUE,
@@ -275,39 +276,39 @@ describe('ComparableSalesCard', () => {
 // EraCard
 // ---------------------------------------------------------------------------
 describe('EraCard', () => {
-  it('no editorial — renders development message', () => {
+  it('null generation — renders development message', () => {
     const html = renderToString(
-      <EraCard generation={GENERATION_930} editorial={null} viewerTier="anonymous" />,
+      <EraCard generation={null} viewerTier="anonymous" />,
     )
     expect(html).toMatchSnapshot()
     expect(t(html)).toContain('Era guide for this generation is in development')
   })
 
-  it('anonymous — renders only first paragraph', () => {
+  it('draft generation (content_status null) — renders development message', () => {
     const html = renderToString(
-      <EraCard
-        generation={GENERATION_982_CAYMAN}
-        editorial={EDITORIAL_982_CAYMAN_VERIFIED}
-        viewerTier="anonymous"
-      />,
+      <EraCard generation={GENERATION_930} viewerTier="anonymous" />,
+    )
+    expect(t(html)).toContain('Era guide for this generation is in development')
+  })
+
+  it('anonymous + published generation — renders only first paragraph', () => {
+    const html = renderToString(
+      <EraCard generation={GENERATION_993_PUBLISHED} viewerTier="anonymous" />,
     )
     expect(html).toMatchSnapshot()
-    expect(html).toContain('982-cayman era')
-    expect(html).toContain('significant step forward')
-    expect(html).not.toContain('GT4 and GT4 RS variants')
+    expect(html).toContain('993 era')
+    expect(html).toContain('last air-cooled 911')
+    expect(html).not.toContain('Production ended')
     expect(html).toContain('Full era guide available with a free account')
   })
 
-  it('free — renders all paragraphs', () => {
+  it('free + published generation — renders all paragraphs', () => {
     const html = renderToString(
-      <EraCard
-        generation={GENERATION_930}
-        editorial={EDITORIAL_930_VERIFIED}
-        viewerTier="free"
-      />,
+      <EraCard generation={GENERATION_993_PUBLISHED} viewerTier="free" />,
     )
-    expect(t(html)).toContain('1973 Paris Motor Show')
-    expect(t(html)).toContain('Numbers-matching')
+    expect(t(html)).toContain('last air-cooled 911')
+    expect(t(html)).toContain('Production ended')
+    expect(t(html)).toContain('Carrera RS 3.8')
     expect(t(html)).not.toContain('available with a free account')
   })
 })
@@ -355,45 +356,63 @@ describe('ColorRarityCard', () => {
     expect(html).toBe('')
   })
 
-  it('anonymous — shows color name + one-word rarity, hides stats', () => {
+  it('anonymous — shows color name + two-state rarity label, hides detail stats', () => {
     const html = renderToString(
-      <ColorRarityCard
-        listing={GT4_RS_LISTING}
-        colorData={COLOR_SHARK_BLUE}
-        viewerTier="anonymous"
-      />,
+      <ColorRarityCard listing={GT4_RS_LISTING} colorData={COLOR_SHARK_BLUE} viewerTier="anonymous" />,
     )
     expect(html).toMatchSnapshot()
     expect(html).toContain('Shark Blue')
-    expect(html).toContain('Rare')
-    expect(html).not.toContain('Paint to Sample')
+    expect(html).toContain('Rare or special-order')
+    expect(html).not.toContain('Special Order / Paint to Sample')
     expect(html).toContain('Color history and context available')
   })
 
-  it('free — shows color stats and special order badge', () => {
+  it('free — rare/special-order: label shows "Rare or special-order", detail stats visible', () => {
     const html = renderToString(
-      <ColorRarityCard
-        listing={GT4_RS_LISTING}
-        colorData={COLOR_SHARK_BLUE}
-        viewerTier="free"
-      />,
+      <ColorRarityCard listing={GT4_RS_LISTING} colorData={COLOR_SHARK_BLUE} viewerTier="free" />,
     )
-    expect(html).toContain('Paint to Sample')
+    expect(html).toMatchSnapshot()
+    expect(html).toContain('Rare or special-order')
     expect(html).toContain('Metallic')
+    expect(html).not.toContain('Special Order / Paint to Sample')
     expect(html).not.toContain('available with a free account')
   })
 
-  it('common color — shows rarity without special order badge', () => {
+  it('common color — shows "Common" label without special-order treatment', () => {
     const html = renderToString(
-      <ColorRarityCard
-        listing={TURBO_930_LISTING}
-        colorData={COLOR_GUARDS_RED}
-        viewerTier="free"
-      />,
+      <ColorRarityCard listing={TURBO_930_LISTING} colorData={COLOR_GUARDS_RED} viewerTier="free" />,
     )
     expect(html).toContain('Guards Red')
     expect(html).toContain('Common')
-    expect(html).not.toContain('Paint to Sample')
+    expect(html).not.toContain('Rare or special-order')
+    expect(html).not.toContain('Special Order / Paint to Sample')
+  })
+
+  it('uncommon rarity → "Rare or special-order" label', () => {
+    const colorUncommon = { ...COLOR_GUARDS_RED, rarity: 'uncommon', is_special_order: false }
+    const html = renderToString(
+      <ColorRarityCard listing={GT4_RS_LISTING} colorData={colorUncommon} viewerTier="free" />,
+    )
+    expect(html).toContain('Rare or special-order')
+    expect(html).not.toContain('Uncommon')
+  })
+
+  it('very_rare rarity → "Rare or special-order" label', () => {
+    const colorVeryRare = { ...COLOR_GUARDS_RED, rarity: 'very_rare', is_special_order: false }
+    const html = renderToString(
+      <ColorRarityCard listing={GT4_RS_LISTING} colorData={colorVeryRare} viewerTier="free" />,
+    )
+    expect(html).toContain('Rare or special-order')
+    expect(html).not.toContain('Very Rare')
+  })
+
+  it('common rarity + is_special_order → "Rare or special-order" label', () => {
+    const colorSpecialCommon = { ...COLOR_GUARDS_RED, rarity: 'common', is_special_order: true }
+    const html = renderToString(
+      <ColorRarityCard listing={GT4_RS_LISTING} colorData={colorSpecialCommon} viewerTier="free" />,
+    )
+    expect(html).toContain('Rare or special-order')
+    expect(html).not.toContain('>Common<')
   })
 })
 
@@ -459,7 +478,6 @@ describe('integration — analyze page layout', () => {
         <div>
           <EraCard
             generation={GENERATION_982_CAYMAN}
-            editorial={null}
             viewerTier="anonymous"
           />
           <WatchOutsCard editorial={null} viewerTier="anonymous" />
@@ -504,7 +522,6 @@ describe('integration — analyze page layout', () => {
         <div>
           <EraCard
             generation={GENERATION_930}
-            editorial={EDITORIAL_930_VERIFIED}
             viewerTier="free"
           />
           <WatchOutsCard editorial={EDITORIAL_930_VERIFIED} viewerTier="free" />
@@ -517,13 +534,12 @@ describe('integration — analyze page layout', () => {
       </div>,
     )
     expect(html).toMatchSnapshot()
-    // Free tier sees verdict (no score), all comps, all era paragraphs, all watch-outs
+    // Free tier sees verdict (no score), all comps, all watch-outs; EraCard shows "in development" (no published notes)
     expect(t(html)).toContain('45,200 miles sold within')
-    expect(html).toContain('1973 Paris Motor Show')
+    expect(html).toContain('Era guide for this generation is in development')
     expect(html).toContain('widow-maker')
     expect(html).toContain('Fuchs alloys')
     expect(html).not.toContain('76%')
-    expect(html).not.toContain('available with a free account')
     expect(html).not.toContain('Create a free account')
     expect(html).not.toContain('Locked')
   })
@@ -545,7 +561,6 @@ describe('integration — analyze page layout', () => {
         <div>
           <EraCard
             generation={GENERATION_930}
-            editorial={null}
             viewerTier="free"
           />
           <WatchOutsCard editorial={null} viewerTier="free" />

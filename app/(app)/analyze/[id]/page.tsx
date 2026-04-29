@@ -95,7 +95,6 @@ export default async function ListingDetailPage({ params }: PageProps) {
         <div className="flex min-w-0 flex-col gap-6 md:w-[38%]">
           <EraCard
             generation={generation}
-            editorial={editorial}
             viewerTier={viewerTier}
           />
           <WatchOutsCard editorial={editorial} viewerTier={viewerTier} />

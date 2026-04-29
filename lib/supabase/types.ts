@@ -370,12 +370,17 @@ export type Database = {
         Row: {
           body_styles: string[] | null
           common_issues: Json | null
+          content_status: string | null
           created_at: string
           engine_type: string | null
           generation_id: string
+          hero_image_caption: string | null
+          hero_image_license: string | null
+          hero_image_url: string | null
           model: string
           model_family: string | null
           notes: string | null
+          notes_full: string | null
           period_reviews: Json | null
           production_count: number | null
           updated_at: string
@@ -385,12 +390,17 @@ export type Database = {
         Insert: {
           body_styles?: string[] | null
           common_issues?: Json | null
+          content_status?: string | null
           created_at?: string
           engine_type?: string | null
           generation_id: string
+          hero_image_caption?: string | null
+          hero_image_license?: string | null
+          hero_image_url?: string | null
           model: string
           model_family?: string | null
           notes?: string | null
+          notes_full?: string | null
           period_reviews?: Json | null
           production_count?: number | null
           updated_at?: string
@@ -400,12 +410,17 @@ export type Database = {
         Update: {
           body_styles?: string[] | null
           common_issues?: Json | null
+          content_status?: string | null
           created_at?: string
           engine_type?: string | null
           generation_id?: string
+          hero_image_caption?: string | null
+          hero_image_license?: string | null
+          hero_image_url?: string | null
           model?: string
           model_family?: string | null
           notes?: string | null
+          notes_full?: string | null
           period_reviews?: Json | null
           production_count?: number | null
           updated_at?: string

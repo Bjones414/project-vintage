@@ -4,15 +4,14 @@ import type { ViewerTier } from './types'
 
 type Props = {
   generation: Tables<'porsche_generations'> | null
-  editorial: Tables<'generation_editorial'> | null
   viewerTier: ViewerTier
 }
 
-export function EraCard({ generation, editorial, viewerTier }: Props) {
+export function EraCard({ generation, viewerTier }: Props) {
   const genLabel = generation?.generation_id ?? 'this generation'
   const title = `The ${genLabel} era`
 
-  if (!editorial) {
+  if (generation?.content_status !== 'published' || !generation.notes) {
     return (
       <Card title={title}>
         <p className="text-sm text-gray-500">
@@ -22,8 +21,7 @@ export function EraCard({ generation, editorial, viewerTier }: Props) {
     )
   }
 
-  const summary = editorial.summary ?? ''
-  const paragraphs = summary.split(/\n\n+/).filter(Boolean)
+  const paragraphs = generation.notes.split(/\n\n+/).filter(Boolean)
   const displayed =
     viewerTier === 'anonymous' ? paragraphs.slice(0, 1) : paragraphs
 

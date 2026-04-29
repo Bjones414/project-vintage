@@ -8,20 +8,17 @@ type Props = {
   viewerTier: ViewerTier
 }
 
-const RARITY_LABELS: Record<string, string> = {
-  common: 'Common',
-  uncommon: 'Uncommon',
-  rare: 'Rare',
-  very_rare: 'Very Rare',
-}
-
 export function ColorRarityCard({ listing, colorData, viewerTier }: Props) {
   const colorName = listing.exterior_color ?? colorData?.color_name ?? null
 
   if (!colorName) return null
 
   const rarityLabel =
-    colorData?.rarity != null ? (RARITY_LABELS[colorData.rarity] ?? colorData.rarity) : null
+    colorData != null
+      ? colorData.rarity !== 'common' || colorData.is_special_order
+        ? 'Rare or special-order'
+        : 'Common'
+      : null
 
   return (
     <Card title="Color Rarity">
@@ -48,13 +45,6 @@ export function ColorRarityCard({ listing, colorData, viewerTier }: Props) {
             <div>
               <dt className="text-xs text-gray-500">Finish</dt>
               <dd className="font-medium text-gray-900">{colorData.finish_type}</dd>
-            </div>
-          )}
-          {colorData.is_special_order && (
-            <div className="col-span-2">
-              <span className="rounded bg-amber-50 px-1.5 py-0.5 text-xs font-medium text-amber-700">
-                Special Order / Paint to Sample
-              </span>
             </div>
           )}
           {colorData.notes && (
