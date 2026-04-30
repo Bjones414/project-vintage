@@ -132,7 +132,7 @@ export function TopNav({ userEmail }: Props) {
               type="url"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="Paste a listing URL to analyze…"
+              placeholder="Paste a listing URL to analyze another…"
               className="w-full rounded-button border-[0.5px] border-border-default bg-bg-surface px-3.5 py-2 font-sans text-[13px] text-text-primary placeholder:text-text-muted focus:border-accent-primary focus:outline-none"
             />
             {error && (
