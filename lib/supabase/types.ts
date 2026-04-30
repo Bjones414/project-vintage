@@ -346,37 +346,46 @@ export type Database = {
         Row: {
           color_family: string | null
           color_name: string
+          content_status: string | null
           created_at: string
           finish_type: string | null
           generation_applicability: string[] | null
+          id: string
           is_special_order: boolean
           notes: string | null
-          paint_code: string
+          paint_code: string | null
           rarity: string | null
+          source_note: string | null
           updated_at: string
         }
         Insert: {
           color_family?: string | null
           color_name: string
+          content_status?: string | null
           created_at?: string
           finish_type?: string | null
           generation_applicability?: string[] | null
+          id?: string
           is_special_order?: boolean
           notes?: string | null
-          paint_code: string
+          paint_code?: string | null
           rarity?: string | null
+          source_note?: string | null
           updated_at?: string
         }
         Update: {
           color_family?: string | null
           color_name?: string
+          content_status?: string | null
           created_at?: string
           finish_type?: string | null
           generation_applicability?: string[] | null
+          id?: string
           is_special_order?: boolean
           notes?: string | null
-          paint_code?: string
+          paint_code?: string | null
           rarity?: string | null
+          source_note?: string | null
           updated_at?: string
         }
         Relationships: []

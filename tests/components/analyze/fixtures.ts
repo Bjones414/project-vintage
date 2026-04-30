@@ -252,6 +252,7 @@ export const EDITORIAL_930_VERIFIED: Tables<'generation_editorial'> = {
 // Fixture: porsche_color_codes rows
 // ---------------------------------------------------------------------------
 export const COLOR_SHARK_BLUE: Tables<'porsche_color_codes'> = {
+  id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
   paint_code: 'M5N',
   color_name: 'Shark Blue',
   color_family: 'Blue',
@@ -260,11 +261,14 @@ export const COLOR_SHARK_BLUE: Tables<'porsche_color_codes'> = {
   is_special_order: true,
   rarity: 'rare',
   notes: 'Paint to Sample colour; produced in very limited numbers for the 982 generation.',
+  source_note: 'Test fixture — Paint to Sample colour reference',
+  content_status: 'published',
   created_at: '2024-01-01T00:00:00.000Z',
   updated_at: '2024-01-01T00:00:00.000Z',
 }
 
 export const COLOR_GUARDS_RED: Tables<'porsche_color_codes'> = {
+  id: 'b2c3d4e5-f6a7-8901-bcde-f12345678901',
   paint_code: 'G1',
   color_name: 'Guards Red',
   color_family: 'Red',
@@ -273,6 +277,8 @@ export const COLOR_GUARDS_RED: Tables<'porsche_color_codes'> = {
   is_special_order: false,
   rarity: 'common',
   notes: 'Standard production colour across the air-cooled and early water-cooled eras.',
+  source_note: 'Test fixture — standard production colour reference',
+  content_status: 'published',
   created_at: '2024-01-01T00:00:00.000Z',
   updated_at: '2024-01-01T00:00:00.000Z',
 }

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getViewerTier } from '@/lib/auth/viewer-tier'
 import { parseAnalysisData } from '@/components/analyze/types'
+import { resolveColorData } from '@/lib/utils/color-lookup'
 import { AnalyzeHeader } from '@/components/analyze/AnalyzeHeader'
 import { VerdictBlock } from '@/components/analyze/VerdictBlock'
 import { MetricTiles } from '@/components/analyze/MetricTiles'
@@ -31,7 +32,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
 
   const listing = listingResult.data
 
-  const [generationResult, editorialResult, colorResult, analysisResult] =
+  const [generationResult, editorialResult, colorData, analysisResult] =
     await Promise.all([
       listing.generation_id
         ? supabase
@@ -48,13 +49,11 @@ export default async function ListingDetailPage({ params }: PageProps) {
             .eq('content_status', 'verified')
             .maybeSingle()
         : Promise.resolve({ data: null, error: null } as const),
-      listing.exterior_color_code
-        ? supabase
-            .from('porsche_color_codes')
-            .select('*')
-            .eq('paint_code', listing.exterior_color_code)
-            .maybeSingle()
-        : Promise.resolve({ data: null, error: null } as const),
+      resolveColorData(supabase, {
+        paintCode: listing.exterior_color_code,
+        colorName: listing.exterior_color,
+        generationId: listing.generation_id,
+      }),
       supabase
         .from('listing_analyses')
         .select('*')
@@ -66,7 +65,6 @@ export default async function ListingDetailPage({ params }: PageProps) {
 
   const generation = generationResult.data ?? null
   const editorial = editorialResult.data ?? null
-  const colorData = colorResult.data ?? null
   const analysisData = parseAnalysisData(analysisResult.data?.analysis_data ?? null)
 
   return (
