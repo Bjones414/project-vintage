@@ -17,7 +17,7 @@ export default async function HomePage() {
             Know what you&apos;re bidding on.
           </h1>
           <p className="mx-auto mb-8 max-w-[580px] text-balance text-center font-serif text-[15px] italic leading-[1.65] text-text-tertiary">
-            A deep read on any auction listing — comparable sales, generation-level watch-outs, and the questions to ask the seller, in seconds.
+            A deep read on any auction listing — comparable sales, <span className="whitespace-nowrap">generation-level watch-outs</span>, and the questions to ask the seller, in seconds.
           </p>
           <HeroForm />
         </div>
