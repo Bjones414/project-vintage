@@ -10,7 +10,7 @@ const STEPS = [
 ] as const
 
 // ms at which each step completes (and next becomes active)
-const STEP_COMPLETE_AT = [1125, 2250, 3375, 4500] as const
+const STEP_COMPLETE_AT = [875, 1750, 2625, 3500] as const
 
 type StepStatus = 'pending' | 'active' | 'complete'
 

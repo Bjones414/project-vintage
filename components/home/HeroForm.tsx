@@ -22,7 +22,6 @@ export function HeroForm() {
   }
 
   function handleSuccess(listingId: string) {
-    setLoadingPromise(null)
     router.push(`/analyze/${listingId}`)
   }
 
@@ -53,6 +52,13 @@ export function HeroForm() {
       {error && (
         <p className="mt-2 font-sans text-xs text-severity-concern">{error}</p>
       )}
+      <button
+        type="submit"
+        disabled={!url.trim()}
+        className="mt-3 w-full rounded-button border-[0.5px] border-border-default bg-bg-surface px-[18px] py-[14px] font-serif text-[14px] text-text-primary transition-opacity hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-30"
+      >
+        Analyze
+      </button>
       <p className="mt-4 text-center">
         <Link
           href="/analyze/86c5d062-e121-4173-bcfa-1983c058c95c"
