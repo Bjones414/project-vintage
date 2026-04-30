@@ -1,8 +1,27 @@
-export default function Home() {
+import { createClient } from '@/lib/supabase/server'
+import { TopNav } from '@/components/nav/TopNav'
+import { HeroForm } from '@/components/home/HeroForm'
+
+export default async function HomePage() {
+  const supabase = createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1 className="text-4xl font-bold tracking-tight">Project Vintage</h1>
-      <p className="mt-4 text-lg text-gray-600">Coming soon.</p>
-    </main>
-  );
+    <div className="flex min-h-screen flex-col">
+      <TopNav userEmail={user?.email ?? null} />
+      <main className="flex flex-1 items-center justify-center px-6 py-16">
+        <div className="w-full max-w-[640px]">
+          <h1 className="mb-4 text-center font-serif text-h1 text-text-primary">
+            Know what you&apos;re bidding on.
+          </h1>
+          <p className="mx-auto mb-8 max-w-[520px] text-center font-serif text-[15px] italic leading-[1.65] text-text-tertiary">
+            A deep read on any auction listing — comparable sales, generation-level watch-outs, and the questions to ask the seller, in seconds.
+          </p>
+          <HeroForm />
+        </div>
+      </main>
+    </div>
+  )
 }

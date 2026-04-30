@@ -1,15 +1,13 @@
-// @vitest-environment happy-dom
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, waitFor, cleanup } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { describe, it, expect, vi, afterEach } from 'vitest'
 
-// Module-level spy — must exist before vi.mock so the factory can close over it.
-const replaceSpy = vi.fn()
+// vi.hoisted ensures redirectSpy is initialized before vi.mock's hoisted factory runs
+const redirectSpy = vi.hoisted(() => vi.fn())
 
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ replace: replaceSpy, push: vi.fn(), back: vi.fn() }),
-  notFound: () => { throw new Error('NEXT_NOT_FOUND') },
+  redirect: redirectSpy,
+  useRouter: () => ({ replace: vi.fn(), push: vi.fn(), back: vi.fn() }),
   usePathname: () => '/',
+  notFound: () => { throw new Error('NEXT_NOT_FOUND') },
   useSearchParams: () => new URLSearchParams(),
 }))
 
@@ -17,7 +15,7 @@ import AnalyzePage from '@/app/(app)/analyze/page'
 import { analyzeUrl } from '@/lib/analyze-url'
 
 // ---------------------------------------------------------------------------
-// analyzeUrl — pure function tests (no DOM needed, but run here for colocation)
+// analyzeUrl — pure function tests
 // ---------------------------------------------------------------------------
 describe('analyzeUrl', () => {
   afterEach(() => vi.unstubAllGlobals())
@@ -65,106 +63,12 @@ describe('analyzeUrl', () => {
 })
 
 // ---------------------------------------------------------------------------
-// AnalyzePage component — DOM interaction tests
+// AnalyzePage — now a server-side redirect to /
 // ---------------------------------------------------------------------------
 describe('AnalyzePage', () => {
-  beforeEach(() => {
-    replaceSpy.mockClear()
-  })
-
-  // Explicit cleanup so renders don't accumulate across tests in the same suite.
-  afterEach(() => {
-    cleanup()
-    vi.unstubAllGlobals()
-  })
-
-  it('renders the form in initial state', () => {
-    render(<AnalyzePage />)
-    expect(screen.getByRole('heading', { name: /Analyze a Listing/i })).toBeTruthy()
-    expect(screen.getByRole('button', { name: /Analyze/i })).toBeTruthy()
-    expect(screen.getByPlaceholderText(/bringatrailer/i)).toBeTruthy()
-  })
-
-  it('success path — shows loading state with all four steps on submit', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ listingId: 'listing-uuid-999' }),
-    }))
-
-    const user = userEvent.setup()
-    render(<AnalyzePage />)
-
-    await user.type(
-      screen.getByRole('textbox'),
-      'https://bringatrailer.com/listing/test',
-    )
-    await user.click(screen.getByRole('button', { name: /Analyze/i }))
-
-    // Loading state replaces the form — all four steps should be visible
-    await waitFor(() => {
-      expect(screen.getByText('Identifying the listing')).toBeTruthy()
-    })
-    expect(screen.getByText('Parsing the details')).toBeTruthy()
-    expect(screen.getByText('Pulling comparable sales')).toBeTruthy()
-    expect(screen.getByText('Generating your analysis')).toBeTruthy()
-  })
-
-  it('success path — form is replaced by loading state while fetch is in-flight', async () => {
-    let resolveFetch!: (v: unknown) => void
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockReturnValueOnce(
-        new Promise((resolve) => { resolveFetch = resolve }),
-      ),
-    )
-
-    const user = userEvent.setup()
-    render(<AnalyzePage />)
-
-    await user.type(screen.getByRole('textbox'), 'https://bringatrailer.com/listing/test')
-    await user.click(screen.getByRole('button', { name: /Analyze/i }))
-
-    // Loading state is visible; the original form button is gone
-    await waitFor(() => {
-      expect(screen.getByText('Identifying the listing')).toBeTruthy()
-    })
-    expect(screen.queryByRole('button', { name: /Analyze/i })).toBeNull()
-
-    // Resolve so test teardown is clean
-    resolveFetch({ ok: true, json: async () => ({ listingId: 'x' }) })
-  })
-
-  it('error path — displays error message and re-enables submit', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce({
-      ok: false,
-      json: async () => ({ error: 'Could not parse listing' }),
-    }))
-
-    const user = userEvent.setup()
-    render(<AnalyzePage />)
-
-    await user.type(screen.getByRole('textbox'), 'https://bringatrailer.com/listing/bad')
-    await user.click(screen.getByRole('button', { name: /Analyze/i }))
-
-    await waitFor(() => {
-      expect(screen.getByText(/Could not parse listing/i)).toBeTruthy()
-    })
-    expect(screen.getByRole('button', { name: /Analyze/i })).toBeTruthy()
-    expect(replaceSpy).not.toHaveBeenCalled()
-  })
-
-  it('error path — shows fallback message on network failure', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockRejectedValueOnce(new Error('Network failure')))
-
-    const user = userEvent.setup()
-    render(<AnalyzePage />)
-
-    await user.type(screen.getByRole('textbox'), 'https://bringatrailer.com/listing/offline')
-    await user.click(screen.getByRole('button', { name: /Analyze/i }))
-
-    await waitFor(() => {
-      expect(screen.getByText(/Network failure/i)).toBeTruthy()
-    })
-    expect(replaceSpy).not.toHaveBeenCalled()
+  it('redirects to /', () => {
+    redirectSpy.mockClear()
+    AnalyzePage()
+    expect(redirectSpy).toHaveBeenCalledWith('/')
   })
 })
