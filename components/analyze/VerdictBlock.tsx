@@ -1,13 +1,15 @@
 import Link from 'next/link'
 import type { AnalysisData, ViewerTier } from './types'
+import type { CompResultRow } from '@/lib/comp-engine/db-types'
 
 type Props = {
   analysisData: AnalysisData | null
+  compResult: CompResultRow | null
   viewerTier: ViewerTier
   listingId: string
 }
 
-export function VerdictBlock({ analysisData, viewerTier, listingId }: Props) {
+export function VerdictBlock({ analysisData, compResult, viewerTier, listingId }: Props) {
   if (viewerTier === 'anonymous') {
     return (
       <div className="mt-6 border-[0.5px] border-border-default border-l-[3px] border-l-accent-primary bg-bg-surface px-6 py-5">

@@ -1,9 +1,13 @@
 import { formatCents } from '@/lib/utils/currency'
 import { formatDateShort } from '@/lib/utils/date'
 import type { AnalysisData, ComparableSale, ViewerTier } from './types'
+import type { CompResultRow } from '@/lib/comp-engine/db-types'
+import type { Tables } from '@/lib/supabase/types'
 
 type Props = {
   analysisData: AnalysisData | null
+  compResult: CompResultRow | null
+  listing: Tables<'listings'>
   viewerTier: ViewerTier
 }
 
@@ -30,7 +34,7 @@ function SaleRow({ sale }: { sale: ComparableSale }) {
   )
 }
 
-export function ComparableSalesCard({ analysisData, viewerTier }: Props) {
+export function ComparableSalesCard({ analysisData, compResult: _compResult, listing: _listing, viewerTier }: Props) {
   const sales = analysisData?.comparable_sales ?? []
   const total = analysisData?.comps_used ?? sales.length
 

@@ -32,7 +32,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
 
   const listing = listingResult.data
 
-  const [generationResult, editorialResult, colorData, analysisResult] =
+  const [generationResult, editorialResult, colorData, analysisResult, compResultRaw] =
     await Promise.all([
       listing.generation_id
         ? supabase
@@ -61,11 +61,21 @@ export default async function ListingDetailPage({ params }: PageProps) {
         .order('created_at', { ascending: false })
         .limit(1)
         .maybeSingle(),
+      // Fetch latest comp result — non-fatal if absent (corpus may be too small)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (supabase as any)
+        .from('comp_results')
+        .select('id, listing_id, tier, comp_count, fair_value_low_cents, fair_value_median_cents, fair_value_high_cents, most_recent_comp_sold_at, oldest_comp_sold_at, comp_listing_ids, computed_at')
+        .eq('listing_id', listing.id)
+        .order('computed_at', { ascending: false })
+        .limit(1)
+        .maybeSingle() as Promise<{ data: import('@/lib/comp-engine/db-types').CompResultRow | null; error: unknown }>,
     ])
 
   const generation = generationResult.data ?? null
   const editorial = editorialResult.data ?? null
   const analysisData = parseAnalysisData(analysisResult.data?.analysis_data ?? null)
+  const compResult: import('@/lib/comp-engine/db-types').CompResultRow | null = compResultRaw.data ?? null
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-8 sm:px-8 lg:px-10">
@@ -76,12 +86,14 @@ export default async function ListingDetailPage({ params }: PageProps) {
       />
       <VerdictBlock
         analysisData={analysisData}
+        compResult={compResult}
         viewerTier={viewerTier}
         listingId={listing.id}
       />
       <MetricTiles
         listing={listing}
         analysisData={analysisData}
+        compResult={compResult}
         viewerTier={viewerTier}
       />
 
@@ -100,7 +112,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
 
       {/* Full-width: Comparable Sales */}
       <div className="mt-4">
-        <ComparableSalesCard analysisData={analysisData} viewerTier={viewerTier} />
+        <ComparableSalesCard analysisData={analysisData} compResult={compResult} listing={listing} viewerTier={viewerTier} />
       </div>
 
       {/* Full-width: Teaser */}

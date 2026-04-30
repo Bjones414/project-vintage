@@ -9,6 +9,7 @@ import { parseListing } from '@/lib/listing-parser'
 import { decodeVin } from '@/lib/vin-decode/nhtsa'
 import { matchGeneration } from '@/lib/generation-match'
 import { runFindingsRules } from '@/lib/findings'
+import { computeComps } from '@/lib/comp-engine'
 
 export async function POST(request: NextRequest) {
   // Validate body
@@ -187,6 +188,16 @@ export async function POST(request: NextRequest) {
     console.error('[api/analyze] listing_analyses insert failed (non-fatal)', {
       listing_id: listingId,
       error: analysisError.message,
+    })
+  }
+
+  // Comp engine: non-fatal. Errors are logged but do not block the redirect.
+  try {
+    await computeComps(listingId)
+  } catch (compErr) {
+    console.error('[api/analyze] computeComps failed (non-fatal)', {
+      listing_id: listingId,
+      error: compErr instanceof Error ? compErr.message : String(compErr),
     })
   }
 

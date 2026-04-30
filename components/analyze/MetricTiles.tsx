@@ -1,10 +1,12 @@
 import type { Tables } from '@/lib/supabase/types'
 import { formatCents } from '@/lib/utils/currency'
 import type { AnalysisData, ViewerTier } from './types'
+import type { CompResultRow } from '@/lib/comp-engine/db-types'
 
 type Props = {
   listing: Tables<'listings'>
   analysisData: AnalysisData | null
+  compResult: CompResultRow | null
   viewerTier: ViewerTier
 }
 
@@ -28,7 +30,7 @@ function MetricTile({
   )
 }
 
-export function MetricTiles({ listing, analysisData, viewerTier }: Props) {
+export function MetricTiles({ listing, analysisData, compResult, viewerTier }: Props) {
   const currency = listing.currency
 
   // Bid tile: prefer final_price for sold listings, fall back to high_bid for live
