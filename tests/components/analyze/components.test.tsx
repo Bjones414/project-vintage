@@ -398,16 +398,16 @@ describe('ChassisIdentityCard', () => {
     expect(html).not.toMatch(/[\d,]+ mi/)
   })
 
-  it('mileage appears between Model Year and Variant in render order', () => {
+  it('Trim appears before Model Year, Mileage appears after Model Year in render order', () => {
     const html = renderToString(
       <ChassisIdentityCard listing={GT4_RS_LISTING} generation={GENERATION_982_CAYMAN} colorData={null} />,
     )
+    const trimIdx = html.indexOf('>Trim<')
     const yearIdx = html.indexOf('Model Year')
     const mileageIdx = html.indexOf('Mileage')
-    const variantIdx = html.indexOf('Variant')
-    expect(yearIdx).toBeGreaterThan(-1)
+    expect(trimIdx).toBeGreaterThan(-1)
+    expect(yearIdx).toBeGreaterThan(trimIdx)
     expect(mileageIdx).toBeGreaterThan(yearIdx)
-    expect(variantIdx).toBeGreaterThan(mileageIdx)
   })
 })
 

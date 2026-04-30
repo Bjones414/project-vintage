@@ -31,6 +31,7 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
   // Always show mileage — em dash when null (largest comp engine weight; absence is confusing)
   const mileageValue =
     listing.mileage != null ? `${listing.mileage.toLocaleString('en-US')} mi` : '—'
+  const trimValue = listing.trim ?? '—'
 
   const rarity = resolveRarityTier(colorData)
   const { label: rarityLabel, dotClass: rarityDotClass } = RARITY_CONFIG[rarity]
@@ -47,6 +48,8 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
       label: 'Generation',
       value: listing.generation ?? generation?.generation_id ?? null,
     },
+    { label: 'Model', value: listing.model },
+    { label: 'Trim', value: trimValue },
     {
       label: 'Model Year',
       value: listing.decoded_year != null
@@ -54,7 +57,6 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
         : String(listing.year),
     },
     { label: 'Mileage', value: mileageValue },
-    { label: 'Variant', value: listing.trim },
     { label: 'Engine', value: listing.decoded_engine },
     { label: 'Assembly Plant', value: listing.decoded_plant },
     {
