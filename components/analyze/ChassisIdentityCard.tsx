@@ -97,7 +97,7 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
               <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">{label}</dt>
               <dd className="mt-1">
                 {customContent ?? (
-                  <span className={`break-all ${mono ? 'font-mono text-[12px] tracking-[0.04em] text-text-quaternary' : 'font-serif text-[17px] text-text-primary'}`}>
+                  <span className={`hyphens-none break-words ${mono ? 'font-mono text-[12px] tracking-[0.04em] text-text-quaternary' : 'font-serif text-[17px] text-text-primary'}`}>
                     {value}
                   </span>
                 )}
