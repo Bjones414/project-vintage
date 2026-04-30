@@ -42,7 +42,8 @@ import { TopNav } from '@/components/nav/TopNav'
 describe('TopNav — post-redirect cleanup', () => {
   beforeEach(() => {
     pushSpy.mockClear()
-    pathnameMock.mockReturnValue('/')
+    // Use a non-home path so the URL field renders (it's hidden on /)
+    pathnameMock.mockReturnValue('/analyze/some-listing-id')
     capturedOnSuccess = null
   })
 

@@ -16,7 +16,7 @@ export default async function HomePage() {
           <h1 className="mb-4 text-center font-serif text-h1 text-text-primary">
             Know what you&apos;re bidding on.
           </h1>
-          <p className="mx-auto mb-8 max-w-[520px] text-center font-serif text-[15px] italic leading-[1.65] text-text-tertiary">
+          <p className="mx-auto mb-8 max-w-[580px] text-balance text-center font-serif text-[15px] italic leading-[1.65] text-text-tertiary">
             A deep read on any auction listing — comparable sales, generation-level watch-outs, and the questions to ask the seller, in seconds.
           </p>
           <HeroForm />

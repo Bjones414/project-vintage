@@ -21,8 +21,7 @@ export function TopNav({ userEmail }: Props) {
   const urlRef = useRef(url)
   urlRef.current = url
 
-  // Hide on the /analyze landing page — it has its own paste field
-  if (pathname === '/analyze') return null
+  const isHome = pathname === '/'
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -71,11 +70,11 @@ export function TopNav({ userEmail }: Props) {
         </Link>
 
         {/*
-         * User cluster — ml-auto right-aligns it with the logo on the first
-         * row on mobile. sm:order-last + sm:ml-0 moves it after the URL field
-         * on desktop without DOM reordering.
+         * User cluster — ml-auto right-aligns it on all viewports when the URL
+         * field is absent (home). sm:order-last + sm:ml-0 moves it after the
+         * URL field on desktop when the field is present.
          */}
-        <div className="ml-auto shrink-0 sm:order-last sm:ml-0">
+        <div className={`ml-auto shrink-0 sm:order-last${isHome ? '' : ' sm:ml-0'}`}>
           {userEmail ? (
             <div className="relative">
               <button
@@ -113,22 +112,23 @@ export function TopNav({ userEmail }: Props) {
         </div>
 
         {/*
-         * URL field — w-full wraps it to the second row on mobile (below logo +
-         * user cluster). sm:w-auto sm:flex-1 collapses it into the center of the
-         * single desktop row between logo and user cluster.
+         * URL field — hidden on / (hero has its own). On all other pages it
+         * wraps to a second row on mobile and fills the center on desktop.
          */}
-        <form onSubmit={handleSubmit} className="w-full min-w-0 sm:w-auto sm:flex-1">
-          <input
-            type="url"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="Paste a listing URL to analyze…"
-            className="w-full rounded-button border-[0.5px] border-border-default bg-bg-surface px-3.5 py-2 font-sans text-[13px] text-text-primary placeholder:text-text-muted focus:border-accent-primary focus:outline-none"
-          />
-          {error && (
-            <p className="mt-1 font-sans text-xs text-severity-concern">{error}</p>
-          )}
-        </form>
+        {!isHome && (
+          <form onSubmit={handleSubmit} className="w-full min-w-0 sm:w-auto sm:flex-1">
+            <input
+              type="url"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="Paste a listing URL to analyze…"
+              className="w-full rounded-button border-[0.5px] border-border-default bg-bg-surface px-3.5 py-2 font-sans text-[13px] text-text-primary placeholder:text-text-muted focus:border-accent-primary focus:outline-none"
+            />
+            {error && (
+              <p className="mt-1 font-sans text-xs text-severity-concern">{error}</p>
+            )}
+          </form>
+        )}
       </div>
     </header>
   )

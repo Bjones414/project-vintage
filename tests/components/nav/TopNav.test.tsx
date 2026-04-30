@@ -34,11 +34,18 @@ describe('TopNav', () => {
     vi.unstubAllGlobals()
   })
 
-  it('renders logo, URL input, and sign-in link for anonymous user', () => {
+  it('renders logo and sign-in link on home — URL field absent', () => {
+    // pathname = '/' — hero has the paste field, TopNav omits it
     render(<TopNav userEmail={null} />)
     expect(screen.getByRole('link', { name: /vintage/i })).toBeTruthy()
-    expect(screen.getByPlaceholderText(/paste a listing url/i)).toBeTruthy()
+    expect(screen.queryByPlaceholderText(/paste a listing url/i)).toBeNull()
     expect(screen.getByRole('link', { name: /sign in/i })).toBeTruthy()
+  })
+
+  it('renders URL paste field on non-home pages', () => {
+    pathnameMock.mockReturnValue('/analyze/some-listing-id')
+    render(<TopNav userEmail={null} />)
+    expect(screen.getByPlaceholderText(/paste a listing url/i)).toBeTruthy()
   })
 
   it('renders initials avatar for signed-in user, no sign-in link', () => {
@@ -47,19 +54,14 @@ describe('TopNav', () => {
     expect(screen.queryByRole('link', { name: /sign in/i })).toBeNull()
   })
 
-  it('hides on /analyze landing page', () => {
-    pathnameMock.mockReturnValue('/analyze')
-    const { container } = render(<TopNav userEmail={null} />)
-    expect(container.firstChild).toBeNull()
-  })
-
-  it('renders on /analyze/[id] result page', () => {
+  it('renders on /analyze/[id] result page with URL field', () => {
     pathnameMock.mockReturnValue('/analyze/some-listing-id')
     render(<TopNav userEmail={null} />)
     expect(screen.getByPlaceholderText(/paste a listing url/i)).toBeTruthy()
   })
 
   it('success path — shows loading state with all four steps on submit', async () => {
+    pathnameMock.mockReturnValue('/analyze/some-listing-id')
     vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce({
       ok: true,
       json: async () => ({ listingId: 'listing-abc-123' }),
@@ -84,6 +86,7 @@ describe('TopNav', () => {
   })
 
   it('error path — shows inline error message on failure', async () => {
+    pathnameMock.mockReturnValue('/analyze/some-listing-id')
     vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce({
       ok: false,
       json: async () => ({ error: 'Unsupported platform' }),
@@ -105,6 +108,7 @@ describe('TopNav', () => {
   })
 
   it('shows loading state (not the nav form) while fetch is in-flight', async () => {
+    pathnameMock.mockReturnValue('/analyze/some-listing-id')
     let resolveFetch!: (v: unknown) => void
     vi.stubGlobal(
       'fetch',
