@@ -73,7 +73,7 @@ describe('HeroForm', () => {
     await waitFor(() => expect(screen.getByTestId('mock-loading-state')).toBeTruthy())
   })
 
-  it('clears loading state and navigates on success', async () => {
+  it('navigates on success; loading panel stays mounted until navigation unmounts', async () => {
     const user = userEvent.setup()
     render(<HeroForm />)
 
@@ -88,8 +88,10 @@ describe('HeroForm', () => {
 
     await act(async () => { capturedOnSuccess!('listing-abc-123') })
 
-    expect(screen.queryByTestId('mock-loading-state')).toBeNull()
-    expect(screen.getByPlaceholderText(/paste a listing url/i)).toBeTruthy()
+    // Loading panel stays mounted — setLoadingPromise(null) is intentionally NOT called here.
+    // The panel unmounts when Next.js navigation completes, preventing the home form from
+    // flashing between animation end and route transition.
+    expect(screen.getByTestId('mock-loading-state')).toBeTruthy()
     expect(pushSpy).toHaveBeenCalledWith('/analyze/listing-abc-123')
   })
 

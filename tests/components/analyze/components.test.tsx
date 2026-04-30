@@ -319,7 +319,7 @@ describe('MetricTiles', () => {
 // ChassisIdentityCard
 // ---------------------------------------------------------------------------
 describe('ChassisIdentityCard', () => {
-  it('renders all identity fields for GT4 RS including Exterior Color and Color Rarity', () => {
+  it('renders all identity fields for GT4 RS including Exterior Color rarity indicator', () => {
     const html = renderToString(
       <ChassisIdentityCard
         listing={GT4_RS_LISTING}
@@ -334,13 +334,14 @@ describe('ChassisIdentityCard', () => {
     expect(html).toContain('Zuffenhausen')
     expect(html).toContain('4.0L H-6')
     expect(html).toContain('Coupe')
-    // Exterior Color (field 9)
+    // Exterior Color with embedded rarity indicator
     expect(t(html)).toContain('Exterior Color')
     expect(t(html)).toContain('Shark Blue')
-    // Color Rarity (field 10) — rare, so amber dot class
-    expect(t(html)).toContain('Color Rarity')
-    expect(t(html)).toContain('Rare or special-order')
-    expect(html).toContain('bg-severity-caution')
+    // COLOR_SHARK_BLUE has is_special_order: true → Paint to Sample tier, gold dot
+    expect(t(html)).toContain('Paint to Sample')
+    expect(html).toContain('bg-amber-400')
+    // Rarity is now embedded in Exterior Color field, not a separate field
+    expect(html).not.toContain('Color Rarity')
   })
 
   it('renders 930 Turbo identity with common color rarity', () => {
@@ -355,9 +356,9 @@ describe('ChassisIdentityCard', () => {
     expect(html).not.toContain('WP0EB0918JS857501')
     expect(html).toContain('930')
     expect(html).toContain('3.3L H-6 Turbo')
-    // Color Rarity — common, so green dot class
-    expect(t(html)).toContain('Common factory color')
-    expect(html).toContain('bg-severity-positive')
+    // COLOR_GUARDS_RED has rarity: 'common', is_special_order: false → Common tier, gray dot
+    expect(t(html)).toContain('Common')
+    expect(html).toContain('bg-gray-400')
   })
 
   it('gracefully handles no generation data and no color data', () => {
@@ -367,7 +368,8 @@ describe('ChassisIdentityCard', () => {
     expect(html).toContain('Chassis Identity')
     // VIN is NOT displayed — it is not persisted to the DB per compliance policy
     expect(html).not.toContain('WP0AC2A84RS270001')
-    // No Color Rarity field without colorData
+    // Rarity indicator always renders; with no colorData it defaults to Common
+    expect(t(html)).toContain('Common')
     expect(html).not.toContain('Color Rarity')
   })
 
@@ -839,7 +841,7 @@ describe('integration — analyze page layout', () => {
     expect(html).not.toContain('WP0AC2A84RS270001')
     expect(html).toContain('Sold')
     expect(html).toContain('Shark Blue')
-    expect(html).toContain('Rare or special-order')
+    expect(html).toContain('Paint to Sample')
     expect(html).toContain('Create a free account')
     expect(html).toContain('Sign in to see the verdict on this car.')
     // No standalone ColorRarityCard on the page
@@ -882,8 +884,8 @@ describe('integration — analyze page layout', () => {
     expect(html).toContain('Era guide for this generation is in development')
     expect(html).toContain('widow-maker')
     expect(html).toContain('Fuchs alloys')
-    // Common factory color in ChassisIdentity
-    expect(t(html)).toContain('Common factory color')
+    // Common rarity tier in ChassisIdentity
+    expect(t(html)).toContain('Common')
     expect(html).not.toContain('76%')
     expect(html).not.toContain('Create a free account')
     expect(html).not.toContain('Locked')
