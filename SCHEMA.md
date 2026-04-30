@@ -415,6 +415,172 @@ CREATE INDEX market_snapshots_gen_trim_date_idx
 
 ---
 
+## Schema Expansion — Comp Engine V2 (2026-04-30)
+
+Migrations `20260430000000` through `20260430040000`. All columns on `listings` are nullable unless noted. All new tables have RLS enabled.
+
+### New columns on `listings` (migration `20260430000000`)
+
+**Comp engine V2 inputs — identity & classification**
+```sql
+generation_id             text,            -- normalized generation key matching porsche_generations.generation_id (e.g. '993', '996.1')
+trim_category             text,            -- normalized trim grouping for comp matching (e.g. 'carrera_2_narrow', 'gt3', 'turbo_base')
+trim_variant              text,            -- sub-variant within trim_category (e.g. 'x50', 'sport_classic')
+market_region             text,            -- 'US' | 'EU' | 'UK' | 'ROW' — affects comp weighting
+body_style_normalized     text,            -- canonical body_style: 'coupe' | 'cabriolet' | 'targa' | 'speedster'
+drivetrain_normalized     text,            -- canonical: 'RWD' | 'AWD'
+transmission_variant      text,            -- 'manual' | 'pdk' | 'tiptronic' | 'g50' | 'getrag'
+```
+
+**Comp engine V2 inputs — factory options & spec**
+```sql
+is_paint_to_sample        boolean,         -- PTS (paint-to-sample / Sonderwunsch) flag
+seats_type                text,            -- 'standard' | 'sport' | 'sport_plus' | 'bucket'
+wheels_factory_correct    boolean,         -- true if listing shows factory-correct wheels
+interior_color_rarity     text,            -- 'common' | 'uncommon' | 'rare' — from porsche_color_codes lookup
+factory_options_normalized text[],         -- normalized array of factory option codes (e.g. ['M220','M637'])
+has_x50_powerkit          boolean,         -- Porsche M637 X50/GT powerkit
+has_aero_kit              boolean,         -- factory aero package
+has_sport_seats           boolean,         -- factory sport/bucket seats
+```
+
+**Comp engine V2 inputs — condition signals (V1 stub)**
+```sql
+paint_meter_max_microns   integer,         -- worst paint meter reading in µm; <150 original, ≥300 repainted
+accident_history_stated   text            -- 'none_stated' | 'minor_stated' | 'major_stated' | 'unknown'
+                            check (accident_history_stated in ('none_stated','minor_stated','major_stated','unknown')),
+listing_photo_count       integer,         -- total photos on listing page; proxy for documentation quality
+is_featured_listing       boolean,         -- BaT featured listing flag; correlates with higher presentation quality
+```
+
+**Comp engine V2 inputs — provenance**
+```sql
+consignor_type            text,            -- 'dealer' | 'private' | 'auction_house' | 'unknown'
+mechanical_remediation_status text,        -- 'none' | 'minor' | 'major' | 'unknown'
+                            check (mechanical_remediation_status in ('none','minor','major','unknown')),
+cross_listing_group_id    text,            -- groups the same physical car across platforms for deduplication
+```
+
+**Comp engine V2 — editorial control**
+```sql
+is_comp_resistant         boolean NOT NULL DEFAULT false,  -- editorial flag: exclude from ALL comp pools
+                                                            -- returns "this car is uncomparable" verdict when set
+```
+
+**Expanded condition & provenance signals (Phase 1 overnight)**
+```sql
+-- Condition
+condition_signal          text check (condition_signal in ('concours','excellent','good','driver','project','unknown')),
+paint_signal              text check (paint_signal in ('original','repaint_partial','repaint_full','unknown')),
+interior_signal           text check (interior_signal in ('original','restored','modified','unknown')),
+numbers_matching          boolean,
+mod_status                text check (mod_status in ('stock','light_reversible','heavy','unknown','period_correct_enhanced')),
+-- Documentation
+has_porsche_coa           boolean,         -- Certificate of Authenticity from Porsche AG
+has_kardex                boolean,         -- factory build record from Porsche Archives
+has_service_records       boolean,         -- structured flag (distinct from service_history_present)
+has_window_sticker        boolean,
+has_owners_manual         boolean,
+owner_count               integer,         -- normalized integer (distinct from ownership_count smallint)
+documentation_score       integer,         -- derived 0–6 sum of documentation flags
+-- Auction dynamics
+bid_count                 integer,
+comment_count             integer,
+bid_to_buy_ratio          numeric(10,4),
+final_to_reserve_ratio    numeric(10,4),
+-- Vehicle attributes
+country_of_sale           text,
+-- Factory options (additional)
+factory_options           text[],          -- marque-agnostic array of raw option codes
+has_tool_kit_complete     boolean,
+```
+
+### New table: `trim_taxonomy` (migration `20260430010000`)
+
+Editorial configuration: which trim categories exist per generation and whether they form a separate market (i.e. only comp against themselves).
+
+```sql
+CREATE TABLE trim_taxonomy (
+  generation    text NOT NULL,          -- matches porsche_generations.generation_id
+  trim_category text NOT NULL,          -- matches listings.trim_category
+  is_separate_market boolean NOT NULL DEFAULT false,
+                                        -- true → comps restricted to same trim_category
+  production_count integer,             -- optional reference figure
+  PRIMARY KEY (generation, trim_category)
+);
+```
+
+**RLS:** enabled. Public SELECT for all authenticated users.
+
+Seeded for gen='993' (16 rows): `carrera_2_narrow`, `carrera_4_narrow`, `carrera_s_wide`, `carrera_4s_wide`, `targa`, `turbo_base`, `turbo_x50`, `turbo_s` (separate), `turbo_look_m491`, `rs_touring` (separate), `rs_clubsport` (separate), `gt2` (separate), `gt2_evo` (separate), `speedster` (separate), `cup` (separate), `supercup` (separate).
+
+### New table: `generation_weight_config` (migration `20260430020000`)
+
+Generation-specific similarity factor weights for the comp engine. Editable without code deploys.
+
+```sql
+CREATE TABLE generation_weight_config (
+  generation  text NOT NULL,            -- matches porsche_generations.generation_id; 'default' = fallback
+  factor_name text NOT NULL,            -- one of 10 factor names (see lib/comp-engine-v2/types.ts)
+  weight      numeric(4,3) NOT NULL     -- 0.000–1.000; all weights for a generation must sum to 1.0
+                check (weight >= 0 and weight <= 1),
+  PRIMARY KEY (generation, factor_name)
+);
+```
+
+**RLS:** enabled. Public SELECT. Seeded: `993` (10 factors, sum=1.0), `996.1` (mechanical=0.15, transmission=0.15 variants), `default` (copy of 993).
+
+**993 weights:** mileage=0.30, condition_stub=0.15, year=0.10, trim_variant=0.10, market_region=0.10, spec_composite=0.10, transmission_variant=0.05, color_rarity=0.05, consignor_tier=0.05, mechanical_remediation=0.00.
+
+### New table: `generation_mileage_bands` (migration `20260430030000`)
+
+Per-generation mileage band definitions. The similarity matrix is fixed in code; only band boundaries are configurable here.
+
+```sql
+CREATE TABLE generation_mileage_bands (
+  generation text NOT NULL,             -- matches porsche_generations.generation_id; 'default' = fallback
+  band_name  text NOT NULL,             -- 'ultra_low' | 'low' | 'moderate' | 'high' | 'very_high'
+  min_miles  integer NOT NULL,          -- inclusive lower bound
+  max_miles  integer,                   -- NULL = unbounded upper; otherwise exclusive
+  PRIMARY KEY (generation, band_name)
+);
+```
+
+**RLS:** enabled. Public SELECT. Seeded: `993` (5 bands), `default` (copy of 993).
+
+**993 bands:** ultra_low(1000–5000), low(5000–25000), moderate(25000–75000), high(75000–125000), very_high(125000–∞).
+
+### New table: `comp_engine_runs` (migration `20260430040000`)
+
+Prediction audit log. Every comp engine V2 execution writes one row. Powers backtesting and drift detection.
+
+```sql
+CREATE TABLE comp_engine_runs (
+  id                   uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at           timestamptz NOT NULL DEFAULT now(),
+  subject_listing_id   uuid references listings(id),   -- nullable for synthetic/backtest subjects
+  subject_data         jsonb NOT NULL,                 -- snapshot of V2Subject at run time
+  model_version        text NOT NULL,                  -- e.g. 'v1.0' — bumped on every logic/weight change
+  generation_used      text,
+  weights_json         jsonb,                          -- GenerationWeights snapshot
+  comps_used_json      jsonb,                          -- array of ScoredComp
+  predicted_median_cents bigint,
+  predicted_p25_cents  bigint,
+  predicted_p75_cents  bigint,
+  confidence_score     numeric(5,2) check (confidence_score between 0 and 100),
+  methodology_text     text,
+  actual_price_cents   bigint,                         -- populated for backtest rows
+  was_backtest         boolean NOT NULL DEFAULT false,
+  verdict              text check (verdict in ('value_estimate','no_comps','comp_resistant','error'))
+);
+```
+
+**RLS:** enabled. `authenticated` SELECT gated on `role IN ('admin', 'beta')` via `auth.jwt() ->> 'app_role'`.
+
+**Indexes:** `(subject_listing_id)`, `(model_version, created_at DESC)`, `(was_backtest, created_at DESC)`.
+
+---
+
 ## Notes
 
 - All monetary amounts are stored as integers in the smallest currency unit (cents for USD, pence for GBP) to avoid floating-point rounding errors. The application layer handles display formatting.
