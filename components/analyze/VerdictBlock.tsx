@@ -30,7 +30,15 @@ export function VerdictBlock({ analysisData, viewerTier, listingId }: Props) {
     )
   }
 
-  if (!analysisData?.lede) return null
+  if (!analysisData?.lede) {
+    return (
+      <div className="mt-6 border-[0.5px] border-border-default border-l-[3px] border-l-accent-primary bg-bg-surface px-6 py-5">
+        <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">The verdict</p>
+        <p className="mt-3 font-serif text-[22px] leading-[1.3] text-text-primary">Verdict in development.</p>
+        <p className="mt-3 font-sans text-[13px] text-text-tertiary">Comp engine launching with full report.</p>
+      </div>
+    )
+  }
 
   return (
     <div className="mt-6 border-[0.5px] border-border-default border-l-[3px] border-l-accent-primary bg-bg-surface px-6 py-5">

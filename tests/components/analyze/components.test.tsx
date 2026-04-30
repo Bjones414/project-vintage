@@ -39,7 +39,7 @@ import { parseAnalysisData } from '@/components/analyze/types'
 // AnalyzeHeader
 // ---------------------------------------------------------------------------
 describe('AnalyzeHeader', () => {
-  it('renders GT4 RS headline (year + model + trim, no make), subtitle, and sold badge', () => {
+  it('renders GT4 RS headline (year + make + model + trim), subtitle, and sold badge', () => {
     const html = renderToString(
       <AnalyzeHeader
         listing={GT4_RS_LISTING}
@@ -48,9 +48,8 @@ describe('AnalyzeHeader', () => {
       />,
     )
     expect(html).toMatchSnapshot()
-    // Headline: year + model + trim, no hardcoded make
-    expect(t(html)).toContain('2024 718 Cayman GT4 RS')
-    expect(t(html)).not.toContain('Porsche')
+    // Headline: year + make + model + trim
+    expect(t(html)).toContain('2024 Porsche 718 Cayman GT4 RS')
     // Subtitle: color over interior, transmission, generation, mileage
     expect(t(html)).toContain('Shark Blue over Black')
     expect(t(html)).toContain('PDK')
@@ -70,12 +69,13 @@ describe('AnalyzeHeader', () => {
       />,
     )
     expect(html).toMatchSnapshot()
-    expect(t(html)).toContain('1988 911 Turbo')
+    expect(t(html)).toContain('1988 Porsche 911 Turbo')
     expect(t(html)).toContain('Guards Red over Black')
     expect(t(html)).toContain('Manual')
     expect(t(html)).toContain('930')
     expect(t(html)).toContain('45,200 miles')
-    expect(html).toContain('2024') // auction_ends_at date rendered in SSR static form
+    // AuctionCountdown not rendered for non-live listings — no "Auction ended" text in upper right
+    expect(html).not.toContain('Auction ended')
   })
 
   it('omits auction count line when analysisData is null', () => {
@@ -174,13 +174,23 @@ describe('LiveStatusPill', () => {
 // VerdictBlock
 // ---------------------------------------------------------------------------
 describe('VerdictBlock', () => {
-  it('free/pro — returns null when analysisData has no lede', () => {
-    expect(renderToString(
+  it('free/pro — renders "in development" state when analysisData has no lede', () => {
+    const htmlFree = renderToString(
       <VerdictBlock analysisData={null} viewerTier="free" listingId="test-id" />,
-    )).toBe('')
-    expect(renderToString(
+    )
+    const htmlPro = renderToString(
       <VerdictBlock analysisData={null} viewerTier="pro" listingId="test-id" />,
-    )).toBe('')
+    )
+    // Shows section label and in-development headline — not empty
+    expect(t(htmlFree)).toContain('The verdict')
+    expect(t(htmlFree)).toContain('Verdict in development.')
+    expect(t(htmlFree)).toContain('Comp engine launching with full report.')
+    // No CTA button — user is already signed in
+    expect(htmlFree).not.toContain('Unlock')
+    expect(htmlFree).not.toContain('/signup')
+    // Same for pro
+    expect(t(htmlPro)).toContain('Verdict in development.')
+    expect(htmlPro).not.toContain('Unlock')
   })
 
   it('anonymous — renders signup CTA regardless of analysisData', () => {
@@ -309,7 +319,7 @@ describe('MetricTiles', () => {
 // ChassisIdentityCard
 // ---------------------------------------------------------------------------
 describe('ChassisIdentityCard', () => {
-  it('renders all identity fields for GT4 RS', () => {
+  it('renders all identity fields for GT4 RS including Exterior Color', () => {
     const html = renderToString(
       <ChassisIdentityCard listing={GT4_RS_LISTING} generation={GENERATION_982_CAYMAN} />,
     )
@@ -318,6 +328,9 @@ describe('ChassisIdentityCard', () => {
     expect(html).toContain('Zuffenhausen')
     expect(html).toContain('4.0L H-6')
     expect(html).toContain('Coupe')
+    // Exterior Color is now the 9th field in ChassisIdentity
+    expect(t(html)).toContain('Exterior Color')
+    expect(t(html)).toContain('Shark Blue')
   })
 
   it('renders 930 Turbo identity — all viewers see VIN', () => {

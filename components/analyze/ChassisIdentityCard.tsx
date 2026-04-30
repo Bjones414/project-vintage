@@ -29,6 +29,7 @@ export function ChassisIdentityCard({ listing, generation }: Props) {
       label: 'Transmission',
       value: listing.decoded_transmission ?? listing.transmission,
     },
+    { label: 'Exterior Color', value: listing.exterior_color },
   ]
 
   const present = fields.filter(({ value }) => value != null && value !== '')

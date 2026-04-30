@@ -28,8 +28,8 @@ export function ColorRarityCard({ listing, colorData, viewerTier }: Props) {
     <div className="border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
       <div className="flex items-start justify-between gap-6">
         <div className="min-w-0">
-          <p className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">Exterior color</p>
-          <p className="mt-1 font-serif text-[17px] text-text-primary">
+          <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">Color rarity</p>
+          <p className="mt-1 font-serif text-[16px] text-text-primary">
             {colorName}
             {listing.exterior_color_code && (
               <span className="ml-2 font-mono text-[12px] tracking-[0.04em] text-text-quaternary">

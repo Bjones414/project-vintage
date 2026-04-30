@@ -20,7 +20,7 @@ function statusLabel(listing: Tables<'listings'>): string {
 }
 
 export function AnalyzeHeader({ listing, analysisData, now }: Props) {
-  const headline = [listing.year, listing.model, listing.trim].filter(Boolean).join(' ')
+  const headline = [listing.year, listing.make, listing.model, listing.trim].filter(Boolean).join(' ')
 
   const colorSegment = listing.exterior_color
     ? listing.interior_color
@@ -72,7 +72,7 @@ export function AnalyzeHeader({ listing, analysisData, now }: Props) {
         {listing.vin && (
           <p className="font-mono text-[12px] tracking-[0.04em] text-text-quaternary">{listing.vin}</p>
         )}
-        {listing.auction_ends_at && (
+        {isLive && listing.auction_ends_at && (
           <div className="mt-1 font-sans text-[13px] text-text-tertiary">
             <AuctionCountdown endsAt={listing.auction_ends_at} listingId={listing.id} />
           </div>
