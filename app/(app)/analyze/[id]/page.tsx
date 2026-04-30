@@ -77,6 +77,20 @@ export default async function ListingDetailPage({ params }: PageProps) {
   const analysisData = parseAnalysisData(analysisResult.data?.analysis_data ?? null)
   const compResult: import('@/lib/comp-engine/db-types').CompResultRow | null = compResultRaw.data ?? null
 
+  // Fetch top 5 comp listings by recency for ComparableSalesCard display.
+  // Only needed when comp result exists and has actual comps (not insufficient).
+  const compListings =
+    compResult && compResult.comp_listing_ids.length > 0
+      ? await supabase
+          .from('listings')
+          .select('id, year, make, model, trim, mileage, final_price, auction_ends_at, source_url, source_platform')
+          .in('id', compResult.comp_listing_ids)
+          .not('final_price', 'is', null)
+          .order('auction_ends_at', { ascending: false })
+          .limit(5)
+          .then(r => r.data ?? [])
+      : []
+
   return (
     <main className="mx-auto max-w-7xl px-6 py-8 sm:px-8 lg:px-10">
       <AnalyzeHeader
@@ -85,6 +99,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
         viewerTier={viewerTier}
       />
       <VerdictBlock
+        listing={listing}
         analysisData={analysisData}
         compResult={compResult}
         viewerTier={viewerTier}
@@ -112,7 +127,12 @@ export default async function ListingDetailPage({ params }: PageProps) {
 
       {/* Full-width: Comparable Sales */}
       <div className="mt-4">
-        <ComparableSalesCard analysisData={analysisData} compResult={compResult} listing={listing} viewerTier={viewerTier} />
+        <ComparableSalesCard
+          analysisData={analysisData}
+          compResult={compResult}
+          compListings={compListings}
+          viewerTier={viewerTier}
+        />
       </div>
 
       {/* Full-width: Teaser */}

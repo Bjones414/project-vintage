@@ -880,3 +880,257 @@ describe('integration — analyze page layout', () => {
     expect(html).not.toContain('76%')
   })
 })
+
+// ---------------------------------------------------------------------------
+// Comp engine UI — VerdictBlock with comp data
+// ---------------------------------------------------------------------------
+
+const COMP_RESULT_STRICT = {
+  id: 'cr-strict-001',
+  listing_id: 'fixture-gt4rs-001',
+  tier: 'strict' as const,
+  comp_count: 8,
+  fair_value_low_cents: 180_000_00,
+  fair_value_median_cents: 200_000_00,
+  fair_value_high_cents: 220_000_00,
+  most_recent_comp_sold_at: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(), // ~2mo ago
+  oldest_comp_sold_at: new Date(Date.now() - 18 * 30.4375 * 24 * 60 * 60 * 1000).toISOString(),
+  comp_listing_ids: ['id1', 'id2', 'id3', 'id4', 'id5', 'id6', 'id7', 'id8'],
+  computed_at: new Date().toISOString(),
+}
+
+const COMP_RESULT_WIDE = {
+  ...COMP_RESULT_STRICT,
+  tier: 'wide' as const,
+  comp_count: 4,
+}
+
+const COMP_RESULT_INSUFFICIENT = {
+  id: 'cr-insuf-001',
+  listing_id: 'fixture-930-001',
+  tier: 'insufficient' as const,
+  comp_count: 1,
+  fair_value_low_cents: null,
+  fair_value_median_cents: null,
+  fair_value_high_cents: null,
+  most_recent_comp_sold_at: null,
+  oldest_comp_sold_at: null,
+  comp_listing_ids: [],
+  computed_at: new Date().toISOString(),
+}
+
+const COMP_LISTINGS = [
+  {
+    id: 'comp-1',
+    year: 2023,
+    make: 'Porsche',
+    model: '718 Cayman',
+    trim: 'GT4 RS',
+    mileage: 1200,
+    final_price: 210_000_00,
+    auction_ends_at: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
+    source_url: 'https://bringatrailer.com/listing/2023-comp-1',
+    source_platform: 'bring-a-trailer',
+  },
+  {
+    id: 'comp-2',
+    year: 2022,
+    make: 'Porsche',
+    model: '718 Cayman',
+    trim: 'GT4 RS',
+    mileage: 3400,
+    final_price: 195_000_00,
+    auction_ends_at: new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString(),
+    source_url: null,
+    source_platform: 'bring-a-trailer',
+  },
+]
+
+describe('VerdictBlock — comp engine data', () => {
+  it('strict tier — "Priced below" when subject is below range', () => {
+    // GT4_RS_LISTING.final_price = 22000000 ($220k), fair value high = 22000000 → exactly at high
+    // To test "below": use a listing with lower price
+    const listingBelow = { ...GT4_RS_LISTING, final_price: 150_000_00 } // $150k < $180k low
+    const html = renderToString(
+      <VerdictBlock
+        listing={listingBelow}
+        analysisData={null}
+        compResult={COMP_RESULT_STRICT}
+        viewerTier="free"
+        listingId="fixture-gt4rs-001"
+      />,
+    )
+    expect(t(html)).toContain('Priced below comparable sales.')
+    expect(t(html)).toContain('$180,000') // fair_value_low_cents = 18000000 → $180,000
+    expect(t(html)).not.toContain('Wide-criteria')
+  })
+
+  it('strict tier — "Priced at fair value" when subject is within range', () => {
+    const listingWithin = { ...GT4_RS_LISTING, final_price: 200_000_00 } // $200k within $180-$220k
+    const html = renderToString(
+      <VerdictBlock
+        listing={listingWithin}
+        analysisData={null}
+        compResult={COMP_RESULT_STRICT}
+        viewerTier="free"
+        listingId="fixture-gt4rs-001"
+      />,
+    )
+    expect(t(html)).toContain('Priced at fair value.')
+    expect(t(html)).toContain('8 comps')
+  })
+
+  it('strict tier — "Priced above" when subject is above range', () => {
+    const listingAbove = { ...GT4_RS_LISTING, final_price: 280_000_00 } // $280k > $220k high
+    const html = renderToString(
+      <VerdictBlock
+        listing={listingAbove}
+        analysisData={null}
+        compResult={COMP_RESULT_STRICT}
+        viewerTier="free"
+        listingId="fixture-gt4rs-001"
+      />,
+    )
+    expect(t(html)).toContain('Priced above comparable sales.')
+  })
+
+  it('wide tier — shows wide-criteria note', () => {
+    const html = renderToString(
+      <VerdictBlock
+        listing={GT4_RS_LISTING}
+        analysisData={null}
+        compResult={COMP_RESULT_WIDE}
+        viewerTier="free"
+        listingId="fixture-gt4rs-001"
+      />,
+    )
+    expect(t(html)).toContain('Wide-criteria comps used due to limited matches.')
+  })
+
+  it('insufficient tier — renders in-development state', () => {
+    const html = renderToString(
+      <VerdictBlock
+        listing={TURBO_930_LISTING}
+        analysisData={null}
+        compResult={COMP_RESULT_INSUFFICIENT}
+        viewerTier="free"
+        listingId="fixture-930-001"
+      />,
+    )
+    expect(t(html)).toContain('Verdict in development.')
+  })
+
+  it('no comp result — renders in-development state', () => {
+    const html = renderToString(
+      <VerdictBlock
+        listing={GT4_RS_LISTING}
+        analysisData={null}
+        compResult={null}
+        viewerTier="free"
+        listingId="fixture-gt4rs-001"
+      />,
+    )
+    expect(t(html)).toContain('Verdict in development.')
+  })
+})
+
+describe('MetricTiles — comp engine data', () => {
+  it('shows fair value range from comp result', () => {
+    const html = renderToString(
+      <MetricTiles
+        listing={GT4_RS_LISTING}
+        analysisData={null}
+        compResult={COMP_RESULT_STRICT}
+        viewerTier="free"
+      />,
+    )
+    expect(t(html)).toContain('Fair Value Range')
+    // Low and high cents formatted
+    expect(html).not.toContain('In development')
+    expect(html).not.toContain('in development')
+  })
+
+  it('shows comps count and recency from comp result', () => {
+    const html = renderToString(
+      <MetricTiles
+        listing={GT4_RS_LISTING}
+        analysisData={null}
+        compResult={COMP_RESULT_STRICT}
+        viewerTier="free"
+      />,
+    )
+    expect(t(html)).toContain('8 comps')
+  })
+
+  it('fair value locked for anonymous even with comp data', () => {
+    const html = renderToString(
+      <MetricTiles
+        listing={GT4_RS_LISTING}
+        analysisData={null}
+        compResult={COMP_RESULT_STRICT}
+        viewerTier="anonymous"
+      />,
+    )
+    expect(t(html)).toContain('Sign in to see')
+    expect(html).not.toContain('8 comps')
+  })
+})
+
+describe('ComparableSalesCard — comp engine data', () => {
+  it('strict tier — free user sees comp listings with editorial numbered rows', () => {
+    const html = renderToString(
+      <ComparableSalesCard
+        analysisData={null}
+        compResult={COMP_RESULT_STRICT}
+        compListings={COMP_LISTINGS}
+        viewerTier="free"
+      />,
+    )
+    expect(t(html)).toContain('8 comparable sales found')
+    // numbered rows (01, 02)
+    expect(t(html)).toContain('01')
+    expect(t(html)).toContain('02')
+    expect(t(html)).toContain('2023 Porsche 718 Cayman GT4 RS')
+    expect(html).not.toContain('available with a free account')
+  })
+
+  it('wide tier — shows wide-criteria note', () => {
+    const html = renderToString(
+      <ComparableSalesCard
+        analysisData={null}
+        compResult={COMP_RESULT_WIDE}
+        compListings={COMP_LISTINGS}
+        viewerTier="free"
+      />,
+    )
+    expect(html).toContain('wide criteria')
+  })
+
+  it('anonymous — shows 1 comp, hides rest', () => {
+    const html = renderToString(
+      <ComparableSalesCard
+        analysisData={null}
+        compResult={COMP_RESULT_STRICT}
+        compListings={COMP_LISTINGS}
+        viewerTier="anonymous"
+      />,
+    )
+    // First row marker rendered; second row marker not rendered
+    expect(html).toContain('>01<')
+    expect(html).not.toContain('>02<')
+    expect(html).toContain('available with a free account')
+  })
+
+  it('insufficient tier — shows honest empty state', () => {
+    const html = renderToString(
+      <ComparableSalesCard
+        analysisData={null}
+        compResult={COMP_RESULT_INSUFFICIENT}
+        compListings={[]}
+        viewerTier="free"
+      />,
+    )
+    expect(t(html)).toContain('Not enough comparable sales')
+    expect(html).not.toContain('available with a free account')
+  })
+})

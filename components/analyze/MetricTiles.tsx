@@ -2,11 +2,12 @@ import type { Tables } from '@/lib/supabase/types'
 import { formatCents } from '@/lib/utils/currency'
 import type { AnalysisData, ViewerTier } from './types'
 import type { CompResultRow } from '@/lib/comp-engine/db-types'
+import { monthsAgo } from '@/lib/comp-engine/recency-weight'
 
 type Props = {
   listing: Tables<'listings'>
   analysisData: AnalysisData | null
-  compResult: CompResultRow | null
+  compResult?: CompResultRow | null
   viewerTier: ViewerTier
 }
 
@@ -30,7 +31,7 @@ function MetricTile({
   )
 }
 
-export function MetricTiles({ listing, analysisData, compResult, viewerTier }: Props) {
+export function MetricTiles({ listing, analysisData, compResult = null, viewerTier }: Props) {
   const currency = listing.currency
 
   // Bid tile: prefer final_price for sold listings, fall back to high_bid for live
@@ -47,14 +48,27 @@ export function MetricTiles({ listing, analysisData, compResult, viewerTier }: P
     bidCents = null
   }
 
+  // Prefer comp-engine data; fall back to legacy analysisData fields
   const fairValueStr =
-    analysisData?.fair_value_low_cents != null &&
-    analysisData?.fair_value_high_cents != null
-      ? `${formatCents(analysisData.fair_value_low_cents, currency)} – ${formatCents(analysisData.fair_value_high_cents, currency)}`
+    compResult?.fair_value_low_cents != null && compResult?.fair_value_high_cents != null
+      ? `${formatCents(compResult.fair_value_low_cents, currency)} – ${formatCents(compResult.fair_value_high_cents, currency)}`
+      : analysisData?.fair_value_low_cents != null && analysisData?.fair_value_high_cents != null
+        ? `${formatCents(analysisData.fair_value_low_cents, currency)} – ${formatCents(analysisData.fair_value_high_cents, currency)}`
+        : null
+
+  const compMostRecentMonths =
+    compResult?.most_recent_comp_sold_at != null
+      ? Math.round(monthsAgo(compResult.most_recent_comp_sold_at))
       : null
 
-  const compsValue =
-    analysisData?.comps_used != null ? String(analysisData.comps_used) : null
+  const compsValue: string | null =
+    compResult != null && compResult.tier !== 'insufficient'
+      ? compMostRecentMonths != null
+        ? `${compResult.comp_count} comps · ${compMostRecentMonths} mo ago`
+        : `${compResult.comp_count} comps`
+      : analysisData?.comps_used != null
+        ? String(analysisData.comps_used)
+        : null
 
   // Reserve tile: "No Reserve" when has_no_reserve, otherwise met/not met/unknown
   let reserveLabel: string
