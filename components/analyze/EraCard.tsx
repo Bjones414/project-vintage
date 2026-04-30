@@ -8,14 +8,14 @@ type Props = {
 
 export function EraCard({ generation, viewerTier }: Props) {
   const genLabel = generation?.generation_id ?? 'this generation'
-  const sectionLabel = `The ${genLabel} era`
+  const sectionLabel = `The ${genLabel} generation`
 
   if (generation?.content_status !== 'published' || !generation.notes) {
     return (
       <div className="border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
         <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary" style={{ fontVariantNumeric: 'lining-nums', fontFeatureSettings: '"lnum"' }}>{sectionLabel}</p>
         <p className="mt-4 font-serif text-[15px] italic leading-[1.65] text-text-tertiary">
-          Era guide for this generation is in development.
+          Guide for this generation is in development.
         </p>
       </div>
     )

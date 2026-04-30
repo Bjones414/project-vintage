@@ -455,14 +455,14 @@ describe('EraCard', () => {
       <EraCard generation={null} viewerTier="anonymous" />,
     )
     expect(html).toMatchSnapshot()
-    expect(t(html)).toContain('Era guide for this generation is in development')
+    expect(t(html)).toContain('Guide for this generation is in development')
   })
 
   it('draft generation (content_status null) — renders development message', () => {
     const html = renderToString(
       <EraCard generation={GENERATION_930} viewerTier="anonymous" />,
     )
-    expect(t(html)).toContain('Era guide for this generation is in development')
+    expect(t(html)).toContain('Guide for this generation is in development')
   })
 
   it('anonymous + published generation — renders only first paragraph and metadata grid', () => {
@@ -470,7 +470,7 @@ describe('EraCard', () => {
       <EraCard generation={GENERATION_993_PUBLISHED} viewerTier="anonymous" />,
     )
     expect(html).toMatchSnapshot()
-    expect(html).toContain('993 era')
+    expect(html).toContain('993 generation')
     expect(html).toContain('last air-cooled 911')
     expect(html).not.toContain('Production ended')
     expect(html).toContain('Full era guide available with a free account')
@@ -881,7 +881,7 @@ describe('integration — analyze page layout', () => {
     expect(html).toMatchSnapshot()
     // Free tier sees verdict, all comps, all watch-outs; EraCard "in development" (no published notes)
     expect(t(html)).toContain('45,200 miles sold within')
-    expect(html).toContain('Era guide for this generation is in development')
+    expect(html).toContain('Guide for this generation is in development')
     expect(html).toContain('widow-maker')
     expect(html).toContain('Fuchs alloys')
     // Common rarity tier in ChassisIdentity
@@ -917,7 +917,7 @@ describe('integration — analyze page layout', () => {
     )
     expect(html).toMatchSnapshot()
     // No editorial row → development fallback, no watch-outs
-    expect(html).toContain('Era guide for this generation is in development')
+    expect(html).toContain('Guide for this generation is in development')
     // Chassis and verdict still present (VIN not displayed per NEVER_PERSIST_FIELDS compliance)
     expect(html).not.toContain('WP0EB0918JS857501')
     expect(t(html)).toContain('45,200 miles sold within')
