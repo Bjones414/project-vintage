@@ -25,11 +25,14 @@
  */
 
 import * as path from 'path'
+import { createHash } from 'crypto'
 import { fileURLToPath } from 'url'
 import { config } from 'dotenv'
 import { createClient } from '@supabase/supabase-js'
 import { parseBaTListing } from '../lib/listing-parser/bring-a-trailer.js'
 import { computeComps } from '../lib/comp-engine/index.js'
+import { guardWrite } from '../lib/db/never-persist.js'
+import { extractSourceMentions, platformToPublication } from '../lib/extractors/source-mentions.js'
 
 // Load .env.local from project root
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -327,16 +330,29 @@ async function main() {
       continue
     }
 
-    // Build the DB row
+    // Source-mention signals: extracted from listing description at fetch time.
+    // Raw text is NOT stored — extract, set booleans, discard.
+    const sourcePublication = platformToPublication(listing.source_platform)
+    const mentions = listing.description
+      ? extractSourceMentions(listing.description, sourcePublication, listing.source_url)
+      : null
+
+    // VIN hash for cross-listing identity. Full VIN never written to DB.
+    const vinHashPartial = listing.vin
+      ? createHash('sha256').update(listing.vin.slice(-6)).digest('hex')
+      : null
+
+    // Build the DB row — no 'vin' or 'engine_serial' fields (NEVER_PERSIST_FIELDS).
+    // Raw description is discarded; source-mention signals stored as structured booleans.
     const row: Record<string, unknown> = {
       source_platform: listing.source_platform,
       source_url: listing.source_url,
       source_listing_id: listing.source_listing_id,
+      source_publication: sourcePublication,
       make: listing.make,
       model: listing.model,
       year: listing.year,
       trim: listing.trim,
-      vin: listing.vin,
       mileage: listing.mileage,
       transmission: listing.transmission,
       exterior_color: listing.exterior_color,
@@ -349,8 +365,28 @@ async function main() {
       ended_date: listing.auction_end_date,
       auction_ends_at: listing.auction_end_date,
       last_verified_at: new Date().toISOString(),
-      raw_description: listing.description,
+      ...(vinHashPartial !== null && { vin_hash_partial: vinHashPartial }),
+      ...(mentions !== null && {
+        mentioned_repaint: mentions.mentioned_repaint,
+        mentioned_accident_history: mentions.mentioned_accident_history,
+        mentioned_engine_service: mentions.mentioned_engine_service,
+        mentioned_transmission_service: mentions.mentioned_transmission_service,
+        mentioned_matching_numbers: mentions.mentioned_matching_numbers,
+        mentioned_modifications: mentions.mentioned_modifications,
+        mentioned_recent_ppi: mentions.mentioned_recent_ppi,
+        mentioned_original_owner: mentions.mentioned_original_owner,
+        mentioned_repaint_source: mentions.mentioned_repaint !== null ? mentions.source_citation : null,
+        mentioned_accident_history_source: mentions.mentioned_accident_history !== null ? mentions.source_citation : null,
+        mentioned_engine_service_source: mentions.mentioned_engine_service !== null ? mentions.source_citation : null,
+        mentioned_transmission_service_source: mentions.mentioned_transmission_service !== null ? mentions.source_citation : null,
+        mentioned_matching_numbers_source: mentions.mentioned_matching_numbers !== null ? mentions.source_citation : null,
+        mentioned_modifications_source: mentions.mentioned_modifications !== null ? mentions.source_citation : null,
+        mentioned_recent_ppi_source: mentions.mentioned_recent_ppi !== null ? mentions.source_citation : null,
+        mentioned_original_owner_source: mentions.mentioned_original_owner !== null ? mentions.source_citation : null,
+      }),
     }
+
+    guardWrite(row, 'seed-corpus-bat')
 
     const listingId = await upsertListing(admin, row)
     if (!listingId) {

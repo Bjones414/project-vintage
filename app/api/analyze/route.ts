@@ -2,6 +2,7 @@
 // Accepts a listing URL, parses it into a CanonicalListing, upserts to the listings table,
 // creates a listing_analyses row, and returns { listingId, listing }.
 // Enforces auth — free-tier rate limiting deferred to V1.5.
+import { createHash } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
@@ -10,6 +11,8 @@ import { decodeVin } from '@/lib/vin-decode/nhtsa'
 import { matchGeneration } from '@/lib/generation-match'
 import { runFindingsRules } from '@/lib/findings'
 import { computeComps } from '@/lib/comp-engine'
+import { guardWrite } from '@/lib/db/never-persist'
+import { extractSourceMentions, platformToPublication } from '@/lib/extractors/source-mentions'
 
 export async function POST(request: NextRequest) {
   // Validate body
@@ -95,7 +98,23 @@ export async function POST(request: NextRequest) {
     })
   }
 
+  // Source-mention signals: extracted from listing description text at fetch time.
+  // Raw text is NOT stored. Extract → set booleans → discard.
+  const sourcePublication = platformToPublication(listing.source_platform)
+  const mentions = listing.description
+    ? extractSourceMentions(listing.description, sourcePublication, listing.source_url)
+    : null
+
+  // VIN hash: SHA-256 of last 6 chars of full VIN. Stored for cross-listing identity.
+  // Full VIN is returned in the API response for display only — never written to the DB.
+  const vinHashPartial = listing.vin
+    ? createHash('sha256').update(listing.vin.slice(-6)).digest('hex')
+    : null
+
   // Maps CanonicalListing → listings table columns.
+  // NEVER_PERSIST_FIELDS: 'vin' and 'engine_serial' must not appear in this object.
+  // Raw description is not stored — source-mention signals are extracted above and
+  // the text is discarded here (facts-only architecture).
   // Fields with no current DB column (engine, image_urls, bid_count, seller_info,
   // modification_notes, raw_data) are omitted — preserved in CanonicalListing for callers.
   // onConflict: keyed on the unique constraint (source_platform, source_listing_id)
@@ -104,11 +123,11 @@ export async function POST(request: NextRequest) {
     source_platform: listing.source_platform,
     source_url: listing.source_url,
     source_listing_id: listing.source_listing_id,
+    source_publication: sourcePublication,
     make: listing.make,
     model: listing.model,
     year: listing.year,
     trim: listing.trim,
-    vin: listing.vin,
     mileage: listing.mileage,
     transmission: listing.transmission,
     exterior_color: listing.exterior_color,
@@ -121,7 +140,27 @@ export async function POST(request: NextRequest) {
     ended_date: listing.auction_end_date,
     auction_ends_at: listing.auction_end_date,
     last_verified_at: new Date().toISOString(),
-    raw_description: listing.description,
+    // VIN hash for cross-listing identity matching (not the full VIN).
+    ...(vinHashPartial !== null && { vin_hash_partial: vinHashPartial }),
+    // Source-mention signals (nullable booleans; null means not mentioned in text).
+    ...(mentions !== null && {
+      mentioned_repaint: mentions.mentioned_repaint,
+      mentioned_accident_history: mentions.mentioned_accident_history,
+      mentioned_engine_service: mentions.mentioned_engine_service,
+      mentioned_transmission_service: mentions.mentioned_transmission_service,
+      mentioned_matching_numbers: mentions.mentioned_matching_numbers,
+      mentioned_modifications: mentions.mentioned_modifications,
+      mentioned_recent_ppi: mentions.mentioned_recent_ppi,
+      mentioned_original_owner: mentions.mentioned_original_owner,
+      mentioned_repaint_source: mentions.mentioned_repaint !== null ? mentions.source_citation : null,
+      mentioned_accident_history_source: mentions.mentioned_accident_history !== null ? mentions.source_citation : null,
+      mentioned_engine_service_source: mentions.mentioned_engine_service !== null ? mentions.source_citation : null,
+      mentioned_transmission_service_source: mentions.mentioned_transmission_service !== null ? mentions.source_citation : null,
+      mentioned_matching_numbers_source: mentions.mentioned_matching_numbers !== null ? mentions.source_citation : null,
+      mentioned_modifications_source: mentions.mentioned_modifications !== null ? mentions.source_citation : null,
+      mentioned_recent_ppi_source: mentions.mentioned_recent_ppi !== null ? mentions.source_citation : null,
+      mentioned_original_owner_source: mentions.mentioned_original_owner !== null ? mentions.source_citation : null,
+    }),
     // Generation match — only written when a non-null generation was resolved, so
     // existing values are not overwritten with null on re-analysis of a listing
     // where generation matching fails (e.g., unsupported marque).
@@ -141,6 +180,9 @@ export async function POST(request: NextRequest) {
       vin_decode_raw: decoded.raw,
     }),
   }
+
+  // Guard: throws if any NEVER_PERSIST_FIELDS ('vin', 'engine_serial') appear in the payload.
+  guardWrite(row as Record<string, unknown>, 'api/analyze')
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const upsertResult = await (supabaseAdmin
