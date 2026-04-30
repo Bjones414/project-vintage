@@ -1,0 +1,260 @@
+{
+  "meta": {
+    "date": "2026-04-30T07:40:04.604Z",
+    "model_version": "v1.0",
+    "generation": "993",
+    "corpus_size": 199,
+    "num_splits": 10,
+    "seed": 42,
+    "elapsed_ms": 522
+  },
+  "summary": {
+    "total_predictions": 397,
+    "total_attempted": 400,
+    "insufficient_runs": 3,
+    "insufficient_pct": 0.75,
+    "mape_mean": 60.84391002767522,
+    "mape_median": 43.61702127659575,
+    "range_coverage_pct": 50.88161209068011,
+    "directional_bias_pct": 50.88161209068011,
+    "avg_comp_count": 197.00755667506297
+  },
+  "cohorts": {
+    "trim_category": {
+      "unknown": {
+        "n": 397,
+        "mape": 60.84391002767522,
+        "coverage": 50.88161209068011
+      }
+    },
+    "mileage_band": {
+      "moderate": {
+        "n": 243,
+        "mape": 51.87939511527364,
+        "coverage": 52.674897119341566
+      },
+      "low": {
+        "n": 31,
+        "mape": 31.720553229746713,
+        "coverage": 45.16129032258064
+      },
+      "high": {
+        "n": 91,
+        "mape": 52.16645250102565,
+        "coverage": 50.54945054945055
+      },
+      "very_high": {
+        "n": 17,
+        "mape": 46.88120532248558,
+        "coverage": 64.70588235294117
+      },
+      "ultra_low": {
+        "n": 12,
+        "mape": 58.9916011950082,
+        "coverage": 25
+      },
+      "unknown": {
+        "n": 3,
+        "mape": 1437.65841181258,
+        "coverage": 0
+      }
+    },
+    "year_decade": {
+      "1990s": {
+        "n": 397,
+        "mape": 60.84391002767522,
+        "coverage": 50.88161209068011
+      }
+    }
+  },
+  "worst_outliers": [
+    {
+      "listing_id": "f5a03a0b-1e69-41fa-9e01-4944b2b3b7f7",
+      "actual": 305000,
+      "predicted_median": 13200000,
+      "predicted_p25": 8399300,
+      "predicted_p75": 20600000,
+      "ape": 42.278688524590166,
+      "in_range": false,
+      "above_median": false,
+      "comp_count": 198,
+      "verdict": null,
+      "trim_category": null,
+      "mileage": null,
+      "year": 1995
+    },
+    {
+      "listing_id": "c2e12c39-bb92-4571-b21b-fbf56cc8add9",
+      "actual": 4775000,
+      "predicted_median": 13700000,
+      "predicted_p25": 8696100,
+      "predicted_p75": 20600000,
+      "ape": 1.869109947643979,
+      "in_range": false,
+      "above_median": false,
+      "comp_count": 197,
+      "verdict": null,
+      "trim_category": null,
+      "mileage": 49000,
+      "year": 1998
+    },
+    {
+      "listing_id": "c2e12c39-bb92-4571-b21b-fbf56cc8add9",
+      "actual": 4775000,
+      "predicted_median": 13700000,
+      "predicted_p25": 8696100,
+      "predicted_p75": 20600000,
+      "ape": 1.869109947643979,
+      "in_range": false,
+      "above_median": false,
+      "comp_count": 197,
+      "verdict": null,
+      "trim_category": null,
+      "mileage": 49000,
+      "year": 1998
+    },
+    {
+      "listing_id": "169b5e1f-08c0-4e33-8b7e-d381d2ca4695",
+      "actual": 5400000,
+      "predicted_median": 13200000,
+      "predicted_p25": 8559900,
+      "predicted_p75": 20500000,
+      "ape": 1.4444444444444444,
+      "in_range": false,
+      "above_median": false,
+      "comp_count": 197,
+      "verdict": null,
+      "trim_category": null,
+      "mileage": 73000,
+      "year": 1995
+    },
+    {
+      "listing_id": "169b5e1f-08c0-4e33-8b7e-d381d2ca4695",
+      "actual": 5400000,
+      "predicted_median": 13200000,
+      "predicted_p25": 8559900,
+      "predicted_p75": 20500000,
+      "ape": 1.4444444444444444,
+      "in_range": false,
+      "above_median": false,
+      "comp_count": 197,
+      "verdict": null,
+      "trim_category": null,
+      "mileage": 73000,
+      "year": 1995
+    },
+    {
+      "listing_id": "1424b808-aa89-4550-b78b-5406687dde0e",
+      "actual": 5550000,
+      "predicted_median": 13200000,
+      "predicted_p25": 8559900,
+      "predicted_p75": 20500000,
+      "ape": 1.3783783783783783,
+      "in_range": false,
+      "above_median": false,
+      "comp_count": 197,
+      "verdict": null,
+      "trim_category": null,
+      "mileage": 58000,
+      "year": 1995
+    },
+    {
+      "listing_id": "1424b808-aa89-4550-b78b-5406687dde0e",
+      "actual": 5550000,
+      "predicted_median": 13200000,
+      "predicted_p25": 8559900,
+      "predicted_p75": 20500000,
+      "ape": 1.3783783783783783,
+      "in_range": false,
+      "above_median": false,
+      "comp_count": 197,
+      "verdict": null,
+      "trim_category": null,
+      "mileage": 58000,
+      "year": 1995
+    },
+    {
+      "listing_id": "1424b808-aa89-4550-b78b-5406687dde0e",
+      "actual": 5550000,
+      "predicted_median": 13200000,
+      "predicted_p25": 8559900,
+      "predicted_p75": 20500000,
+      "ape": 1.3783783783783783,
+      "in_range": false,
+      "above_median": false,
+      "comp_count": 197,
+      "verdict": null,
+      "trim_category": null,
+      "mileage": 58000,
+      "year": 1995
+    },
+    {
+      "listing_id": "1424b808-aa89-4550-b78b-5406687dde0e",
+      "actual": 5550000,
+      "predicted_median": 13200000,
+      "predicted_p25": 8559900,
+      "predicted_p75": 20500000,
+      "ape": 1.3783783783783783,
+      "in_range": false,
+      "above_median": false,
+      "comp_count": 197,
+      "verdict": null,
+      "trim_category": null,
+      "mileage": 58000,
+      "year": 1995
+    },
+    {
+      "listing_id": "3708939f-c05e-41e5-9fd7-5a1196d261fe",
+      "actual": 5300000,
+      "predicted_median": 12500000,
+      "predicted_p25": 8250000,
+      "predicted_p75": 20200000,
+      "ape": 1.3584905660377358,
+      "in_range": false,
+      "above_median": false,
+      "comp_count": 197,
+      "verdict": null,
+      "trim_category": null,
+      "mileage": 83000,
+      "year": 1995
+    }
+  ],
+  "synthetic_tests": [
+    {
+      "name": "comp_resistant_flag",
+      "verdict": "uncomparable",
+      "predicted_median": null,
+      "note": "PASS"
+    },
+    {
+      "name": "empty_pool",
+      "verdict": "insufficient_comps",
+      "predicted_median": null,
+      "note": "PASS"
+    },
+    {
+      "name": "museum_subject_mileage_500",
+      "verdict": "insufficient_comps",
+      "predicted_median": null,
+      "note": "comp_count=1 (museum cohort separation applied)"
+    },
+    {
+      "name": "mileage_doubled_perturbation",
+      "verdict": null,
+      "predicted_median": 12600000,
+      "note": "median shift: -1.6%"
+    }
+  ],
+  "weights": {
+    "mileage_similarity": 0.3,
+    "condition_stub": 0.15,
+    "year_similarity": 0.1,
+    "trim_variant_match": 0.1,
+    "market_region_match": 0.1,
+    "spec_composite": 0.1,
+    "transmission_variant_match": 0.05,
+    "color_rarity": 0.05,
+    "consignor_tier_match": 0.05,
+    "mechanical_remediation_status": 0
+  }
+}

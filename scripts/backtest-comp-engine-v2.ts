@@ -229,7 +229,7 @@ function runSplit(
 ): PredictionResult[] {
   const results: PredictionResult[] = []
 
-  for (const idx of testIndices) {
+  for (const idx of Array.from(testIndices)) {
     const testRow = allRows[idx]
     const subject = rowToSubject(testRow)
 
@@ -415,7 +415,7 @@ async function main() {
   }
 
   // Load configs once
-  const generations = [...new Set(allRows.map(r => r.generation_id ?? 'default'))]
+  const generations = Array.from(new Set(allRows.map(r => r.generation_id ?? 'default')))
   const configMap = await loadAllConfigs(generations)
   const config = configMap.get(GENERATION) ?? configMap.get('default')!
   console.log('[backtest] Config loaded. Starting splits...')
@@ -423,6 +423,7 @@ async function main() {
   const asOf = new Date()
   const n = allRows.length
   const testSize = Math.ceil(n * 0.2) // 20% held out
+  const totalAttempted = testSize * NUM_SPLITS
 
   // Accumulate results across all splits
   const allPredictions: PredictionResult[] = []
@@ -434,7 +435,7 @@ async function main() {
       const j = Math.floor(rand() * (i + 1));
       [indices[i], indices[j]] = [indices[j], indices[i]]
     }
-    const testIndices = new Set(indices.slice(0, testSize))
+    const testIndices = new Set<number>(indices.slice(0, testSize))
     const splitResults = runSplit(allRows, config, testIndices, asOf)
     allPredictions.push(...splitResults)
     process.stdout.write(`  split ${split + 1}/${NUM_SPLITS}: ${splitResults.length} predictions\n`)
@@ -448,9 +449,8 @@ async function main() {
   const directionalBias = mean(allPredictions.map(r => r.above_median ? 1 : 0)) * 100
   const avgCompCount = mean(allPredictions.map(r => r.comp_count))
 
-  // Insufficient count
-  const corpusRunCount = allRows.length * NUM_SPLITS
-  const insufficientCount = corpusRunCount - totalPredictions
+  // Insufficient count (attempted = testSize × splits; the rest returned no prediction)
+  const insufficientCount = totalAttempted - totalPredictions
 
   // Top 10 worst outliers (highest APE)
   const worst10 = [...allPredictions]
@@ -516,7 +516,7 @@ async function main() {
   md += `---\n\n## Summary Metrics\n\n`
   md += `| Metric | Value |\n|---|---|\n`
   md += `| Total predictions | ${totalPredictions} |\n`
-  md += `| Insufficient / no_comps runs | ${insufficientCount} (${fmtPct(insufficientCount / corpusRunCount * 100)}) |\n`
+  md += `| Insufficient / no_comps runs | ${insufficientCount} / ${totalAttempted} (${fmtPct(insufficientCount / totalAttempted * 100)}) |\n`
   md += `| MAPE (mean) | ${fmtPct(mape)} |\n`
   md += `| MAPE (median) | ${fmtPct(medianApe)} |\n`
   md += `| Range coverage (P25–P75) | ${fmtPct(coverageRate)} |\n`
@@ -594,8 +594,9 @@ async function main() {
     },
     summary: {
       total_predictions: totalPredictions,
+      total_attempted: totalAttempted,
       insufficient_runs: insufficientCount,
-      insufficient_pct: insufficientCount / corpusRunCount * 100,
+      insufficient_pct: insufficientCount / totalAttempted * 100,
       mape_mean: mape,
       mape_median: medianApe,
       range_coverage_pct: coverageRate,
