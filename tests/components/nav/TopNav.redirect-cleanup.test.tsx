@@ -56,7 +56,7 @@ describe('TopNav — post-redirect cleanup', () => {
     render(<TopNav userEmail={null} />)
 
     await user.type(
-      screen.getByPlaceholderText(/paste an auction url/i),
+      screen.getByPlaceholderText(/paste a listing url/i),
       'https://bringatrailer.com/listing/test',
     )
     await user.keyboard('{Enter}')
@@ -70,7 +70,7 @@ describe('TopNav — post-redirect cleanup', () => {
 
     // setLoadingPromise(null) called before router.push → loading overlay gone, nav form back
     expect(screen.queryByTestId('mock-loading-state')).toBeNull()
-    expect(screen.getByPlaceholderText(/paste an auction url/i)).toBeTruthy()
+    expect(screen.getByPlaceholderText(/paste a listing url/i)).toBeTruthy()
     expect(pushSpy).toHaveBeenCalledWith('/analyze/listing-abc-123')
   })
 })

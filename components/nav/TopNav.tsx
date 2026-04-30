@@ -60,20 +60,20 @@ export function TopNav({ userEmail }: Props) {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 sm:px-6 lg:px-8">
-        {/* Logo wordmark */}
+    <header className="sticky top-0 z-40 border-b-[0.5px] border-border-default bg-bg-elevated">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-4 gap-y-2 px-7 py-3.5">
+        {/* Logo wordmark — serif, regular weight, links home */}
         <Link
           href="/"
-          className="shrink-0 font-serif text-lg font-semibold tracking-tight text-gray-900"
+          className="shrink-0 font-serif text-[17px] leading-none text-text-primary"
         >
-          Vintage
+          Project Vintage
         </Link>
 
         {/*
-         * User cluster — ml-auto keeps it right-aligned with the logo on the
-         * first row on mobile. sm:order-last + sm:ml-0 moves it after the URL
-         * field on desktop without DOM reordering.
+         * User cluster — ml-auto right-aligns it with the logo on the first
+         * row on mobile. sm:order-last + sm:ml-0 moves it after the URL field
+         * on desktop without DOM reordering.
          */}
         <div className="ml-auto shrink-0 sm:order-last sm:ml-0">
           {userEmail ? (
@@ -81,16 +81,16 @@ export function TopNav({ userEmail }: Props) {
               <button
                 type="button"
                 onClick={() => setMenuOpen((o) => !o)}
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold text-gray-700 hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500"
+                className="flex h-7 w-7 items-center justify-center rounded-full bg-text-primary font-sans text-[11px] font-medium text-bg-canvas focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
                 aria-label="Open account menu"
               >
                 {initials}
               </button>
               {menuOpen && (
-                <div className="absolute right-0 mt-1 w-40 rounded-md border border-gray-200 bg-white py-1 shadow-lg">
+                <div className="absolute right-0 mt-1 w-40 border-[0.5px] border-border-default bg-bg-surface py-1">
                   <Link
                     href="/account"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    className="block px-4 py-2 font-sans text-sm text-text-secondary hover:bg-bg-elevated"
                     onClick={() => setMenuOpen(false)}
                   >
                     Account
@@ -98,7 +98,7 @@ export function TopNav({ userEmail }: Props) {
                   <button
                     type="button"
                     onClick={handleSignOut}
-                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+                    className="w-full px-4 py-2 text-left font-sans text-sm text-text-secondary hover:bg-bg-elevated"
                   >
                     Sign out
                   </button>
@@ -106,7 +106,7 @@ export function TopNav({ userEmail }: Props) {
               )}
             </div>
           ) : (
-            <Link href="/login" className="text-sm text-gray-600 hover:text-gray-900">
+            <Link href="/login" className="font-sans text-sm text-text-tertiary hover:text-text-primary">
               Sign in
             </Link>
           )}
@@ -118,17 +118,15 @@ export function TopNav({ userEmail }: Props) {
          * single desktop row between logo and user cluster.
          */}
         <form onSubmit={handleSubmit} className="w-full min-w-0 sm:w-auto sm:flex-1">
-          <div className="relative flex items-center">
-            <input
-              type="url"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="Paste an auction URL to analyze"
-              className="w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-            />
-          </div>
+          <input
+            type="url"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="Paste a listing URL to analyze…"
+            className="w-full rounded-button border-[0.5px] border-border-default bg-bg-surface px-3.5 py-2 font-sans text-[13px] text-text-primary placeholder:text-text-muted focus:border-accent-primary focus:outline-none"
+          />
           {error && (
-            <p className="mt-1 text-xs text-red-600">{error}</p>
+            <p className="mt-1 font-sans text-xs text-severity-concern">{error}</p>
           )}
         </form>
       </div>

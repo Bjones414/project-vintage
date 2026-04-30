@@ -37,7 +37,7 @@ describe('TopNav', () => {
   it('renders logo, URL input, and sign-in link for anonymous user', () => {
     render(<TopNav userEmail={null} />)
     expect(screen.getByRole('link', { name: /vintage/i })).toBeTruthy()
-    expect(screen.getByPlaceholderText(/paste an auction url/i)).toBeTruthy()
+    expect(screen.getByPlaceholderText(/paste a listing url/i)).toBeTruthy()
     expect(screen.getByRole('link', { name: /sign in/i })).toBeTruthy()
   })
 
@@ -56,7 +56,7 @@ describe('TopNav', () => {
   it('renders on /analyze/[id] result page', () => {
     pathnameMock.mockReturnValue('/analyze/some-listing-id')
     render(<TopNav userEmail={null} />)
-    expect(screen.getByPlaceholderText(/paste an auction url/i)).toBeTruthy()
+    expect(screen.getByPlaceholderText(/paste a listing url/i)).toBeTruthy()
   })
 
   it('success path — shows loading state with all four steps on submit', async () => {
@@ -69,7 +69,7 @@ describe('TopNav', () => {
     render(<TopNav userEmail={null} />)
 
     await user.type(
-      screen.getByPlaceholderText(/paste an auction url/i),
+      screen.getByPlaceholderText(/paste a listing url/i),
       'https://bringatrailer.com/listing/test',
     )
     await user.keyboard('{Enter}')
@@ -93,7 +93,7 @@ describe('TopNav', () => {
     render(<TopNav userEmail={null} />)
 
     await user.type(
-      screen.getByPlaceholderText(/paste an auction url/i),
+      screen.getByPlaceholderText(/paste a listing url/i),
       'https://ebay.com/item/123',
     )
     await user.keyboard('{Enter}')
@@ -115,7 +115,7 @@ describe('TopNav', () => {
     render(<TopNav userEmail={null} />)
 
     await user.type(
-      screen.getByPlaceholderText(/paste an auction url/i),
+      screen.getByPlaceholderText(/paste a listing url/i),
       'https://bringatrailer.com/listing/test',
     )
     await user.keyboard('{Enter}')
@@ -124,7 +124,7 @@ describe('TopNav', () => {
     await waitFor(() => {
       expect(screen.getByText('Identifying the listing')).toBeTruthy()
     })
-    expect(screen.queryByPlaceholderText(/paste an auction url/i)).toBeNull()
+    expect(screen.queryByPlaceholderText(/paste a listing url/i)).toBeNull()
 
     resolveFetch({ ok: true, json: async () => ({ listingId: 'x' }) })
   })
