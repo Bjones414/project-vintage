@@ -309,6 +309,112 @@ CREATE INDEX listing_analyses_listing_id_idx         ON listing_analyses (listin
 
 ---
 
+## Schema Expansion — Comp Engine V2 (2026-04-29)
+
+All columns are nullable unless noted. Current state: all null (no extraction logic yet). Populated by Phase 2 enrichment jobs and updated scrapers.
+
+### Additions to `listings`
+
+#### Step 1 — Auction dynamics (migration `20260429060000`)
+
+```sql
+-- Added to listings:
+bid_count              integer,             -- bids placed at auction close; scrapers when available
+comment_count          integer,             -- page comment count (BaT engagement signal)
+bid_to_buy_ratio       numeric(10,4),       -- high_bid / asking_price; null when no BIN price
+final_to_reserve_ratio numeric(10,4),       -- final_price / reserve estimate; null when reserve unknown
+
+-- Already existed (NOT added again):
+--   listed_at        timestamptz  (migration 20260429040000)
+--   days_on_market   integer      (migration 20260429040000)
+--   auction_ends_at  timestamptz  (migration 20260428040000) — serves as sold_at
+```
+
+#### Step 2 — Vehicle attributes (migration `20260429070000`)
+
+```sql
+-- Added to listings:
+trim_category   text,   -- normalized grouping (GT3, Turbo, Carrera, Targa);
+                        --   distinct from raw trim text; used by comp engine
+country_of_sale text,   -- ISO 3166-1 alpha-2 (US, UK, DE); affects comp weighting
+```
+
+#### Step 3 — Condition & originality signals (migration `20260429080000`)
+
+```sql
+-- Added to listings (all nullable, Phase 2 extraction):
+condition_signal text
+  check (condition_signal in ('concours','excellent','good','driver','project')),
+paint_signal     text
+  check (paint_signal in ('original','repaint_partial','repaint_full','unknown')),
+interior_signal  text
+  check (interior_signal in ('original','refurbished','replaced')),
+numbers_matching boolean,   -- engine/gearbox serial numbers match factory VIN
+mod_status       text
+  check (mod_status in ('stock','light_reversible','heavy','unknown')),
+```
+
+#### Step 4 — Documentation & provenance signals (migration `20260429090000`)
+
+```sql
+-- Added to listings (all nullable):
+has_porsche_coa     boolean,   -- Certificate of Authenticity from Porsche AG
+has_kardex          boolean,   -- factory build record from Porsche Archives
+has_service_records boolean,   -- Phase 2 structured flag (see note on service_history_present)
+has_window_sticker  boolean,   -- Monroney / delivery sticker
+has_owners_manual   boolean,   -- original owners manual
+owner_count         integer,   -- normalized count (see note on ownership_count)
+documentation_score integer,   -- derived 0–6 sum of above flags; future scoring job
+```
+
+**Overlap notes:**
+- `has_service_records` is distinct from existing `service_history_present boolean` (base schema). The base column is set by scraper-level detection; the new column is the Phase 2 enrichment signal. May consolidate in a future migration.
+- `owner_count integer` is distinct from existing `ownership_count smallint` (base schema). Same relationship — Phase 2 normalized value alongside the original scraper field.
+
+#### Step 5 — Factory options (migration `20260429100000`)
+
+```sql
+-- Added to listings (all nullable):
+factory_options    text[],    -- normalized factory option codes (marque-agnostic);
+                              --   e.g., ['M637','030','220']; distinct from raw options jsonb
+has_x50_powerkit   boolean,   -- Porsche M637 / X50 GT powerkit (Porsche-specific convenience)
+has_aero_kit       boolean,   -- Porsche factory aero package
+has_sport_seats    boolean,   -- Porsche factory sport/bucket seats
+is_paint_to_sample boolean,   -- Paint-to-Sample special order color
+```
+
+**Architecture note:** `factory_options text[]` is marque-agnostic. The four BOOLEAN convenience columns are Porsche-specific denormalizations stored alongside the generic array per the core architectural rule ("build data as if for all cars"). Adding Ferrari convenience flags later requires only new columns; no schema change on `factory_options`.
+
+---
+
+### New table: `market_snapshots` (migration `20260429110000`)
+
+Periodic market aggregations per (generation, trim, date). Written by background aggregation jobs; read by comp engine and market trends UI.
+
+```sql
+CREATE TABLE market_snapshots (
+  id                    uuid         PRIMARY KEY DEFAULT gen_random_uuid(),
+  generation_id         text,                    -- nullable; matches porsche_generations.generation_id
+  trim_category         text,                    -- nullable; matches listings.trim_category
+  snapshot_date         date         NOT NULL,   -- date of aggregation (daily or weekly)
+  active_listing_count  integer,                 -- unsold listings as of snapshot_date
+  sold_count_30d        integer,                 -- sold in 30-day window ending snapshot_date
+  median_price_30d      bigint,                  -- median final_price cents in 30-day window
+  median_dom_30d        integer,                 -- median days_on_market in 30-day window
+  sell_through_rate_30d numeric(5,4)             -- sold_count / (sold + active); 0.0000–1.0000
+    check (sell_through_rate_30d is null
+           or (sell_through_rate_30d >= 0 and sell_through_rate_30d <= 1))
+);
+
+-- Primary access pattern: all snapshots for a (generation, trim) pair ordered by date
+CREATE INDEX market_snapshots_gen_trim_date_idx
+  ON market_snapshots (generation_id, trim_category, snapshot_date DESC);
+```
+
+**RLS:** enabled. `market_snapshots_public_read` policy allows anon + authenticated SELECT. `service_role` has ALL.
+
+---
+
 ## Notes
 
 - All monetary amounts are stored as integers in the smallest currency unit (cents for USD, pence for GBP) to avoid floating-point rounding errors. The application layer handles display formatting.
