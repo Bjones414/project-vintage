@@ -21,7 +21,7 @@ export function TopNav({ userEmail }: Props) {
   const urlRef = useRef(url)
   urlRef.current = url
 
-  const isHome = pathname === '/'
+  const hideUrlField = pathname === '/' || pathname === '/login' || pathname === '/signup'
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -74,7 +74,7 @@ export function TopNav({ userEmail }: Props) {
          * field is absent (home). sm:order-last + sm:ml-0 moves it after the
          * URL field on desktop when the field is present.
          */}
-        <div className={`ml-auto shrink-0 sm:order-last${isHome ? '' : ' sm:ml-0'}`}>
+        <div className={`ml-auto shrink-0 sm:order-last${hideUrlField ? '' : ' sm:ml-0'}`}>
           {userEmail ? (
             <div className="relative">
               <button
@@ -126,7 +126,7 @@ export function TopNav({ userEmail }: Props) {
          * URL field — hidden on / (hero has its own). On all other pages it
          * wraps to a second row on mobile and fills the center on desktop.
          */}
-        {!isHome && (
+        {!hideUrlField && (
           <form onSubmit={handleSubmit} className="w-full min-w-0 sm:w-auto sm:flex-1">
             <input
               type="url"

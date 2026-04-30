@@ -67,6 +67,18 @@ describe('TopNav', () => {
     expect(screen.getByPlaceholderText(/paste a listing url/i)).toBeTruthy()
   })
 
+  it('hides URL field on /login', () => {
+    pathnameMock.mockReturnValue('/login')
+    render(<TopNav userEmail={null} />)
+    expect(screen.queryByPlaceholderText(/paste a listing url/i)).toBeNull()
+  })
+
+  it('hides URL field on /signup', () => {
+    pathnameMock.mockReturnValue('/signup')
+    render(<TopNav userEmail={null} />)
+    expect(screen.queryByPlaceholderText(/paste a listing url/i)).toBeNull()
+  })
+
   it('renders initials avatar for signed-in user, no auth links', () => {
     render(<TopNav userEmail="blake@example.com" />)
     expect(screen.getByRole('button', { name: /open account menu/i })).toBeTruthy()
