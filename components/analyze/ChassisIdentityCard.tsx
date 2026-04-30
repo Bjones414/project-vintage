@@ -10,6 +10,10 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
   // VIN is not stored in the database per compliance policy (NEVER_PERSIST_FIELDS).
   // It is available in the API response for the subject listing only.
   // Display from DB is not possible — session-storage display is a deferred V1 UX improvement.
+  // Always show mileage — em dash when null (largest comp engine weight; absence is confusing)
+  const mileageValue =
+    listing.mileage != null ? `${listing.mileage.toLocaleString('en-US')} mi` : '—'
+
   const fields: Array<{ label: string; value: string | null | undefined; mono?: boolean }> = [
     {
       label: 'Generation',
@@ -21,6 +25,7 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
         ? String(listing.decoded_year)
         : String(listing.year),
     },
+    { label: 'Mileage', value: mileageValue },
     { label: 'Variant', value: listing.trim },
     { label: 'Engine', value: listing.decoded_engine },
     { label: 'Assembly Plant', value: listing.decoded_plant },

@@ -370,6 +370,43 @@ describe('ChassisIdentityCard', () => {
     // No Color Rarity field without colorData
     expect(html).not.toContain('Color Rarity')
   })
+
+  it('formats mileage with thousands separator and "mi" suffix', () => {
+    // GT4 RS: mileage = 847 (no thousands separator needed)
+    const html847 = renderToString(
+      <ChassisIdentityCard listing={GT4_RS_LISTING} generation={null} colorData={null} />,
+    )
+    expect(t(html847)).toContain('847 mi')
+
+    // 930 Turbo: mileage = 45200 → "45,200 mi"
+    const html45k = renderToString(
+      <ChassisIdentityCard listing={TURBO_930_LISTING} generation={null} colorData={null} />,
+    )
+    expect(t(html45k)).toContain('45,200 mi')
+  })
+
+  it('renders em dash when mileage is null', () => {
+    const nullMileageListing = { ...GT4_RS_LISTING, mileage: null }
+    const html = renderToString(
+      <ChassisIdentityCard listing={nullMileageListing} generation={null} colorData={null} />,
+    )
+    expect(t(html)).toContain('Mileage')
+    expect(t(html)).toContain('—')
+    // No "123 mi" formatted value — only the em dash should appear
+    expect(html).not.toMatch(/[\d,]+ mi/)
+  })
+
+  it('mileage appears between Model Year and Variant in render order', () => {
+    const html = renderToString(
+      <ChassisIdentityCard listing={GT4_RS_LISTING} generation={GENERATION_982_CAYMAN} colorData={null} />,
+    )
+    const yearIdx = html.indexOf('Model Year')
+    const mileageIdx = html.indexOf('Mileage')
+    const variantIdx = html.indexOf('Variant')
+    expect(yearIdx).toBeGreaterThan(-1)
+    expect(mileageIdx).toBeGreaterThan(yearIdx)
+    expect(variantIdx).toBeGreaterThan(mileageIdx)
+  })
 })
 
 // ---------------------------------------------------------------------------
