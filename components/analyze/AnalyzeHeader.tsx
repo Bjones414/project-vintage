@@ -1,5 +1,4 @@
 import type { Tables } from '@/lib/supabase/types'
-import { Badge } from '@/components/ui/badge'
 import { AuctionCountdown } from './AuctionCountdown'
 import { LiveStatusPill } from './LiveStatusPill'
 import type { AnalysisData, ViewerTier } from './types'
@@ -12,17 +11,11 @@ type Props = {
   now?: Date
 }
 
-function statusBadge(listing: Tables<'listings'>): {
-  label: string
-  variant: 'success' | 'neutral' | 'warning' | 'danger'
-} {
+function statusLabel(listing: Tables<'listings'>): string {
   switch (listing.listing_status) {
-    case 'sold':
-      return { label: 'Sold', variant: 'neutral' }
-    case 'no-sale':
-      return { label: 'No Sale', variant: 'warning' }
-    default:
-      return { label: 'Ended', variant: 'neutral' }
+    case 'sold': return 'Sold'
+    case 'no-sale': return 'No Sale'
+    default: return 'Ended'
   }
 }
 
@@ -52,29 +45,39 @@ export function AnalyzeHeader({ listing, analysisData, now }: Props) {
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-      <div>
+      <div className="min-w-0">
         {isLive ? (
           <LiveStatusPill listing={listing} now={now} />
         ) : (
-          <Badge variant={statusBadge(listing).variant}>{statusBadge(listing).label}</Badge>
+          <span className="inline-flex items-center gap-2">
+            <span className="h-[5px] w-[5px] shrink-0 rounded-full bg-text-quaternary" aria-hidden="true" />
+            <span className="font-serif text-[11px] uppercase tracking-[0.18em] text-text-quaternary">
+              {statusLabel(listing)}
+            </span>
+          </span>
         )}
-        <h1 className="mt-2 font-serif text-2xl font-semibold tracking-tight text-gray-900">
+        <h1 className="mt-2 font-serif text-h1 text-text-primary">
           {headline}
         </h1>
         {subtitle && (
-          <p className="mt-1 text-sm italic text-gray-500">{subtitle}</p>
+          <p className="mt-1 font-serif text-[16px] italic leading-[1.65] text-text-tertiary">{subtitle}</p>
         )}
         {compsUsed != null && compsUsed > 0 && (
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 font-sans text-[13px] text-text-tertiary">
             {compsUsed} comparable sale{compsUsed !== 1 ? 's' : ''} in dataset
           </p>
         )}
       </div>
-      {listing.auction_ends_at && (
-        <div className="text-sm sm:text-right">
-          <AuctionCountdown endsAt={listing.auction_ends_at} listingId={listing.id} />
-        </div>
-      )}
+      <div className="shrink-0 text-right">
+        {listing.vin && (
+          <p className="font-mono text-[12px] tracking-[0.04em] text-text-quaternary">{listing.vin}</p>
+        )}
+        {listing.auction_ends_at && (
+          <div className="mt-1 font-sans text-[13px] text-text-tertiary">
+            <AuctionCountdown endsAt={listing.auction_ends_at} listingId={listing.id} />
+          </div>
+        )}
+      </div>
     </div>
   )
 }

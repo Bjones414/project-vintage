@@ -1,5 +1,4 @@
 import type { Tables } from '@/lib/supabase/types'
-import { Card } from '@/components/ui/card'
 
 type Props = {
   listing: Tables<'listings'>
@@ -7,8 +6,8 @@ type Props = {
 }
 
 export function ChassisIdentityCard({ listing, generation }: Props) {
-  const fields: Array<{ label: string; value: string | null | undefined }> = [
-    { label: 'VIN', value: listing.vin },
+  const fields: Array<{ label: string; value: string | null | undefined; mono?: boolean }> = [
+    { label: 'VIN', value: listing.vin, mono: true },
     {
       label: 'Generation',
       value: listing.generation ?? generation?.generation_id ?? null,
@@ -35,21 +34,22 @@ export function ChassisIdentityCard({ listing, generation }: Props) {
   const present = fields.filter(({ value }) => value != null && value !== '')
 
   return (
-    <Card title="Chassis Identity">
+    <div className="border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
+      <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">Chassis Identity</p>
       {present.length === 0 ? (
-        <p className="text-sm text-gray-500">No chassis data available.</p>
+        <p className="mt-4 font-sans text-[13px] text-text-tertiary">No chassis data available.</p>
       ) : (
-        <dl className="grid grid-cols-2 gap-x-4 gap-y-3">
-          {present.map(({ label, value }) => (
+        <dl className="mt-4 grid grid-cols-2 gap-x-6 gap-y-4">
+          {present.map(({ label, value, mono }) => (
             <div key={label}>
-              <dt className="text-xs font-medium text-gray-500">{label}</dt>
-              <dd className="mt-0.5 break-all text-sm font-medium text-gray-900">
+              <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">{label}</dt>
+              <dd className={`mt-1 break-all ${mono ? 'font-mono text-[12px] tracking-[0.04em] text-text-quaternary' : 'font-serif text-[17px] text-text-primary'}`}>
                 {value}
               </dd>
             </div>
           ))}
         </dl>
       )}
-    </Card>
+    </div>
   )
 }

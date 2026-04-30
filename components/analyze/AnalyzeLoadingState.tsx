@@ -93,7 +93,7 @@ export function AnalyzeLoadingState({ promise, onSuccess, onError }: Props) {
   }, [promise])
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-bg-canvas">
       <div className="w-full max-w-sm px-8">
         <ol className="flex flex-col gap-6" aria-label="Analysis progress">
           {STEPS.map((label, i) => {
@@ -103,7 +103,7 @@ export function AnalyzeLoadingState({ promise, onSuccess, onError }: Props) {
                 <span
                   aria-hidden="true"
                   className={[
-                    'flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm',
+                    'flex h-6 w-6 shrink-0 items-center justify-center rounded-full font-sans text-[13px]',
                     status === 'complete'
                       ? 'bg-green-100 text-green-700'
                       : status === 'active'
@@ -124,11 +124,11 @@ export function AnalyzeLoadingState({ promise, onSuccess, onError }: Props) {
                 </span>
                 <span
                   className={[
-                    'text-sm',
+                    'font-sans text-[14px]',
                     status === 'complete'
-                      ? 'font-medium text-gray-900'
+                      ? 'text-text-secondary'
                       : status === 'active'
-                        ? 'font-semibold text-gray-900'
+                        ? 'font-semibold text-text-primary'
                         : 'text-gray-400',
                   ].join(' ')}
                 >

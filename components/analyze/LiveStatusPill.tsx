@@ -23,10 +23,10 @@ export function LiveStatusPill({ listing, now: nowProp }: Props) {
   if (listing.listing_status !== 'live' || !listing.auction_ends_at || !pillText) return null
 
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-2.5 py-1 text-xs font-semibold tracking-wide text-white">
+    <span className="inline-flex items-center gap-2 font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">
       <span
         aria-hidden="true"
-        className="h-1.5 w-1.5 rounded-full bg-white animate-pulse motion-reduce:animate-none"
+        className="h-[5px] w-[5px] shrink-0 rounded-full bg-severity-positive animate-pulse motion-reduce:animate-none"
       />
       LIVE · {pillText}
     </span>

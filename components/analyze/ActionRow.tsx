@@ -35,26 +35,26 @@ export function ActionRow({ listing, viewerTier }: Props) {
 
   return (
     <>
-      <div className="flex flex-wrap gap-3">
+      <div className="mt-5 flex flex-wrap gap-[10px] border-t-[0.5px] border-border-default pt-5">
         <a
           href={listing.source_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2"
+          className="inline-flex items-center rounded-button bg-text-primary px-5 py-[10px] font-sans text-[13px] font-medium tracking-[0.02em] text-bg-canvas hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2"
         >
-          View on {platformName}
+          View on {platformName} ↗
         </a>
         <button
           type="button"
           onClick={handleWatchClick}
-          className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2"
+          className="inline-flex items-center rounded-button border-[0.5px] border-text-primary bg-transparent px-5 py-[10px] font-sans text-[13px] font-medium tracking-[0.02em] text-text-primary hover:bg-bg-elevated focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2"
         >
           Watch this car
         </button>
         <button
           type="button"
           onClick={handleSaveClick}
-          className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2"
+          className="inline-flex items-center rounded-button border-[0.5px] border-text-primary bg-transparent px-5 py-[10px] font-sans text-[13px] font-medium tracking-[0.02em] text-text-primary hover:bg-bg-elevated focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2"
         >
           Save analysis
         </button>

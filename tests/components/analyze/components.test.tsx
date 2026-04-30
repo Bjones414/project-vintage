@@ -231,7 +231,7 @@ describe('VerdictBlock', () => {
 // MetricTiles
 // ---------------------------------------------------------------------------
 describe('MetricTiles', () => {
-  it('anonymous — all tiles show real values; comps tile has sign-in hint', () => {
+  it('anonymous — Fair Value and Comps show "Sign in to see"; bid and reserve show real values', () => {
     const html = renderToString(
       <MetricTiles
         listing={GT4_RS_LISTING}
@@ -240,9 +240,13 @@ describe('MetricTiles', () => {
       />,
     )
     expect(html).toMatchSnapshot()
-    // Comps count is visible — no locking
-    expect(html).toContain('12')
-    expect(html).toContain('Sign in to see full comparison')
+    // Fair Value and Comps locked for anonymous
+    expect(t(html)).toContain('Sign in to see')
+    // Comps count not visible for anonymous
+    expect(html).not.toContain('>12<')
+    // Bid and reserve show real values
+    expect(t(html)).toContain('$220,000')
+    expect(t(html)).toContain('Reserve Met')
     // Banned strings
     expect(html).not.toContain('Free account')
     expect(html).not.toContain('Locked')
@@ -538,7 +542,10 @@ describe('TeaserBlock', () => {
     const html = renderToString(
       <TeaserBlock analysisRow={row} listingId={LISTING_ID} viewerTier="free" />,
     )
-    expect(t(html)).toContain('We found 1 thing you should ask the seller')
+    // Count is wrapped in a span for gold emphasis — check parts separately
+    expect(t(html)).toContain('We found')
+    expect(t(html)).toContain('1 thing')
+    expect(t(html)).toContain('you should ask the seller about this car')
     expect(t(html)).not.toContain('things')
   })
 
@@ -547,7 +554,9 @@ describe('TeaserBlock', () => {
     const html = renderToString(
       <TeaserBlock analysisRow={row} listingId={LISTING_ID} viewerTier="free" />,
     )
-    expect(t(html)).toContain('We found 5 things you should ask the seller')
+    expect(t(html)).toContain('We found')
+    expect(t(html)).toContain('5 things')
+    expect(t(html)).toContain('you should ask the seller about this car')
   })
 
   it('tiles: renders 3 tiles when 3 findings present', () => {
@@ -589,7 +598,7 @@ describe('TeaserBlock', () => {
     const html = renderToString(
       <TeaserBlock analysisRow={ANALYSIS_ROW_3_FINDINGS} listingId={LISTING_ID} viewerTier="free" />,
     )
-    expect(html).toContain('blur-sm')
+    expect(html).toContain('blur-[2.5px]')
     expect(html).toContain('select-none')
     // Title itself appears without blur class (blur is on the body paragraph)
     expect(html).toContain('Mileage is above average for year and trim')
@@ -658,7 +667,7 @@ describe('AnonymousSignupCTA', () => {
     expect(html).toContain('No card required')
     expect(html).toContain('Create a free account')
     // six benefits
-    const benefitCount = (html.match(/text-green-500/g) ?? []).length
+    const benefitCount = (html.match(/text-severity-positive/g) ?? []).length
     expect(benefitCount).toBe(6)
   })
 })

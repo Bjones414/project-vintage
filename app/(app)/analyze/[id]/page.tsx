@@ -71,7 +71,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
   const analysisData = parseAnalysisData(analysisResult.data?.analysis_data ?? null)
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+    <main className="mx-auto max-w-7xl px-6 py-8 sm:px-8 lg:px-10">
       <AnalyzeHeader
         listing={listing}
         analysisData={analysisData}
@@ -87,31 +87,40 @@ export default async function ListingDetailPage({ params }: PageProps) {
         analysisData={analysisData}
         viewerTier={viewerTier}
       />
-      <div className="mt-6 flex flex-col gap-6 md:flex-row">
-        <div className="flex min-w-0 flex-col gap-6 md:w-[62%]">
-          <ChassisIdentityCard listing={listing} generation={generation} />
-          <ComparableSalesCard analysisData={analysisData} viewerTier={viewerTier} />
-          <ActionRow listing={listing} viewerTier={viewerTier} />
-        </div>
-        <div className="flex min-w-0 flex-col gap-6 md:w-[38%]">
-          <EraCard
-            generation={generation}
-            viewerTier={viewerTier}
-          />
-          <WatchOutsCard editorial={editorial} viewerTier={viewerTier} />
-          <ColorRarityCard
-            listing={listing}
-            colorData={colorData}
-            viewerTier={viewerTier}
-          />
-        </div>
+
+      {/* Two-column: Chassis Identity | Era Card */}
+      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <ChassisIdentityCard listing={listing} generation={generation} />
+        <EraCard generation={generation} viewerTier={viewerTier} />
       </div>
+
+      {/* Full-width: Color Rarity */}
+      <div className="mt-4">
+        <ColorRarityCard listing={listing} colorData={colorData} viewerTier={viewerTier} />
+      </div>
+
+      {/* Full-width: Watch-outs */}
+      {editorial && (
+        <div className="mt-4">
+          <WatchOutsCard editorial={editorial} viewerTier={viewerTier} />
+        </div>
+      )}
+
+      {/* Full-width: Comparable Sales */}
+      <div className="mt-4">
+        <ComparableSalesCard analysisData={analysisData} viewerTier={viewerTier} />
+      </div>
+
+      {/* Full-width: Teaser */}
       <TeaserBlock
         analysisRow={analysisResult.data ?? null}
         listingId={listing.id}
         viewerTier={viewerTier}
       />
+
       {viewerTier === 'anonymous' && <AnonymousSignupCTA />}
+
+      <ActionRow listing={listing} viewerTier={viewerTier} />
     </main>
   )
 }

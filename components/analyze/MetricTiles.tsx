@@ -20,10 +20,10 @@ function MetricTile({
   valueClassName?: string
 }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4">
-      <p className="text-xs font-medium uppercase tracking-wide text-gray-500">{label}</p>
-      <p className={`mt-1 truncate ${valueClassName ?? 'text-xl font-bold text-gray-900'}`}>{value}</p>
-      {hint && <p className="mt-1 text-xs text-gray-400">{hint}</p>}
+    <div className="border-[0.5px] border-border-default bg-bg-surface px-4 py-[14px]">
+      <p className="font-serif text-[10px] uppercase tracking-[0.18em] text-accent-primary">{label}</p>
+      <p className={`mt-1 truncate ${valueClassName ?? 'font-serif text-[20px] text-text-primary'}`}>{value}</p>
+      {hint && <p className="mt-1 font-sans text-[12px] text-text-muted">{hint}</p>}
     </div>
   )
 }
@@ -59,7 +59,7 @@ export function MetricTiles({ listing, analysisData, viewerTier }: Props) {
   let reserveClassName: string | undefined
   if (listing.has_no_reserve) {
     reserveLabel = 'No Reserve'
-    reserveClassName = 'text-xl font-bold text-amber-600'
+    reserveClassName = 'font-serif text-[20px] text-accent-primary'
   } else if (listing.reserve_met === true) {
     reserveLabel = 'Reserve Met'
     reserveClassName = undefined
@@ -71,29 +71,29 @@ export function MetricTiles({ listing, analysisData, viewerTier }: Props) {
     reserveClassName = undefined
   }
 
+  const signInValue = 'Sign in to see'
+  const signInClassName = 'font-serif text-[16px] italic text-text-muted'
+
+  const fairValueLocked = viewerTier === 'anonymous'
+  const compsLocked = viewerTier === 'anonymous'
+
   return (
-    <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+    <div className="mt-6 grid grid-cols-2 gap-[10px] sm:grid-cols-4">
       <MetricTile
         label={bidLabel}
         value={bidCents != null ? formatCents(bidCents, currency) : '—'}
       />
       <MetricTile
         label="Fair Value Range"
-        value={fairValueStr ?? 'In development'}
-        valueClassName={fairValueStr == null ? 'text-sm italic text-gray-400' : undefined}
-        hint={fairValueStr == null ? 'Comp engine launching with full report' : undefined}
+        value={fairValueLocked ? signInValue : (fairValueStr ?? 'In development')}
+        valueClassName={fairValueLocked ? signInClassName : (fairValueStr == null ? 'font-serif text-[16px] italic text-text-muted' : undefined)}
+        hint={!fairValueLocked && fairValueStr == null ? 'Comp engine launching with full report' : undefined}
       />
       <MetricTile
         label="Comps Used"
-        value={compsValue ?? 'In development'}
-        valueClassName={compsValue == null ? 'text-sm italic text-gray-400' : undefined}
-        hint={
-          compsValue == null
-            ? 'Comp engine launching with full report'
-            : viewerTier === 'anonymous'
-              ? 'Sign in to see full comparison'
-              : undefined
-        }
+        value={compsLocked ? signInValue : (compsValue ?? 'In development')}
+        valueClassName={compsLocked ? signInClassName : (compsValue == null ? 'font-serif text-[16px] italic text-text-muted' : undefined)}
+        hint={!compsLocked && compsValue == null ? 'Comp engine launching with full report' : undefined}
       />
       <MetricTile label="Reserve" value={reserveLabel} valueClassName={reserveClassName} />
     </div>
