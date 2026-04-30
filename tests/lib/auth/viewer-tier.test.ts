@@ -37,7 +37,7 @@ describe('getViewerTier', () => {
 
   it('no session → anonymous', async () => {
     vi.mocked(createClient).mockReturnValue(
-      makeClient({ user: null, profile: null }) as ReturnType<typeof createClient>,
+      makeClient({ user: null, profile: null }) as unknown as ReturnType<typeof createClient>,
     )
     expect(await getViewerTier()).toEqual({ tier: 'anonymous', bypass: false })
   })
@@ -47,7 +47,7 @@ describe('getViewerTier', () => {
       makeClient({
         user: { id: 'user-1' },
         profile: { role: 'member', subscription_tier: 'free' },
-      }) as ReturnType<typeof createClient>,
+      }) as unknown as ReturnType<typeof createClient>,
     )
     expect(await getViewerTier()).toEqual({ tier: 'free', bypass: false })
   })
@@ -57,7 +57,7 @@ describe('getViewerTier', () => {
       makeClient({
         user: { id: 'user-1' },
         profile: { role: 'member', subscription_tier: 'pro' },
-      }) as ReturnType<typeof createClient>,
+      }) as unknown as ReturnType<typeof createClient>,
     )
     expect(await getViewerTier()).toEqual({ tier: 'pro', bypass: false })
   })
@@ -67,7 +67,7 @@ describe('getViewerTier', () => {
       makeClient({
         user: { id: 'user-1' },
         profile: { role: 'member', subscription_tier: 'collector' },
-      }) as ReturnType<typeof createClient>,
+      }) as unknown as ReturnType<typeof createClient>,
     )
     expect(await getViewerTier()).toEqual({ tier: 'pro', bypass: false })
   })
@@ -77,7 +77,7 @@ describe('getViewerTier', () => {
       makeClient({
         user: { id: 'user-1' },
         profile: { role: 'admin', subscription_tier: 'free' },
-      }) as ReturnType<typeof createClient>,
+      }) as unknown as ReturnType<typeof createClient>,
     )
     expect(await getViewerTier()).toEqual({ tier: 'pro', bypass: true })
   })
@@ -87,14 +87,14 @@ describe('getViewerTier', () => {
       makeClient({
         user: { id: 'user-1' },
         profile: { role: 'beta', subscription_tier: 'free' },
-      }) as ReturnType<typeof createClient>,
+      }) as unknown as ReturnType<typeof createClient>,
     )
     expect(await getViewerTier()).toEqual({ tier: 'pro', bypass: true })
   })
 
   it('profile fetch returns null → free (session exists but row missing)', async () => {
     vi.mocked(createClient).mockReturnValue(
-      makeClient({ user: { id: 'user-1' }, profile: null }) as ReturnType<typeof createClient>,
+      makeClient({ user: { id: 'user-1' }, profile: null }) as unknown as ReturnType<typeof createClient>,
     )
     expect(await getViewerTier()).toEqual({ tier: 'free', bypass: false })
   })
