@@ -13,8 +13,8 @@
  *   --max         Maximum listings to parse and seed (default: 200)
  *
  * Behavior:
- *   1. Checks BaT's robots.txt — aborts if /tag/ paths are disallowed.
- *   2. Fetches the BaT tag archive for the given generation and paginates.
+ *   1. Checks BaT's robots.txt — aborts if paths are disallowed.
+ *   2. Calls BaT's listings-filter REST API to discover sold listing URLs for the generation.
  *   3. For each discovered listing URL: checks if already in DB, skips if so.
  *   4. Parses the listing using the production BaT parser, persists to listings table.
  *   5. Runs computeComps on all seeded listings after the crawl completes.
@@ -28,7 +28,6 @@ import * as path from 'path'
 import { fileURLToPath } from 'url'
 import { config } from 'dotenv'
 import { createClient } from '@supabase/supabase-js'
-import { load } from 'cheerio'
 import { parseBaTListing } from '../lib/listing-parser/bring-a-trailer.js'
 import { computeComps } from '../lib/comp-engine/index.js'
 
@@ -131,67 +130,100 @@ async function checkRobotsTxt(): Promise<boolean> {
 
 // ─── Archive discovery ────────────────────────────────────────────────────────
 
+// Generation → search params map for BaT listings-filter API
+const GENERATION_PARAMS: Record<string, { include_s: string; minimum_year: number; maximum_year: number }> = {
+  '993': { include_s: 'porsche 993', minimum_year: 1993, maximum_year: 1998 },
+  '964': { include_s: 'porsche 964', minimum_year: 1989, maximum_year: 1994 },
+  '930': { include_s: 'porsche 930', minimum_year: 1975, maximum_year: 1989 },
+  '996': { include_s: 'porsche 996', minimum_year: 1997, maximum_year: 2005 },
+  '997': { include_s: 'porsche 997', minimum_year: 2004, maximum_year: 2012 },
+}
+
+interface BaTApiItem {
+  url: string
+  title: string
+  current_bid: number
+  active: boolean
+}
+
+interface BaTApiResponse {
+  items: BaTApiItem[]
+  items_total: number
+  pages_total: number
+  page_current: number
+}
+
 /**
- * Discovers listing URLs from BaT's tag archive page.
- * Tag URL: https://bringatrailer.com/tag/porsche-911-{generation}/
- * Pagination: ?paged=N
+ * Discovers sold listing URLs via BaT's listings-filter REST API.
+ * Endpoint: /wp-json/bringatrailer/1.0/data/listings-filter
+ * Paginates through all sold results for the given generation.
  */
 async function discoverListingUrls(generation: string, max: number): Promise<string[]> {
-  const tagSlug = `porsche-911-${generation}`
-  const baseUrl = `${BAT_HOSTNAME}/tag/${tagSlug}/`
+  const params = GENERATION_PARAMS[generation]
+  if (!params) {
+    console.warn(`[scraper] no generation params for "${generation}" — falling back to keyword search`)
+  }
+  const searchTerm = params?.include_s ?? `porsche ${generation}`
+  const minYear = params?.minimum_year
+  const maxYear = params?.maximum_year
 
   const discoveredUrls: string[] = []
   let page = 1
-  let hasMore = true
+  let totalPages = 1
 
-  console.log(`[scraper] discovering URLs from tag: ${tagSlug}`)
+  console.log(`[scraper] discovering URLs via API — search: "${searchTerm}"`)
 
-  while (hasMore && discoveredUrls.length < max) {
-    const pageUrl = page === 1 ? baseUrl : `${baseUrl}?paged=${page}`
-    console.log(`[scraper] page ${page}: fetching ${pageUrl}`)
+  while (page <= totalPages && discoveredUrls.length < max) {
+    const qp = new URLSearchParams({
+      page: String(page),
+      get_items: '1',
+      state: 'sold',
+      include_s: searchTerm,
+    })
+    if (minYear) qp.set('minimum_year', String(minYear))
+    if (maxYear) qp.set('maximum_year', String(maxYear))
 
-    const html = await fetchHtml(pageUrl)
+    const apiUrl = `${BAT_HOSTNAME}/wp-json/bringatrailer/1.0/data/listings-filter?${qp.toString()}`
+    console.log(`[scraper] API page ${page}/${totalPages}: fetching`)
+
+    const html = await fetchHtml(apiUrl)
     if (!html) {
-      console.warn(`[scraper] page ${page}: no HTML — stopping pagination`)
+      console.warn(`[scraper] API page ${page}: no response — stopping`)
       break
     }
 
-    const $ = load(html)
+    let data: BaTApiResponse
+    try {
+      data = JSON.parse(html) as BaTApiResponse
+    } catch {
+      console.warn(`[scraper] API page ${page}: JSON parse failed — stopping`)
+      break
+    }
 
-    // BaT listing URLs from tag pages: .listing-card-title a, h2 a, article a
-    // Look for /listing/ paths
-    const pageUrls: string[] = []
-    $('a[href*="/listing/"]').each((_, el) => {
-      const href = $(el).attr('href') ?? ''
-      if (href.includes(BAT_HOSTNAME) || href.startsWith('/listing/')) {
-        const full = href.startsWith('/') ? `${BAT_HOSTNAME}${href}` : href
-        // Strip query params and trailing slashes
-        const normalized = full.split('?')[0].replace(/\/$/, '')
-        if (normalized.includes('/listing/') && !pageUrls.includes(normalized)) {
-          pageUrls.push(normalized)
-        }
-      }
-    })
+    if (!Array.isArray(data.items)) {
+      console.warn(`[scraper] API page ${page}: unexpected response shape — stopping`)
+      break
+    }
 
-    console.log(`[scraper] page ${page}: ${pageUrls.length} URLs found`)
+    totalPages = data.pages_total ?? page
+    console.log(`[scraper] API page ${page}/${totalPages}: ${data.items.length} items (total: ${data.items_total})`)
 
-    for (const url of pageUrls) {
-      if (!discoveredUrls.includes(url)) {
-        discoveredUrls.push(url)
+    for (const item of data.items) {
+      if (!item.url || item.active) continue
+      const normalized = item.url.split('?')[0].replace(/\/$/, '')
+      if (normalized.includes('/listing/') && !discoveredUrls.includes(normalized)) {
+        discoveredUrls.push(normalized)
+        if (discoveredUrls.length >= max) break
       }
     }
 
-    // If no URLs found or no "next page" link, stop
-    const hasNextPage = $('a.next').length > 0 || $('a[rel="next"]').length > 0 || $('.pagination a:contains("Next")').length > 0
-    hasMore = pageUrls.length > 0 && hasNextPage
-
-    if (page > 1) {
+    if (page < totalPages && discoveredUrls.length < max) {
       await jitteredDelay()
     }
     page++
   }
 
-  return discoveredUrls.slice(0, max)
+  return discoveredUrls
 }
 
 // ─── Database helpers ─────────────────────────────────────────────────────────
