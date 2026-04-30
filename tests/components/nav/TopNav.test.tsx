@@ -34,12 +34,31 @@ describe('TopNav', () => {
     vi.unstubAllGlobals()
   })
 
-  it('renders logo and sign-in link on home — URL field absent', () => {
+  it('renders logo and both auth links on home — URL field absent', () => {
     // pathname = '/' — hero has the paste field, TopNav omits it
     render(<TopNav userEmail={null} />)
     expect(screen.getByRole('link', { name: /vintage/i })).toBeTruthy()
     expect(screen.queryByPlaceholderText(/paste a listing url/i)).toBeNull()
-    expect(screen.getByRole('link', { name: /sign in/i })).toBeTruthy()
+    expect(screen.getByRole('link', { name: /^sign in$/i })).toBeTruthy()
+    expect(screen.getByRole('link', { name: /^sign up$/i })).toBeTruthy()
+  })
+
+  it('anonymous auth links on home (/) have no next-param', () => {
+    pathnameMock.mockReturnValue('/')
+    render(<TopNav userEmail={null} />)
+    const signInLink = screen.getByRole('link', { name: /^sign in$/i })
+    const signUpLink = screen.getByRole('link', { name: /^sign up$/i })
+    expect(signInLink.getAttribute('href')).toBe('/login')
+    expect(signUpLink.getAttribute('href')).toBe('/signup')
+  })
+
+  it('anonymous auth links on non-home page include encoded next-param', () => {
+    pathnameMock.mockReturnValue('/analyze/some-listing-id')
+    render(<TopNav userEmail={null} />)
+    const signInLink = screen.getByRole('link', { name: /^sign in$/i })
+    const signUpLink = screen.getByRole('link', { name: /^sign up$/i })
+    expect(signInLink.getAttribute('href')).toBe('/login?next=%2Fanalyze%2Fsome-listing-id')
+    expect(signUpLink.getAttribute('href')).toBe('/signup?next=%2Fanalyze%2Fsome-listing-id')
   })
 
   it('renders URL paste field on non-home pages', () => {
@@ -48,10 +67,11 @@ describe('TopNav', () => {
     expect(screen.getByPlaceholderText(/paste a listing url/i)).toBeTruthy()
   })
 
-  it('renders initials avatar for signed-in user, no sign-in link', () => {
+  it('renders initials avatar for signed-in user, no auth links', () => {
     render(<TopNav userEmail="blake@example.com" />)
     expect(screen.getByRole('button', { name: /open account menu/i })).toBeTruthy()
-    expect(screen.queryByRole('link', { name: /sign in/i })).toBeNull()
+    expect(screen.queryByRole('link', { name: /^sign in$/i })).toBeNull()
+    expect(screen.queryByRole('link', { name: /^sign up$/i })).toBeNull()
   })
 
   it('renders on /analyze/[id] result page with URL field', () => {

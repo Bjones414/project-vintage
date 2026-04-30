@@ -105,9 +105,20 @@ export function TopNav({ userEmail }: Props) {
               )}
             </div>
           ) : (
-            <Link href="/login" className="font-sans text-sm text-text-tertiary hover:text-text-primary">
-              Sign in
-            </Link>
+            <div className="flex items-center gap-4">
+              <Link
+                href={`/login${pathname !== '/' ? `?next=${encodeURIComponent(pathname)}` : ''}`}
+                className="font-sans text-[13px] text-text-tertiary hover:text-text-primary"
+              >
+                Sign in
+              </Link>
+              <Link
+                href={`/signup${pathname !== '/' ? `?next=${encodeURIComponent(pathname)}` : ''}`}
+                className="font-sans text-[13px] text-text-tertiary hover:text-text-primary"
+              >
+                Sign up
+              </Link>
+            </div>
           )}
         </div>
 

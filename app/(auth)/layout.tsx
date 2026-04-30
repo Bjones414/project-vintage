@@ -1,18 +1,20 @@
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+import { createClient } from '@/lib/supabase/server'
+import { TopNav } from '@/components/nav/TopNav'
+
+export default async function AuthLayout({ children }: { children: React.ReactNode }) {
+  const supabase = createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
   return (
-    <div className="min-h-screen bg-stone-50 flex flex-col items-center justify-center px-4 py-12">
-      <div className="w-full max-w-sm">
-        <div className="mb-10 text-center">
-          <span className="text-xs font-semibold tracking-widest text-stone-400 uppercase">
-            Project Vintage
-          </span>
+    <div className="flex min-h-screen flex-col bg-bg-canvas">
+      <TopNav userEmail={user?.email ?? null} />
+      <div className="flex flex-1 flex-col items-center justify-center px-4 py-12">
+        <div className="w-full max-w-[420px]">
+          {children}
         </div>
-        {children}
       </div>
     </div>
-  );
+  )
 }
