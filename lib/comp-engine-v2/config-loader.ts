@@ -12,7 +12,6 @@ import type {
   MileageBand,
   TrimTaxonomyEntry,
   FactorName,
-  ALL_FACTORS,
 } from './types'
 import { ALL_FACTORS as FACTORS } from './types'
 

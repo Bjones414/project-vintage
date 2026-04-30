@@ -7,7 +7,6 @@
 
 import { createClient } from '@supabase/supabase-js'
 import type { V2Subject, V2CompCandidate, V2CompsResult } from './types'
-import { MODEL_VERSION } from './types'
 import { loadEngineConfig } from './config-loader'
 import { runCompEngineV2 } from './engine'
 import { logCompRun } from './logger'

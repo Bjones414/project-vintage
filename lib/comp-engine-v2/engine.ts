@@ -24,8 +24,6 @@ import {
 } from './aggregation'
 import { buildMethodologyText } from './methodology'
 
-const MUSEUM_THRESHOLD = 1000
-
 export function runCompEngineV2(
   subject: V2Subject,
   pool: V2CompCandidate[],        // all candidates for this generation (pre-filtered by recency at fetch time)

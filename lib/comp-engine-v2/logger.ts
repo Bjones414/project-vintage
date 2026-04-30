@@ -4,7 +4,7 @@
 // ============================================================
 
 import { createClient } from '@supabase/supabase-js'
-import type { V2CompsResult, V2Subject, FactorName } from './types'
+import type { V2CompsResult, V2Subject } from './types'
 import { MODEL_VERSION } from './types'
 
 function makeAdmin() {
