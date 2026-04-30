@@ -328,7 +328,9 @@ describe('ChassisIdentityCard', () => {
       />,
     )
     expect(html).toMatchSnapshot()
-    expect(html).toContain('WP0AC2A84RS270001')
+    // VIN is NOT displayed — it is not persisted to the DB per compliance policy
+    expect(html).not.toContain('WP0AC2A84RS270001')
+    expect(html).not.toContain('VIN')
     expect(html).toContain('Zuffenhausen')
     expect(html).toContain('4.0L H-6')
     expect(html).toContain('Coupe')
@@ -349,7 +351,8 @@ describe('ChassisIdentityCard', () => {
         colorData={COLOR_GUARDS_RED}
       />,
     )
-    expect(html).toContain('WP0EB0918JS857501')
+    // VIN is NOT displayed — it is not persisted to the DB per compliance policy
+    expect(html).not.toContain('WP0EB0918JS857501')
     expect(html).toContain('930')
     expect(html).toContain('3.3L H-6 Turbo')
     // Color Rarity — common, so green dot class
@@ -362,7 +365,8 @@ describe('ChassisIdentityCard', () => {
       <ChassisIdentityCard listing={GT4_RS_LISTING} generation={null} colorData={null} />,
     )
     expect(html).toContain('Chassis Identity')
-    expect(html).toContain('WP0AC2A84RS270001')
+    // VIN is NOT displayed — it is not persisted to the DB per compliance policy
+    expect(html).not.toContain('WP0AC2A84RS270001')
     // No Color Rarity field without colorData
     expect(html).not.toContain('Color Rarity')
   })
@@ -793,8 +797,9 @@ describe('integration — analyze page layout', () => {
       </div>,
     )
     expect(html).toMatchSnapshot()
-    // Anonymous sees: chassis (VIN + Color Rarity), status badge, color name, CTA, verdict signup prompt
-    expect(html).toContain('WP0AC2A84RS270001')
+    // Anonymous sees: chassis, status badge, color name, CTA, verdict signup prompt
+    // VIN is never displayed (NEVER_PERSIST_FIELDS compliance — VIN not stored in DB)
+    expect(html).not.toContain('WP0AC2A84RS270001')
     expect(html).toContain('Sold')
     expect(html).toContain('Shark Blue')
     expect(html).toContain('Rare or special-order')
@@ -874,8 +879,8 @@ describe('integration — analyze page layout', () => {
     expect(html).toMatchSnapshot()
     // No editorial row → development fallback, no watch-outs
     expect(html).toContain('Era guide for this generation is in development')
-    // Chassis and verdict still present
-    expect(html).toContain('WP0EB0918JS857501')
+    // Chassis and verdict still present (VIN not displayed per NEVER_PERSIST_FIELDS compliance)
+    expect(html).not.toContain('WP0EB0918JS857501')
     expect(t(html)).toContain('45,200 miles sold within')
     expect(html).not.toContain('76%')
   })

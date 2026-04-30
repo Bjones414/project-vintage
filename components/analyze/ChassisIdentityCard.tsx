@@ -7,8 +7,10 @@ type Props = {
 }
 
 export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
+  // VIN is not stored in the database per compliance policy (NEVER_PERSIST_FIELDS).
+  // It is available in the API response for the subject listing only.
+  // Display from DB is not possible — session-storage display is a deferred V1 UX improvement.
   const fields: Array<{ label: string; value: string | null | undefined; mono?: boolean }> = [
-    { label: 'VIN', value: listing.vin, mono: true },
     {
       label: 'Generation',
       value: listing.generation ?? generation?.generation_id ?? null,

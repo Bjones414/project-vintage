@@ -13,6 +13,7 @@ import { EraCard } from '@/components/analyze/EraCard'
 import { WatchOutsCard } from '@/components/analyze/WatchOutsCard'
 import { TeaserBlock } from '@/components/analyze/TeaserBlock'
 import { AnonymousSignupCTA } from '@/components/analyze/AnonymousSignupCTA'
+import { SourceMentionsCard } from '@/components/analyze/SourceMentionsCard'
 
 type PageProps = {
   params: { id: string }
@@ -83,7 +84,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
     compResult && compResult.comp_listing_ids.length > 0
       ? await supabase
           .from('listings')
-          .select('id, year, make, model, trim, mileage, final_price, auction_ends_at, source_url, source_platform')
+          .select('id, year, make, model, trim, mileage, final_price, auction_ends_at, source_url, source_platform, source_publication')
           .in('id', compResult.comp_listing_ids)
           .not('final_price', 'is', null)
           .order('auction_ends_at', { ascending: false })
@@ -124,6 +125,11 @@ export default async function ListingDetailPage({ params }: PageProps) {
           <WatchOutsCard editorial={editorial} viewerTier={viewerTier} />
         </div>
       )}
+
+      {/* Source-mention signals — subject page only, framed as "Source mentions:" */}
+      <div className="mt-4">
+        <SourceMentionsCard listing={listing} />
+      </div>
 
       {/* Full-width: Comparable Sales */}
       <div className="mt-4">

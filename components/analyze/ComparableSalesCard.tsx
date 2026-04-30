@@ -15,6 +15,7 @@ type CompListing = {
   auction_ends_at: string | null
   source_url: string | null
   source_platform: string
+  source_publication: string | null
 }
 
 type Props = {
@@ -55,6 +56,24 @@ function CompRow({ comp, idx }: { comp: CompListing; idx: number }) {
         <p className="font-sans text-[12px] text-text-tertiary">
           {[mileageStr, moStr].filter(Boolean).join(' · ')}
         </p>
+        {/* Source attribution — every comp must cite its source per data policy */}
+        {(comp.source_publication ?? comp.source_platform) && (
+          <p className="font-sans text-[11px] text-text-quaternary">
+            Source:{' '}
+            {comp.source_url ? (
+              <a
+                href={comp.source_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2 hover:text-text-tertiary"
+              >
+                {comp.source_publication ?? comp.source_platform}
+              </a>
+            ) : (
+              (comp.source_publication ?? comp.source_platform)
+            )}
+          </p>
+        )}
       </div>
       <p className="shrink-0 font-serif text-[15px] text-text-primary">
         {comp.final_price != null ? formatCents(comp.final_price) : '—'}
