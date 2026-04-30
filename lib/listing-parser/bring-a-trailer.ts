@@ -7,6 +7,49 @@ const BAT_HOSTNAME = 'bringatrailer.com'
 const TS_MIN = 1262304000  // 2010-01-01T00:00:00Z
 const TS_MAX = 2240524799  // 2040-12-31T23:59:59Z
 
+// Longest-first so multi-word models ("718 Cayman") are matched before their
+// single-word overlaps ("Cayman"). The order within same-length groups is
+// arbitrary but must remain stable to keep backfill results reproducible.
+export const PORSCHE_MODEL_PREFIXES: readonly string[] = [
+  '718 Boxster',
+  '718 Cayman',
+  '918 Spyder',
+  'Carrera GT',
+  'Panamera',
+  'Cayenne',
+  'Boxster',
+  'Cayman',
+  'Taycan',
+  'Macan',
+  '912E',
+  '914',
+  '924',
+  '928',
+  '944',
+  '959',
+  '968',
+  '911',
+  '912',
+]
+
+/**
+ * Splits a post-make title fragment (everything after "Porsche" in a BaT
+ * title) into canonical model and trim using longest-prefix matching.
+ *
+ * Returns { model: null, trim: null } when no prefix matches and logs a
+ * warning — callers must not fall back to storing the raw string.
+ */
+export function splitModelTrim(postMake: string): { model: string | null; trim: string | null } {
+  for (const prefix of PORSCHE_MODEL_PREFIXES) {
+    if (postMake === prefix || postMake.startsWith(prefix + ' ')) {
+      const remainder = postMake.slice(prefix.length).trim()
+      return { model: prefix, trim: remainder || null }
+    }
+  }
+  console.warn(`[BaT parser] unrecognized model string, leaving unparsed: "${postMake}"`)
+  return { model: null, trim: null }
+}
+
 /**
  * Three-tier extraction strategy (primary DOM → fallback DOM → JS regex).
  * Returns an ISO 8601 UTC string or null if extraction fails or looks suspicious.
@@ -179,18 +222,23 @@ export async function parseBaTListing(url: string): Promise<CanonicalListing> {
       source_listing_id = pathSegments[pathSegments.length - 1] ?? ''
     }
 
-    // Step 5 — Parse title into year / make / model
+    // Step 5 — Parse title into year / make / model / trim
     let year: number | null = null
     let make: string | null = null
     let model: string | null = null
+    let trim: string | null = null
     const titleMatch = title.match(/(\d{4})\s+(.+)$/)
     if (titleMatch) {
       const parsedYear = parseInt(titleMatch[1], 10)
       year = parsedYear >= 1900 && parsedYear <= 2030 ? parsedYear : null
       const parts = titleMatch[2].split(/\s+/)
       make = parts[0] ?? null
-      // TODO: improve model/trim splitting for Porsche naming conventions
-      model = parts.slice(1).join(' ') || null
+      const postMake = parts.slice(1).join(' ')
+      if (postMake) {
+        const parsed = splitModelTrim(postMake)
+        model = parsed.model
+        trim = parsed.trim
+      }
     }
 
     // Step 6 — Extract VIN from "Chassis:" bullet in any <li>
@@ -292,7 +340,7 @@ export async function parseBaTListing(url: string): Promise<CanonicalListing> {
       year,
       make,
       model,
-      trim: null,
+      trim,
       vin,
       mileage,
       engine: null,
