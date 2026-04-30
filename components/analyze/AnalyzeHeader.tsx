@@ -68,16 +68,11 @@ export function AnalyzeHeader({ listing, analysisData, now }: Props) {
           </p>
         )}
       </div>
-      <div className="shrink-0 text-right">
-        {listing.vin && (
-          <p className="font-mono text-[12px] tracking-[0.04em] text-text-quaternary">{listing.vin}</p>
-        )}
-        {isLive && listing.auction_ends_at && (
-          <div className="mt-1 font-sans text-[13px] text-text-tertiary">
-            <AuctionCountdown endsAt={listing.auction_ends_at} listingId={listing.id} />
-          </div>
-        )}
-      </div>
+      {isLive && listing.auction_ends_at && (
+        <div className="shrink-0 text-right font-sans text-[13px] text-text-tertiary">
+          <AuctionCountdown endsAt={listing.auction_ends_at} listingId={listing.id} />
+        </div>
+      )}
     </div>
   )
 }
