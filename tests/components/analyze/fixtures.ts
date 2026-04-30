@@ -134,6 +134,10 @@ export const GENERATION_982_CAYMAN: Tables<'porsche_generations'> = {
   common_issues: [],
   period_reviews: [],
   production_count: null,
+  production_years: null,
+  engine_family: null,
+  msrp_launch_usd: null,
+  units_produced: null,
   created_at: '2024-01-01T00:00:00.000Z',
   updated_at: '2024-01-01T00:00:00.000Z',
 }
@@ -155,6 +159,10 @@ export const GENERATION_930: Tables<'porsche_generations'> = {
   common_issues: [],
   period_reviews: [],
   production_count: null,
+  production_years: null,
+  engine_family: null,
+  msrp_launch_usd: null,
+  units_produced: null,
   created_at: '2024-01-01T00:00:00.000Z',
   updated_at: '2024-01-01T00:00:00.000Z',
 }
@@ -180,6 +188,10 @@ export const GENERATION_993_PUBLISHED: Tables<'porsche_generations'> = {
   common_issues: [],
   period_reviews: [],
   production_count: null,
+  production_years: '1995–1998',
+  engine_family: 'M64 air-cooled flat-six, 3.6L',
+  msrp_launch_usd: '$63,750–$105,000 (1995 Carrera to 1996 Turbo)',
+  units_produced: '~67,000 worldwide',
   created_at: '2024-01-01T00:00:00.000Z',
   updated_at: '2024-01-01T00:00:00.000Z',
 }

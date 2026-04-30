@@ -319,35 +319,52 @@ describe('MetricTiles', () => {
 // ChassisIdentityCard
 // ---------------------------------------------------------------------------
 describe('ChassisIdentityCard', () => {
-  it('renders all identity fields for GT4 RS including Exterior Color', () => {
+  it('renders all identity fields for GT4 RS including Exterior Color and Color Rarity', () => {
     const html = renderToString(
-      <ChassisIdentityCard listing={GT4_RS_LISTING} generation={GENERATION_982_CAYMAN} />,
+      <ChassisIdentityCard
+        listing={GT4_RS_LISTING}
+        generation={GENERATION_982_CAYMAN}
+        colorData={COLOR_SHARK_BLUE}
+      />,
     )
     expect(html).toMatchSnapshot()
     expect(html).toContain('WP0AC2A84RS270001')
     expect(html).toContain('Zuffenhausen')
     expect(html).toContain('4.0L H-6')
     expect(html).toContain('Coupe')
-    // Exterior Color is now the 9th field in ChassisIdentity
+    // Exterior Color (field 9)
     expect(t(html)).toContain('Exterior Color')
     expect(t(html)).toContain('Shark Blue')
+    // Color Rarity (field 10) — rare, so amber dot class
+    expect(t(html)).toContain('Color Rarity')
+    expect(t(html)).toContain('Rare or special-order')
+    expect(html).toContain('bg-severity-caution')
   })
 
-  it('renders 930 Turbo identity — all viewers see VIN', () => {
+  it('renders 930 Turbo identity with common color rarity', () => {
     const html = renderToString(
-      <ChassisIdentityCard listing={TURBO_930_LISTING} generation={GENERATION_930} />,
+      <ChassisIdentityCard
+        listing={TURBO_930_LISTING}
+        generation={GENERATION_930}
+        colorData={COLOR_GUARDS_RED}
+      />,
     )
     expect(html).toContain('WP0EB0918JS857501')
     expect(html).toContain('930')
     expect(html).toContain('3.3L H-6 Turbo')
+    // Color Rarity — common, so green dot class
+    expect(t(html)).toContain('Common factory color')
+    expect(html).toContain('bg-severity-positive')
   })
 
-  it('gracefully handles no generation data', () => {
+  it('gracefully handles no generation data and no color data', () => {
     const html = renderToString(
-      <ChassisIdentityCard listing={GT4_RS_LISTING} generation={null} />,
+      <ChassisIdentityCard listing={GT4_RS_LISTING} generation={null} colorData={null} />,
     )
     expect(html).toContain('Chassis Identity')
     expect(html).toContain('WP0AC2A84RS270001')
+    // No Color Rarity field without colorData
+    expect(html).not.toContain('Color Rarity')
   })
 })
 
@@ -405,7 +422,7 @@ describe('EraCard', () => {
     expect(t(html)).toContain('Era guide for this generation is in development')
   })
 
-  it('anonymous + published generation — renders only first paragraph', () => {
+  it('anonymous + published generation — renders only first paragraph and metadata grid', () => {
     const html = renderToString(
       <EraCard generation={GENERATION_993_PUBLISHED} viewerTier="anonymous" />,
     )
@@ -414,9 +431,21 @@ describe('EraCard', () => {
     expect(html).toContain('last air-cooled 911')
     expect(html).not.toContain('Production ended')
     expect(html).toContain('Full era guide available with a free account')
+    // Metadata grid — all 6 fields present for 993
+    expect(t(html)).toContain('1995–1998')
+    expect(t(html)).toContain('Coupe, Cabriolet, Targa')
+    expect(t(html)).toContain('M64 air-cooled flat-six, 3.6L')
+    expect(t(html)).toContain('~67,000 worldwide')
+    expect(t(html)).toContain('Air-cooled')
+    // Labels
+    expect(t(html)).toContain('Production')
+    expect(t(html)).toContain('Body styles')
+    expect(t(html)).toContain('Engine')
+    expect(t(html)).toContain('Units produced')
+    expect(t(html)).toContain('Cooling')
   })
 
-  it('free + published generation — renders all paragraphs', () => {
+  it('free + published generation — renders all paragraphs and metadata grid', () => {
     const html = renderToString(
       <EraCard generation={GENERATION_993_PUBLISHED} viewerTier="free" />,
     )
@@ -424,6 +453,30 @@ describe('EraCard', () => {
     expect(t(html)).toContain('Production ended')
     expect(t(html)).toContain('Carrera RS 3.8')
     expect(t(html)).not.toContain('available with a free account')
+    // Metadata still visible for free tier
+    expect(t(html)).toContain('1995–1998')
+    expect(t(html)).toContain('~67,000 worldwide')
+  })
+
+  it('published generation with null metadata fields — omits those rows', () => {
+    const partialGen = {
+      ...GENERATION_993_PUBLISHED,
+      production_years: null,
+      engine_family: null,
+      msrp_launch_usd: null,
+      units_produced: null,
+    }
+    const html = renderToString(
+      <EraCard generation={partialGen} viewerTier="free" />,
+    )
+    // Notes still render
+    expect(t(html)).toContain('last air-cooled 911')
+    // Body styles and cooling still appear (derived from existing columns)
+    expect(t(html)).toContain('Coupe, Cabriolet, Targa')
+    expect(t(html)).toContain('Air-cooled')
+    // Nulled fields are gone — no label without a value
+    expect(html).not.toContain('~67,000')
+    expect(html).not.toContain('M64')
   })
 })
 
@@ -725,31 +778,30 @@ describe('integration — analyze page layout', () => {
         <VerdictBlock analysisData={null} viewerTier="anonymous" listingId={GT4_RS_LISTING.id} />
         <MetricTiles listing={GT4_RS_LISTING} analysisData={null} viewerTier="anonymous" />
         <div>
-          <ChassisIdentityCard listing={GT4_RS_LISTING} generation={GENERATION_982_CAYMAN} />
+          <ChassisIdentityCard
+            listing={GT4_RS_LISTING}
+            generation={GENERATION_982_CAYMAN}
+            colorData={COLOR_SHARK_BLUE}
+          />
           <ComparableSalesCard analysisData={null} viewerTier="anonymous" />
         </div>
         <div>
-          <EraCard
-            generation={GENERATION_982_CAYMAN}
-            viewerTier="anonymous"
-          />
+          <EraCard generation={GENERATION_982_CAYMAN} viewerTier="anonymous" />
           <WatchOutsCard editorial={null} viewerTier="anonymous" />
-          <ColorRarityCard
-            listing={GT4_RS_LISTING}
-            colorData={COLOR_SHARK_BLUE}
-            viewerTier="anonymous"
-          />
         </div>
         <AnonymousSignupCTA />
       </div>,
     )
     expect(html).toMatchSnapshot()
-    // Anonymous sees: chassis, status badge, color name, CTA, verdict signup prompt
+    // Anonymous sees: chassis (VIN + Color Rarity), status badge, color name, CTA, verdict signup prompt
     expect(html).toContain('WP0AC2A84RS270001')
     expect(html).toContain('Sold')
     expect(html).toContain('Shark Blue')
+    expect(html).toContain('Rare or special-order')
     expect(html).toContain('Create a free account')
     expect(html).toContain('Sign in to see the verdict on this car.')
+    // No standalone ColorRarityCard on the page
+    expect(html).not.toContain('Color history and context available')
     // Does NOT see: confidence score number
     expect(html).not.toContain('84%')
     // "Locked" is banned in user-facing copy
@@ -769,29 +821,27 @@ describe('integration — analyze page layout', () => {
         <VerdictBlock analysisData={ANALYSIS_DATA_930} viewerTier="free" listingId={TURBO_930_LISTING.id} />
         <MetricTiles listing={TURBO_930_LISTING} analysisData={ANALYSIS_DATA_930} viewerTier="free" />
         <div>
-          <ChassisIdentityCard listing={TURBO_930_LISTING} generation={GENERATION_930} />
+          <ChassisIdentityCard
+            listing={TURBO_930_LISTING}
+            generation={GENERATION_930}
+            colorData={COLOR_GUARDS_RED}
+          />
           <ComparableSalesCard analysisData={ANALYSIS_DATA_930} viewerTier="free" />
         </div>
         <div>
-          <EraCard
-            generation={GENERATION_930}
-            viewerTier="free"
-          />
+          <EraCard generation={GENERATION_930} viewerTier="free" />
           <WatchOutsCard editorial={EDITORIAL_930_VERIFIED} viewerTier="free" />
-          <ColorRarityCard
-            listing={TURBO_930_LISTING}
-            colorData={COLOR_GUARDS_RED}
-            viewerTier="free"
-          />
         </div>
       </div>,
     )
     expect(html).toMatchSnapshot()
-    // Free tier sees verdict (no score), all comps, all watch-outs; EraCard shows "in development" (no published notes)
+    // Free tier sees verdict, all comps, all watch-outs; EraCard "in development" (no published notes)
     expect(t(html)).toContain('45,200 miles sold within')
     expect(html).toContain('Era guide for this generation is in development')
     expect(html).toContain('widow-maker')
     expect(html).toContain('Fuchs alloys')
+    // Common factory color in ChassisIdentity
+    expect(t(html)).toContain('Common factory color')
     expect(html).not.toContain('76%')
     expect(html).not.toContain('Create a free account')
     expect(html).not.toContain('Locked')
@@ -808,27 +858,23 @@ describe('integration — analyze page layout', () => {
         <VerdictBlock analysisData={ANALYSIS_DATA_930} viewerTier="free" listingId={TURBO_930_LISTING.id} />
         <MetricTiles listing={TURBO_930_LISTING} analysisData={ANALYSIS_DATA_930} viewerTier="free" />
         <div>
-          <ChassisIdentityCard listing={TURBO_930_LISTING} generation={GENERATION_930} />
+          <ChassisIdentityCard
+            listing={TURBO_930_LISTING}
+            generation={GENERATION_930}
+            colorData={COLOR_GUARDS_RED}
+          />
           <ComparableSalesCard analysisData={ANALYSIS_DATA_930} viewerTier="free" />
         </div>
         <div>
-          <EraCard
-            generation={GENERATION_930}
-            viewerTier="free"
-          />
+          <EraCard generation={GENERATION_930} viewerTier="free" />
           <WatchOutsCard editorial={null} viewerTier="free" />
-          <ColorRarityCard
-            listing={TURBO_930_LISTING}
-            colorData={COLOR_GUARDS_RED}
-            viewerTier="free"
-          />
         </div>
       </div>,
     )
     expect(html).toMatchSnapshot()
-    // No editorial row → development fallback message, no watch-outs
+    // No editorial row → development fallback, no watch-outs
     expect(html).toContain('Era guide for this generation is in development')
-    // Still shows chassis and verdict
+    // Chassis and verdict still present
     expect(html).toContain('WP0EB0918JS857501')
     expect(t(html)).toContain('45,200 miles sold within')
     expect(html).not.toContain('76%')

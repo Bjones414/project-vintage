@@ -387,6 +387,7 @@ export type Database = {
           common_issues: Json | null
           content_status: string | null
           created_at: string
+          engine_family: string | null
           engine_type: string | null
           generation_id: string
           hero_image_caption: string | null
@@ -394,10 +395,13 @@ export type Database = {
           hero_image_url: string | null
           model: string
           model_family: string | null
+          msrp_launch_usd: string | null
           notes: string | null
           notes_full: string | null
           period_reviews: Json | null
           production_count: number | null
+          production_years: string | null
+          units_produced: string | null
           updated_at: string
           year_end: number | null
           year_start: number
@@ -407,6 +411,7 @@ export type Database = {
           common_issues?: Json | null
           content_status?: string | null
           created_at?: string
+          engine_family?: string | null
           engine_type?: string | null
           generation_id: string
           hero_image_caption?: string | null
@@ -414,10 +419,13 @@ export type Database = {
           hero_image_url?: string | null
           model: string
           model_family?: string | null
+          msrp_launch_usd?: string | null
           notes?: string | null
           notes_full?: string | null
           period_reviews?: Json | null
           production_count?: number | null
+          production_years?: string | null
+          units_produced?: string | null
           updated_at?: string
           year_end?: number | null
           year_start: number
@@ -427,6 +435,7 @@ export type Database = {
           common_issues?: Json | null
           content_status?: string | null
           created_at?: string
+          engine_family?: string | null
           engine_type?: string | null
           generation_id?: string
           hero_image_caption?: string | null
@@ -434,10 +443,13 @@ export type Database = {
           hero_image_url?: string | null
           model?: string
           model_family?: string | null
+          msrp_launch_usd?: string | null
           notes?: string | null
           notes_full?: string | null
           period_reviews?: Json | null
           production_count?: number | null
+          production_years?: string | null
+          units_produced?: string | null
           updated_at?: string
           year_end?: number | null
           year_start?: number

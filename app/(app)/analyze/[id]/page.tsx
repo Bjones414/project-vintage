@@ -10,7 +10,6 @@ import { ComparableSalesCard } from '@/components/analyze/ComparableSalesCard'
 import { ActionRow } from '@/components/analyze/ActionRow'
 import { EraCard } from '@/components/analyze/EraCard'
 import { WatchOutsCard } from '@/components/analyze/WatchOutsCard'
-import { ColorRarityCard } from '@/components/analyze/ColorRarityCard'
 import { TeaserBlock } from '@/components/analyze/TeaserBlock'
 import { AnonymousSignupCTA } from '@/components/analyze/AnonymousSignupCTA'
 
@@ -90,13 +89,8 @@ export default async function ListingDetailPage({ params }: PageProps) {
 
       {/* Two-column: Chassis Identity | Era Card */}
       <div className="mt-6 grid grid-cols-1 items-stretch gap-4 md:grid-cols-2">
-        <ChassisIdentityCard listing={listing} generation={generation} />
+        <ChassisIdentityCard listing={listing} generation={generation} colorData={colorData} />
         <EraCard generation={generation} viewerTier={viewerTier} />
-      </div>
-
-      {/* Full-width: Color Rarity */}
-      <div className="mt-4">
-        <ColorRarityCard listing={listing} colorData={colorData} viewerTier={viewerTier} />
       </div>
 
       {/* Full-width: Watch-outs */}
