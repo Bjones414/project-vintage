@@ -25,9 +25,8 @@ export function EraCard({ generation, viewerTier }: Props) {
     ]
 
     const keyFacts: Array<{ lead: string; body: string }> = [
-      { lead: 'No IMS bearing.',        body: '9A1 eliminates the failure mode that defines 997.1 base trims.' },
-      { lead: 'Manual now scarce.',     body: 'PDK take rates exceeded 70% by MY2010.' },
-      { lead: 'Halo Mezger continued.', body: 'GT3, GT3 RS, GT3 RS 4.0, GT2 RS retain the race-derived flat-six.' },
+      { lead: 'No IMS bearing.',    body: '9A1 eliminates the failure mode that defines 997.1 base trims.' },
+      { lead: 'Manual now scarce.', body: 'PDK take rates exceeded 70% by MY2010.' },
     ]
 
     return (
@@ -59,9 +58,6 @@ export function EraCard({ generation, viewerTier }: Props) {
                 </p>
               ))}
             </div>
-            <p className="mt-3 font-serif text-[13px] italic leading-[1.55] text-text-tertiary" style={liningNums}>
-              Limited halo runs: Speedster (356 units), Sport Classic (250), GT3 RS 4.0 (~600, last road-going Mezger), GT2 RS (~500).
-            </p>
             <a
               href="/generations/997-2"
               className="mt-4 block font-sans text-[13px] text-accent-primary hover:opacity-70"
