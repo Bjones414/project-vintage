@@ -13,30 +13,69 @@ export function EraCard({ generation, viewerTier }: Props) {
 
   // Hardcoded 997.2 content — visual UX test ahead of the markdown→DB pipeline (TODO #9)
   if (generation?.generation_id === '997.2') {
-    const paras = [
-      'The 997.2 (2009–2012) is a generation break disguised as a facelift. Three things changed at once: the all-new 9A1 direct-injection flat-six replaced the M96/M97, 7-speed PDK dual-clutch replaced Tiptronic S, and LED running lights arrived. For valuation, 997.1 and 997.2 are best treated as separate generations.',
-      'The 9A1 eliminates the IMS bearing concern that defines 997.1 base trims. There\'s no intermediate shaft. Base 997.2 Carreras (3.6L) and Carrera S (3.8L) are a clean mechanical step forward.',
-      'Halo trims kept the Mezger. The GT3 (2010–2011), GT3 RS (2011), GT3 RS 4.0 (~600 units), GT2 RS (~500 units), and Turbo through MY2010 still use the race-derived flat-six. These are mechanically distinct from 9A1-engined Carreras and trade in a different price tier.',
-      'PDK changed buyer behavior. By MY2010, take rates exceeded 70% on Carrera trims. Manual 997.2 cars are increasingly scarce and command rising premiums.',
-      'The production-numbered halos worth knowing: Speedster (2011, 356 units), Sport Classic (2010, 250 units), GT3 RS 4.0 (2011, ~600 units, last road-going Mezger NA), GT2 RS (2011, ~500 units).',
-    ]
-    const displayed = viewerTier === 'anonymous' ? paras.slice(0, 1) : paras
     const liningNums: React.CSSProperties = { fontVariantNumeric: 'lining-nums', fontFeatureSettings: '"lnum"' }
+
+    const quickStats: Array<{ label: string; value: string }> = [
+      { label: 'Years Produced',   value: '2009–2012' },
+      { label: 'Preceded By',      value: '997.1' },
+      { label: 'Succeeded By',     value: '991.1' },
+      { label: 'Base Engine',      value: '9A1 3.6L / 3.8L DFI' },
+      { label: 'Halo Engine',      value: 'Mezger 3.6L / 4.0L' },
+      { label: 'Last Mezger Year', value: '2011' },
+    ]
+
+    const keyFacts: Array<{ lead: string; body: string }> = [
+      { lead: 'No IMS bearing.',        body: '9A1 eliminates the failure mode that defines 997.1 base trims.' },
+      { lead: 'Manual now scarce.',     body: 'PDK take rates exceeded 70% by MY2010.' },
+      { lead: 'Halo Mezger continued.', body: 'GT3, GT3 RS, GT3 RS 4.0, GT2 RS retain the race-derived flat-six.' },
+    ]
+
     return (
       <div className="border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
         <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary" style={liningNums}>{sectionLabel}</p>
-        <div className="mt-4">
-          {displayed.map((para, idx) => (
-            <p key={idx} className={`font-serif text-[15px] italic leading-[1.65] text-text-secondary${idx > 0 ? ' mt-3' : ''}`} style={liningNums}>
-              {para}
-            </p>
+
+        {/* Summary */}
+        <p className="mt-4 font-serif text-[15px] italic leading-[1.65] text-text-secondary" style={liningNums}>
+          Generation break disguised as a facelift — the all-new 9A1 direct-injection engine, 7-speed PDK transmission, and LED lighting arrived simultaneously, making it mechanically distinct from the 997.1 it superseded.
+        </p>
+
+        {/* Quick stats — mirrors Chassis Identity card label/value styling */}
+        <dl className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3">
+          {quickStats.map(({ label, value }) => (
+            <div key={label}>
+              <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">{label}</dt>
+              <dd className="mt-0.5 font-serif text-[14px] text-text-primary" style={liningNums}>{value}</dd>
+            </div>
           ))}
-          {viewerTier === 'anonymous' && paras.length > 1 && (
-            <p className="mt-3 font-sans text-[13px] text-text-muted">
-              Full era guide available with a free account.
+        </dl>
+
+        {/* Authenticated-only: key facts + halo footnote + read more */}
+        {viewerTier !== 'anonymous' && (
+          <>
+            <div className="mt-4 space-y-2">
+              {keyFacts.map(({ lead, body }) => (
+                <p key={lead} className="font-sans text-[13px] leading-[1.5] text-text-secondary" style={liningNums}>
+                  <strong className="font-medium text-text-primary">{lead}</strong>{' '}{body}
+                </p>
+              ))}
+            </div>
+            <p className="mt-3 font-serif text-[13px] italic leading-[1.55] text-text-tertiary" style={liningNums}>
+              Limited halo runs: Speedster (356 units), Sport Classic (250), GT3 RS 4.0 (~600, last road-going Mezger), GT2 RS (~500).
             </p>
-          )}
-        </div>
+            <a
+              href="/generations/997-2"
+              className="mt-4 block font-sans text-[13px] text-accent-primary hover:opacity-70"
+            >
+              Read more →
+            </a>
+          </>
+        )}
+
+        {viewerTier === 'anonymous' && (
+          <p className="mt-3 font-sans text-[13px] text-text-muted">
+            Full era guide available with a free account.
+          </p>
+        )}
       </div>
     )
   }
