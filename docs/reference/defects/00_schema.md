@@ -73,6 +73,37 @@ the same range.
 Every defect uses this exact YAML-style block layout. Headings are parsed
 literally; do not rename them.
 
+### Section header conventions (mixed; v1 documented 2026-05-08)
+
+The catalog uses three section header styles across files:
+- `## Defect: <name>` — Files 01–08 + 13 (older convention)
+- `## Record N — <description>` — Files 09–12 (newer convention)
+- `## Records` (single header for all records in file) — File 99
+
+Section headers are presentational and do not affect matcher routing. The
+parser keys on the YAML block within each record (delimited by ```yaml /
+``` fences). Header style choice is per-file and may evolve in v2; for
+v1 the mixed convention is intentional and documented here.
+
+### Record ID conventions (mixed; v1 documented 2026-05-08)
+
+Two record ID conventions are in use:
+- **Defect-name-based** (Files 01–13): e.g., `m96_m97_ims_bearing`,
+  `cabriolet_996_997_hydraulic_ram_leak`,
+  `transaxle_4cyl_torque_tube_bearings`.
+- **File-numbered** (Files 14–27 + 99): e.g., `BODY_EXT_15_001`,
+  `INT_HVAC_17_007`, `TAYCAN_27_001`.
+
+The two ID formats are structurally orthogonal — defect-name-based IDs
+are all-lowercase snake_case; file-numbered IDs are uppercase prefixes
+followed by `NN_NNN`. No collisions between conventions are mechanically
+possible. Both are valid identifiers under this schema. Cross-references
+between records use the same heterogeneous form as the records they
+reference. For v1 the mixed convention is intentional and documented
+here; v2 may consolidate.
+
+### Record YAML structure
+
 ```yaml
 id: snake_case_id
 flag_title: "Short title rendered as a bullet (3-6 words)"
@@ -289,20 +320,75 @@ new field with a clear name and document it here. The format:
         Anchor for single-row prevalence.
   ```
 
+### Extension candidate: production-date and engine-number scoping (v2)
+
+- **Status**: candidate, not implemented in v1
+- **Rationale**: Some defects have post-fix or pre-fix sub-populations
+  identifiable at engine-number or production-date granularity rather
+  than model year. The Cayenne V8 bore-scoring record
+  (`cayenne_v8_bore_scoring`) is the canonical case: per Planet-9
+  specialist consensus, Porsche resolved most cases via a late-2009
+  block-supplier consolidation, and per a Porsche TSB referenced in
+  community discussion the post-fix cohort is identified by engine
+  reference number. Model year is a poor proxy — late-MY-2009
+  production reportedly carries the fix, early-MY-2010 production may
+  not, and the Rennlist owner survey [REN-SUR] shows MY 2010 (~10.3%,
+  n=29) above MY 2009 (~5.4%), so any MY-based exclusion routes the
+  wrong cohort relative to the actual fix. The same shape of problem
+  will recur wherever a supplier transition or running production
+  change resolves a defect mid-model-year (likely candidates: 957
+  rear coolant hose connector, future 9A1-era records).
+- **Workaround for v1**: The bore-scoring record keeps all 2003–2010
+  cars in scope (no MY-based exclusion encoded) and surfaces the
+  post-fix-cohort question through `editorial_note` plus a
+  `buyer_question` prompting the buyer to request the engine number
+  and cross-reference against Porsche's TSB list. A pre-purchase
+  manual step substitutes for what the schema cannot encode. Routing
+  accuracy is preserved (no false exemptions); the cost is lost
+  granularity in the `not_mentioned` penalty for cars that are in
+  fact post-fix — the matcher applies the pre-fix prevalence to all
+  in-scope cars regardless of production cohort.
+- **Proposed field shape**:
+  ```yaml
+  applicability:
+    excludes:
+      description: "Engines on Porsche's TSB post-fix list received the structurally-honed cylinder process and are not subject to this failure."
+      engine_numbers: [list of specific engine reference numbers or ranges]
+      # OR, where production date is the more available proxy:
+      production_date_after: "YYYY-MM-DD"
+      production_date_before: "YYYY-MM-DD"
+  ```
+- **Open question for v2**: whether the matcher should treat a
+  buyer's unverified self-report of a post-fix engine number as
+  sufficient to apply the exclusion, or whether documentary evidence
+  (window sticker, Porsche COA, dealer service record citing engine
+  number) is required. The IMS-record `keywords_documented` pattern
+  is a precedent for the documented-vs-claimed distinction and could
+  apply here.
+
 ## File organization
 
-Section files in this catalog:
+Section files in this catalog (current state, 2026-05-08):
 
-- `01_engine_m96_m97.md` — Boxster/Cayman/911 water-cooled (1997–2008)
-- `02_engine_mezger.md` — 996/997 GT3, Turbo, GT2 (Mezger flat-six)
+- `01_engine_m96_m97.md` — M96/M97 water-cooled flat-six (Boxster/Cayman/911 1997–2008)
+- `02_engine_mezger.md` — Mezger flat-six (996/997 GT3, GT2, Turbo through 997.1)
 - `03_engine_aircooled_911.md` — air-cooled 911 flat-six (1965–1998)
-- `04_engine_cayenne_v8.md` — Cayenne 4.5L M48 / 4.8L M48.51
-- `05_engine_transaxle_4cyl.md` — 924 / 944 / 968 inline-four family
-- `06_engine_928_v8.md` — 928 V8 family
-- `07_body_cabriolet.md` — convertible top mechanisms across generations
-- `08_interior_sticky_buttons.md` — rubberized-coating-era interior issues
+- `04_engine_transaxle_4cyl.md` — 924 / 944 / 968 inline-four family
+- `05_engine_928_v8.md` — 928 V8 (M28 family)
+- `06_engine_cayenne_v8.md` — Cayenne M48 V8 (955/957)
+- `07_body_cabriolet.md` — cabriolet hydraulic / soft-top mechanisms
+- `08_interior_sticky_buttons.md` — rubberized soft-touch coating
+- `09_drivetrain_transmissions.md` — drivetrain v1 (G50, PDK 7DT, 928 auto, Cayenne 958 transfer)
+- `10_chassis_suspension.md` — chassis/suspension v1 (LCA, air suspension, PCCB, 928 ball joint, 928 PS rack)
+- `11_electrical.md` — electrical v1 (wheel-speed sensors, instrument cluster pixel loss, window regulator, sunroof drain)
+- `12_cooling_systems.md` — HVAC/cooling v1 (expansion tank, water pump, front mount radiator, 957 rear coolant, 928 cooling)
+- `13_engine_9a1_9a2_9a3.md` — modern flat-six DFI (991/992/981/718)
+- `14_*.md` through `27_*.md` — additional v1 catalog files (body, interior, chassis v2, drivetrain v2, electrical v2, cooling v2, halo cars, region-specific, modifications, pre-996 air-cooled non-engine, 928 non-engine, Taycan)
 - `99_shared_water_cooled_era.md` — issues spanning multiple engine
   families in the water-cooled era (e.g., secondary air injection,
   coil packs)
+
+Refer to PROJECT_STATE.md TOC for the canonical, currently-up-to-date
+list of files with record counts and notes.
 
 Each file follows the same per-defect record structure defined here.
