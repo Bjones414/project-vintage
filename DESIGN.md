@@ -206,7 +206,7 @@ Bottom of every analysis page. Three buttons:
 - Teaser accent: 3px solid `--accent-primary` on top edge only.
 
 ### Photos and Imagery
-- Era hero photos: duotone treatment (cream + warm dark) so they integrate with brand palette.
+- Era hero photos: subtle desaturation (`filter: saturate(0.75) contrast(1.02)`). Deliberate change from prior duotone/sepia treatment — desaturation reads as modern editorial restraint; duotone read as aged photography.
 - Always captioned with source attribution: "Representative [Generation] · Photo: [Source/License]".
 - Never AI-generated. Never scraped from auction listings (those are seller copyright).
 - Source: Wikimedia Commons (CC-licensed) primarily. Manufacturer press kits if license allows.
@@ -268,6 +268,24 @@ The reference voice is Excellence magazine, Cavallino, the Hagerty Insider edito
 11. Action button row (View on BaT primary)
 
 Both pages share the same top section (1-6). The full report extends with deeper editorial sections (7-10).
+
+### Layout Principle: Content Density Before Visual Padding
+
+When two cards or sections sit side-by-side, never force them to equal height by adding internal empty space. Content drives height. Empty space inside a card reads as broken or unfinished — not editorial restraint.
+
+**The hierarchy of fixes when side-by-side cards become unbalanced:**
+
+1. If both cards have valid content but unequal density: move overflow content from the dense card into its own full-width section below the row, so both cards have similar content density.
+2. If one card has empty or missing subsections (e.g., no service data for this generation yet): hide the empty subsections so the card shrinks naturally to its actual content. Do not show "—" placeholders to maintain height.
+3. If one card is naturally much shorter than the other and cannot be balanced through content reorganization: stack them vertically rather than side-by-side. Or pair the shorter card with a different sibling.
+
+**What to avoid:**
+- `items-stretch` or `min-height` that creates internal empty space
+- Filler content added just to balance visual height
+- "—" placeholders in fields where data is genuinely unknown — omit the field entirely rather than showing an empty row
+- Side-by-side layouts where one card is more than ~60% taller than the other
+
+This principle applies to every page: analyze, generation, full report, member dashboard, garage, and all future surfaces. Whenever a side-by-side layout feels off, the question is "what content lives where" — not "how do we force the heights to match."
 
 ---
 
