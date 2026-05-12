@@ -16,30 +16,50 @@ function MetricTile({
   value,
   hint,
   valueClassName,
+  href,
 }: {
   label: string
   value: string
   hint?: string
   valueClassName?: string
+  href?: string
 }) {
-  return (
-    <div className="border-[0.5px] border-border-default bg-bg-surface px-4 py-[14px]">
+  const sharedClass = 'border-[0.5px] border-border-default bg-bg-surface px-4 py-[14px]'
+  // When used as a link, add group so child can respond to hover
+  const valueClass = href && !valueClassName
+    ? 'mt-1 truncate font-serif text-[20px] text-text-primary transition-colors group-hover:text-accent-primary'
+    : `mt-1 truncate ${valueClassName ?? 'font-serif text-[20px] text-text-primary'}`
+
+  const inner = (
+    <>
       <p className="font-serif text-[10px] uppercase tracking-[0.18em] text-accent-primary">{label}</p>
-      <p className={`mt-1 truncate ${valueClassName ?? 'font-serif text-[20px] text-text-primary'}`}>{value}</p>
+      <p className={valueClass}>{value}</p>
       {hint && <p className="mt-1 font-sans text-[12px] text-text-muted">{hint}</p>}
-    </div>
+    </>
   )
+
+  if (href) {
+    return (
+      <a href={href} className={`group block cursor-pointer ${sharedClass}`}>
+        {inner}
+      </a>
+    )
+  }
+  return <div className={sharedClass}>{inner}</div>
 }
 
 export function MetricTiles({ listing, analysisData, compResult = null, viewerTier }: Props) {
   const currency = listing.currency
 
-  // Bid tile: prefer final_price for sold listings, fall back to high_bid for live
+  // Bid tile: sold → Sale Price; no-sale → Final Bid; live → Current Bid
   let bidLabel: string
   let bidCents: number | null
   if (listing.listing_status === 'sold' && listing.final_price != null) {
     bidLabel = 'Sale Price'
     bidCents = listing.final_price
+  } else if (listing.listing_status === 'no-sale' && listing.high_bid != null) {
+    bidLabel = 'Final Bid'
+    bidCents = listing.high_bid
   } else if (listing.high_bid != null) {
     bidLabel = 'Current Bid'
     bidCents = listing.high_bid
@@ -93,6 +113,16 @@ export function MetricTiles({ listing, analysisData, compResult = null, viewerTi
   const fairValueLocked = viewerTier === 'anonymous'
   const compsLocked = viewerTier === 'anonymous'
 
+  function unavailableHint(): string {
+    if (listing.listing_status === 'live') {
+      return 'Auction in progress. Final comp analysis runs when sale completes.'
+    }
+    if (listing.listing_status === 'no_sale') {
+      return 'Auction ended without a sale. Comp range available below for context.'
+    }
+    return 'Not enough comparable sales for this generation/trim yet. Foundation data is still building.'
+  }
+
   return (
     <div className="mt-6 grid grid-cols-2 gap-[10px] sm:grid-cols-4">
       <MetricTile
@@ -101,15 +131,16 @@ export function MetricTiles({ listing, analysisData, compResult = null, viewerTi
       />
       <MetricTile
         label="Fair Value Range"
-        value={fairValueLocked ? signInValue : (fairValueStr ?? 'In development')}
-        valueClassName={fairValueLocked ? signInClassName : (fairValueStr == null ? 'font-serif text-[16px] italic text-text-muted' : undefined)}
-        hint={!fairValueLocked && fairValueStr == null ? 'Comp engine launching with full report' : undefined}
+        value={fairValueLocked ? signInValue : (fairValueStr ?? '—')}
+        valueClassName={fairValueLocked ? signInClassName : (fairValueStr == null ? 'font-serif text-[20px] text-text-quaternary' : undefined)}
+        hint={!fairValueLocked && fairValueStr == null ? unavailableHint() : undefined}
       />
       <MetricTile
         label="Comps Used"
-        value={compsLocked ? signInValue : (compsValue ?? 'In development')}
-        valueClassName={compsLocked ? signInClassName : (compsValue == null ? 'font-serif text-[16px] italic text-text-muted' : undefined)}
-        hint={!compsLocked && compsValue == null ? 'Comp engine launching with full report' : undefined}
+        value={compsLocked ? signInValue : (compsValue ?? '—')}
+        valueClassName={compsLocked ? signInClassName : (compsValue == null ? 'font-serif text-[20px] text-text-quaternary' : undefined)}
+        hint={!compsLocked && compsValue == null ? unavailableHint() : undefined}
+        href={!compsLocked && compsValue != null ? '#comparable-sales' : undefined}
       />
       <MetricTile label="Reserve" value={reserveLabel} valueClassName={reserveClassName} />
     </div>

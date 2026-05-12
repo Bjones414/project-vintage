@@ -1,0 +1,109 @@
+{
+  "componentChunkName": "component---src-templates-vehicle-details-index-jsx",
+  "path": "/lot/2009-porsche-997-gt2",
+  "matchPath": "/lot/2009-porsche-997-gt2/*",
+  "result": {
+    "data": {
+      "contentfulLot": {
+        "__typename": "ContentfulLot",
+        "lotNumber": 113,
+        "lowEstimate": 400000,
+        "highEstimate": 500000,
+        "uniqueEstimate": null,
+        "hasReservePrice": true,
+        "salePrice": 368000,
+        "auctionMobilityId": null,
+        "askingPrice": null,
+        "title": null,
+        "slug": "2009-porsche-997-gt2",
+        "description": null,
+        "auction": {
+          "name": "Amelia Island Auctions",
+          "contentful_id": "46BfeBloCPRBj8xttu9OcB",
+          "auctionMobilityId": "1-AXFG17",
+          "currency": "USD",
+          "subEvents": [
+            { "__typename": "ContentfulSubEventViewing" },
+            { "__typename": "ContentfulSubEventViewing" },
+            { "__typename": "ContentfulSubEventViewing" },
+            { "__typename": "ContentfulSubEventAuction", "startDate": "2026-03-05T15:00-05:00" },
+            { "__typename": "ContentfulSubEventAuction", "startDate": "2026-03-06T11:00-05:00" }
+          ],
+          "activeAuction": false,
+          "location": {
+            "address": {
+              "__typename": "ContentfulAddress",
+              "addressCountry": "US"
+            }
+          },
+          "webpage__auction": [{ "slug": "amelia-island-auctions-2026" }]
+        },
+        "onlineBidLink": null,
+        "item": {
+          "__typename": "ContentfulVehicle",
+          "title": "2009 Porsche 997 GT2",
+          "highlights": [
+            "One of Only 20 Examples Built for the US in 2009",
+            "Ordered New with Various Carbon Fiber and Exclusive Options",
+            "Showed Approximately 17,800 Miles when Catalogued; Documented with CARFAX Vehicle History Report",
+            "Finished in Elegant Black over Black Color Combination",
+            "Benefits from Service Work Performed at Porsche of Naples in 2025"
+          ],
+          "specifications": [
+            "3,600 CC DOHC Flat 6-Cylinder Engine",
+            "Bosch Electronic Fuel Injection",
+            "Twin KKK Turbochargers",
+            "530 BHP at 6,500 RPM",
+            "6-Speed Manual Transaxle",
+            "4-Wheel Ventilated Carbon Ceramic Disc Brakes",
+            "Front Independent MacPherson-Strut Suspension",
+            "Rear Independent Multi-Link Suspension"
+          ],
+          "salesForceId": "02iS60000066aa2IAA",
+          "type": "Car",
+          "make": { "name": "Porsche" },
+          "modelYear": 2009,
+          "model": "997 GT2",
+          "note": null,
+          "cloudinaryImagesCombined": [
+            {
+              "public_id": "Prod/FL26_Amelia Island 2026/524_2009 Porsche 997 GT2/2009_Porsche_997_GT2_22_ebfigp",
+              "height": 1132,
+              "width": 1800,
+              "context": ""
+            },
+            {
+              "public_id": "Prod/FL26_Amelia Island 2026/524_2009 Porsche 997 GT2/2009_Porsche_997_GT2_34_lympmj",
+              "height": 1132,
+              "width": 1800,
+              "context": ""
+            }
+          ],
+          "cloudinaryImages1": null,
+          "cloudinaryImages2": null,
+          "cloudinaryImages3": null,
+          "cloudinaryImages4": null,
+          "cloudinaryImages5": null,
+          "cloudinaryImages6": null,
+          "coachwork": null,
+          "engine": null,
+          "chassis": "WP0AD29939S778090",
+          "documentation": null,
+          "textYear": false
+        },
+        "sraNote": null,
+        "privateSalesPrice": false
+      },
+      "contentfulPrivateSaleListing": null,
+      "allContentfulSponsor": { "nodes": [] }
+    },
+    "pageContext": {
+      "matchPath": "/lot/2009-porsche-997-gt2/*",
+      "id": "51vrnca2Pt0FcwehNiOxjy",
+      "prev": "1956-talbot-lago-t14ls-sport-coupe",
+      "next": "2023-chevrolet-corvette-z06-convertible-3lz",
+      "isArchived": true
+    }
+  },
+  "staticQueryHashes": ["1232715398", "1367687668"]
+}

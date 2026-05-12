@@ -1,8 +1,13 @@
+'use client'
+import { useState } from 'react'
 import { formatCents } from '@/lib/utils/currency'
 import { formatDateShort } from '@/lib/utils/date'
 import type { AnalysisData, ComparableSale, ViewerTier } from './types'
 import type { CompResultRow } from '@/lib/comp-engine/db-types'
 import { monthsAgo } from '@/lib/comp-engine/recency-weight'
+
+const PREVIEW_COUNT = 5
+const EXPANDED_MAX = 10
 
 type CompListing = {
   id: string
@@ -18,11 +23,16 @@ type CompListing = {
   source_publication: string | null
 }
 
+const SPARSE_CATEGORIES = new Set(['coachbuilt', 'limited'])
+
 type Props = {
   analysisData: AnalysisData | null
   compResult?: CompResultRow | null
   compListings?: CompListing[]
   viewerTier: ViewerTier
+  trimCategory?: string | null
+  matchingMode?: 'strict' | 'broad'
+  disclaimer?: boolean
 }
 
 function CompRow({ comp, idx }: { comp: CompListing; idx: number }) {
@@ -105,11 +115,62 @@ function LegacySaleRow({ sale }: { sale: ComparableSale }) {
   )
 }
 
-export function ComparableSalesCard({ analysisData, compResult, compListings, viewerTier }: Props) {
+function ExpandLink({ expanded, onToggle }: { expanded: boolean; onToggle: () => void }) {
+  return (
+    <p className="mt-4">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="font-serif text-[13px] italic text-accent-primary hover:underline"
+      >
+        {expanded ? 'Collapse ↑' : 'Show top 10 →'}
+      </button>
+    </p>
+  )
+}
+
+export function ComparableSalesCard({ analysisData, compResult, compListings, viewerTier, trimCategory, matchingMode, disclaimer }: Props) {
+  const [expanded, setExpanded] = useState(false)
+
+  // Sparse-category path: coachbuilt/limited with fewer than 3 comps.
+  // Show individual data points without a fair value range.
+  if (
+    compResult?.tier === 'insufficient' &&
+    trimCategory && SPARSE_CATEGORIES.has(trimCategory) &&
+    compListings && compListings.length > 0
+  ) {
+    const label = trimCategory === 'coachbuilt' ? 'Coachbuilt' : 'Limited Edition'
+    const shownCount = expanded ? Math.min(compListings.length, EXPANDED_MAX) : Math.min(compListings.length, PREVIEW_COUNT)
+    const hasMore = compListings.length > PREVIEW_COUNT
+    return (
+      <div className="border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
+        <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">Comparable Sales</p>
+        <p className="mt-1 font-sans text-[13px] text-text-tertiary">
+          {compListings.length} comparable sale{compListings.length !== 1 ? 's' : ''} found · {label}
+        </p>
+        <p className="mt-3 font-serif text-[14px] italic leading-[1.6] text-text-secondary">
+          Comparable sales data is limited for this configuration. See comp list below for individual data points.
+        </p>
+        <div className="mt-4">
+          {compListings.map((comp, idx) =>
+            idx < shownCount ? <CompRow key={comp.id} comp={comp} idx={idx} /> : null
+          )}
+        </div>
+        {hasMore && (
+          <ExpandLink expanded={expanded} onToggle={() => setExpanded((v) => !v)} />
+        )}
+      </div>
+    )
+  }
+
   // Comp engine data path
   if (compResult && compResult.tier !== 'insufficient' && compListings && compListings.length > 0) {
     const displayed = viewerTier === 'anonymous' ? compListings.slice(0, 1) : compListings
     const hiddenCount = viewerTier === 'anonymous' ? compResult.comp_count - 1 : 0
+    const shownCount = expanded ? Math.min(displayed.length, EXPANDED_MAX) : PREVIEW_COUNT
+    const hasMore = displayed.length > PREVIEW_COUNT
+    // Caption shown when expanded and there are comps beyond the 10-comp page cap
+    const overflowCount = compResult.comp_count > EXPANDED_MAX ? compResult.comp_count : 0
 
     return (
       <div className="border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
@@ -119,15 +180,33 @@ export function ComparableSalesCard({ analysisData, compResult, compListings, vi
           {compResult.tier === 'wide' && (
             <span className="ml-1 font-serif italic text-text-muted">· wide criteria</span>
           )}
+          {matchingMode === 'broad' && (
+            <span className="ml-1 font-serif italic text-text-muted">· all mileage range</span>
+          )}
         </p>
+        {disclaimer && (
+          <p className="mt-2 font-serif text-[13px] italic text-text-muted">
+            Comps span all mileages — provide a mileage for filtered results.
+          </p>
+        )}
         <div className="mt-4">
-          {displayed.map((comp, idx) => (
-            <CompRow key={comp.id} comp={comp} idx={idx} />
-          ))}
+          {displayed.map((comp, idx) =>
+            idx < shownCount ? <CompRow key={comp.id} comp={comp} idx={idx} /> : null
+          )}
         </div>
         {hiddenCount > 0 && (
           <p className="mt-3 font-sans text-[13px] text-text-muted">
             +{hiddenCount} more sale{hiddenCount !== 1 ? 's' : ''} available with a free account
+          </p>
+        )}
+        {hasMore && (
+          <ExpandLink expanded={expanded} onToggle={() => setExpanded((v) => !v)} />
+        )}
+        {/* TODO: replace href with /analyze/[id]/full once full-report page exists */}
+        {expanded && overflowCount > 0 && (
+          <p className="mt-3 font-serif text-[13px] italic leading-[1.5] text-text-tertiary">
+            Showing {EXPANDED_MAX} of {overflowCount} comps ·{' '}
+            <a href="#" className="hover:underline">Full report shows all →</a>
           </p>
         )}
       </div>
@@ -152,6 +231,7 @@ export function ComparableSalesCard({ analysisData, compResult, compListings, vi
   // Legacy analysisData path
   const sales = analysisData?.comparable_sales ?? []
   const total = analysisData?.comps_used ?? sales.length
+  const hasMore = sales.length > PREVIEW_COUNT
 
   if (total === 0 && sales.length === 0) {
     return (
@@ -166,6 +246,7 @@ export function ComparableSalesCard({ analysisData, compResult, compListings, vi
   }
 
   const displayed = viewerTier === 'anonymous' ? sales.slice(0, 1) : sales
+  const shownCount = expanded ? Math.min(displayed.length, EXPANDED_MAX) : PREVIEW_COUNT
 
   return (
     <div className="border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
@@ -174,14 +255,19 @@ export function ComparableSalesCard({ analysisData, compResult, compListings, vi
         {total} comparable sale{total !== 1 ? 's' : ''} found
       </p>
       <div className="mt-4">
-        {displayed.map((sale, idx) => (
-          <LegacySaleRow key={sale.listing_id ?? idx} sale={sale} />
-        ))}
+        {displayed.map((sale, idx) =>
+          idx < shownCount ? (
+            <LegacySaleRow key={sale.listing_id ?? idx} sale={sale} />
+          ) : null
+        )}
       </div>
       {viewerTier === 'anonymous' && total > 1 && (
         <p className="mt-3 font-sans text-[13px] text-text-muted">
           +{total - 1} more sale{total - 1 !== 1 ? 's' : ''} available with a free account
         </p>
+      )}
+      {viewerTier !== 'anonymous' && hasMore && (
+        <ExpandLink expanded={expanded} onToggle={() => setExpanded((v) => !v)} />
       )}
     </div>
   )

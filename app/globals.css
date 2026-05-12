@@ -37,6 +37,10 @@
   --border-subtle:  #E8E2D5;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* ─── Base body styles ───────────────────────────────────────────────────────
    Inter is the UI default (sans). Serif is opt-in per element via font-serif.
    ──────────────────────────────────────────────────────────────────────────── */

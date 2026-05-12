@@ -30,7 +30,7 @@ const PYTHON_GREEN: Tables<'porsche_color_codes'> = {
   color_name: 'Python Green',
   color_family: 'Green',
   finish_type: 'Solid',
-  generation_applicability: ['992'],
+  generation_applicability: ['992.1'],
   is_special_order: true,
   rarity: 'rare',
   notes: null,
@@ -112,7 +112,7 @@ describe('resolveColorData', () => {
     const result = await resolveColorData(client, {
       paintCode: null,
       colorName: 'Python Green',
-      generationId: '992',
+      generationId: '992.1',
     })
     expect(result).toEqual(PYTHON_GREEN)
   })

@@ -24,6 +24,7 @@ const weightsAllMileage: GenerationWeights = {
     condition_stub: 0, year_similarity: 0, trim_variant_match: 0,
     market_region_match: 0, spec_composite: 0, transmission_variant_match: 0,
     color_rarity: 0, consignor_tier_match: 0, mechanical_remediation_status: 0,
+    drivetrain_match: 0,
   },
 }
 

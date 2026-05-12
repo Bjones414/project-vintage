@@ -12,8 +12,8 @@ const GENERATIONS = [
   { generation_id: '356b',      model_family: '356', year_start: 1959, year_end: 1963 },
   { generation_id: '356c',      model_family: '356', year_start: 1963, year_end: 1965 },
   // Air-cooled 911
-  { generation_id: '911-0',           model_family: '911', year_start: 1963, year_end: 1965 },
-  { generation_id: '911-f',           model_family: '911', year_start: 1966, year_end: 1973 },
+  { generation_id: '911-pre-a',        model_family: '911', year_start: 1963, year_end: 1965 },
+  { generation_id: '911-f-body',       model_family: '911', year_start: 1966, year_end: 1973 },
   { generation_id: 'g-series-2.7',    model_family: '911', year_start: 1974, year_end: 1977 },
   { generation_id: '911-sc',          model_family: '911', year_start: 1978, year_end: 1983 },
   { generation_id: '911-3.2-carrera', model_family: '911', year_start: 1984, year_end: 1989 },
@@ -27,7 +27,8 @@ const GENERATIONS = [
   { generation_id: '997.2', model_family: '911', year_start: 2009, year_end: 2013 },
   { generation_id: '991.1', model_family: '911', year_start: 2013, year_end: 2015 },
   { generation_id: '991.2', model_family: '911', year_start: 2016, year_end: 2019 },
-  { generation_id: '992',   model_family: '911', year_start: 2019, year_end: null },
+  { generation_id: '992.1', model_family: '911', year_start: 2019, year_end: 2023 },
+  { generation_id: '992.2', model_family: '911', year_start: 2024, year_end: null },
   // Boxster
   { generation_id: '986',          model_family: 'Boxster', year_start: 1997, year_end: 2004 },
   { generation_id: '987.1-boxster', model_family: 'Boxster', year_start: 2005, year_end: 2008 },
@@ -72,10 +73,10 @@ function match(input: Partial<MatchInput>) {
 // ---------------------------------------------------------------------------
 // (a) Modern 992 — high-confidence unique match
 // ---------------------------------------------------------------------------
-describe('992 (2021 911 Coupe)', () => {
-  it('matches 992 with high confidence from decoded fields', () => {
+describe('992.1 (2021 911 Coupe)', () => {
+  it('matches 992.1 with high confidence from decoded fields', () => {
     const result = match({ decoded_year: 2021, decoded_make: 'PORSCHE', decoded_model: '911', decoded_body_class: 'Coupe' })
-    expect(result.generation_id).toBe('992')
+    expect(result.generation_id).toBe('992.1')
     expect(result.confidence).toBe('high')
     expect(result.needs_review).toBe(false)
   })
@@ -280,7 +281,7 @@ describe('Non-Porsche make guard', () => {
       decoded_year: 2021,
       decoded_model: '911',
     })
-    expect(result.generation_id).toBe('992')
+    expect(result.generation_id).toBe('992.1')
     expect(result.confidence).toBe('high')
   })
 })
@@ -295,7 +296,7 @@ describe('Pre-1981 / no VIN decode fallback', () => {
       decoded_make: null,
       parsed_title: '1973 Porsche 911 Carrera RS',
     })
-    expect(result.generation_id).toBe('911-f')
+    expect(result.generation_id).toBe('911-f-body')
     expect(result.confidence).toBe('medium')
     expect(result.needs_review).toBe(false)
     expect(result.reason).toMatch(/title-based match/i)
@@ -487,7 +488,7 @@ describe('Additional coverage', () => {
       decoded_year: 2021,
       decoded_model: '911',
     })
-    // No make guard fires; year+family finds 992
-    expect(result.generation_id).toBe('992')
+    // No make guard fires; year+family finds 992.1
+    expect(result.generation_id).toBe('992.1')
   })
 })

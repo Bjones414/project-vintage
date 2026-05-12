@@ -174,22 +174,22 @@ describe('LiveStatusPill', () => {
 // VerdictBlock
 // ---------------------------------------------------------------------------
 describe('VerdictBlock', () => {
-  it('free/pro — renders "in development" state when analysisData has no lede', () => {
+  it('free/pro — renders insufficient-comps state when analysisData has no lede and no listing', () => {
     const htmlFree = renderToString(
       <VerdictBlock analysisData={null} viewerTier="free" listingId="test-id" />,
     )
     const htmlPro = renderToString(
       <VerdictBlock analysisData={null} viewerTier="pro" listingId="test-id" />,
     )
-    // Shows section label and in-development headline — not empty
+    // Shows section label and insufficient-data headline — not empty
     expect(t(htmlFree)).toContain('The verdict')
-    expect(t(htmlFree)).toContain('Verdict in development.')
-    expect(t(htmlFree)).toContain('Comp engine launching with full report.')
+    expect(t(htmlFree)).toContain('Insufficient comparable data.')
+    expect(t(htmlFree)).toContain('Not enough comparable sales')
     // No CTA button — user is already signed in
     expect(htmlFree).not.toContain('Unlock')
     expect(htmlFree).not.toContain('/signup')
     // Same for pro
-    expect(t(htmlPro)).toContain('Verdict in development.')
+    expect(t(htmlPro)).toContain('Insufficient comparable data.')
     expect(htmlPro).not.toContain('Unlock')
   })
 
@@ -328,12 +328,11 @@ describe('ChassisIdentityCard', () => {
       />,
     )
     expect(html).toMatchSnapshot()
-    // VIN is NOT displayed — it is not persisted to the DB per compliance policy
-    expect(html).not.toContain('WP0AC2A84RS270001')
-    expect(html).not.toContain('VIN')
-    expect(html).toContain('Zuffenhausen')
-    expect(html).toContain('4.0L H-6')
-    expect(html).toContain('Coupe')
+    // VIN is displayed — it is stored in DB and shown in the Chassis Identity card
+    expect(html).toContain('WP0AC2A84RS270001')
+    expect(html).toContain('VIN')
+    // Engine shows condensed form via buildEngineDisplay; decoded_plant is not rendered
+    expect(html).toContain('4.0L')
     // Exterior Color with embedded rarity indicator
     expect(t(html)).toContain('Exterior Color')
     expect(t(html)).toContain('Shark Blue')
@@ -352,10 +351,11 @@ describe('ChassisIdentityCard', () => {
         colorData={COLOR_GUARDS_RED}
       />,
     )
-    // VIN is NOT displayed — it is not persisted to the DB per compliance policy
-    expect(html).not.toContain('WP0EB0918JS857501')
+    // VIN is displayed — stored in DB and shown in Chassis Identity card
+    expect(html).toContain('WP0EB0918JS857501')
     expect(html).toContain('930')
-    expect(html).toContain('3.3L H-6 Turbo')
+    // Factory spec engine string takes priority over decoded_engine for the 930
+    expect(html).toContain('3.3L')
     // COLOR_GUARDS_RED has rarity: 'common', is_special_order: false → Common tier, gray dot
     expect(t(html)).toContain('Common')
     expect(html).toContain('bg-gray-400')
@@ -366,8 +366,8 @@ describe('ChassisIdentityCard', () => {
       <ChassisIdentityCard listing={GT4_RS_LISTING} generation={null} colorData={null} />,
     )
     expect(html).toContain('Chassis Identity')
-    // VIN is NOT displayed — it is not persisted to the DB per compliance policy
-    expect(html).not.toContain('WP0AC2A84RS270001')
+    // VIN is displayed when present in listing data
+    expect(html).toContain('WP0AC2A84RS270001')
     // Rarity indicator always renders; with no colorData it defaults to Common
     expect(t(html)).toContain('Common')
     expect(html).not.toContain('Color Rarity')
@@ -450,19 +450,20 @@ describe('ComparableSalesCard', () => {
 // EraCard
 // ---------------------------------------------------------------------------
 describe('EraCard', () => {
-  it('null generation — renders development message', () => {
+  it('null generation — renders coming-soon message', () => {
     const html = renderToString(
       <EraCard generation={null} viewerTier="anonymous" />,
     )
     expect(html).toMatchSnapshot()
-    expect(t(html)).toContain('Guide for this generation is in development')
+    expect(t(html)).toContain('Era guide for this generation coming soon')
   })
 
-  it('draft generation (content_status null) — renders development message', () => {
+  it('draft generation with decade fallback — renders fallback prose', () => {
     const html = renderToString(
       <EraCard generation={GENERATION_930} viewerTier="anonymous" />,
     )
-    expect(t(html)).toContain('Guide for this generation is in development')
+    // 930 now has fallback content from decade-fallback.ts
+    expect(t(html)).toContain('3.3-litre air-cooled 911 Turbo')
   })
 
   it('anonymous + published generation — renders only first paragraph and metadata grid', () => {
@@ -837,8 +838,8 @@ describe('integration — analyze page layout', () => {
     )
     expect(html).toMatchSnapshot()
     // Anonymous sees: chassis, status badge, color name, CTA, verdict signup prompt
-    // VIN is never displayed (NEVER_PERSIST_FIELDS compliance — VIN not stored in DB)
-    expect(html).not.toContain('WP0AC2A84RS270001')
+    // VIN is displayed (stored in DB, shown in Chassis Identity card)
+    expect(html).toContain('WP0AC2A84RS270001')
     expect(html).toContain('Sold')
     expect(html).toContain('Shark Blue')
     expect(html).toContain('Paint to Sample')
@@ -879,9 +880,9 @@ describe('integration — analyze page layout', () => {
       </div>,
     )
     expect(html).toMatchSnapshot()
-    // Free tier sees verdict, all comps, all watch-outs; EraCard "in development" (no published notes)
+    // Free tier sees verdict, all comps, all watch-outs; EraCard shows 930 decade fallback content
     expect(t(html)).toContain('45,200 miles sold within')
-    expect(html).toContain('Guide for this generation is in development')
+    expect(html).toContain('3.3-litre air-cooled 911 Turbo')
     expect(html).toContain('widow-maker')
     expect(html).toContain('Fuchs alloys')
     // Common rarity tier in ChassisIdentity
@@ -916,10 +917,10 @@ describe('integration — analyze page layout', () => {
       </div>,
     )
     expect(html).toMatchSnapshot()
-    // No editorial row → development fallback, no watch-outs
-    expect(html).toContain('Guide for this generation is in development')
-    // Chassis and verdict still present (VIN not displayed per NEVER_PERSIST_FIELDS compliance)
-    expect(html).not.toContain('WP0EB0918JS857501')
+    // No editorial row → 930 decade fallback content, no watch-outs
+    expect(html).toContain('3.3-litre air-cooled 911 Turbo')
+    // Chassis and verdict still present; VIN is displayed in Chassis Identity card
+    expect(html).toContain('WP0EB0918JS857501')
     expect(t(html)).toContain('45,200 miles sold within')
     expect(html).not.toContain('76%')
   })
@@ -1051,7 +1052,7 @@ describe('VerdictBlock — comp engine data', () => {
     expect(t(html)).toContain('Wide-criteria comps used due to limited matches.')
   })
 
-  it('insufficient tier — renders in-development state', () => {
+  it('insufficient tier — renders insufficient-data state', () => {
     const html = renderToString(
       <VerdictBlock
         listing={TURBO_930_LISTING}
@@ -1061,10 +1062,10 @@ describe('VerdictBlock — comp engine data', () => {
         listingId="fixture-930-001"
       />,
     )
-    expect(t(html)).toContain('Verdict in development.')
+    expect(t(html)).toContain('Insufficient comparable data.')
   })
 
-  it('no comp result — renders in-development state', () => {
+  it('no comp result — renders insufficient-data state', () => {
     const html = renderToString(
       <VerdictBlock
         listing={GT4_RS_LISTING}
@@ -1074,7 +1075,7 @@ describe('VerdictBlock — comp engine data', () => {
         listingId="fixture-gt4rs-001"
       />,
     )
-    expect(t(html)).toContain('Verdict in development.')
+    expect(t(html)).toContain('Insufficient comparable data.')
   })
 })
 

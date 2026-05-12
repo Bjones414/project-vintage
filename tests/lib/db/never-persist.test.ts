@@ -2,9 +2,12 @@ import { describe, it, expect } from 'vitest'
 import { guardWrite, NEVER_PERSIST_FIELDS } from '@/lib/db/never-persist'
 
 describe('NEVER_PERSIST_FIELDS', () => {
-  it('includes vin and engine_serial', () => {
-    expect(NEVER_PERSIST_FIELDS).toContain('vin')
+  it('includes engine_serial', () => {
     expect(NEVER_PERSIST_FIELDS).toContain('engine_serial')
+  })
+
+  it('does not include vin (VIN is now intentionally persisted for chassis identity)', () => {
+    expect(NEVER_PERSIST_FIELDS).not.toContain('vin')
   })
 })
 
@@ -15,10 +18,10 @@ describe('guardWrite', () => {
     ).not.toThrow()
   })
 
-  it('throws loudly when vin is in the payload', () => {
+  it('does not throw when vin is in the payload (VIN is now intentionally persisted)', () => {
     expect(() =>
       guardWrite({ make: 'Porsche', vin: 'WP0ZZZ93ZJS000001' }, 'test-caller'),
-    ).toThrow('[NEVER_PERSIST_FIELDS]')
+    ).not.toThrow()
   })
 
   it('throws loudly when engine_serial is in the payload', () => {
@@ -29,26 +32,24 @@ describe('guardWrite', () => {
 
   it('throw message includes the violating field name', () => {
     expect(() =>
-      guardWrite({ vin: 'WP0ZZZ93ZJS000001' }, 'my-caller'),
-    ).toThrow(/"vin"/)
+      guardWrite({ engine_serial: '6123456' }, 'my-caller'),
+    ).toThrow(/"engine_serial"/)
   })
 
   it('throw message includes the caller context', () => {
     expect(() =>
-      guardWrite({ vin: 'WP0ZZZ93ZJS000001' }, 'seed-corpus-bat'),
+      guardWrite({ engine_serial: '6123456' }, 'seed-corpus-bat'),
     ).toThrow('seed-corpus-bat')
   })
 
-  it('does not throw when vin key is absent (undefined value is irrelevant)', () => {
-    // Object with no vin key at all — should pass
+  it('does not throw when vin key is absent', () => {
     const payload: Record<string, unknown> = { source_platform: 'bring-a-trailer' }
     expect(() => guardWrite(payload, 'test')).not.toThrow()
   })
 
-  it('throws even when vin value is null (key presence is the trigger)', () => {
-    // vin: null is still a write of the vin field
+  it('does not throw when vin value is null (vin is allowed in payloads)', () => {
     expect(() =>
       guardWrite({ make: 'Porsche', vin: null }, 'test-caller'),
-    ).toThrow('[NEVER_PERSIST_FIELDS]')
+    ).not.toThrow()
   })
 })

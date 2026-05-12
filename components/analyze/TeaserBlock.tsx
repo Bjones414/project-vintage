@@ -35,7 +35,6 @@ export function TeaserBlock({ analysisRow, listingId, viewerTier }: Props) {
         ? '1 thing'
         : `${findingCount} things`
 
-  // TODO: /analyze/[id]/full does not exist yet — route will 404 until the full report page is built.
   const fullHref = `/analyze/${listingId}/full`
   const ctaHref = viewerTier === 'anonymous' ? `/signup?next=${fullHref}` : fullHref
   const ctaLabel =

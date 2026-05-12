@@ -60,10 +60,12 @@ describe('hard-filter — trim_category', () => {
     expect(applyHardFilters(subject, comps, taxonomy)).toHaveLength(2)
   })
 
-  it('allows comp when comp trim_category is null (D6)', () => {
+  it('drops comp when comp trim_category is null and subject has a known category', () => {
+    // Null-category comps are NOT safe defaults when the subject's category is known.
+    // D6 (passthrough) only fires when the SUBJECT itself has no known trim_category.
     const subject = makeSubject({ trim_category: 'carrera_2_narrow' })
     const comps = [makeComp('c1', { trim_category: null })]
-    expect(applyHardFilters(subject, comps, taxonomy)).toHaveLength(1)
+    expect(applyHardFilters(subject, comps, taxonomy)).toHaveLength(0)
   })
 })
 

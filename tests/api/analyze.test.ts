@@ -10,13 +10,15 @@ const {
   mockParseListing,
   mockDecodeVin,
   mockMatchGeneration,
-  mockComputeComps,
+  mockComputeCompsV2,
+  mockGetRecalls,
 } = vi.hoisted(() => ({
-  mockGetSession:     vi.fn(),
-  mockParseListing:   vi.fn(),
-  mockDecodeVin:      vi.fn(),
-  mockMatchGeneration: vi.fn(),
-  mockComputeComps:   vi.fn(),
+  mockGetSession:       vi.fn(),
+  mockParseListing:     vi.fn(),
+  mockDecodeVin:        vi.fn(),
+  mockMatchGeneration:  vi.fn(),
+  mockComputeCompsV2:   vi.fn(),
+  mockGetRecalls:       vi.fn(),
 }))
 
 vi.mock('@/lib/supabase/server', () => ({
@@ -26,7 +28,8 @@ vi.mock('@/lib/supabase/server', () => ({
 vi.mock('@/lib/listing-parser', () => ({ parseListing: mockParseListing }))
 vi.mock('@/lib/vin-decode/nhtsa', () => ({ decodeVin: mockDecodeVin }))
 vi.mock('@/lib/generation-match', () => ({ matchGeneration: mockMatchGeneration }))
-vi.mock('@/lib/comp-engine', () => ({ computeComps: mockComputeComps }))
+vi.mock('@/lib/comp-engine-v2', () => ({ computeCompsV2: mockComputeCompsV2 }))
+vi.mock('@/lib/recalls/nhtsa', () => ({ getRecallsByMakeModelYear: mockGetRecalls }))
 
 // Mutable holders so individual tests can swap chain behaviour
 let mockSingle = vi.fn()
@@ -37,6 +40,15 @@ vi.mock('@supabase/supabase-js', () => ({
     from: (table: string) => {
       if (table === 'listings') {
         return {
+          // Cache-check path: .select().in().limit().maybeSingle()
+          select: () => ({
+            in: () => ({
+              limit: () => ({
+                maybeSingle: async () => ({ data: null }),
+              }),
+            }),
+          }),
+          // Upsert path: .upsert().select().single()
           upsert: () => ({
             select: () => ({ single: () => mockSingle() }),
           }),
@@ -121,7 +133,8 @@ beforeEach(() => {
   })
 
   mockInsert = vi.fn().mockResolvedValue({ error: null })
-  mockComputeComps.mockResolvedValue({ tier: 'strict', comp_count: 8, fair_value: { low_cents: 90_000_00, median_cents: 100_000_00, high_cents: 110_000_00 } })
+  mockComputeCompsV2.mockResolvedValue(undefined)
+  mockGetRecalls.mockResolvedValue([])
 })
 
 // ---------------------------------------------------------------------------
@@ -243,14 +256,13 @@ describe('POST /api/analyze — success', () => {
     expect(body.listingId).toBe('listing-db-uuid-001')
   })
 
-  it('calls computeComps with the upserted listing id', async () => {
+  it('calls computeCompsV2 with the upserted listing id', async () => {
     await POST(makeRequest({ url: 'https://bringatrailer.com/listing/test' }))
-    expect(mockComputeComps).toHaveBeenCalledOnce()
-    expect(mockComputeComps).toHaveBeenCalledWith('listing-db-uuid-001')
+    expect(mockComputeCompsV2).toHaveBeenCalledWith('listing-db-uuid-001')
   })
 
-  it('computeComps failure is non-fatal — still returns 200', async () => {
-    mockComputeComps.mockRejectedValueOnce(new Error('comp engine exploded'))
+  it('computeCompsV2 failure is non-fatal — still returns 200', async () => {
+    mockComputeCompsV2.mockRejectedValueOnce(new Error('comp engine exploded'))
     const res = await POST(makeRequest({ url: 'https://bringatrailer.com/listing/test' }))
     expect(res.status).toBe(200)
     const body = await res.json() as { listingId: string }
