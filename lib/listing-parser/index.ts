@@ -1,4 +1,6 @@
 import { parseBaTListing } from './bring-a-trailer'
+import { parseBonhamsListing } from './bonhams'
+import { parseGoodingListing } from './gooding'
 import { PlatformNotSupportedError } from './types'
 import type { ListingParseResult } from './types'
 
@@ -13,6 +15,16 @@ export async function parseListing(url: string): Promise<ListingParseResult> {
 
     if (hostname === 'bringatrailer.com') {
       const listing = await parseBaTListing(url)
+      return { success: true, listing }
+    }
+
+    if (/bonhams\.com$/.test(hostname)) {
+      const listing = await parseBonhamsListing(url)
+      return { success: true, listing }
+    }
+
+    if (/goodingco\.com$/.test(hostname)) {
+      const listing = await parseGoodingListing(url)
       return { success: true, listing }
     }
 

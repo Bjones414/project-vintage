@@ -92,6 +92,297 @@ export function extractAuctionEndDate(
   return new Date(ts * 1000).toISOString()
 }
 
+// Trim a color candidate to only proper-noun words (uppercase-initial).
+// "Cashmere Beige leather" → "Cashmere Beige", "Black dashboard" → "Black"
+function trimToProperNouns(candidate: string): string {
+  const words = candidate.trim().split(/\s+/)
+  let end = 0
+  for (let i = 0; i < words.length; i++) {
+    if (/^[A-Z]/.test(words[i])) end = i + 1
+    else break
+  }
+  return words.slice(0, end).join(' ')
+}
+
+function isValidColorCandidate(candidate: string): boolean {
+  if (!candidate) return false
+  const words = candidate.trim().split(/\s+/)
+  if (words.length === 0 || words.length > 4) return false
+  if (!words.some((w) => /^[A-Z]/.test(w))) return false
+  if (/\d/.test(candidate)) return false
+  const JUNK = new Set(['The', 'And', 'This', 'With', 'Its', 'Over', 'Or', 'A', 'An'])
+  if (words.length === 1 && JUNK.has(candidate)) return false
+  return true
+}
+
+// Scans description prose for color mentions not captured by the structured <ul>.
+// target = 'interior': tries upholstery / interior / seats patterns first, then "X over Y" group 2.
+// target = 'exterior': tries painted/finished patterns, then "X over Y" group 1.
+function extractColorFromDescription(
+  desc: string,
+  target: 'interior' | 'exterior',
+): string | null {
+  const interiorPatterns: Array<{ re: RegExp; group: number }> = [
+    // "upholstered in Cashmere Beige leather"
+    {
+      re: /upholstered\s+in\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,3}?)\s+(?:leather|cloth|alcantara|vinyl|leatherette)/i,
+      group: 1,
+    },
+    // "Cashmere Beige leather interior" / "Black partial leather upholstery"
+    {
+      re: /([A-Za-z]+(?:\s+[A-Za-z]+){0,2})\s+(?:partial\s+)?(?:leather|cloth|alcantara|vinyl|leatherette)\s+(?:interior|upholstery|seats)/i,
+      group: 1,
+    },
+    // "interior is finished in Black" / "interior finished in Cashmere"
+    {
+      re: /interior\s+(?:is\s+)?finished\s+in\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,3})/i,
+      group: 1,
+    },
+    // "interior in Cashmere Beige"
+    {
+      re: /interior\s+in\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,3})/i,
+      group: 1,
+    },
+    // "seats in Black" / "upholstery in Cognac"
+    {
+      re: /(?:seats|upholstery)\s+(?:are\s+)?in\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,3})/i,
+      group: 1,
+    },
+    // "[Exterior] over [Interior]" — both sides capitalized; group 2 = interior
+    {
+      re: /\b([A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+){0,2})\s+over\s+([A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+){0,2})\b/,
+      group: 2,
+    },
+  ]
+
+  const exteriorPatterns: Array<{ re: RegExp; group: number }> = [
+    // "painted in Guards Red" / "finished in Silver"
+    {
+      re: /(?:painted|refinished)\s+in\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,3})/i,
+      group: 1,
+    },
+    // "[Exterior] over [Interior]" — group 1 = exterior
+    {
+      re: /\b([A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+){0,2})\s+over\s+([A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+){0,2})\b/,
+      group: 1,
+    },
+    // "Guards Red exterior" / "Silver exterior color"
+    {
+      re: /([A-Za-z]+(?:\s+[A-Za-z]+){0,2})\s+exterior(?:\s+color)?/i,
+      group: 1,
+    },
+  ]
+
+  const patterns = target === 'interior' ? interiorPatterns : exteriorPatterns
+
+  for (const { re, group } of patterns) {
+    const m = desc.match(re)
+    if (!m?.[group]) continue
+    const raw = trimToProperNouns(m[group].trim())
+    if (isValidColorCandidate(raw)) return raw
+  }
+  return null
+}
+
+// Title-cases a raw string: "blue metallic" → "Blue Metallic"
+function titleCase(str: string): string {
+  return str.replace(/\b[a-z]/g, (c) => c.toUpperCase())
+}
+
+// Strips trailing prepositions/stopwords and validates as a plausible color.
+// Returns the cleaned, title-cased string or null if the candidate looks invalid.
+function cleanColorCapture(raw: string): string | null {
+  const STOPWORDS = new Set(['in', 'at', 'by', 'to', 'from', 'on', 'and', 'or', 'the', 'a', 'an', 'of', 'with', 'its'])
+  const words = titleCase(raw.trim()).split(/\s+/)
+  while (words.length > 0 && STOPWORDS.has(words[words.length - 1].toLowerCase())) words.pop()
+  if (words.length === 0 || words.length > 4) return null
+  if (words.some((w) => /\d/.test(w) || w.length < 2)) return null
+  return words.join(' ')
+}
+
+// Extracts the sentence containing `pos` from `text` (capped at 300 chars).
+function extractSentenceAt(text: string, pos: number): string {
+  let start = pos
+  while (start > 0 && !/[.!?]/.test(text[start - 1])) start--
+  let end = pos
+  while (end < text.length && !/[.!?]/.test(text[end])) end++
+  if (end < text.length) end++
+  const s = text.slice(start, end).trim()
+  return s.length > 300 ? s.slice(0, 297) + '...' : s
+}
+
+// Looks for a 4-digit year (1950–2030) in a context window around `nearPos`.
+function extractYearNear(text: string, nearPos: number): number | null {
+  const ctx = text.slice(Math.max(0, nearPos - 20), Math.min(text.length, nearPos + 150))
+  // Primary: "in YYYY" or "around YYYY"
+  const re1 = /\b(?:in|around)\s+((?:19|20)\d{2})\b/gi
+  let m: RegExpExecArray | null
+  while ((m = re1.exec(ctx)) !== null) {
+    const y = parseInt(m[1], 10)
+    if (y >= 1950 && y <= 2030) return y
+  }
+  // Fallback: standalone 4-digit year
+  const re2 = /\b((?:19|20)\d{2})\b/g
+  while ((m = re2.exec(ctx)) !== null) {
+    const y = parseInt(m[1], 10)
+    if (y >= 1950 && y <= 2030) return y
+  }
+  return null
+}
+
+export interface PaintDisclosureResult {
+  is_repainted: boolean | null
+  original_exterior_color: string | null
+  current_color_from_disclosure: string | null
+  repaint_year: number | null
+  repaint_disclosure: string | null
+}
+
+/**
+ * Scans listing description prose for repaint disclosures and original-color mentions.
+ *
+ * Returns:
+ *   is_repainted = true   — seller disclosed a repaint
+ *   is_repainted = false  — seller confirmed original paint
+ *   is_repainted = null   — no mention found
+ */
+export function extractPaintDisclosure(text: string): PaintDisclosureResult {
+  const none: PaintDisclosureResult = {
+    is_repainted: null,
+    original_exterior_color: null,
+    current_color_from_disclosure: null,
+    repaint_year: null,
+    repaint_disclosure: null,
+  }
+  if (!text) return none
+
+  // Seller-confirmed original paint → is_repainted = false
+  const ORIGINAL_CONFIRMED = [
+    /\bnever\s+(?:been\s+)?repainted\b/i,
+    /\bunrepainted\b/i,
+    /\boriginal\s+factory\s+paint\b/i,
+    /\bfactory\s+paint\s+(?:is\s+)?intact\b/i,
+    /\ball[-\s]original\s+paint\b/i,
+  ]
+  for (const re of ORIGINAL_CONFIRMED) {
+    if (re.test(text)) return { ...none, is_repainted: false }
+  }
+
+  // "color change from [ORIG] to [CURRENT]"
+  const colorChangeRe = /colou?r\s+change\s+from\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,2})\s+to\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,2})/i
+  const ccm = text.match(colorChangeRe)
+  if (ccm) {
+    const pos = text.indexOf(ccm[0])
+    return {
+      is_repainted: true,
+      original_exterior_color: cleanColorCapture(ccm[1]),
+      current_color_from_disclosure: cleanColorCapture(ccm[2]),
+      repaint_year: extractYearNear(text, pos),
+      repaint_disclosure: extractSentenceAt(text, pos),
+    }
+  }
+
+  // Repaint disclosure patterns — ordered most-specific first
+  const REPAINT: Array<{ re: RegExp; colorGroup: number | null }> = [
+    // "was repainted in Blue Metallic" / "has been repainted in Guards Red"
+    { re: /(?:was|has\s+been)\s+repainted\s+in\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,3})/i, colorGroup: 1 },
+    // "refinished in Blue Metallic"
+    { re: /refinished\s+in\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,3})/i,                      colorGroup: 1 },
+    // "Blue Metallic respray"
+    { re: /([A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+){0,2})\s+respray\b/,                   colorGroup: 1 },
+    // generic "repainted" with no inline color
+    { re: /\brepainted\b/i,                                                              colorGroup: null },
+  ]
+
+  let matchPos = -1
+  let currentColor: string | null = null
+
+  for (const { re, colorGroup } of REPAINT) {
+    const m = text.match(re)
+    if (!m) continue
+    matchPos = text.indexOf(m[0])
+    if (colorGroup !== null && m[colorGroup]) {
+      currentColor = cleanColorCapture(m[colorGroup])
+    }
+    break
+  }
+
+  if (matchPos === -1) return none
+
+  // Scan full text for original-color mentions
+  const ORIG: Array<RegExp> = [
+    /left\s+the\s+factory\s+(?:finished\s+)?in\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,3})/i,
+    /factory\s+(?:original\s+)?colou?r\s+(?:was|is)\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,3})/i,
+    /original\s+(?:exterior\s+)?colou?r\s+(?:was|is)\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,3})/i,
+    /originally\s+(?:(?:finished|painted|delivered)\s+in\s+)?([A-Za-z]+(?:\s+[A-Za-z]+){0,3})\s+(?:from\s+the\s+factory|from\s+new)/i,
+    /\bborn\s+in\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,3})/i,
+    /delivered\s+(?:new\s+)?in\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,3})/i,
+  ]
+
+  let originalColor: string | null = null
+  for (const re of ORIG) {
+    const m = text.match(re)
+    if (m?.[1]) {
+      const c = cleanColorCapture(m[1])
+      if (c) { originalColor = c; break }
+    }
+  }
+
+  return {
+    is_repainted: true,
+    original_exterior_color: originalColor,
+    current_color_from_disclosure: currentColor,
+    repaint_year: extractYearNear(text, matchPos),
+    repaint_disclosure: extractSentenceAt(text, matchPos),
+  }
+}
+
+export interface ReupholsteryDisclosureResult {
+  is_reupholstered: boolean | null
+  original_interior_color: string | null
+  reupholstery_disclosure: string | null
+}
+
+/**
+ * Scans listing description prose for interior reupholstery disclosures.
+ */
+export function extractReupholsteryDisclosure(text: string): ReupholsteryDisclosureResult {
+  const none: ReupholsteryDisclosureResult = {
+    is_reupholstered: null,
+    original_interior_color: null,
+    reupholstery_disclosure: null,
+  }
+  if (!text) return none
+
+  const ORIGINAL_CONFIRMED = [
+    /\bnever\s+(?:been\s+)?reupholstered\b/i,
+    /\boriginal\s+(?:factory\s+)?interior\b/i,
+    /\boriginal\s+(?:factory\s+)?upholstery\b/i,
+  ]
+  for (const re of ORIGINAL_CONFIRMED) {
+    if (re.test(text)) return { ...none, is_reupholstered: false }
+  }
+
+  const REUPHOLSTERED = [
+    /\breupholstered\b/i,
+    /interior\s+(?:was\s+)?recovered\s+in\b/i,
+    /new\s+(?:leather|cloth|alcantara)\s+(?:interior|upholstery)\b/i,
+  ]
+  for (const re of REUPHOLSTERED) {
+    const m = text.match(re)
+    if (m) {
+      const pos = text.indexOf(m[0])
+      return {
+        is_reupholstered: true,
+        original_interior_color: null,
+        reupholstery_disclosure: extractSentenceAt(text, pos),
+      }
+    }
+  }
+
+  return none
+}
+
 function parseMileageValue(raw: string): number | null {
   if (/k$/i.test(raw)) {
     const n = parseInt(raw.slice(0, -1), 10)
@@ -131,6 +422,292 @@ export function extractCurrentBid(visibleText: string): number | null {
   return Math.round(amount * 100)
 }
 
+/**
+ * Pure HTML parser — steps 3–12 of the original parsing logic.
+ * Accepts already-fetched HTML and the normalized source URL.
+ * No network I/O; safe to call from both the on-demand route and the scraper.
+ */
+export function parseBatHtml(html: string, sourceUrl: string): CanonicalListing {
+  const parsedUrl = new URL(sourceUrl)
+  const $ = load(html)
+
+  // Step 3 — Extract JSON-LD Product schema
+  let title = ''
+  let description: string | null = null
+  let image_urls: string[] = []
+  let sold_price_cents: number | null = null
+  let productSchema: Record<string, unknown> | null = null
+
+  $('script[type="application/ld+json"]').each((_, el) => {
+    let entry: unknown
+    try {
+      entry = JSON.parse($(el).html() ?? '')
+    } catch {
+      return
+    }
+    if (typeof entry !== 'object' || entry === null) return
+    const obj = entry as Record<string, unknown>
+    if (obj['@type'] !== 'Product') return
+
+    productSchema = obj
+    if (typeof obj['name'] === 'string') title = obj['name']
+    if (typeof obj['description'] === 'string') description = obj['description']
+
+    const rawImage = obj['image']
+    if (typeof rawImage === 'string') {
+      image_urls = [rawImage]
+    } else if (Array.isArray(rawImage)) {
+      image_urls = rawImage.filter((i): i is string => typeof i === 'string')
+    }
+
+    const offersRaw = obj['offers']
+    const offers =
+      Array.isArray(offersRaw)
+        ? (offersRaw[0] as Record<string, unknown> | undefined)
+        : (offersRaw as Record<string, unknown> | undefined)
+    if (offers && offers['priceCurrency'] === 'USD') {
+      const price = offers['price']
+      if (typeof price === 'number') {
+        sold_price_cents = Math.round(price * 100)
+      } else if (typeof price === 'string' && price !== '') {
+        const n = parseFloat(price)
+        if (!isNaN(n)) sold_price_cents = Math.round(n * 100)
+      }
+    }
+  })
+
+  // Step 4 — Extract lot number from meta description
+  const metaDesc = $('meta[name="description"]').attr('content') ?? ''
+  const lotMatch = metaDesc.match(/Lot #([\d,]+)/)
+  let source_listing_id: string
+  if (lotMatch?.[1]) {
+    source_listing_id = lotMatch[1].replace(/,/g, '')
+  } else {
+    const pathSegments = parsedUrl.pathname.split('/').filter(Boolean)
+    source_listing_id = pathSegments[pathSegments.length - 1] ?? ''
+  }
+
+  // Step 5 — Parse title into year / make / model / trim
+  let year: number | null = null
+  let make: string | null = null
+  let model: string | null = null
+  let trim: string | null = null
+  const titleMatch = title.match(/(\d{4})\s+(.+)$/)
+  if (titleMatch) {
+    const parsedYear = parseInt(titleMatch[1], 10)
+    year = parsedYear >= 1900 && parsedYear <= 2030 ? parsedYear : null
+    const parts = titleMatch[2].split(/\s+/)
+    make = parts[0] ?? null
+    const postMake = parts.slice(1).join(' ')
+    if (postMake) {
+      const parsed = splitModelTrim(postMake)
+      model = parsed.model
+      trim = parsed.trim
+    }
+  }
+
+  // Step 6 — Extract VIN/chassis number from listing details.
+  // BaT uses "Chassis: <value>" in BaT Essentials / Listing Details sections.
+  // Labels vary: "Chassis:", "Chassis No.:", "Chassis Number:", "VIN:", "VIN Number:".
+  // Four-tier strategy: list/table items → dt/dd pairs → adjacent sibling elements → raw HTML scan.
+  let vin: string | null = null
+  const VIN_17 = /\b([A-HJ-NPR-Z0-9]{17})\b/
+  const CHASSIS_INLINE = /(?:chassis(?:\s*(?:no\.?|num(?:ber)?|#))?|vin(?:\s+num(?:ber)?)?)\s*[:#]?\s*([A-HJ-NPR-Z0-9]{6,17})/i
+  const CHASSIS_LABEL  = /^\s*(?:chassis(?:\s*(?:no\.?|num(?:ber)?|#))?|vin(?:\s+num(?:ber)?)?)\s*[:#]?\s*$/i
+  const VALUE_ONLY     = /^([A-HJ-NPR-Z0-9]{6,17})$/i
+
+  // Tier 1: label+value co-located in a single element's full text content.
+  // Handles <li>Chassis: WP0...</li> and <td>Chassis: WP0...</td> layouts.
+  $('li, td').each((_, el) => {
+    if (vin) return false
+    const m = $(el).text().match(CHASSIS_INLINE)
+    if (m) vin = m[1]
+  })
+
+  // Tier 2: <dt>/<th> label with value in adjacent <dd>/<td> (definition list layout).
+  if (!vin) {
+    $('dt, th').each((_, el) => {
+      if (vin) return false
+      if (!CHASSIS_LABEL.test($(el).text())) return
+      const val = $(el).next('dd, td').text().trim()
+      const m = val.match(VALUE_ONLY)
+      if (m) vin = m[1]
+    })
+  }
+
+  // Tier 3: label in one element, value in immediately adjacent sibling.
+  // Handles <span class="label">Chassis:</span><span class="value">WP0...</span> grid layouts.
+  if (!vin) {
+    $('span, p, div').each((_, el) => {
+      if (vin) return false
+      const direct = $(el).clone().children().remove().end().text().trim()
+      if (!CHASSIS_LABEL.test(direct)) return
+      const nextText = $(el).next().text().trim()
+      const m = nextText.match(VALUE_ONLY)
+      if (m) vin = m[1]
+    })
+  }
+
+  // Tier 4: raw HTML scan for exactly 17-char VIN (catches values in <script> JSON blobs).
+  // Pre-1981 chassis numbers (<17 chars) are only captured by Tiers 1-3 via labeled match.
+  if (!vin) {
+    const rawMatch = html.match(VIN_17)
+    if (rawMatch) vin = rawMatch[1]
+  }
+
+  if (vin) vin = vin.toUpperCase()
+
+  // Step 7 — Extract specs from the Listing Details <ul>
+  // BaT uses an unlabeled bullet list rather than a <dl> for vehicle details.
+  let mileage: number | null = null
+  let transmission: string | null = null
+  let exterior_color: string | null = null
+  let interior_color: string | null = null
+
+  const headingEl = $('*').filter((_, el) => {
+    const clone = $(el).clone()
+    clone.children().remove()
+    return /listing details/i.test(clone.text())
+  }).first()
+
+  const detailsUl = headingEl.next('ul').length > 0
+    ? headingEl.next('ul')
+    : headingEl.nextAll('ul').first()
+
+  detailsUl.find('li').each((_, el) => {
+    const text = $(el).text().trim()
+
+    const mileageMatch = text.match(/(\d{1,3}(?:,\d{3})*|\d+k)\s*Miles/i)
+    if (mileageMatch) {
+      mileage = parseMileageValue(mileageMatch[1])
+      return
+    }
+
+    if (/\b(Manual|Automatic|PDK|Tiptronic)\b/.test(text)) {
+      transmission = text
+      return
+    }
+
+    const paintMatch = text.match(/^(.+?)\s+Paint$/i)
+    if (paintMatch) {
+      exterior_color = paintMatch[1].trim()
+      return
+    }
+
+    if (/upholstery/i.test(text)) {
+      interior_color = text
+    }
+  })
+
+  // Step 7b — Extract visible page text (cheap DOM pass; reused by Steps 7b/7c/9/10/11).
+  const cleaned = $.root().clone()
+  cleaned.find('script, style').remove()
+  const visibleText = cleaned.find('body').text()
+
+  // Step 7c — Color fallbacks: description prose first, then full visible text.
+  // Cascades only when the structured <ul> didn't yield a value.
+  if (interior_color === null && description) {
+    interior_color = extractColorFromDescription(description, 'interior')
+  }
+  if (exterior_color === null && description) {
+    exterior_color = extractColorFromDescription(description, 'exterior')
+  }
+  // Third tier: visibleText catches old BaT listings without JSON-LD description.
+  if (interior_color === null) {
+    interior_color = extractColorFromDescription(visibleText, 'interior')
+  }
+  if (exterior_color === null) {
+    exterior_color = extractColorFromDescription(visibleText, 'exterior')
+  }
+
+  // Step 7d — Paint and upholstery disclosure extraction from description prose.
+  // Runs after color fallbacks so current_color_from_disclosure can fill exterior_color when null.
+  const descForDisclosure = description ?? visibleText
+  const paintDisclosure = extractPaintDisclosure(descForDisclosure)
+  const upholsteryDisclosure = extractReupholsteryDisclosure(descForDisclosure)
+  if (exterior_color === null && paintDisclosure.current_color_from_disclosure !== null) {
+    exterior_color = paintDisclosure.current_color_from_disclosure
+  }
+
+  // Step 8 — Extract auction end date (three-tier: primary DOM, fallback DOM, regex)
+  const auction_end_date = extractAuctionEndDate($, html)
+
+  // Step 9 — Determine listing_status
+
+  const priceTail = String.raw`[\s:]*(?:USD\s*)?\$[\d,]+`
+  const matchers: Array<[CanonicalListing['listing_status'], RegExp]> = [
+    ['sold', new RegExp(`Sold for${priceTail}`, 'i')],
+    ['no-sale', new RegExp(`Bid to${priceTail}`, 'i')],
+    ['live', new RegExp(`Current Bid${priceTail}`, 'i')],
+  ]
+  const found = matchers
+    .map(([label, re]) => [label, visibleText.search(re)] as [CanonicalListing['listing_status'], number])
+    .filter(([, pos]) => pos !== -1)
+    .sort((a, b) => a[1] - b[1])
+
+  let listing_status: CanonicalListing['listing_status'] = 'unknown'
+  if (found.length > 0) {
+    listing_status = found[0][0]
+  }
+
+  // Step 10 — Reserve status detection.
+  const { reserve_met, has_no_reserve } = detectReserveStatus(visibleText)
+
+  // Step 11 — High-bid extraction.
+  // Live auctions: "Current Bid $X" → high_bid_cents.
+  // Ended no-sale auctions: "Bid to USD $X" → high_bid_cents.
+  // For no-sale listings the JSON-LD price field holds the final bid amount, not a
+  // completed sale — null out sold_price_cents and store the amount in high_bid_cents.
+  let high_bid_cents: number | null = extractCurrentBid(visibleText)
+  if (listing_status === 'no-sale') {
+    const m = visibleText.match(/Bid\s+to\s+(?:USD\s*)?\$?([\d,]+(?:\.\d{2})?)/i)
+    if (m) {
+      const amount = parseFloat(m[1].replace(/,/g, ''))
+      high_bid_cents = isNaN(amount) ? null : Math.round(amount * 100)
+    }
+    sold_price_cents = null
+  }
+
+  // Step 12 — Assemble CanonicalListing
+  return {
+    source_platform: 'bring-a-trailer',
+    source_url: sourceUrl,
+    source_listing_id,
+    title,
+    year,
+    make,
+    model,
+    trim,
+    vin,
+    mileage,
+    engine: null,
+    transmission,
+    exterior_color,
+    interior_color,
+    original_exterior_color: paintDisclosure.original_exterior_color,
+    is_repainted: paintDisclosure.is_repainted,
+    repaint_year: paintDisclosure.repaint_year,
+    repaint_disclosure: paintDisclosure.repaint_disclosure,
+    original_interior_color: upholsteryDisclosure.original_interior_color,
+    is_reupholstered: upholsteryDisclosure.is_reupholstered,
+    reupholstery_disclosure: upholsteryDisclosure.reupholstery_disclosure,
+    sold_price_cents,
+    high_bid_cents,
+    listing_status,
+    bid_count: null,
+    reserve_met,
+    has_no_reserve,
+    auction_end_date,
+    seller_info: null,
+    description,
+    modification_notes: null,
+    image_urls,
+    raw_data: {
+      json_ld: productSchema,
+    },
+  }
+}
+
 export async function parseBaTListing(url: string): Promise<CanonicalListing> {
   try {
     // Step 1 — Validate and normalize URL
@@ -154,7 +731,21 @@ export async function parseBaTListing(url: string): Promise<CanonicalListing> {
     try {
       const response = await fetch(normalizedUrl, {
         signal: controller.signal,
-        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ProjectVintage/1.0)' },
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Accept-Encoding': 'gzip, deflate, br, zstd',
+          'Cache-Control': 'max-age=0',
+          'Sec-Ch-Ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+          'Sec-Ch-Ua-Mobile': '?0',
+          'Sec-Ch-Ua-Platform': '"Windows"',
+          'Sec-Fetch-Dest': 'document',
+          'Sec-Fetch-Mode': 'navigate',
+          'Sec-Fetch-Site': 'none',
+          'Sec-Fetch-User': '?1',
+          'Upgrade-Insecure-Requests': '1',
+        },
       })
       if (!response.ok) {
         throw new Error(`HTTP ${response.status} ${response.statusText} fetching ${normalizedUrl}`)
@@ -164,204 +755,7 @@ export async function parseBaTListing(url: string): Promise<CanonicalListing> {
       clearTimeout(timeoutId)
     }
 
-    const $ = load(html)
-
-    // Step 3 — Extract JSON-LD Product schema
-    let title = ''
-    let description: string | null = null
-    let image_urls: string[] = []
-    let sold_price_cents: number | null = null
-    let productSchema: Record<string, unknown> | null = null
-
-    $('script[type="application/ld+json"]').each((_, el) => {
-      let entry: unknown
-      try {
-        entry = JSON.parse($(el).html() ?? '')
-      } catch {
-        return
-      }
-      if (typeof entry !== 'object' || entry === null) return
-      const obj = entry as Record<string, unknown>
-      if (obj['@type'] !== 'Product') return
-
-      productSchema = obj
-      if (typeof obj['name'] === 'string') title = obj['name']
-      if (typeof obj['description'] === 'string') description = obj['description']
-
-      const rawImage = obj['image']
-      if (typeof rawImage === 'string') {
-        image_urls = [rawImage]
-      } else if (Array.isArray(rawImage)) {
-        image_urls = rawImage.filter((i): i is string => typeof i === 'string')
-      }
-
-      const offersRaw = obj['offers']
-      const offers =
-        Array.isArray(offersRaw)
-          ? (offersRaw[0] as Record<string, unknown> | undefined)
-          : (offersRaw as Record<string, unknown> | undefined)
-      if (offers && offers['priceCurrency'] === 'USD') {
-        const price = offers['price']
-        if (typeof price === 'number') {
-          sold_price_cents = Math.round(price * 100)
-        } else if (typeof price === 'string' && price !== '') {
-          const n = parseFloat(price)
-          if (!isNaN(n)) sold_price_cents = Math.round(n * 100)
-        }
-      }
-    })
-
-    // Step 4 — Extract lot number from meta description
-    const metaDesc = $('meta[name="description"]').attr('content') ?? ''
-    const lotMatch = metaDesc.match(/Lot #([\d,]+)/)
-    let source_listing_id: string
-    if (lotMatch?.[1]) {
-      source_listing_id = lotMatch[1].replace(/,/g, '')
-    } else {
-      const pathSegments = parsed.pathname.split('/').filter(Boolean)
-      source_listing_id = pathSegments[pathSegments.length - 1] ?? ''
-    }
-
-    // Step 5 — Parse title into year / make / model / trim
-    let year: number | null = null
-    let make: string | null = null
-    let model: string | null = null
-    let trim: string | null = null
-    const titleMatch = title.match(/(\d{4})\s+(.+)$/)
-    if (titleMatch) {
-      const parsedYear = parseInt(titleMatch[1], 10)
-      year = parsedYear >= 1900 && parsedYear <= 2030 ? parsedYear : null
-      const parts = titleMatch[2].split(/\s+/)
-      make = parts[0] ?? null
-      const postMake = parts.slice(1).join(' ')
-      if (postMake) {
-        const parsed = splitModelTrim(postMake)
-        model = parsed.model
-        trim = parsed.trim
-      }
-    }
-
-    // Step 6 — Extract VIN from "Chassis:" bullet in any <li>
-    // BaT labels the VIN as "Chassis" with the value wrapped in an <a> tag.
-    let vin: string | null = null
-    $('li').each((_, el) => {
-      const match = $(el).text().match(/Chassis:\s*([A-HJ-NPR-Z0-9]{6,17})/i)
-      if (match) {
-        vin = match[1]
-        return false
-      }
-    })
-
-    // Step 7 — Extract specs from the Listing Details <ul>
-    // BaT uses an unlabeled bullet list rather than a <dl> for vehicle details.
-    let mileage: number | null = null
-    let transmission: string | null = null
-    let exterior_color: string | null = null
-    let interior_color: string | null = null
-
-    const headingEl = $('*').filter((_, el) => {
-      const clone = $(el).clone()
-      clone.children().remove()
-      return /listing details/i.test(clone.text())
-    }).first()
-
-    const detailsUl = headingEl.next('ul').length > 0
-      ? headingEl.next('ul')
-      : headingEl.nextAll('ul').first()
-
-    detailsUl.find('li').each((_, el) => {
-      const text = $(el).text().trim()
-
-      const mileageMatch = text.match(/(\d{1,3}(?:,\d{3})*|\d+k)\s*Miles/i)
-      if (mileageMatch) {
-        mileage = parseMileageValue(mileageMatch[1])
-        return
-      }
-
-      if (/\b(Manual|Automatic|PDK|Tiptronic)\b/.test(text)) {
-        transmission = text
-        return
-      }
-
-      const paintMatch = text.match(/^(.+?)\s+Paint$/i)
-      if (paintMatch) {
-        exterior_color = paintMatch[1].trim()
-        return
-      }
-
-      if (/upholstery/i.test(text)) {
-        interior_color = text
-      }
-    })
-
-    // Step 8 — Extract auction end date (three-tier: primary DOM, fallback DOM, regex)
-    const auction_end_date = extractAuctionEndDate($, html)
-
-    // Step 9 — Determine listing_status by matching status phrases adjacent to a USD price.
-    // BaT pages embed an i18n dictionary inside <script> tags listing all
-    // status phrases as raw translation values. The dictionary is identical
-    // across all listings regardless of state. Strip scripts/styles first
-    // and require a dollar amount adjacent to each phrase — the rendered
-    // hero always renders "Current Bid: USD $X" with the price; dictionary
-    // entries are bare phrases without prices.
-    const cleaned = $.root().clone()
-    cleaned.find('script, style').remove()
-    const visibleText = cleaned.find('body').text()
-
-    const priceTail = String.raw`[\s:]*(?:USD\s*)?\$[\d,]+`
-    const matchers: Array<[CanonicalListing['listing_status'], RegExp]> = [
-      ['sold', new RegExp(`Sold for${priceTail}`, 'i')],
-      ['no-sale', new RegExp(`Bid to${priceTail}`, 'i')],
-      ['live', new RegExp(`Current Bid${priceTail}`, 'i')],
-    ]
-    const found = matchers
-      .map(([label, re]) => [label, visibleText.search(re)] as [CanonicalListing['listing_status'], number])
-      .filter(([, pos]) => pos !== -1)
-      .sort((a, b) => a[1] - b[1])
-
-    let listing_status: CanonicalListing['listing_status'] = 'unknown'
-    if (found.length > 0) {
-      listing_status = found[0][0]
-    }
-
-    // Step 10 — Reserve status detection.
-    // "reserve not met" must be checked before "reserve met" (substring containment).
-    const { reserve_met, has_no_reserve } = detectReserveStatus(visibleText)
-
-    // Step 11 — Current bid extraction.
-    const high_bid_cents = extractCurrentBid(visibleText)
-
-    // Step 12 — Assemble CanonicalListing
-    return {
-      source_platform: 'bring-a-trailer',
-      source_url: normalizedUrl,
-      source_listing_id,
-      title,
-      year,
-      make,
-      model,
-      trim,
-      vin,
-      mileage,
-      engine: null,
-      transmission,
-      exterior_color,
-      interior_color,
-      sold_price_cents,
-      high_bid_cents,
-      listing_status,
-      bid_count: null,
-      reserve_met,
-      has_no_reserve,
-      auction_end_date,
-      seller_info: null,
-      description,
-      modification_notes: null,
-      image_urls,
-      raw_data: {
-        json_ld: productSchema,
-      },
-    }
+    return parseBatHtml(html, normalizedUrl)
   } catch (error) {
     throw new Error(
       `Failed to parse BaT listing at ${url}: ${error instanceof Error ? error.message : String(error)}`

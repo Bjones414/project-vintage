@@ -9,6 +9,7 @@ export type SourcePlatform =
   | 'hemmings'
   | 'bonhams'
   | 'barrett-jackson'
+  | 'pca_mart'
 
 export interface CanonicalListing {
   source_platform: SourcePlatform
@@ -25,9 +26,17 @@ export interface CanonicalListing {
   transmission: string | null
   exterior_color: string | null
   interior_color: string | null
+  original_exterior_color?: string | null
+  is_repainted?: boolean | null
+  repaint_year?: number | null
+  repaint_disclosure?: string | null
+  original_interior_color?: string | null
+  is_reupholstered?: boolean | null
+  reupholstery_disclosure?: string | null
   sold_price_cents: number | null  // dollars * 100, integer only, never float
   high_bid_cents: number | null    // current bid in cents; coexists with sold_price_cents
-  listing_status: 'live' | 'sold' | 'no-sale' | 'unknown'
+  asking_price_cents?: number | null // classified asking price; only set by parsers that don't produce sold prices
+  listing_status: 'live' | 'sold' | 'no-sale' | 'unknown' | 'asking'
   bid_count: number | null
   reserve_met: boolean | null
   has_no_reserve: boolean          // true when listing explicitly says "No Reserve"
@@ -37,6 +46,8 @@ export interface CanonicalListing {
   modification_notes: string | null
   image_urls: string[]
   raw_data: Record<string, unknown>
+  // When false, the analyze route runs the listing in-memory only — no DB writes.
+  should_persist?: boolean
 }
 
 export type ListingParseResult =
