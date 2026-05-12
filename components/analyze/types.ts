@@ -1,4 +1,7 @@
 import type { Json } from '@/lib/supabase/types'
+import type { NhtsaRecall } from '@/lib/recalls/nhtsa'
+
+export type { NhtsaRecall }
 
 export type { ViewerTier } from '@/lib/auth/viewer-tier'
 export type { Finding, FindingSeverity, FindingCategory } from '@/lib/findings/types'
@@ -29,6 +32,7 @@ export type AnalysisData = {
   fair_value_high_cents?: number
   comps_used?: number
   comparable_sales?: ComparableSale[]
+  recalls?: NhtsaRecall[]
 }
 
 export function parseAnalysisData(raw: Json | null | undefined): AnalysisData | null {

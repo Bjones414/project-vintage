@@ -409,6 +409,8 @@ export type Database = {
           is_federalized_import: boolean | null
           is_original_owner_sale: boolean | null
           is_paint_to_sample: boolean | null
+          is_repainted: boolean | null
+          is_reupholstered: boolean | null
           is_single_family: boolean | null
           last_verified_at: string | null
           listed_at: string | null
@@ -442,6 +444,8 @@ export type Database = {
           notable_provenance: string | null
           numbers_matching: boolean | null
           options: Json
+          original_exterior_color: string | null
+          original_interior_color: string | null
           owner_count: number | null
           owner_count_stated: number | null
           ownership_count: number | null
@@ -451,7 +455,10 @@ export type Database = {
           ppi_completed_by: string | null
           raw_html_snapshot_key: string | null
           recent_major_service: Json | null
+          repaint_disclosure: string | null
+          repaint_year: number | null
           reserve_met: boolean | null
+          reupholstery_disclosure: string | null
           seats_type: string | null
           service_history_present: boolean | null
           source_listing_id: string
@@ -534,6 +541,8 @@ export type Database = {
           is_federalized_import?: boolean | null
           is_original_owner_sale?: boolean | null
           is_paint_to_sample?: boolean | null
+          is_repainted?: boolean | null
+          is_reupholstered?: boolean | null
           is_single_family?: boolean | null
           last_verified_at?: string | null
           listed_at?: string | null
@@ -567,6 +576,8 @@ export type Database = {
           notable_provenance?: string | null
           numbers_matching?: boolean | null
           options?: Json
+          original_exterior_color?: string | null
+          original_interior_color?: string | null
           owner_count?: number | null
           owner_count_stated?: number | null
           ownership_count?: number | null
@@ -576,7 +587,10 @@ export type Database = {
           ppi_completed_by?: string | null
           raw_html_snapshot_key?: string | null
           recent_major_service?: Json | null
+          repaint_disclosure?: string | null
+          repaint_year?: number | null
           reserve_met?: boolean | null
+          reupholstery_disclosure?: string | null
           seats_type?: string | null
           service_history_present?: boolean | null
           source_listing_id: string
@@ -659,6 +673,8 @@ export type Database = {
           is_federalized_import?: boolean | null
           is_original_owner_sale?: boolean | null
           is_paint_to_sample?: boolean | null
+          is_repainted?: boolean | null
+          is_reupholstered?: boolean | null
           is_single_family?: boolean | null
           last_verified_at?: string | null
           listed_at?: string | null
@@ -692,6 +708,8 @@ export type Database = {
           notable_provenance?: string | null
           numbers_matching?: boolean | null
           options?: Json
+          original_exterior_color?: string | null
+          original_interior_color?: string | null
           owner_count?: number | null
           owner_count_stated?: number | null
           ownership_count?: number | null
@@ -701,7 +719,10 @@ export type Database = {
           ppi_completed_by?: string | null
           raw_html_snapshot_key?: string | null
           recent_major_service?: Json | null
+          repaint_disclosure?: string | null
+          repaint_year?: number | null
           reserve_met?: boolean | null
+          reupholstery_disclosure?: string | null
           seats_type?: string | null
           service_history_present?: boolean | null
           source_listing_id?: string

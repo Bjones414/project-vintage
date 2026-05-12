@@ -1,7 +1,16 @@
 // POST /api/analyze
-// Accepts a listing URL, parses it into a CanonicalListing, upserts to the listings table,
-// creates a listing_analyses row, and returns { listingId, listing }.
-// Enforces auth — free-tier rate limiting deferred to V1.5.
+// Accepts a listing URL, checks the listing cache, fetches from source if needed,
+// upserts to the listings table, creates a listing_analyses row, and returns { listingId }.
+//
+// Cache flow:
+//   1. URL received → check listings table for existing row by source_url
+//   2. If found + cache_status = 'permanent' → return listingId immediately (no fetch)
+//   3. If found + cache_status = 'live' + last_fetched_at within 1 hour → return listingId (no fetch)
+//   4. If found + stale, OR no row → fetch from source, upsert, run analysis pipeline
+//
+// SAFETY: This is the only place a source platform fetch is triggered by URL paste.
+// No background jobs, cron, or automated refreshes exist in this system.
+// Fetches occur only when a user explicitly submits a URL or their watchlist is stale.
 import { createHash } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
@@ -10,9 +19,12 @@ import { parseListing } from '@/lib/listing-parser'
 import { decodeVin } from '@/lib/vin-decode/nhtsa'
 import { matchGeneration } from '@/lib/generation-match'
 import { runFindingsRules } from '@/lib/findings'
-import { computeComps } from '@/lib/comp-engine'
+import { computeCompsV2 } from '@/lib/comp-engine-v2'
 import { guardWrite } from '@/lib/db/never-persist'
 import { extractSourceMentions, platformToPublication } from '@/lib/extractors/source-mentions'
+import { getRecallsByMakeModelYear } from '@/lib/recalls/nhtsa'
+import { shouldRefetch, toCacheStatus } from '@/lib/listing-cache'
+import { deriveTrimCategory } from '@/lib/trim-category'
 
 export async function POST(request: NextRequest) {
   // Validate body
@@ -42,10 +54,58 @@ export async function POST(request: NextRequest) {
   // TODO Task 6: When implementing analyze page gates, watch-list limits, and report counters,
   // bypass all gates for users with role IN ('admin', 'beta'). Member accounts get the full
   // V1 free-tier limits.
-  // Load the user's profile here: supabase.from('users').select('role, subscription_tier').eq('id', session.user.id).single()
 
-  // Parse listing
-  const result = await parseListing(url.trim())
+  // Service-role client: used for all DB writes and cache lookups.
+  // Cache lookups are not user-scoped — they read global listing data.
+  const supabaseAdmin = createSupabaseAdmin(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  )
+
+  // ─── Cache check ────────────────────────────────────────────────────────────
+  // Look up existing listing before fetching from source.
+  // source_url is practically unique per listing and lets us skip the page fetch.
+  // We check both the URL as-submitted and without trailing slash to handle either form.
+  const urlTrimmed = url.trim()
+  const urlAlt = urlTrimmed.endsWith('/')
+    ? urlTrimmed.slice(0, -1)
+    : urlTrimmed + '/'
+
+  const { data: cachedRow } = await (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (supabaseAdmin as any)
+      .from('listings')
+      .select('id, cache_status, last_fetched_at')
+      .in('source_url', [urlTrimmed, urlAlt])
+      .limit(1)
+      .maybeSingle() as unknown as Promise<{
+        data: { id: string; cache_status: string; last_fetched_at: string | null } | null
+      }>
+  )
+
+  if (cachedRow && !shouldRefetch(cachedRow)) {
+    // Serve from cache — no request made to the source platform.
+    // 'permanent' listings (sold/no-sale) are never re-fetched.
+    // 'live' listings are served from cache for up to 1 hour.
+    //
+    // Comp engine output is NOT cached — it depends on the current state of the listings table,
+    // which grows over time. Caching would cause stale results when new comparable listings are
+    // added. Recomputation is cheap (~100ms) and worth the freshness.
+    try {
+      await computeCompsV2(cachedRow.id)
+    } catch (compErr) {
+      console.error('[api/analyze] computeCompsV2 failed on cache hit (non-fatal)', {
+        listing_id: cachedRow.id,
+        error: compErr instanceof Error ? compErr.message : String(compErr),
+      })
+    }
+    return NextResponse.json({ listingId: cachedRow.id, cached: true }, { status: 200 })
+  }
+  // ─── End cache check ────────────────────────────────────────────────────────
+
+  // Cache miss or stale — fetch fresh from source platform.
+  // This is a deliberate user-triggered network request to the auction site.
+  const result = await parseListing(urlTrimmed)
   if (!result.success) {
     return NextResponse.json({ error: result.error }, { status: 422 })
   }
@@ -60,29 +120,27 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // Upsert via service-role client (bypasses RLS — writes to listings are service-role only)
-  // NOTE: Supabase DB types are a placeholder (Database = unknown) until `supabase gen types`
-  // is run against the real project. Casting through unknown here is safe — remove when typed.
-  const supabaseAdmin = createSupabaseAdmin(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  )
-
   // VIN decode: runs after parse, before upsert. Returns null for pre-1981 chassis
   // (non-17-char VINs), malformed VINs, and NHTSA errors — analyze flow continues
   // regardless. Not moved to a background job yet; awaited in-request per spec.
   const decoded = listing.vin ? await decodeVin(listing.vin) : null
 
-  // Generation matching: uses decoded VIN data + parsed title to assign a
-  // porsche_generations.generation_id. Errors or null results do not fail the flow.
-  const generationResult = await matchGeneration({
-    decoded_year:       decoded?.year         ?? null,
-    decoded_make:       decoded?.make         ?? null,
-    decoded_model:      decoded?.model        ?? null,
-    decoded_body_class: decoded?.body_class   ?? null,
-    parsed_title:       listing.title         ?? null,
-    parsed_model_family: null,  // Phase 3 BaT parser does not extract model_family yet
-  })
+  // Generation matching + recall lookup run in parallel — both only need decoded + listing data.
+  const recallMake = decoded?.make ?? listing.make
+  const recallModel = decoded?.model ?? listing.model
+  const recallYear = decoded?.year ?? listing.year
+
+  const [generationResult, recalls] = await Promise.all([
+    matchGeneration({
+      decoded_year:        decoded?.year         ?? null,
+      decoded_make:        decoded?.make         ?? null,
+      decoded_model:       decoded?.model        ?? null,
+      decoded_body_class:  decoded?.body_class   ?? null,
+      parsed_title:        listing.title         ?? null,
+      parsed_model_family: null,
+    }),
+    getRecallsByMakeModelYear(recallMake, recallModel, recallYear),
+  ])
 
   if (generationResult.needs_review) {
     console.warn('[api/analyze] generation match needs review', {
@@ -105,20 +163,17 @@ export async function POST(request: NextRequest) {
     ? extractSourceMentions(listing.description, sourcePublication, listing.source_url)
     : null
 
-  // VIN hash: SHA-256 of last 6 chars of full VIN. Stored for cross-listing identity.
-  // Full VIN is returned in the API response for display only — never written to the DB.
+  // VIN hash: SHA-256 of last 6 chars of full VIN. Stored alongside full VIN for
+  // efficient hash-based cross-listing identity matching without full-scan.
   const vinHashPartial = listing.vin
     ? createHash('sha256').update(listing.vin.slice(-6)).digest('hex')
     : null
 
   // Maps CanonicalListing → listings table columns.
-  // NEVER_PERSIST_FIELDS: 'vin' and 'engine_serial' must not appear in this object.
   // Raw description is not stored — source-mention signals are extracted above and
   // the text is discarded here (facts-only architecture).
-  // Fields with no current DB column (engine, image_urls, bid_count, seller_info,
-  // modification_notes, raw_data) are omitted — preserved in CanonicalListing for callers.
-  // onConflict: keyed on the unique constraint (source_platform, source_listing_id)
-  // from SCHEMA.md. source_url alone does not have a unique index.
+  // onConflict: keyed on the unique constraint (source_platform, source_listing_id).
+  const now = new Date().toISOString()
   const row = {
     source_platform: listing.source_platform,
     source_url: listing.source_url,
@@ -128,10 +183,18 @@ export async function POST(request: NextRequest) {
     model: listing.model,
     year: listing.year,
     trim: listing.trim,
+    vin: listing.vin ?? null,
     mileage: listing.mileage,
     transmission: listing.transmission,
     exterior_color: listing.exterior_color,
     interior_color: listing.interior_color,
+    original_exterior_color: listing.original_exterior_color ?? null,
+    is_repainted: listing.is_repainted ?? null,
+    repaint_year: listing.repaint_year ?? null,
+    repaint_disclosure: listing.repaint_disclosure ?? null,
+    original_interior_color: listing.original_interior_color ?? null,
+    is_reupholstered: listing.is_reupholstered ?? null,
+    reupholstery_disclosure: listing.reupholstery_disclosure ?? null,
     final_price: listing.sold_price_cents,
     high_bid: listing.high_bid_cents,
     listing_status: listing.listing_status,
@@ -139,7 +202,12 @@ export async function POST(request: NextRequest) {
     has_no_reserve: listing.has_no_reserve,
     ended_date: listing.auction_end_date,
     auction_ends_at: listing.auction_end_date,
-    last_verified_at: new Date().toISOString(),
+    last_verified_at: now,
+    // Cache metadata: always updated on a fresh fetch.
+    // cache_status promotes to 'permanent' when listing_status is sold or no-sale.
+    // A permanent listing is never fetched again (its state is final).
+    last_fetched_at: now,
+    cache_status: toCacheStatus(listing.listing_status),
     // VIN hash for cross-listing identity matching (not the full VIN).
     ...(vinHashPartial !== null && { vin_hash_partial: vinHashPartial }),
     // Source-mention signals (nullable booleans; null means not mentioned in text).
@@ -161,14 +229,19 @@ export async function POST(request: NextRequest) {
       mentioned_recent_ppi_source: mentions.mentioned_recent_ppi !== null ? mentions.source_citation : null,
       mentioned_original_owner_source: mentions.mentioned_original_owner !== null ? mentions.source_citation : null,
     }),
-    // Generation match — only written when a non-null generation was resolved, so
-    // existing values are not overwritten with null on re-analysis of a listing
-    // where generation matching fails (e.g., unsupported marque).
+    // Generation match — only written when resolved, so existing values are not
+    // overwritten with null on re-analysis where generation matching fails.
     ...(generationResult.generation_id !== null && {
       generation_id: generationResult.generation_id,
     }),
-    // VIN decode fields — only written when decode succeeded; omitted otherwise so
-    // existing values (if any) are not overwritten with nulls on re-analysis.
+    // Trim category — derived from trim string + generation_id at parse time.
+    // Only written when a confident mapping is found; does not overwrite a
+    // previously curated value with null.
+    ...((() => {
+      const cat = deriveTrimCategory(listing.trim ?? null, generationResult.generation_id)
+      return cat !== null ? { trim_category: cat } : {}
+    })()),
+    // VIN decode fields — only written when decode succeeded.
     ...(decoded !== null && {
       decoded_year: decoded.year,
       decoded_make: decoded.make,
@@ -181,7 +254,7 @@ export async function POST(request: NextRequest) {
     }),
   }
 
-  // Guard: throws if any NEVER_PERSIST_FIELDS ('vin', 'engine_serial') appear in the payload.
+  // Guard: throws if any NEVER_PERSIST_FIELDS appear in the payload.
   guardWrite(row as Record<string, unknown>, 'api/analyze')
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -208,7 +281,6 @@ export async function POST(request: NextRequest) {
   })
 
   // Record this analysis run. Non-fatal: a failure here does not block the redirect.
-  // analysis_data stores parse metadata; comp engine output will enrich this in a later phase.
   const analysisResult = await (supabaseAdmin
     .from('listing_analyses')
     .insert({
@@ -217,8 +289,9 @@ export async function POST(request: NextRequest) {
       source_url: listing.source_url,
       source_platform: listing.source_platform,
       analysis_data: {
-        parsed_at: new Date().toISOString(),
+        parsed_at: now,
         listing_status: listing.listing_status,
+        recalls,
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       findings: findings as any,
@@ -235,9 +308,9 @@ export async function POST(request: NextRequest) {
 
   // Comp engine: non-fatal. Errors are logged but do not block the redirect.
   try {
-    await computeComps(listingId)
+    await computeCompsV2(listingId)
   } catch (compErr) {
-    console.error('[api/analyze] computeComps failed (non-fatal)', {
+    console.error('[api/analyze] computeCompsV2 failed (non-fatal)', {
       listing_id: listingId,
       error: compErr instanceof Error ? compErr.message : String(compErr),
     })
