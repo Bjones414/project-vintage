@@ -1,6 +1,14 @@
 // Client-side fetch helper for the /api/analyze route.
 // Separated from the page component so Next.js page type checking
 // doesn't flag the non-default export.
+
+export class AnalyzeError extends Error {
+  constructor(message: string, public readonly status: number) {
+    super(message)
+    this.name = 'AnalyzeError'
+  }
+}
+
 export async function analyzeUrl(url: string): Promise<string> {
   const response = await fetch('/api/analyze', {
     method: 'POST',
@@ -9,7 +17,7 @@ export async function analyzeUrl(url: string): Promise<string> {
   })
   const data = (await response.json()) as { listingId?: string; error?: string }
   if (!response.ok || !data.listingId) {
-    throw new Error(data.error ?? `Request failed with status ${response.status}`)
+    throw new AnalyzeError(data.error ?? `Request failed with status ${response.status}`, response.status)
   }
   return data.listingId
 }

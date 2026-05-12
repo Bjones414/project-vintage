@@ -1,15 +1,9 @@
-import { createClient } from '@/lib/supabase/server'
-import { TopNav } from '@/components/nav/TopNav'
+import { Nav } from '@/components/layout/Nav'
 
-export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const supabase = createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
+export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <TopNav userEmail={user?.email ?? null} />
+      <Nav />
       {children}
     </>
   )
