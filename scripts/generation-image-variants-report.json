@@ -1,0 +1,248 @@
+[
+  {
+    "id": "930",
+    "label": "911 Turbo (930)",
+    "canonical_body_style": "coupe",
+    "canonical_color": "unknown",
+    "variants_found": 0,
+    "variants": [],
+    "errors": [],
+    "needs_manual": true
+  },
+  {
+    "id": "964",
+    "label": "911 (964)",
+    "canonical_body_style": "coupe",
+    "canonical_color": "unknown",
+    "variants_found": 3,
+    "variants": [
+      {
+        "wikimediaTitle": "Porsche 964 Carrera 2 Cabriolet (24001252515).jpg",
+        "localPath": "/images/generations/964-v2.jpg",
+        "downloadedWidth": 1600,
+        "downloadedHeight": 1067,
+        "credit": "Alexandre Prévot from Nancy, France",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Porsche_964_Carrera_2_Cabriolet_(24001252515).jpg",
+        "body_style": "cabriolet",
+        "color": "unknown",
+        "angle": "unknown",
+        "slot": "v2"
+      },
+      {
+        "wikimediaTitle": "Porsche 911 Carrera 2 Cabriolet (964, 1992) (52574989518).jpg",
+        "localPath": "/images/generations/964-v3.jpg",
+        "downloadedWidth": 1600,
+        "downloadedHeight": 1016,
+        "credit": "Charles from Port Chester, New York",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Porsche_911_Carrera_2_Cabriolet_(964%2C_1992)_(52574989518).jpg",
+        "body_style": "cabriolet",
+        "color": "unknown",
+        "angle": "unknown",
+        "slot": "v3"
+      },
+      {
+        "wikimediaTitle": "Porsche 911 (964) Carrera 2 Cabriolet (8452024882).jpg",
+        "localPath": "/images/generations/964-v4.jpg",
+        "downloadedWidth": 1600,
+        "downloadedHeight": 1200,
+        "credit": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Porsche_911_(964)_Carrera_2_Cabriolet_(8452024882).jpg",
+        "body_style": "cabriolet",
+        "color": "unknown",
+        "angle": "unknown",
+        "slot": "v4"
+      }
+    ],
+    "errors": [],
+    "needs_manual": false
+  },
+  {
+    "id": "981",
+    "label": "Boxster/Cayman (981)",
+    "canonical_body_style": "cabriolet",
+    "canonical_color": "unknown",
+    "variants_found": 0,
+    "variants": [],
+    "errors": [],
+    "needs_manual": true
+  },
+  {
+    "id": "986",
+    "label": "Boxster (986)",
+    "canonical_body_style": "cabriolet",
+    "canonical_color": "silver",
+    "variants_found": 0,
+    "variants": [],
+    "errors": [],
+    "needs_manual": true
+  },
+  {
+    "id": "992",
+    "label": "911 (992)",
+    "canonical_body_style": "coupe",
+    "canonical_color": "unknown",
+    "variants_found": 0,
+    "variants": [],
+    "errors": [],
+    "needs_manual": true
+  },
+  {
+    "id": "993",
+    "label": "911 (993)",
+    "canonical_body_style": "cabriolet",
+    "canonical_color": "silver",
+    "variants_found": 0,
+    "variants": [],
+    "errors": [],
+    "needs_manual": true
+  },
+  {
+    "id": "996",
+    "label": "911 (996)",
+    "canonical_body_style": "coupe",
+    "canonical_color": "white",
+    "variants_found": 3,
+    "variants": [
+      {
+        "wikimediaTitle": "Yellow Porsche 911 Carrera Cabriolet Type 996.jpg",
+        "localPath": "/images/generations/996-v2.jpg",
+        "downloadedWidth": 1600,
+        "downloadedHeight": 1200,
+        "credit": "http://gl.wikipedia.org/wiki/User_talk:Norrin_strange",
+        "license": "Public domain",
+        "licenseUrl": "",
+        "source": "https://commons.wikimedia.org/wiki/File:Yellow_Porsche_911_Carrera_Cabriolet_Type_996.jpg",
+        "body_style": "cabriolet",
+        "color": "yellow",
+        "angle": "unknown",
+        "slot": "v2"
+      },
+      {
+        "wikimediaTitle": "Porsche 996 Carrera 4S convertible (2).jpg",
+        "localPath": "/images/generations/996-v3.jpg",
+        "downloadedWidth": 1600,
+        "downloadedHeight": 1036,
+        "credit": "Cjp24",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Porsche_996_Carrera_4S_convertible_(2).jpg",
+        "body_style": "cabriolet",
+        "color": "unknown",
+        "angle": "unknown",
+        "slot": "v3"
+      },
+      {
+        "wikimediaTitle": "Porsche 996 Carrera 4S convertible (1).jpg",
+        "localPath": "/images/generations/996-v4.jpg",
+        "downloadedWidth": 1600,
+        "downloadedHeight": 1200,
+        "credit": "Cjp24",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Porsche_996_Carrera_4S_convertible_(1).jpg",
+        "body_style": "cabriolet",
+        "color": "unknown",
+        "angle": "unknown",
+        "slot": "v4"
+      }
+    ],
+    "errors": [],
+    "needs_manual": false
+  },
+  {
+    "id": "987.1",
+    "label": "Boxster/Cayman (987.1)",
+    "canonical_body_style": "unknown",
+    "canonical_color": "unknown",
+    "variants_found": 0,
+    "variants": [],
+    "errors": [],
+    "needs_manual": true
+  },
+  {
+    "id": "987.2",
+    "label": "Boxster/Cayman (987.2)",
+    "canonical_body_style": "cabriolet",
+    "canonical_color": "unknown",
+    "variants_found": 0,
+    "variants": [],
+    "errors": [],
+    "needs_manual": true
+  },
+  {
+    "id": "997.1",
+    "label": "911 (997.1)",
+    "canonical_body_style": "coupe",
+    "canonical_color": "silver",
+    "variants_found": 0,
+    "variants": [],
+    "errors": [],
+    "needs_manual": true
+  },
+  {
+    "id": "997.2",
+    "label": "911 (997.2)",
+    "canonical_body_style": "cabriolet",
+    "canonical_color": "unknown",
+    "variants_found": 0,
+    "variants": [],
+    "errors": [],
+    "needs_manual": true
+  },
+  {
+    "id": "991.1",
+    "label": "911 (991.1)",
+    "canonical_body_style": "cabriolet",
+    "canonical_color": "silver",
+    "variants_found": 0,
+    "variants": [],
+    "errors": [],
+    "needs_manual": true
+  },
+  {
+    "id": "991.2",
+    "label": "911 (991.2)",
+    "canonical_body_style": "coupe",
+    "canonical_color": "unknown",
+    "variants_found": 0,
+    "variants": [],
+    "errors": [],
+    "needs_manual": true
+  },
+  {
+    "id": "992.2",
+    "label": "911 (992.2)",
+    "canonical_body_style": "cabriolet",
+    "canonical_color": "unknown",
+    "variants_found": 0,
+    "variants": [],
+    "errors": [],
+    "needs_manual": true
+  },
+  {
+    "id": "982-cayman",
+    "label": "718 Cayman (982)",
+    "canonical_body_style": "coupe",
+    "canonical_color": "unknown",
+    "variants_found": 0,
+    "variants": [],
+    "errors": [],
+    "needs_manual": true
+  },
+  {
+    "id": "982-boxster",
+    "label": "718 Boxster (982)",
+    "canonical_body_style": "cabriolet",
+    "canonical_color": "unknown",
+    "variants_found": 0,
+    "variants": [],
+    "errors": [],
+    "needs_manual": true
+  }
+]

@@ -1,0 +1,290 @@
+[
+  {
+    "id": "930",
+    "label": "911 Turbo (930)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "Porsche 911 Turbo (Typ 930-3.3)- 6301917.jpg",
+      "localPath": "/images/generations/930.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 1200,
+      "originalWidth": 4001,
+      "originalHeight": 3001,
+      "credit": "Ermell",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_911_Turbo_(Typ_930-3.3)-_6301917.jpg"
+    }
+  },
+  {
+    "id": "964",
+    "label": "911 (964)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "2013 Porsche 911 Carrera 4S (991) (9626546987).jpg",
+      "localPath": "/images/generations/964.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 1064,
+      "originalWidth": 3804,
+      "originalHeight": 2529,
+      "credit": "David Villarreal Fernández",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2013_Porsche_911_Carrera_4S_(991)_(9626546987).jpg"
+    }
+  },
+  {
+    "id": "981",
+    "label": "Boxster/Cayman (981)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "2013 Porsche Panamera Turbo S, Cayman, Cayman S, Boxster (8402948837).jpg",
+      "localPath": "/images/generations/981.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 2133,
+      "originalWidth": 2448,
+      "originalHeight": 3264,
+      "credit": "Sarah Larson from Ann Arbor, MI, USA",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2013_Porsche_Panamera_Turbo_S%2C_Cayman%2C_Cayman_S%2C_Boxster_(8402948837).jpg"
+    }
+  },
+  {
+    "id": "986",
+    "label": "Boxster (986)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "Porsche 986 Boxster side 20070522.jpg",
+      "localPath": "/images/generations/986.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 664,
+      "originalWidth": 2099,
+      "originalHeight": 871,
+      "credit": "Rudolf Stricker",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_986_Boxster_side_20070522.jpg"
+    }
+  },
+  {
+    "id": "992",
+    "label": "911 (992)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "Porsche 992 Carrera GTS Spirit 70 IAA 2025 DSC 1981.jpg",
+      "localPath": "/images/generations/992.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 843,
+      "originalWidth": 5199,
+      "originalHeight": 2738,
+      "credit": "Alexander-93",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_992_Carrera_GTS_Spirit_70_IAA_2025_DSC_1981.jpg"
+    }
+  },
+  {
+    "id": "993",
+    "label": "911 (993)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "1997 Porsche 911 Carrera (993) convertible (2011-11-18) 01.jpg",
+      "localPath": "/images/generations/993.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 672,
+      "originalWidth": 3648,
+      "originalHeight": 1532,
+      "credit": "OSX",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "source": "https://commons.wikimedia.org/wiki/File:1997_Porsche_911_Carrera_(993)_convertible_(2011-11-18)_01.jpg"
+    }
+  },
+  {
+    "id": "996",
+    "label": "911 (996)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "Porsche 911 GT3 Touring, IAA 2017, Frankfurt (1Y7A2766).jpg",
+      "localPath": "/images/generations/996.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 1067,
+      "originalWidth": 5488,
+      "originalHeight": 3659,
+      "credit": "Matti Blume",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_911_GT3_Touring%2C_IAA_2017%2C_Frankfurt_(1Y7A2766).jpg"
+    }
+  },
+  {
+    "id": "987.1",
+    "label": "Boxster/Cayman (987.1)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "Porsche Boxster Concept, Berlin (1X7A3900).jpg",
+      "localPath": "/images/generations/987.1.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 1067,
+      "originalWidth": 6720,
+      "originalHeight": 4480,
+      "credit": "Matti Blume",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_Boxster_Concept%2C_Berlin_(1X7A3900).jpg"
+    }
+  },
+  {
+    "id": "987.2",
+    "label": "Boxster/Cayman (987.2)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "'10 Porsche Boxster (MIAS).JPG",
+      "localPath": "/images/generations/987.2.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 1125,
+      "originalWidth": 2345,
+      "originalHeight": 1649,
+      "credit": "Bull-Doser",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "source": "https://commons.wikimedia.org/wiki/File:'10_Porsche_Boxster_(MIAS).JPG"
+    }
+  },
+  {
+    "id": "997.1",
+    "label": "911 (997.1)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "2005 Porsche 911 Carrera by Panache BS O24.jpg",
+      "localPath": "/images/generations/997.1.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 973,
+      "originalWidth": 2971,
+      "originalHeight": 1806,
+      "credit": "MrWalkr",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2005_Porsche_911_Carrera_by_Panache_BS_O24.jpg"
+    }
+  },
+  {
+    "id": "997.2",
+    "label": "911 (997.2)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "2009 Porsche 911 Carrera 4S Cabrio (997) (3947380399).jpg",
+      "localPath": "/images/generations/997.2.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 1207,
+      "originalWidth": 3324,
+      "originalHeight": 2508,
+      "credit": "Spanish Coches",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2009_Porsche_911_Carrera_4S_Cabrio_(997)_(3947380399).jpg"
+    }
+  },
+  {
+    "id": "991.1",
+    "label": "911 (991.1)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "Porsche 911 Carrera S Cabriolet (7644732598).jpg",
+      "localPath": "/images/generations/991.1.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 1067,
+      "originalWidth": 4458,
+      "originalHeight": 2972,
+      "credit": "Alexandre Prévot from Nancy, France",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_911_Carrera_S_Cabriolet_(7644732598).jpg"
+    }
+  },
+  {
+    "id": "991.2",
+    "label": "911 (991.2)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "Porsche 911 Carrera 4S - przód (MSP16).jpg",
+      "localPath": "/images/generations/991.2.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 1088,
+      "originalWidth": 4850,
+      "originalHeight": 3298,
+      "credit": "Jakub \"Flyz1\" Maciejewski",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_911_Carrera_4S_-_prz%C3%B3d_(MSP16).jpg"
+    }
+  },
+  {
+    "id": "992.2",
+    "label": "911 (992.2)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "Porsche 992 Cabrio, GIMS 2019, Le Grand-Saconnex (GIMS9993).jpg",
+      "localPath": "/images/generations/992.2.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 1066,
+      "originalWidth": 5572,
+      "originalHeight": 3713,
+      "credit": "Matti Blume",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_992_Cabrio%2C_GIMS_2019%2C_Le_Grand-Saconnex_(GIMS9993).jpg"
+    }
+  },
+  {
+    "id": "982-cayman",
+    "label": "718 Cayman (982)",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "Porsche 718 Boxster Spyder RS IAA 2023 1X7A0535.jpg",
+      "localPath": "/images/generations/982-cayman.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 981,
+      "originalWidth": 4719,
+      "originalHeight": 2892,
+      "credit": "Alexander-93",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_718_Boxster_Spyder_RS_IAA_2023_1X7A0535.jpg"
+    }
+  },
+  {
+    "id": "982-boxster",
+    "label": "718 Boxster (982) — open top",
+    "status": "success",
+    "needsReview": false,
+    "image": {
+      "wikimediaTitle": "Porsche ABA-982J2 718 Boxster GTS (23052112161).jpg",
+      "localPath": "/images/generations/982-boxster.jpg",
+      "downloadedWidth": 1600,
+      "downloadedHeight": 1067,
+      "originalWidth": 4608,
+      "originalHeight": 3072,
+      "credit": "先従隗始",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_ABA-982J2_718_Boxster_GTS_(23052112161).jpg"
+    }
+  }
+]

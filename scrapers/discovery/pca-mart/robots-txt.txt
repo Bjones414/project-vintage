@@ -1,0 +1,32 @@
+# robots.txt captured from https://mart.pca.org/robots.txt
+# Fetched: 2026-05-10
+
+User-agent: gsa-crawler-www
+Crawl-delay: 100
+
+User-agent: Googlebot
+Crawl-delay: 100
+
+User-agent: DuckDuckBot
+Crawl-delay: 100
+
+User-agent: BingBot
+Crawl-delay: 100
+
+User-agent: FacebookExternalHit
+Crawl-delay: 100
+
+Disallow: /layouts/
+Disallow: /handlers/
+Disallow: /includes/javascript/
+Disallow: /includes/styles/
+Disallow: /models/
+Disallow: /scripts/
+Disallow: /views/
+
+# Notes:
+# - No User-agent: * (wildcard) block present
+# - /ads/ path is NOT disallowed — individual listing pages are not blocked by robots.txt
+# - Crawl-delay: 100 (seconds) applied to named bots only — very aggressive throttling signal
+# - No sitemap directive
+# - Backend/framework paths disallowed (layouts, handlers, models, views = likely a ColdFusion or similar MVC framework)
