@@ -56,6 +56,21 @@ Explicitly out of v1 scope: 904, 911R, 356, 912, 914 — per PROJECT_STATE locke
 ---
 
 ```yaml
+id: AIRCOOLED_23_001
+flag_title: "993 Engine Wiring Harness Insulation Failure"
+severity: high
+applicability:
+  generation:
+    - "993"
+  year_range: [1994, 1998]
+description: >
+  The 993 engine wiring harness is secured near the No. 2 cylinder intake stack where sustained heat from the cylinder head causes insulation to crack and fail, leading to electrical shorts, misfires, battery drain, and no-start conditions. Porsche TSB W301 (2003) required inspection/replacement on MY1995–1996 Carreras. All 993s should be inspected regardless of TSB coverage.
+buyer_questions:
+  - "Has the engine wiring harness been inspected or replaced under Porsche TSB W301?"
+  - "Are there check engine lights, battery drain, or intermittent rough-running in the service history?"
+```
+
+```yaml
 record_id: AIRCOOLED_23_001
 title: "993 Engine Wiring Harness Insulation Failure and Electrical Shorts"
 file: 23
@@ -166,6 +181,23 @@ With the engine lid open, locate the engine wiring harness where it passes near 
 ---
 
 ```yaml
+id: AIRCOOLED_23_002
+flag_title: "Dashboard Surface Cracking"
+severity: low
+applicability:
+  generation:
+    - "911_G_body"
+    - "964"
+    - "993"
+  year_range: [1974, 1998]
+description: >
+  Dashboard vinyl/padding cracks under sustained UV and heat cycling — near-universal on well-aged G-body, 964, and 993 cars. Cosmetic condition only; does not indicate mechanical neglect. Affects auction value and restoration budget. A pristine dashboard on an aged car is a notable positive worth verifying.
+buyer_questions:
+  - "Has the dashboard been replaced, re-covered, or restored? If so, by whom and when?"
+  - "Has the car been stored indoors or protected from UV exposure?"
+```
+
+```yaml
 record_id: AIRCOOLED_23_002
 title: "Air-Cooled 911 Dashboard Surface Cracking — Near-Universal Age Condition"
 file: 23
@@ -266,6 +298,22 @@ Inspect the top surface of the dashboard in strong light, looking for hairline c
 - **File 17 — Interior + HVAC v2.** For water-cooled era dashboard comparisons; air-cooled dashboard framing differs from water-cooled era soft-touch or leather-dash failure modes.
 
 ---
+
+```yaml
+id: AIRCOOLED_23_003
+flag_title: "HVAC Flap Servo Motor Failure"
+severity: moderate
+applicability:
+  generation:
+    - "964"
+    - "993"
+  year_range: [1989, 1998]
+description: >
+  The 964 and 993 use five electric servo motors to control HVAC flaps. Conductive tracks wear and oxidize under repeated friction, locking flaps in position and progressively degrading climate control. Symptoms include stuck temperature, fixed air direction, or non-responsive mode selector. Specialist conductive-track repair kits are available; full OEM motor replacement is expensive.
+buyer_questions:
+  - "Does the HVAC system operate correctly across all modes: heat, defrost, vent, temperature variation?"
+  - "Has any servo motor been replaced or repaired? Are service records available?"
+```
 
 ```yaml
 record_id: AIRCOOLED_23_003
