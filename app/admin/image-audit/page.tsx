@@ -1,6 +1,8 @@
 // DEV-ONLY — not intended for production. Reads local public/ files at render time.
 // Access at http://localhost:3000/admin/image-audit
 
+export const dynamic = 'force-dynamic'
+
 import fs from 'fs'
 import path from 'path'
 import { GENERATION_DEFS } from '@/lib/porsche/models'
@@ -281,6 +283,14 @@ function AuditCard({ row }: { row: AuditRow }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function ImageAuditPage() {
+  if (process.env.NODE_ENV === 'production') {
+    return (
+      <div className="p-8 text-text-secondary">
+        This admin tool is only available in development.
+      </div>
+    )
+  }
+
   const rows = buildAuditRows()
 
   const counts = {
