@@ -16,6 +16,7 @@ export type FactorName =
   | 'color_rarity'
   | 'consignor_tier_match'
   | 'mechanical_remediation_status'
+  | 'drivetrain_match'
 
 export const ALL_FACTORS: FactorName[] = [
   'mileage_similarity',
@@ -28,6 +29,7 @@ export const ALL_FACTORS: FactorName[] = [
   'color_rarity',
   'consignor_tier_match',
   'mechanical_remediation_status',
+  'drivetrain_match',
 ]
 
 export type MileageBandName = 'ultra_low' | 'low' | 'moderate' | 'high' | 'very_high'

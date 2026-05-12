@@ -107,6 +107,14 @@ function mechanicalRemediationSimilarity(
   return 0.5
 }
 
+// Drivetrain match: RWD vs AWD is a meaningful price signal in air-cooled Porsches.
+// Hard filter already separates C2/C4 when trim_category is known; this factor
+// handles cases where trim_category is null on either side (ranks same-drivetrain higher).
+function drivetrainSimilarity(subjectDt: string | null, compDt: string | null): number {
+  if (subjectDt === null || compDt === null) return 0.5
+  return subjectDt === compDt ? 1.0 : 0.0
+}
+
 // Exact text match: 1.0 if equal, 0.5 if either is null, 0.0 if different
 function exactMatch(a: string | null, b: string | null): number {
   if (a === null || b === null) return 0.5
@@ -153,6 +161,7 @@ export function scoreComp(
       subject.mechanical_remediation_status,
       comp.mechanical_remediation_status,
     ),
+    drivetrain_match:            drivetrainSimilarity(subject.drivetrain, comp.drivetrain),
   }
 
   // Weighted average over factors with non-zero weight

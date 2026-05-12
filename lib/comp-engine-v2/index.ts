@@ -47,8 +47,8 @@ export async function fetchV2Pool(
     .not('final_price', 'is', null)
     .not('auction_ends_at', 'is', null)
     .neq('id', excludeListingId)
-    // Pre-filter: only include sold (not no_sale) listings per Stage 9
-    .not('auction_outcome', 'eq', 'no_sale_reserve_not_met')
+    // Pre-filter: exclude no_sale listings. Use or() because != excludes NULLs in SQL.
+    .or('auction_outcome.is.null,auction_outcome.neq.no_sale_reserve_not_met')
     .order('auction_ends_at', { ascending: false })
     .limit(500) as {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

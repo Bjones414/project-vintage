@@ -73,6 +73,24 @@ export function runCompEngineV2(
 
   // Stage 2: Sample-size floor
   if (afterHardFilter.length < 3) {
+    // Sparse-category path: coachbuilt and limited are rare by design.
+    // Return whatever comps exist as individual data points rather than suppressing entirely.
+    const isSparseCategory =
+      subject.trim_category === 'coachbuilt' || subject.trim_category === 'limited'
+    if (isSparseCategory && afterHardFilter.length > 0) {
+      const sparseComps: ScoredComp[] = afterHardFilter.map(c => ({
+        listing_id: c.listing_id,
+        price_cents: c.final_price_cents,
+        similarity_score: 0,
+        recency_weight: 0,
+        final_weight: 0,
+        factor_scores: {},
+      }))
+      return emptyResult('insufficient_comps', 'sparse_category', {
+        comp_count: afterHardFilter.length,
+        comps_used: sparseComps,
+      })
+    }
     return emptyResult('insufficient_comps', 'post_hard_filter_count', {
       comp_count: afterHardFilter.length,
     })
@@ -137,8 +155,21 @@ export function runCompEngineV2(
     lowConfidence,
   })
 
-  // Verdict (requires subject asking_price — passed as hint; compute from median if not available)
-  const verdict = lowConfidence ? 'low_confidence' : null
+  // Verdict: compare subject final_price against the P25–P75 comp range
+  let verdict: V2CompsResult['verdict']
+  if (lowConfidence) {
+    verdict = 'low_confidence'
+  } else if (subject.final_price_cents > 0) {
+    if (subject.final_price_cents < fairValue.p25_cents) {
+      verdict = 'priced_below'
+    } else if (subject.final_price_cents > fairValue.p75_cents) {
+      verdict = 'priced_above'
+    } else {
+      verdict = 'priced_fairly'
+    }
+  } else {
+    verdict = null
+  }
 
   return {
     verdict,
