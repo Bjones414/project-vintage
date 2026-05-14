@@ -117,6 +117,24 @@ export function SubjectVehicleCard({ record }: Props) {
               <dt className="font-serif text-[14px] text-text-secondary">0–60 mph</dt>
               <dd className="font-serif text-[15px] text-text-primary">{factorySpecs.zero_to_sixty}</dd>
             </div>
+            {factorySpecs.curb_weight_lb && (
+              <div className="flex items-center justify-between py-2">
+                <dt className="font-serif text-[14px] text-text-secondary">Curb Weight</dt>
+                <dd className="font-serif text-[15px] text-text-primary">{factorySpecs.curb_weight_lb}</dd>
+              </div>
+            )}
+            {factorySpecs.top_speed_mph && (
+              <div className="flex items-center justify-between py-2">
+                <dt className="font-serif text-[14px] text-text-secondary">Top Speed</dt>
+                <dd className="font-serif text-[15px] text-text-primary">{factorySpecs.top_speed_mph}</dd>
+              </div>
+            )}
+            {factorySpecs.redline_rpm && (
+              <div className="flex items-center justify-between py-2">
+                <dt className="font-serif text-[14px] text-text-secondary">Redline</dt>
+                <dd className="font-serif text-[15px] text-text-primary">{factorySpecs.redline_rpm}</dd>
+              </div>
+            )}
           </dl>
         </div>
       )}
