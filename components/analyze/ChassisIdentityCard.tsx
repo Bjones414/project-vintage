@@ -182,7 +182,7 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
 
           {/* 10-field grid (5 rows × 2 cols — always even, no orphan cells) */}
           <dl
-            className={`${vinValue !== null ? 'mt-4 border-t-[0.5px] border-border-subtle pt-4' : ''} grid grid-cols-2 gap-x-4 gap-y-4`}
+            className={`${vinValue !== null ? 'mt-4 border-t-[0.5px] border-border-subtle pt-4' : ''} flex-1 grid grid-cols-2 gap-x-4 gap-y-4 content-between`}
           >
             {/* Rows 1–4: 8 uniform fields */}
             {fields.map(({ label, value }) => (
@@ -260,9 +260,6 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
               </dd>
             </div>
           </dl>
-
-          {/* Spacer — grows to fill card height; keeps Factory Specs bottom-anchored */}
-          <div className="min-h-5 flex-1" />
 
           {specItems !== null && (
             <>
