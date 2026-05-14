@@ -117,7 +117,9 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
         { label: 'Power',        value: specs.hp },
         { label: 'Torque',       value: specs.torque },
         { label: '0–60 mph',     value: specs.zero_to_sixty },
-        ...(specs.curb_weight_lb ? [{ label: 'Curb Weight', value: specs.curb_weight_lb }] : []),
+        { label: 'Top Speed',    value: specs.top_speed_mph ?? '—' },
+        { label: 'Curb Weight',  value: specs.curb_weight_lb ?? '—' },
+        { label: 'Redline',      value: specs.redline_rpm ?? '—' },
       ]
     : null
 
@@ -284,13 +286,15 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
               <p className="mt-4 font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">
                 Factory Specs
               </p>
-              <dl className="mt-4 flex flex-1 flex-col justify-between">
+              <dl className="mt-4 flex-auto content-between grid grid-cols-2 gap-x-4 gap-y-4">
                 {specItems.map(({ label, value }) => (
-                  <div key={label} className="flex items-baseline justify-between">
+                  <div key={label}>
                     <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">
                       {label}
                     </dt>
-                    <dd className="font-serif text-[17px] text-text-primary">{value}</dd>
+                    <dd className="mt-1">
+                      <span className="font-serif text-[17px] text-text-primary">{value}</span>
+                    </dd>
                   </div>
                 ))}
               </dl>

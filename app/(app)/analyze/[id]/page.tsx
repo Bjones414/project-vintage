@@ -17,7 +17,6 @@ import { SourceMentionsCard } from '@/components/analyze/SourceMentionsCard'
 import { getRecallsByMakeModelYear } from '@/lib/recalls/nhtsa'
 import { matchDefects, recallsToWatchForItems } from '@/lib/originality'
 import { selectTopThree } from '@/lib/watch-for/select-top-three'
-import { StickyNav } from '@/components/StickyNav'
 import { GENERATION_HERO_IMAGES } from '@/lib/era-content/generation-hero-images'
 import { computeCompsV2 } from '@/lib/comp-engine-v2'
 import type { V2CompsResult } from '@/lib/comp-engine-v2'
@@ -44,13 +43,6 @@ function v2ToCompResult(listingId: string, result: V2CompsResult): CompResultRow
     computed_at: new Date().toISOString(),
   }
 }
-
-const ANALYZE_NAV_LINKS = [
-  { label: 'Verdict', href: '#verdict' },
-  { label: 'Comps', href: '#comps' },
-  { label: 'Chassis', href: '#chassis' },
-  { label: 'Generation', href: '#generation' },
-]
 
 type PageProps = {
   params: { id: string }
@@ -150,10 +142,6 @@ export default async function ListingDetailPage({ params }: PageProps) {
     <main className="mx-auto max-w-7xl">
       {/* Full-width photo hero — no horizontal padding */}
       <AnalyzeHero listing={listing} generation={generation} heroImage={heroImage} />
-
-      {/* Sentinel: StickyNav watches this to know when the hero has scrolled out */}
-      <div id="hero-sentinel" />
-      <StickyNav links={ANALYZE_NAV_LINKS} heroSentinelId="hero-sentinel" />
 
       <div className="pb-8 pt-5">
         <div id="verdict">
