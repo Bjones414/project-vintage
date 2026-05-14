@@ -368,6 +368,9 @@ const CONTENT: Record<string, GenerationContent> = {
   // Source: docs/reference/porsche_2000s_reference.md §"996 facelift"
   //         docs/reference/defects/01_engine_m96_m97.md
   //         docs/reference/defects/99_shared_water_cooled_era.md
+  // Variant production figures: Supercar Nostalgia per-variant 996.2 breakdown,
+  //   cross-checked against jtcars.net aggregates. Figures include all transmissions
+  //   (6MT + Tiptronic); manual-vs-automatic splits not published by Porsche.
   // ──────────────────────────────────────────────────────────────────────────
   '996.2': {
     positioning: 'Facelifted 996 — 3.6L M96',
@@ -388,6 +391,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2002–2005',
         drivetrain: 'RWD',
         power: '320 hp',
+        production: '14,629 worldwide (all transmissions)',
         description: 'Narrow-body RWD with the revised 3.6L M96. X51 Power Kit option raises output to 345 hp. The 3.6L engine brings a revised cylinder head lubrication system compared to the 996.1 3.4L. IMS and bore-scoring considerations remain; Variocam pad wear is NOT present on the three-chain 3.6L.',
       },
       {
@@ -395,21 +399,31 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2002–2005',
         drivetrain: 'RWD',
         power: '320 hp',
+        production: '14,961 worldwide (all transmissions)',
         description: 'Soft-top convertible on the narrow-body Carrera platform. Available with X51 Power Kit.',
+      },
+      {
+        name: 'Carrera 4',
+        years: 'MY2002–2003',
+        drivetrain: 'AWD',
+        power: '320 hp',
+        production: '3,231 worldwide (all transmissions)',
+        description: 'Narrow-body AWD Carrera, produced briefly into the 996.2 facelift before the wide-body Carrera 4S became the sole AWD Carrera Coupe option from MY2004.',
       },
       {
         name: 'Carrera 4 Cabriolet',
         years: 'MY2002–2004',
         drivetrain: 'AWD',
         power: '320 hp',
-        description: 'Only narrow-body C4 continuation into the 996.2 facelift — the Coupe was discontinued after MY2001. After MY2004, the only AWD Carrera option is the wide-body C4S.',
+        production: '7,155 worldwide (all transmissions)',
+        description: 'Narrow-body AWD soft-top. Continued into the 996.2 facelift alongside the wide-body Carrera 4S Cabriolet from MY2003; remained available through MY2004.',
       },
       {
         name: 'Targa',
         years: 'MY2002–2005',
         drivetrain: 'RWD',
         power: '320 hp',
-        production: '~5,150 worldwide',
+        production: '5,089 worldwide (all transmissions)',
         description: 'All 996 Targas are 996.2 — no 996.1 Targa was produced. Uses the sliding glass panoramic roof architecture from the 993 Targa, not the traditional roll-bar design. RWD only.',
       },
       {
@@ -417,7 +431,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2002–2005',
         drivetrain: 'AWD',
         power: '320 hp',
-        production: '~17,290 Coupes worldwide; ~5,750 Cabriolets',
+        production: '17,283 Coupes; 5,757 Cabriolets worldwide (all transmissions)',
         description: 'Turbo-wide body on the AWD drivetrain with the NA 3.6L engine. The wide-body 996.2 is visually the most resolved of the 996 variants. Coupe and Cabriolet available from MY2003.',
       },
       {
