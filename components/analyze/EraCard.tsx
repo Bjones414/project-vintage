@@ -40,10 +40,9 @@ function splitParenthetical(value: string): { main: string; paren: string | null
   return { main: value, paren: null }
 }
 
-function WatchForSection({ items, genId }: { items: WatchForItem[]; genId: string | undefined }) {
+function WatchForSection({ items }: { items: WatchForItem[] }) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set())
   const displayItems = items.slice(0, 3)
-  const genLabel = genId ? formatGenerationDisplay(genId) : null
 
   function toggle(id: string) {
     setExpanded((prev) => {
@@ -55,8 +54,7 @@ function WatchForSection({ items, genId }: { items: WatchForItem[]; genId: strin
   }
 
   return (
-    <>
-      <div className="mt-4 border-t-[0.5px] border-border-subtle pt-4">
+    <div className="mt-4 border-t-[0.5px] border-border-subtle pt-4">
         <p className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">
           What to Watch For
         </p>
@@ -124,19 +122,7 @@ function WatchForSection({ items, genId }: { items: WatchForItem[]; genId: strin
             )
           })}
         </ul>
-      </div>
-
-      {genLabel && genId && (
-        <p className="mt-4">
-          <a
-            href={`/generations/${genId}`}
-            className="font-serif text-[13px] italic text-accent-primary hover:underline"
-          >
-            More on the {genLabel} →
-          </a>
-        </p>
-      )}
-    </>
+    </div>
   )
 }
 
@@ -148,7 +134,6 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
   const liningNums: React.CSSProperties = { fontVariantNumeric: 'lining-nums', fontFeatureSettings: '"lnum"' }
 
   const showWatchFor = watchForItems.length > 0
-  const showReadMore = !showWatchFor && viewerTier !== 'anonymous' && !!generation?.generation_id
 
   // Hardcoded 997.2 content — visual UX test ahead of the markdown→DB pipeline (TODO #9)
   if (generation?.generation_id === '997.2') {
@@ -170,45 +155,49 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
       <div className="flex h-full flex-col border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
         <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary" style={liningNums}>{sectionLabel}</p>
 
-        <p className="mt-4 font-serif text-[15px] italic leading-[1.65] text-text-secondary" style={liningNums}>
-          Generation break disguised as a facelift — the all-new 9A1 direct-injection engine, 7-speed PDK transmission, and LED lighting arrived simultaneously, making it mechanically distinct from the 997.1 it superseded.
-        </p>
-
-        <dl className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3">
-          {quickStats.map(({ label, value }) => (
-            <div key={label}>
-              <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">{label}</dt>
-              <dd className="mt-0.5 font-serif text-[14px] text-text-primary" style={liningNums}>{value}</dd>
-            </div>
-          ))}
-        </dl>
-
-        {viewerTier !== 'anonymous' && (
-          <div className="mt-4 space-y-2">
-            {keyFacts.map(({ lead, body }) => (
-              <p key={lead} className="font-sans text-[13px] leading-[1.5] text-text-secondary" style={liningNums}>
-                <strong className="font-medium text-text-primary">{lead}</strong>{' '}{body}
-              </p>
-            ))}
-          </div>
-        )}
-
-        {viewerTier === 'anonymous' && (
-          <p className="mt-3 font-sans text-[13px] text-text-muted">
-            Full era guide available with a free account.
+        <div className="mt-4 flex flex-1 flex-col">
+          <p className="flex-auto font-serif text-[15px] italic leading-[1.65] text-text-secondary" style={liningNums}>
+            Generation break disguised as a facelift — the all-new 9A1 direct-injection engine, 7-speed PDK transmission, and LED lighting arrived simultaneously, making it mechanically distinct from the 997.1 it superseded.
           </p>
-        )}
 
-        {showWatchFor ? (
-          <WatchForSection items={watchForItems} genId={generation.generation_id} />
-        ) : (
+          <dl className="mt-4 flex-auto grid grid-cols-2 gap-x-6 gap-y-3">
+            {quickStats.map(({ label, value }) => (
+              <div key={label}>
+                <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">{label}</dt>
+                <dd className="mt-0.5 font-serif text-[14px] text-text-primary" style={liningNums}>{value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          {viewerTier !== 'anonymous' && (
+            <div className="mt-4 flex-auto space-y-2">
+              {keyFacts.map(({ lead, body }) => (
+                <p key={lead} className="font-sans text-[13px] leading-[1.5] text-text-secondary" style={liningNums}>
+                  <strong className="font-medium text-text-primary">{lead}</strong>{' '}{body}
+                </p>
+              ))}
+            </div>
+          )}
+
+          {viewerTier === 'anonymous' && (
+            <p className="mt-3 font-sans text-[13px] text-text-muted">
+              Full era guide available with a free account.
+            </p>
+          )}
+
+          {showWatchFor && (
+            <div className="flex-auto">
+              <WatchForSection items={watchForItems} />
+            </div>
+          )}
+
           <a
             href="/generations/997.2"
-            className="mt-4 block font-serif text-[13px] italic text-accent-primary hover:underline"
+            className="mt-auto block font-serif text-[13px] italic text-accent-primary hover:underline"
           >
             More on the 997.2 →
           </a>
-        )}
+        </div>
       </div>
     )
   }
@@ -251,58 +240,62 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
       <div className="flex h-full flex-col border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
         <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary" style={liningNums}>{sectionLabel}</p>
 
-        {introText && (
-          <p className="mt-4 font-serif text-[15px] italic leading-[1.65] text-text-secondary" style={liningNums}>
-            {introText}
-          </p>
-        )}
+        <div className="mt-4 flex flex-1 flex-col">
+          {introText && (
+            <p className="flex-auto font-serif text-[15px] italic leading-[1.65] text-text-secondary" style={liningNums}>
+              {introText}
+            </p>
+          )}
 
-        {metadataFields.length > 0 && (
-          <div className={introText ? 'mt-4 border-t-[0.5px] border-border-subtle pt-4' : 'mt-4'}>
-            <dl className="grid grid-cols-2 gap-x-6 gap-y-3">
-              {metadataFields.map(({ label, value, msrpParts: mp }) => (
-                <div key={label}>
-                  <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">{label}</dt>
-                  <dd className="mt-0.5 font-serif text-[14px] text-text-primary" style={liningNums}>
-                    {mp ? (
-                      <>
-                        {mp.main}
-                        {mp.paren && (
-                          <span className="ml-1 font-serif text-[13px] italic text-text-tertiary">{mp.paren}</span>
-                        )}
-                      </>
-                    ) : value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        )}
+          {metadataFields.length > 0 && (
+            <div className={`flex-auto${introText ? ' mt-4 border-t-[0.5px] border-border-subtle pt-4' : ' mt-4'}`}>
+              <dl className="grid grid-cols-2 gap-x-6 gap-y-3">
+                {metadataFields.map(({ label, value, msrpParts: mp }) => (
+                  <div key={label}>
+                    <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">{label}</dt>
+                    <dd className="mt-0.5 font-serif text-[14px] text-text-primary" style={liningNums}>
+                      {mp ? (
+                        <>
+                          {mp.main}
+                          {mp.paren && (
+                            <span className="ml-1 font-serif text-[13px] italic text-text-tertiary">{mp.paren}</span>
+                          )}
+                        </>
+                      ) : value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          )}
 
-        {!hasAnyContent && (
-          <p className="mt-4 font-serif text-[15px] italic leading-[1.65] text-text-tertiary">
-            Era guide for this generation coming soon.
-          </p>
-        )}
+          {!hasAnyContent && (
+            <p className="font-serif text-[15px] italic leading-[1.65] text-text-tertiary">
+              Era guide for this generation coming soon.
+            </p>
+          )}
 
-        {showWatchFor ? (
-          <WatchForSection items={watchForItems} genId={generation?.generation_id} />
-        ) : (
-          showReadMore && (
+          {viewerTier === 'anonymous' && hasAnyContent && (
+            <p className="mt-3 font-sans text-[13px] text-text-muted">
+              Full era guide available with a free account.
+            </p>
+          )}
+
+          {showWatchFor && (
+            <div className="flex-auto">
+              <WatchForSection items={watchForItems} />
+            </div>
+          )}
+
+          {viewerTier !== 'anonymous' && !!generation?.generation_id && (
             <a
-              href={`/generations/${generation!.generation_id}`}
-              className="mt-4 block font-serif text-[13px] italic text-accent-primary hover:underline"
+              href={`/generations/${generation.generation_id}`}
+              className="mt-auto block font-serif text-[13px] italic text-accent-primary hover:underline"
             >
-              More on the {formatGenerationDisplay(generation!.generation_id)} →
+              More on the {formatGenerationDisplay(generation.generation_id)} →
             </a>
-          )
-        )}
-
-        {viewerTier === 'anonymous' && !showWatchFor && hasAnyContent && (
-          <p className="mt-3 font-sans text-[13px] text-text-muted">
-            Full era guide available with a free account.
-          </p>
-        )}
+          )}
+        </div>
       </div>
     )
   }
@@ -340,54 +333,61 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
   return (
     <div className="flex h-full flex-col border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
       <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary" style={liningNums}>{sectionLabel}</p>
-      <div className="mt-4">
-        {displayed.map((para, idx) => (
-          <p
-            key={idx}
-            className={`font-serif text-[15px] italic leading-[1.65] text-text-secondary${idx > 0 ? ' mt-3' : ''}`}
-          >
-            {para}
-          </p>
-        ))}
-        {viewerTier === 'anonymous' && paragraphs.length > 1 && (
-          <p className="mt-3 font-sans text-[13px] text-text-muted">
-            Full era guide available with a free account.
-          </p>
-        )}
-      </div>
-      {metadataFields.length > 0 && (
-        <div className="mt-4 border-t-[0.5px] border-border-subtle pt-4">
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-4">
-            {metadataFields.map(({ label, value, msrpParts: mp }) => (
-              <div key={label}>
-                <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">{label}</dt>
-                <dd className="mt-1 font-serif text-[14px] text-text-primary">
-                  {mp ? (
-                    <>
-                      {mp.main}
-                      {mp.paren && (
-                        <span className="ml-1 font-serif text-[13px] italic text-text-tertiary">{mp.paren}</span>
-                      )}
-                    </>
-                  ) : value}
-                </dd>
-              </div>
-            ))}
-          </dl>
+
+      <div className="mt-4 flex flex-1 flex-col">
+        <div className="flex-auto">
+          {displayed.map((para, idx) => (
+            <p
+              key={idx}
+              className={`font-serif text-[15px] italic leading-[1.65] text-text-secondary${idx > 0 ? ' mt-3' : ''}`}
+            >
+              {para}
+            </p>
+          ))}
+          {viewerTier === 'anonymous' && paragraphs.length > 1 && (
+            <p className="mt-3 font-sans text-[13px] text-text-muted">
+              Full era guide available with a free account.
+            </p>
+          )}
         </div>
-      )}
-      {showWatchFor ? (
-        <WatchForSection items={watchForItems} genId={generation.generation_id} />
-      ) : (
-        viewerTier !== 'anonymous' && (
+
+        {metadataFields.length > 0 && (
+          <div className="mt-4 flex-auto border-t-[0.5px] border-border-subtle pt-4">
+            <dl className="grid grid-cols-2 gap-x-6 gap-y-4">
+              {metadataFields.map(({ label, value, msrpParts: mp }) => (
+                <div key={label}>
+                  <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">{label}</dt>
+                  <dd className="mt-1 font-serif text-[14px] text-text-primary">
+                    {mp ? (
+                      <>
+                        {mp.main}
+                        {mp.paren && (
+                          <span className="ml-1 font-serif text-[13px] italic text-text-tertiary">{mp.paren}</span>
+                        )}
+                      </>
+                    ) : value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )}
+
+        {showWatchFor && (
+          <div className="flex-auto">
+            <WatchForSection items={watchForItems} />
+          </div>
+        )}
+
+        {viewerTier !== 'anonymous' && (
           <a
             href={`/generations/${generation.generation_id}`}
-            className="mt-4 block font-serif text-[13px] italic text-accent-primary hover:underline"
+            className="mt-auto block font-serif text-[13px] italic text-accent-primary hover:underline"
           >
             More on the {formatGenerationDisplay(generation.generation_id)} →
           </a>
-        )
-      )}
+        )}
+      </div>
     </div>
   )
 }

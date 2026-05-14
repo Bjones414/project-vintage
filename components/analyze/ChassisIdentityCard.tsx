@@ -109,23 +109,15 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
 
   const specsGenerationId = listing.generation ?? generation?.generation_id ?? null
   const specs = lookupFactorySpecs(specsGenerationId, listing.trim)
-  // 3-tier fallback: content variant → content generation total → DB generation total
+  const productionLookup = lookupVariantProduction(specsGenerationId, listing.trim)
   const variantProduction: ProductionResult | null =
-    lookupVariantProduction(specsGenerationId, listing.trim) ??
-    (generation?.units_produced
-      ? {
-          label: `${specsGenerationId ?? 'Generation'} total production`,
-          figure: generation.units_produced,
-          tier: 'generation' as const,
-        }
-      : null)
+    productionLookup?.tier === 'variant' ? productionLookup : null
   const specItems = specs
     ? [
         { label: 'Power',        value: specs.hp },
         { label: 'Torque',       value: specs.torque },
         { label: '0–60 mph',     value: specs.zero_to_sixty },
         ...(specs.curb_weight_lb ? [{ label: 'Curb Weight', value: specs.curb_weight_lb }] : []),
-        ...(specs.top_speed_mph  ? [{ label: 'Top Speed',   value: specs.top_speed_mph  }] : []),
       ]
     : null
 
@@ -287,7 +279,7 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
           </dl>
 
           {specItems !== null && (
-            <div className="flex flex-auto flex-col">
+            <div className="mt-3 flex flex-auto flex-col">
               <div className="border-t-[0.5px] border-border-subtle" />
               <p className="mt-4 font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">
                 Factory Specs
