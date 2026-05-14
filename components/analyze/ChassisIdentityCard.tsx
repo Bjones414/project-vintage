@@ -126,7 +126,6 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
         { label: '0–60 mph',     value: specs.zero_to_sixty },
         ...(specs.curb_weight_lb ? [{ label: 'Curb Weight', value: specs.curb_weight_lb }] : []),
         ...(specs.top_speed_mph  ? [{ label: 'Top Speed',   value: specs.top_speed_mph  }] : []),
-        ...(specs.redline_rpm    ? [{ label: 'Redline',     value: specs.redline_rpm    }] : []),
       ]
     : null
 
