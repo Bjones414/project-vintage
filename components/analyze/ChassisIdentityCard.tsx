@@ -182,6 +182,8 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
         <p className="mt-4 font-sans text-[13px] text-text-tertiary">No chassis data available.</p>
       ) : (
         <div className="mt-4 flex flex-1 flex-col">
+          {/* White area — flex-1 absorbs height differential; tan block stays compact at bottom */}
+          <div className="flex-1">
           {/* VIN — full-width single-line header */}
           {vinValue !== null && (
             <p className="hyphens-none break-all">
@@ -206,9 +208,9 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
             </p>
           )}
 
-          {/* Identity grid — natural height; grows to fill card only when Factory Specs are absent */}
+          {/* Identity grid — natural height */}
           <dl
-            className={`${hasVinOrProduction ? 'mt-4 border-t-[0.5px] border-border-subtle pt-4' : ''} grid grid-cols-2 gap-x-4 gap-y-4${specItems === null ? ' flex-1' : ''}`}
+            className={`${hasVinOrProduction ? 'mt-4 border-t-[0.5px] border-border-subtle pt-4' : ''} grid grid-cols-2 gap-x-4 gap-y-4`}
           >
             {fields.map(({ label, value }) => (
               <div key={label}>
@@ -285,11 +287,12 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
               </dd>
             </div>
           </dl>
+          </div>
 
-          {/* Tonal Factory Specs block — flex-1 absorbs any height differential vs. the generation card.
+          {/* Tonal Factory Specs block — natural compact height at card bottom.
               Negative margins bleed the elevated background to the card's left, right, and bottom edges. */}
           {specItems !== null && (
-            <div className="mt-4 flex flex-1 flex-col justify-end -mx-6 -mb-5 border-t-[0.5px] border-border-default bg-bg-elevated px-6 py-4">
+            <div className="-mx-6 -mb-5 border-t-[0.5px] border-border-default bg-bg-elevated px-6 py-4">
               <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">
                 Factory Specs
               </p>
