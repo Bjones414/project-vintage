@@ -1,9 +1,38 @@
+import { createClient } from '@/lib/supabase/server'
 import { Nav } from '@/components/layout/Nav'
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+function computeInitials(
+  firstName: string | null,
+  lastName: string | null,
+  email: string | null,
+): string {
+  if (firstName && lastName) return (firstName[0] + lastName[0]).toUpperCase()
+  if (email) return email[0].toUpperCase()
+  return '?'
+}
+
+export default async function AppLayout({ children }: { children: React.ReactNode }) {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  let initials = '?'
+  if (user) {
+    const { data: profile } = await supabase
+      .from('users')
+      .select('first_name, last_name')
+      .eq('id', user.id)
+      .single()
+
+    initials = computeInitials(
+      profile?.first_name ?? null,
+      profile?.last_name ?? null,
+      user.email ?? null,
+    )
+  }
+
   return (
     <>
-      <Nav />
+      <Nav initials={initials} />
       {children}
     </>
   )

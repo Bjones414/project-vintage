@@ -6,6 +6,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import { PVMark } from '@/components/brand/PVMark'
 import { analyzeUrl, AnalyzeError } from '@/lib/analyze-url'
 import { AnalyzeLoadingState } from '@/components/analyze/AnalyzeLoadingState'
+import { createClient } from '@/lib/supabase/client'
 
 /*
  * NAV_LINKS drives the section zone.
@@ -19,14 +20,20 @@ const NAV_LINKS = [
   { label: 'Generations', href: '/generations' },
 ] as const
 
-export function Nav() {
+interface NavProps {
+  initials: string
+}
+
+export function Nav({ initials }: NavProps) {
   const pathname = usePathname()
   const router = useRouter()
   const [url, setUrl] = useState('')
   const [loadingPromise, setLoadingPromise] = useState<Promise<string> | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
   const urlRef = useRef(url)
   urlRef.current = url
+  const avatarContainerRef = useRef<HTMLDivElement>(null)
 
   const isOnHomePage = pathname === '/home'
 
@@ -37,6 +44,25 @@ export function Nav() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
+
+  // Close dropdown on outside click or Escape
+  useEffect(() => {
+    if (!dropdownOpen) return
+    function handleClickOutside(e: MouseEvent) {
+      if (avatarContainerRef.current && !avatarContainerRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false)
+      }
+    }
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setDropdownOpen(false)
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [dropdownOpen])
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -58,6 +84,13 @@ export function Nav() {
     } else {
       setError(err.message || 'Network error — check your connection and try again')
     }
+  }
+
+  async function handleSignOut() {
+    setDropdownOpen(false)
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push('/login')
   }
 
   return (
@@ -167,12 +200,31 @@ export function Nav() {
                 <path d="M5 4V3a2 2 0 0 1 4 0v1" stroke="currentColor" strokeWidth="1" />
               </svg>
             </Link>
-            {/* V1: static initials placeholder — wire to auth in V1.5 */}
-            <div
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-text-primary font-sans text-[11px] font-medium uppercase tracking-[0.04em] text-bg-canvas"
-              aria-hidden="true"
-            >
-              BL
+            {/* Avatar — dynamic initials, click to open sign-out dropdown */}
+            <div className="relative" ref={avatarContainerRef}>
+              <button
+                type="button"
+                onClick={() => setDropdownOpen((o) => !o)}
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-text-primary font-sans text-[11px] font-medium uppercase tracking-[0.04em] text-bg-canvas focus:outline-none"
+                aria-label="Open account menu"
+                aria-expanded={dropdownOpen}
+              >
+                {initials}
+              </button>
+              {dropdownOpen && (
+                <div
+                  className="absolute right-0 top-full z-50 mt-2 min-w-[160px] border-[0.5px] border-border-default bg-bg-surface py-2"
+                  style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}
+                >
+                  <button
+                    type="button"
+                    onClick={handleSignOut}
+                    className="block w-full cursor-pointer px-[14px] py-[10px] text-left font-serif text-[14px] text-text-primary hover:bg-bg-elevated"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 

@@ -1,5 +1,6 @@
+import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { TopNav } from '@/components/nav/TopNav'
+import { SimpleUnauthHeader } from '@/components/chrome/SimpleUnauthHeader'
 import { HeroForm } from '@/components/home/HeroForm'
 
 export default async function HomePage() {
@@ -8,9 +9,13 @@ export default async function HomePage() {
     data: { user },
   } = await supabase.auth.getUser()
 
+  if (user) {
+    redirect('/home')
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
-      <TopNav userEmail={user?.email ?? null} />
+      <SimpleUnauthHeader />
       <main className="flex flex-1 items-center justify-center px-6 py-16">
         <div className="w-full max-w-[640px]">
           <h1 className="mb-4 text-center font-serif text-h1 text-text-primary">
