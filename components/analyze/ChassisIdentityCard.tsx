@@ -289,7 +289,7 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
           {/* Tonal Factory Specs block — flex-1 absorbs any height differential vs. the generation card.
               Negative margins bleed the elevated background to the card's left, right, and bottom edges. */}
           {specItems !== null && (
-            <div className="mt-4 flex-1 -mx-6 -mb-5 border-t-[0.5px] border-border-default bg-bg-elevated px-6 py-4">
+            <div className="mt-4 flex flex-1 flex-col justify-end -mx-6 -mb-5 border-t-[0.5px] border-border-default bg-bg-elevated px-6 py-4">
               <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">
                 Factory Specs
               </p>
