@@ -54,11 +54,11 @@ function WatchForSection({ items }: { items: WatchForItem[] }) {
   }
 
   return (
-    <div className="mt-4 border-t-[0.5px] border-border-subtle pt-4">
+    <div className="mt-4 flex flex-1 flex-col border-t-[0.5px] border-border-subtle pt-4">
         <p className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">
           What to Watch For
         </p>
-        <ul className="mt-2 divide-y divide-border-subtle">
+        <ul className="mt-2 flex flex-1 flex-col justify-between divide-y divide-border-subtle">
           {displayItems.map((item) => {
             const isOpen = expanded.has(item.source_id)
             const summary = firstSentence(item.description)
@@ -156,11 +156,11 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
         <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary" style={liningNums}>{sectionLabel}</p>
 
         <div className="mt-4 flex flex-1 flex-col">
-          <p className="flex-auto font-serif text-[15px] italic leading-[1.65] text-text-secondary" style={liningNums}>
+          <p className="font-serif text-[15px] italic leading-[1.65] text-text-secondary" style={liningNums}>
             Generation break disguised as a facelift — the all-new 9A1 direct-injection engine, 7-speed PDK transmission, and LED lighting arrived simultaneously, making it mechanically distinct from the 997.1 it superseded.
           </p>
 
-          <dl className="mt-4 flex-auto grid grid-cols-2 gap-x-6 gap-y-3">
+          <dl className="mt-4 grid grid-cols-2 gap-x-6" style={{ flex: '2 1 0', alignContent: 'space-between' }}>
             {quickStats.map(({ label, value }) => (
               <div key={label}>
                 <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">{label}</dt>
@@ -170,7 +170,7 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
           </dl>
 
           {viewerTier !== 'anonymous' && (
-            <div className="mt-4 flex-auto space-y-2">
+            <div className="mt-4 space-y-2">
               {keyFacts.map(({ lead, body }) => (
                 <p key={lead} className="font-sans text-[13px] leading-[1.5] text-text-secondary" style={liningNums}>
                   <strong className="font-medium text-text-primary">{lead}</strong>{' '}{body}
@@ -186,7 +186,7 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
           )}
 
           {showWatchFor && (
-            <div className="flex-auto">
+            <div className="flex flex-col" style={{ flex: '3 1 0' }}>
               <WatchForSection items={watchForItems} />
             </div>
           )}
@@ -242,14 +242,14 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
 
         <div className="mt-4 flex flex-1 flex-col">
           {introText && (
-            <p className="flex-auto font-serif text-[15px] italic leading-[1.65] text-text-secondary" style={liningNums}>
+            <p className="font-serif text-[15px] italic leading-[1.65] text-text-secondary" style={liningNums}>
               {introText}
             </p>
           )}
 
           {metadataFields.length > 0 && (
-            <div className={`flex-auto${introText ? ' mt-4 border-t-[0.5px] border-border-subtle pt-4' : ' mt-4'}`}>
-              <dl className="grid grid-cols-2 gap-x-6 gap-y-3">
+            <div className={introText ? 'mt-4 border-t-[0.5px] border-border-subtle pt-4' : 'mt-4'} style={{ flex: '2 1 0' }}>
+              <dl className="grid grid-cols-2 gap-x-6" style={{ height: '100%', alignContent: 'space-between' }}>
                 {metadataFields.map(({ label, value, msrpParts: mp }) => (
                   <div key={label}>
                     <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">{label}</dt>
@@ -282,7 +282,7 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
           )}
 
           {showWatchFor && (
-            <div className="flex-auto">
+            <div className="flex flex-col" style={{ flex: '3 1 0' }}>
               <WatchForSection items={watchForItems} />
             </div>
           )}
@@ -335,7 +335,7 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
       <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary" style={liningNums}>{sectionLabel}</p>
 
       <div className="mt-4 flex flex-1 flex-col">
-        <div className="flex-auto">
+        <div>
           {displayed.map((para, idx) => (
             <p
               key={idx}
@@ -352,8 +352,8 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
         </div>
 
         {metadataFields.length > 0 && (
-          <div className="mt-4 flex-auto border-t-[0.5px] border-border-subtle pt-4">
-            <dl className="grid grid-cols-2 gap-x-6 gap-y-4">
+          <div className="mt-4 border-t-[0.5px] border-border-subtle pt-4" style={{ flex: '2 1 0' }}>
+            <dl className="grid grid-cols-2 gap-x-6" style={{ height: '100%', alignContent: 'space-between' }}>
               {metadataFields.map(({ label, value, msrpParts: mp }) => (
                 <div key={label}>
                   <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">{label}</dt>
@@ -374,7 +374,7 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
         )}
 
         {showWatchFor && (
-          <div className="flex-auto">
+          <div className="flex flex-col" style={{ flex: '3 1 0' }}>
             <WatchForSection items={watchForItems} />
           </div>
         )}
