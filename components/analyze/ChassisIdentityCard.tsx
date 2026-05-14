@@ -1,7 +1,7 @@
 import type { Tables } from '@/lib/supabase/types'
 import { formatGenerationDisplay } from '@/lib/era-content/generation-display'
 import { lookupFactorySpecs } from '@/lib/era-content/factory-specs'
-import { lookupVariantProduction } from '@/lib/era-content/generation-content'
+import { lookupVariantProduction, type ProductionResult } from '@/lib/era-content/generation-content'
 
 type Props = {
   listing: Tables<'listings'>
@@ -109,7 +109,16 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
 
   const specsGenerationId = listing.generation ?? generation?.generation_id ?? null
   const specs = lookupFactorySpecs(specsGenerationId, listing.trim)
-  const variantProduction = lookupVariantProduction(specsGenerationId, listing.trim)
+  // 3-tier fallback: content variant → content generation total → DB generation total
+  const variantProduction: ProductionResult | null =
+    lookupVariantProduction(specsGenerationId, listing.trim) ??
+    (generation?.units_produced
+      ? {
+          label: `${specsGenerationId ?? 'Generation'} total production`,
+          figure: generation.units_produced,
+          tier: 'generation' as const,
+        }
+      : null)
   const specItems = specs
     ? [
         { label: 'Power',    value: specs.hp },
@@ -182,14 +191,14 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
             </p>
           )}
 
-          {/* Variant production figure — shown when a trim-specific figure exists */}
+          {/* Production figure — variant-specific when matched; generation total as fallback */}
           {variantProduction !== null && (
             <p className={`hyphens-none break-words ${vinValue !== null ? 'mt-2' : 'mt-0'}`}>
               <span className="font-serif text-[10px] uppercase tracking-[0.16em] text-text-quaternary">
-                {variantProduction.variantName} built:{' '}
+                {variantProduction.label}:{' '}
               </span>
               <span className="font-serif text-[13px] italic text-text-secondary">
-                {variantProduction.production}
+                {variantProduction.figure}
               </span>
             </p>
           )}

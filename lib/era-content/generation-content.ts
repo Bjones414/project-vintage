@@ -4055,35 +4055,83 @@ export function getValueDrivers(id: string): ValueDriver[] | null {
   return CONTENT[id]?.value_drivers ?? null
 }
 
-export function lookupVariantProduction(
-  generationId: string | null | undefined,
+export type ProductionResult = {
+  /** Human-readable label — e.g. "Carrera Cabriolet built" or "996.2 total production" */
+  label: string
+  /** The production figure or range string */
+  figure: string
+  /** Which fallback tier fired */
+  tier: 'variant' | 'generation'
+}
+
+function normalizeName(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+}
+
+function findBestVariantMatch(
+  variants: GenerationVariant[] | undefined,
   trim: string | null | undefined,
-): { variantName: string; production: string } | null {
-  if (!generationId) return null
-  const content = getGenerationContent(generationId)
-  if (!content?.variants?.length) return null
-  const variants = content.variants.filter(
-    (v): v is typeof v & { production: string } => !!v.production,
-  )
-  if (!variants.length || !trim) return null
-  const normTrim = trim.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+): GenerationVariant | null {
+  if (!variants?.length || !trim) return null
+  const normTrim = normalizeName(trim)
+  // Exact match first
   for (const v of variants) {
-    const normVariant = v.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
-    if (normTrim === normVariant) return { variantName: v.name, production: v.production }
+    if (normTrim === normalizeName(v.name)) return v
   }
-  let bestMatch: (typeof variants)[0] | null = null
+  // Longest prefix match (either direction)
+  let best: GenerationVariant | null = null
   let bestLen = 0
   for (const v of variants) {
-    const normVariant = v.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+    const normVariant = normalizeName(v.name)
     if (
       (normTrim.startsWith(normVariant) || normVariant.startsWith(normTrim)) &&
       normVariant.length > bestLen
     ) {
-      bestMatch = v
+      best = v
       bestLen = normVariant.length
     }
   }
-  return bestMatch ? { variantName: bestMatch.name, production: bestMatch.production } : null
+  return best
+}
+
+/**
+ * Returns a production figure for the given listing, with a 3-tier fallback:
+ *   1. Variant match — matched variant has production data
+ *   2. Generation content — content.units_produced from generation-content.ts
+ *   3. null — no data available (caller may try DB-level fallback)
+ */
+export function lookupVariantProduction(
+  generationId: string | null | undefined,
+  trim: string | null | undefined,
+): ProductionResult | null {
+  if (!generationId) return null
+  const content = getGenerationContent(generationId)
+  if (!content) return null
+
+  // Tier 1: find the best variant match; use its production data if present
+  const matched = findBestVariantMatch(content.variants, trim)
+  if (matched?.production) {
+    return { label: `${matched.name} built`, figure: matched.production, tier: 'variant' }
+  }
+
+  // Tier 2: generation-level units_produced from content
+  if (content.units_produced) {
+    if (!matched && trim) {
+      console.warn(
+        `[production-lookup] No variant matched trim="${trim}" in generation="${generationId}" — falling back to generation total`,
+      )
+    }
+    return {
+      label: `${generationId} total production`,
+      figure: content.units_produced,
+      tier: 'generation',
+    }
+  }
+
+  console.warn(
+    `[production-lookup] No production data at all for generation="${generationId}" — needs data audit`,
+  )
+  return null
 }
 
 /**
