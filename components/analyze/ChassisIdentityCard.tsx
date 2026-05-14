@@ -112,23 +112,10 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
   const productionLookup = lookupVariantProduction(specsGenerationId, listing.trim)
   const variantProduction: ProductionResult | null =
     productionLookup?.tier === 'variant' ? productionLookup : null
-  const specItems = specs
-    ? [
-        { label: 'Power',        value: specs.hp },
-        { label: 'Torque',       value: specs.torque },
-        { label: '0–60 mph',     value: specs.zero_to_sixty },
-        { label: 'Top Speed',    value: specs.top_speed_mph ?? '—' },
-        { label: 'Curb Weight',  value: specs.curb_weight_lb ?? '—' },
-        { label: 'Redline',      value: specs.redline_rpm ?? '—' },
-      ]
-    : null
 
   // Factory engine takes priority over NHTSA-decoded string (which is unreliable).
-  // Falls back to the parsed string, then hides the field entirely if both are null.
   const engineDisplay = specs?.engine ?? buildEngineDisplay(listing.decoded_engine) ?? null
 
-  // 5 rows × 2 cols grid. Engine is omitted when no factory or parsed data is available,
-  // leaving Transmission alone in the last row (preferable to showing "Engine —").
   // Row 1: Generation | Model
   // Row 2: Trim       | Model Year
   // Row 3: Mileage    | Drivetrain
@@ -150,9 +137,9 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
       label: 'Mileage',
       value: listing.mileage != null ? `${listing.mileage.toLocaleString('en-US')} mi` : '—',
     },
-    { label: 'Drivetrain',    value: drivetrain },
+    { label: 'Drivetrain',   value: drivetrain },
     ...(engineDisplay !== null ? [{ label: 'Engine', value: engineDisplay }] : []),
-    { label: 'Transmission',  value: listing.decoded_transmission ?? listing.transmission ?? '—' },
+    { label: 'Transmission', value: listing.decoded_transmission ?? listing.transmission ?? '—' },
   ]
 
   const exteriorColor = listing.exterior_color ?? null
@@ -164,12 +151,32 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
   const originalInteriorColor = listing.original_interior_color ?? null
 
   const hasAnyContent = vinValue !== null || listing.model != null || listing.year != null
+  const hasVinOrProduction = vinValue !== null || variantProduction !== null
+
+  // Tonal Factory Specs block — 3-col grid, 2 rows:
+  // Row 1: Power | Torque | 0–60 mph
+  // Row 2: Curb Weight | Redline | Top Speed
+  const specItems = specs
+    ? [
+        { label: 'Power',       value: specs.hp },
+        { label: 'Torque',      value: specs.torque },
+        { label: '0–60 mph',    value: specs.zero_to_sixty },
+        { label: 'Curb Weight', value: specs.curb_weight_lb ?? '—' },
+        { label: 'Redline',     value: specs.redline_rpm ?? '—' },
+        { label: 'Top Speed',   value: specs.top_speed_mph ?? '—' },
+      ]
+    : null
 
   return (
     <div className="flex h-full flex-col border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
+      {/* Section label + editorial subtitle */}
       <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">
         Chassis Identity
       </p>
+      <p className="mt-1 font-serif text-[13px] italic text-text-tertiary">
+        This specific car
+      </p>
+      <div className="mt-3 border-t-[0.5px] border-border-default" />
 
       {!hasAnyContent ? (
         <p className="mt-4 font-sans text-[13px] text-text-tertiary">No chassis data available.</p>
@@ -187,7 +194,7 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
             </p>
           )}
 
-          {/* Production figure — variant-specific when matched; generation total as fallback */}
+          {/* Production figure — variant-specific when matched */}
           {variantProduction !== null && (
             <p className={`hyphens-none break-words ${vinValue !== null ? 'mt-2' : 'mt-0'}`}>
               <span className="font-serif text-[10px] uppercase tracking-[0.16em] text-text-quaternary">
@@ -199,11 +206,10 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
             </p>
           )}
 
-          {/* 10-field grid (5 rows × 2 cols — always even, no orphan cells) */}
+          {/* Identity grid — natural height; grows to fill card only when Factory Specs are absent */}
           <dl
-            className={`${vinValue !== null || variantProduction !== null ? 'mt-4 border-t-[0.5px] border-border-subtle pt-4' : ''} flex-auto content-between grid grid-cols-2 gap-x-4 gap-y-4`}
+            className={`${hasVinOrProduction ? 'mt-4 border-t-[0.5px] border-border-subtle pt-4' : ''} grid grid-cols-2 gap-x-4 gap-y-4${specItems === null ? ' flex-1' : ''}`}
           >
-            {/* Rows 1–4: 8 uniform fields */}
             {fields.map(({ label, value }) => (
               <div key={label}>
                 <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">
@@ -217,7 +223,7 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
               </div>
             ))}
 
-            {/* Row 5: Exterior Color (with rarity indicator + repaint disclosure) */}
+            {/* Exterior Color with rarity indicator + repaint disclosure */}
             <div>
               <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">
                 Exterior Color
@@ -257,7 +263,7 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
               )}
             </div>
 
-            {/* Row 5: Interior Color (with reupholstery disclosure) */}
+            {/* Interior Color with reupholstery disclosure */}
             <div>
               <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">
                 Interior Color
@@ -280,20 +286,21 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
             </div>
           </dl>
 
+          {/* Tonal Factory Specs block — flex-1 absorbs any height differential vs. the generation card.
+              Negative margins bleed the elevated background to the card's left, right, and bottom edges. */}
           {specItems !== null && (
-            <div className="mt-3 flex flex-auto flex-col">
-              <div className="border-t-[0.5px] border-border-subtle" />
-              <p className="mt-4 font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">
+            <div className="mt-4 flex-1 -mx-6 -mb-5 border-t-[0.5px] border-border-default bg-bg-elevated px-6 py-4">
+              <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">
                 Factory Specs
               </p>
-              <dl className="mt-4 flex-auto content-between grid grid-cols-2 gap-x-4 gap-y-4">
+              <dl className="mt-3 grid grid-cols-3 gap-x-4 gap-y-4">
                 {specItems.map(({ label, value }) => (
                   <div key={label}>
                     <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">
                       {label}
                     </dt>
                     <dd className="mt-1">
-                      <span className="font-serif text-[17px] text-text-primary">{value}</span>
+                      <span className="font-serif text-[15px] text-text-primary">{value}</span>
                     </dd>
                   </div>
                 ))}
