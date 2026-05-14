@@ -106,6 +106,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
   const editorial = editorialResult.data ?? null
   const analysisData = parseAnalysisData(analysisResult.data?.analysis_data ?? null)
   const compResult: CompResultRow | null = v2CompsResult ? v2ToCompResult(listing.id, v2CompsResult) : null
+  const cascadeCaveat: string | null = v2CompsResult?.cascade_caveat ?? null
 
   const catalogItems = matchDefects({
     generation_id: listing.generation_id ?? null,
@@ -113,6 +114,8 @@ export default async function ListingDetailPage({ params }: PageProps) {
     year: listing.year ?? null,
     mileage: listing.mileage ?? null,
     trim: listing.trim ?? null,
+    trim_category: listing.trim_category ?? null,
+    body_style: listing.body_style ?? null,
   })
   const recallItems = recallsToWatchForItems(recalls)
   const severityOrder = { high: 0, moderate: 1, low: 2 } as const
@@ -169,7 +172,13 @@ export default async function ListingDetailPage({ params }: PageProps) {
             <ChassisIdentityCard listing={listing} generation={generation} colorData={colorData} />
           </div>
           <div id="generation">
-            <EraCard generation={generation} viewerTier={viewerTier} watchForItems={selectTopThree(watchForItems)} />
+            <EraCard
+              generation={generation}
+              viewerTier={viewerTier}
+              watchForItems={selectTopThree(watchForItems)}
+              make={listing.make}
+              model={listing.model}
+            />
           </div>
         </div>
 
@@ -193,6 +202,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
             compListings={compListings}
             viewerTier={viewerTier}
             trimCategory={listing.trim_category ?? null}
+            cascadeCaveat={cascadeCaveat}
           />
         </div>
 

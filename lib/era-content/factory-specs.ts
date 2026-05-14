@@ -13,12 +13,12 @@ type FactorySpec = {
 // Lookup: exact match first, then longest-prefix match with word-boundary (_) awareness.
 const SPECS: Record<string, FactorySpec> = {
   // 993 (1994–1998 air-cooled)
-  '993:turbo_s':     { hp: '450 hp', torque: '398 lb-ft', zero_to_sixty: '4.0s', engine: '3.6L M64 twin-turbo flat-six',       curb_weight_lb: '3,395 lb', top_speed_mph: '193 mph', redline_rpm: '6,500 rpm' },
+  '993:turbo_s':     { hp: '450 hp', torque: '398 lb-ft', zero_to_sixty: '4.0s', engine: '3.6L M64 twin-turbo flat-six',       curb_weight_lb: '3,395 lb', top_speed_mph: '186 mph', redline_rpm: '6,500 rpm' },
   '993:turbo':       { hp: '408 hp', torque: '398 lb-ft', zero_to_sixty: '4.5s', engine: '3.6L M64 twin-turbo flat-six',       curb_weight_lb: '3,307 lb', top_speed_mph: '180 mph', redline_rpm: '6,500 rpm' },
   '993:gt2':         { hp: '430 hp', torque: '398 lb-ft', zero_to_sixty: '4.4s', engine: '3.6L M64 twin-turbo flat-six',       curb_weight_lb: '3,042 lb', top_speed_mph: '183 mph', redline_rpm: '6,500 rpm' },
   '993:rs':          { hp: '300 hp', torque: '262 lb-ft', zero_to_sixty: '5.0s', engine: '3.8L M64 flat-six',                  curb_weight_lb: '2,844 lb', top_speed_mph: '168 mph', redline_rpm: '6,600 rpm' },
   '993:carrera_4s':  { hp: '285 hp', torque: '250 lb-ft', zero_to_sixty: '5.1s', engine: '3.6L M64 flat-six (Varioram)',       curb_weight_lb: '3,197 lb', top_speed_mph: '168 mph', redline_rpm: '6,100 rpm' },
-  '993:carrera_s':   { hp: '285 hp', torque: '250 lb-ft', zero_to_sixty: '5.1s', engine: '3.6L M64 flat-six (Varioram)',       curb_weight_lb: '3,042 lb', top_speed_mph: '168 mph', redline_rpm: '6,100 rpm' },
+  '993:carrera_s':   { hp: '285 hp', torque: '250 lb-ft', zero_to_sixty: '5.1s', engine: '3.6L M64 flat-six (Varioram)',       curb_weight_lb: '3,064 lb', top_speed_mph: '168 mph', redline_rpm: '6,100 rpm' },
   '993:carrera_4':   { hp: '272 hp', torque: '243 lb-ft', zero_to_sixty: '5.6s', engine: '3.6L M64 flat-six',                  curb_weight_lb: '3,108 lb', top_speed_mph: '161 mph', redline_rpm: '6,100 rpm' },
   '993:targa':       { hp: '272 hp', torque: '243 lb-ft', zero_to_sixty: '5.8s', engine: '3.6L M64 flat-six (Varioram)',       curb_weight_lb: '3,086 lb', top_speed_mph: '161 mph', redline_rpm: '6,100 rpm' },
   '993:carrera':     { hp: '272 hp', torque: '243 lb-ft', zero_to_sixty: '5.6s', engine: '3.6L M64 flat-six',                  curb_weight_lb: '3,031 lb', top_speed_mph: '161 mph', redline_rpm: '6,100 rpm' },
@@ -26,8 +26,6 @@ const SPECS: Record<string, FactorySpec> = {
   // 996.1 (1998–2001)
   '996.1:turbo':     { hp: '415 hp', torque: '413 lb-ft', zero_to_sixty: '4.1s', engine: '3.6L Mezger twin-turbo flat-six',    curb_weight_lb: '3,263 lb', top_speed_mph: '186 mph', redline_rpm: '6,750 rpm' },
   '996.1:gt3':       { hp: '360 hp', torque: '273 lb-ft', zero_to_sixty: '4.8s', engine: '3.6L Mezger flat-six',               curb_weight_lb: '2,976 lb', top_speed_mph: '187 mph', redline_rpm: '8,000 rpm' },
-  '996.1:carrera_4s':{ hp: '320 hp', torque: '273 lb-ft', zero_to_sixty: '5.0s', engine: '3.4L M96 flat-six',                  curb_weight_lb: '3,208 lb', top_speed_mph: '174 mph', redline_rpm: '6,750 rpm' },
-  '996.1:carrera_s': { hp: '320 hp', torque: '273 lb-ft', zero_to_sixty: '5.0s', engine: '3.4L M96 flat-six',                  curb_weight_lb: '3,042 lb', top_speed_mph: '174 mph', redline_rpm: '6,750 rpm' },
   '996.1:carrera_4': { hp: '296 hp', torque: '258 lb-ft', zero_to_sixty: '5.3s', engine: '3.4L M96 flat-six',                  curb_weight_lb: '3,109 lb', top_speed_mph: '174 mph', redline_rpm: '6,750 rpm' },
   '996.1:carrera':   { hp: '296 hp', torque: '258 lb-ft', zero_to_sixty: '5.2s', engine: '3.4L M96 flat-six',                  curb_weight_lb: '2,976 lb', top_speed_mph: '174 mph', redline_rpm: '6,750 rpm' },
 

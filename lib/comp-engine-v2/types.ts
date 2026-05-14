@@ -130,6 +130,16 @@ export type V2Verdict =
   | 'uncomparable'
   | 'low_confidence'
 
+// Cascade level at which the comp pool was selected.
+// 1 = most precise (same trim/year/body/transmission)
+// 2 = adjacent years ±2
+// 3 = full generation, same body (default hard-filter behavior)
+// 4 = full generation, any body
+// 5 = Carrera family trims + full generation
+// 6 = all Carrera variants (broadest fallback)
+// null = insufficient (no level yielded enough comps)
+export type CascadeLevel = 1 | 2 | 3 | 4 | 5 | 6
+
 export interface V2CompsResult {
   verdict: V2Verdict | null    // null when no price was computed
   predicted_median: number | null
@@ -144,4 +154,7 @@ export interface V2CompsResult {
   generation_used: string
   weights_used: Record<FactorName, number>
   insufficient_reason?: string
+  // Cascade metadata
+  cascade_level: CascadeLevel | null
+  cascade_caveat: string | null     // displayed on analyze page when level > 2
 }

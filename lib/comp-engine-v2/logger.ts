@@ -46,6 +46,7 @@ export async function logCompRun(
       actual_price: options.actualPrice ?? null,
       was_backtest: options.wasBacktest ?? false,
       verdict: result.verdict,
+      cascade_level: result.cascade_level ?? null,
     })
     .select('id')
     .single()

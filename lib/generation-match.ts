@@ -28,8 +28,8 @@ interface GenerationRow {
 // '718' must precede 'Boxster'/'Cayman' (e.g., "718 Boxster" → '718', not 'Boxster').
 // '930' is the internal type designation for the air-cooled Turbo; model_family is '911'.
 const FAMILY_PATTERNS: Array<[RegExp, string]> = [
-  [/\b911\b/, '911'],
-  [/\b930\b/, '911'],   // 930 Turbo type designation; resolves to '911' model_family
+  [/\b911(?!\d)/, '911'],  // matches "911", "911S", "911T", "911SC"; not "9110"
+  [/\b930\b/, '911'],      // 930 Turbo type designation; resolves to '911' model_family
   [/\b356\b/, '356'],
   [/\b718\b/, '718'],   // 718 Boxster / 718 Cayman → '718' family (982 era only)
   [/\btaycan\b/i, 'Taycan'],

@@ -1,0 +1,129 @@
+{
+  "session": "s08-cayman",
+  "audit_date": "2026-05-14",
+  "target_file": "lib/era-content/generation-content.ts",
+  "staged_count": 7,
+  "items": [
+    {
+      "id": "MEDIUM-01",
+      "generation": "987.1-cayman",
+      "confidence": "MEDIUM",
+      "location": "top-level units_produced field",
+      "field": "units_produced",
+      "current_value": "~23,000 worldwide (estimated)",
+      "proposed_value": "~20,300 worldwide (estimated delivery figure)",
+      "sources": [
+        "Planet-9 forum production thread: 2006 = 8,984 worldwide; 2007 = 8,736 worldwide; 2008 = 2,562 worldwide → total ~20,282",
+        "GCBC Porsche Cayman sales figures",
+        "Note: these are delivery/sales figures; production may differ"
+      ],
+      "issue": "The ~23,000 figure in the content is higher than delivery data supports. Worldwide deliveries across MY2006–2008 sum to approximately 20,282 (8,984 + 8,736 + 2,562). However, this is delivery data, not factory production count, and MY2006 included only the Cayman S. Possible the 23,000 figure includes cars built but not yet delivered. Recommend adjusting to ~20,300 or changing to 'approximately 20,000 worldwide (delivery data, 2006–2008)' but leaving as staging given uncertainty about production vs delivery accounting.",
+      "action_required": "USER TO REVIEW: Verify against PAG annual report if available, then apply if confirmed."
+    },
+    {
+      "id": "MEDIUM-02",
+      "generation": "987.2-cayman",
+      "confidence": "MEDIUM",
+      "location": "variants[2] — Cayman R years field",
+      "field": "variants.Cayman R.years",
+      "current_value": "2012",
+      "proposed_value": "2011–2012",
+      "sources": [
+        "Wikipedia 987 Cayman: 'Cayman R (2011)' heading",
+        "elferspot.com: 'debuted November 17, 2010' — available as MY2011 in European markets",
+        "Planet-9 Cayman R registry: 'All Cayman Rs in North America were MY2012; rest of world MY2011 or MY2012'"
+      ],
+      "issue": "The Cayman R was sold as MY2012 in North America, but MY2011 and MY2012 in European and other markets. The content is US-focused, so '2012' is defensible. However, auction listings from non-US sellers or European cars may show '2011' on documentation. The worldwide perspective is '2011–2012'. Content note section already says 'MY2012' explicitly. Recommend keeping '2012' for US-focus consistency but flagging for review.",
+      "action_required": "USER TO REVIEW: Keep '2012' for US-focus, or change to '2011–2012' for worldwide accuracy. Low-impact decision."
+    },
+    {
+      "id": "MEDIUM-03",
+      "generation": "981-cayman",
+      "confidence": "MEDIUM",
+      "location": "top-level units_produced field",
+      "field": "units_produced",
+      "current_value": "GT4: 2,500–6,000 worldwide (disputed; Porsche has not published confirmed figures)",
+      "proposed_value": "GT4: production disputed; community database estimates 6,200–6,500 worldwide; commonly cited press figure ~2,500",
+      "sources": [
+        "Rennlist GT4 production numbers forum: community DB estimate 6,200–6,500 worldwide, ~2,350 North America",
+        "stuttcars.com GT4 guide: 'approximately 2,500 units were manufactured'",
+        "6SpeedOnline forum: '2500 total production, 1500 or so in North America'",
+        "Porsche official response: 'confidential information'"
+      ],
+      "issue": "The current range '2,500–6,000' does not align well with either camp. The press/dealer community says ~2,500; the community production database estimates 6,200–6,500. The range should probably be stated differently to reflect these two distinct estimates rather than implying the actual figure is somewhere between them. The upper bound of 6,000 is close to but still below the community database estimate of 6,200–6,500.",
+      "action_required": "USER TO REVIEW: Suggest rewriting as 'GT4: production unconfirmed; commonly cited figures ~2,500 (press); community database estimates ~6,200–6,500 worldwide'. Or leave disputed range with updated upper bound of 6,500."
+    },
+    {
+      "id": "MEDIUM-04",
+      "generation": "981-cayman",
+      "confidence": "MEDIUM",
+      "location": "variants[3] — Cayman GT4 years field",
+      "field": "variants.Cayman GT4.years",
+      "current_value": "2016",
+      "proposed_value": "2015–2016",
+      "sources": [
+        "stuttcars.com: '2015-2016 Porsche Cayman 981 GT4'",
+        "autoevolution: '2016 Porsche Cayman GT4 (981C)' suggests primary US MY is 2016",
+        "classic.com: both 2015 and 2016 GT4 pages exist",
+        "Wikipedia 981 article: GT4 listed as 2015-16"
+      ],
+      "issue": "The GT4 was sold as MY2015 in some markets (European/early deliveries) and MY2016 in the US. The content's production_years says '2013–2016' which is correct for the generation. The GT4 variant years '2016' is correct for the US but excludes MY2015 cars that exist in the wild. Auction listings will surface both 2015 and 2016 model years for the 981 GT4.",
+      "action_required": "USER TO REVIEW: Change to '2015–2016' for accuracy, or keep '2016' for US-market consistency. The generation note already says 'MY2016' explicitly — consider aligning or updating note too."
+    },
+    {
+      "id": "CONFLICT-01",
+      "generation": "982-cayman",
+      "confidence": "CONFLICT",
+      "location": "N/A — variant missing from content",
+      "field": "variants (missing entry)",
+      "current_value": "No '25 Years Anniversary' variant in 982-cayman content",
+      "proposed_value": "CONFLICT: Research finds NO Cayman 25 Years edition was produced",
+      "sources": [
+        "Porsche Newsroom: 'New limited-edition anniversary model: Boxster 25 Years' — Boxster ONLY, 1,250 units worldwide",
+        "Multiple searches: No evidence of a Porsche 718 Cayman 25 Years edition",
+        "Wikipedia 982 article: No mention of Cayman 25 Years variant",
+        "Task notes include '25 Years Anniversary' in the 982 Cayman variant lineup"
+      ],
+      "issue": "The task assignment lists '25 Years Anniversary' as a 982 Cayman variant to audit. Research across Porsche Newsroom, Wikipedia, stuttcars, and multiple search queries finds no evidence of a '718 Cayman 25 Years' edition. The only 25 Years anniversary edition in the 718 family was the 718 Boxster 25 Years (2021, 1,250 units worldwide, based on GTS 4.0 with 400 PS, Neodyme color). It is possible the task notes incorrectly attribute the Boxster-only edition to the Cayman lineup, OR there is a non-US-market Cayman 25 Years variant not found in English-language sources.",
+      "action_required": "USER TO REVIEW: Confirm whether a '718 Cayman 25 Years' edition was produced. If not, remove from variant audit scope. If a non-US version exists, provide source for addition to content."
+    },
+    {
+      "id": "LOW-01",
+      "generation": "982-cayman",
+      "confidence": "LOW",
+      "location": "variants array — missing entry",
+      "field": "variants (missing 718 Cayman T)",
+      "current_value": "No 718 Cayman T variant in content",
+      "proposed_value": "ADD: 718 Cayman T variant (MY2020–2025, 300 hp, sport-focused equipment package on base engine)",
+      "sources": [
+        "stuttcars.com: '718 Cayman T (2020 - Present)' — confirmed variant",
+        "autoevolution: '2020 Porsche 718 Cayman T (982C)'",
+        "Wikipedia 982 article: T variant listed",
+        "Porsche USA: official model offering"
+      ],
+      "proposed_content": {
+        "name": "718 Cayman T",
+        "years": "2020–2025",
+        "power": "300 hp",
+        "description": "2.0L turbocharged flat-four, 310 lb-ft, six-speed manual or 7-speed PDK. Sport-focus trim on the base engine: standard Sport Chrono Package, PASM Sport suspension, Porsche Torque Vectoring (PTV), deleted sound insulation for weight reduction. A handling-focused variant without the displacement step-up of the S."
+      },
+      "issue": "The 718 Cayman T was listed in the task assignment's variant lineup for the 982 generation but is absent from the current content. It is a genuine production variant (MY2020–2025). LOW confidence on exact torque: Wikipedia table showed 280 lb-ft for the T, but the base T uses the same engine as the standard base 718 Cayman with a different tune; some sources say 310 lb-ft. Staging for user review of spec before applying.",
+      "action_required": "USER TO REVIEW: Confirm 718 Cayman T torque spec (280 or 310 lb-ft?) and approve variant addition."
+    },
+    {
+      "id": "LOW-02",
+      "generation": "982-cayman",
+      "confidence": "LOW",
+      "location": "top-level notes and production_years",
+      "field": "production_years",
+      "current_value": "2017–2025 (ICE production ended October 2025)",
+      "proposed_value": "STAGING per task instructions — bias toward staging for current-production content",
+      "sources": [
+        "Task instructions: 'For 982 Cayman current production: bias toward staging'",
+        "No direct Porsche production-end announcement verified in this session"
+      ],
+      "issue": "The task instructions explicitly state 'For 982 Cayman current production: bias toward staging.' The current production_years value states ICE production ended October 2025, which is an assertion that requires verification. Staging this for user review without auto-applying any change.",
+      "action_required": "USER TO REVIEW: Verify that ICE production for all 718 Cayman variants indeed ended October 2025. Confirm or correct this date before this field is considered audited."
+    }
+  ]
+}

@@ -1,0 +1,227 @@
+{
+  "_meta": {
+    "name": "production-figures-audit",
+    "created": "2026-05-14",
+    "status": "PENDING_LAUNCH",
+    "priority": "overnight-high",
+    "output_staging_file": "scripts/research/production-figures-staging.json"
+  },
+
+  "purpose": "Per-variant production counts (units produced) at body+drivetrain level for every Porsche sports car generation and variant in lib/era-content/generation-content.ts that is NOT already covered by tonight's 996.2 Carrera hand-curation session.",
+
+  "scope": {
+    "include_generation_keys": [
+      "356-pre-a", "356a", "356b", "356c",
+      "911-pre-a", "911-f-body", "g-series-2.7", "911-sc", "911-3.2-carrera",
+      "930",
+      "964",
+      "993",
+      "996.1",
+      "997.1", "997.2",
+      "991.1", "991.2",
+      "992.1",
+      "986", "987.1-boxster", "987.2-boxster", "981-boxster", "982-boxster",
+      "987.1-cayman", "987.2-cayman", "981-cayman", "982-cayman"
+    ],
+    "exclude_generation_keys": [
+      "992.2"
+    ],
+    "exclude_generation_key_notes": {
+      "992.2": "Production ongoing (MY2025–present). Full-generation and per-variant totals unavailable."
+    },
+    "exclude_specific_variants": {
+      "996.2": [
+        "Carrera",
+        "Carrera Cabriolet",
+        "Carrera 4",
+        "Carrera 4 Cabriolet",
+        "Targa",
+        "Carrera 4S",
+        "40 Jahre 911"
+      ]
+    },
+    "exclude_specific_variants_notes": "These 7 996.2 Carrera variants are being hand-curated in a parallel overnight session and should NOT be duplicated here. 996.2 Turbo, Turbo S, GT2 Mk1, GT2 Mk2, GT3 Mk2 ARE in scope."
+  },
+
+  "research_goal": "For each variant in scope, record: units_produced (worldwide total), regional_splits where available (US/North America, Europe, ROW), body_style_splits where available (Coupe vs Cabriolet vs Targa for variants produced in multiple bodies), sources consulted, date_checked, and a confidence_tag.",
+
+  "sources_required": [
+    {
+      "id": "supercar_nostalgia",
+      "url_pattern": "https://www.supercarsnostalgia.com/...",
+      "priority": 1,
+      "notes": "Primary source for modern water-cooled 911 variant breakdowns; provided the 996.2 Carrera data"
+    },
+    {
+      "id": "jtcars",
+      "url_pattern": "https://www.jtcars.net/...",
+      "priority": 1,
+      "notes": "Cross-check for water-cooled era aggregate figures"
+    },
+    {
+      "id": "wikipedia_porsche",
+      "url_pattern": "https://en.wikipedia.org/wiki/Porsche_9xx",
+      "priority": 2,
+      "notes": "Generation pages often include production tables; good for GT variant caps (GT3 RS 4.0 = 600, GT2 RS = 500, etc.)"
+    },
+    {
+      "id": "elferspot",
+      "url_pattern": "https://www.elferspot.com/...",
+      "priority": 2,
+      "notes": "German specialist; Porsche model history pages include production figures"
+    },
+    {
+      "id": "stuttcars",
+      "url_pattern": "https://www.stuttcars.com/...",
+      "priority": 2,
+      "notes": "Porsche production data, historical models"
+    },
+    {
+      "id": "supercars_net",
+      "url_pattern": "https://www.supercars.net/blog/...",
+      "priority": 3,
+      "notes": "Model profile pages include production data for GT and limited variants"
+    },
+    {
+      "id": "rennlist",
+      "url_pattern": "https://rennlist.com/...",
+      "priority": 3,
+      "notes": "Forums; use for disputed or low-volume variant figures where community consensus exists"
+    },
+    {
+      "id": "porsche_newsroom",
+      "url_pattern": "https://newsroom.porsche.com/...",
+      "priority": 1,
+      "notes": "Official production announcement data; best for modern generations (992, 991 halo variants)"
+    },
+    {
+      "id": "excellence_magazine",
+      "url_pattern": "https://www.excellence-mag.com/...",
+      "priority": 3,
+      "notes": "Excellence Magazine archives; strong for air-cooled variants and historical data"
+    },
+    {
+      "id": "total_911",
+      "url_pattern": "https://www.total911.com/...",
+      "priority": 3,
+      "notes": "UK 911 specialist; production data for limited variants"
+    }
+  ],
+
+  "methodology": {
+    "minimum_sources_required": 2,
+    "cross_source_conflict_threshold_pct": 5,
+    "confidence_tags": {
+      "high": "Published by Porsche AG, Porsche Newsroom, or official press release; OR two independent reputable sources agree within 5%",
+      "medium": "Single reputable source (Supercar Nostalgia, Wikipedia with cited reference, jtcars, Elferspot, Excellence Magazine)",
+      "low": "Derived figure, rough estimate, or sources in conflict with no clear resolution; note the conflict explicitly"
+    },
+    "conflict_handling": "If sources conflict by >5%, record ALL source figures, flag as conflict:true, note the discrepancy, and assign confidence:low. Do not pick one without documented reasoning.",
+    "already_verified_variants": "Many variants in generation-content.ts already have production fields populated. These should be verified against sources but NOT overwritten unless a clear error is found — flag discrepancies instead.",
+    "regional_splits_priority": "For 911 variants (not 356 or Boxster/Cayman), US/North America splits are high-value. Record worldwide total first, then regional if available.",
+    "limited_edition_precision": "For production-capped limited editions, record exact figures when officially announced (e.g., 911 R = 991 exactly, GT3 RS 4.0 = 600 exactly). Use ~ prefix only for non-capped variants where the figure is an estimate."
+  },
+
+  "output_format": {
+    "file": "scripts/research/production-figures-staging.json",
+    "structure": {
+      "generation_key": {
+        "generation_name": "string",
+        "audit_date": "YYYY-MM-DD",
+        "variants": [
+          {
+            "variant_name": "string (must match generation-content.ts variant.name exactly)",
+            "years": "string",
+            "existing_production_field": "string or null (copy existing value from generation-content.ts if present)",
+            "researched_figures": {
+              "worldwide_total": "string",
+              "us_north_america": "string or null",
+              "europe": "string or null",
+              "body_style_splits": "object or null"
+            },
+            "recommended_production_string": "string (formatted for generation-content.ts production field)",
+            "change_from_existing": "none | update | new | conflict",
+            "confidence": "high | medium | low",
+            "conflict": false,
+            "sources": [
+              {
+                "id": "string (matches sources_required[].id)",
+                "url": "string",
+                "value_cited": "string",
+                "date_accessed": "YYYY-MM-DD"
+              }
+            ],
+            "notes": "string or null"
+          }
+        ]
+      }
+    },
+    "important": "DO NOT auto-commit to generation-content.ts. Output ONLY to this staging file. User review required before any edits to generation-content.ts."
+  },
+
+  "variants_with_figures_already_in_content": {
+    "note": "These are populated as of the spec creation date. The batch should verify them, not blindly skip them.",
+    "993": ["Carrera 4S", "Carrera S", "Targa", "Turbo", "Turbo S", "GT2", "Carrera RS"],
+    "996.1": ["Millennium Edition", "GT3 Mk1", "Turbo"],
+    "996.2": ["Carrera", "Carrera Cabriolet", "Carrera 4", "Carrera 4 Cabriolet", "Targa", "Carrera 4S", "40 Jahre 911", "Turbo", "Turbo S", "GT2 Mk1", "GT2 Mk2", "GT3 Mk2"],
+    "997.1": ["Turbo", "GT3", "GT3 RS", "GT2"],
+    "997.2": ["Turbo", "Turbo S", "GT3 (3.8L)", "GT3 RS (3.8L)", "GT3 RS 4.0", "GT2 RS"],
+    "991.1": ["Turbo", "Turbo S", "50th Anniversary Edition", "GT3", "GT3 RS", "911 R"],
+    "991.2": ["GT3 / GT3 Touring", "GT3 RS", "GT2 RS", "Speedster"],
+    "992.1": ["Sport Classic", "Dakar", "GT3 / GT3 Touring", "GT3 RS", "911 S/T"],
+    "964": ["Turbo S Leichtbau", "Turbo 3.6 S (Flachbau and Package)", "Carrera RS (Europe)", "RS America", "Speedster"]
+  },
+
+  "variants_missing_figures_priority_targets": {
+    "note": "These are variants where the generation-content.ts production field is null/absent and the figure would have high collector-market utility. Prioritise these in the batch.",
+    "964": ["Carrera 4 (total)", "Carrera 2 (total)", "Turbo 3.3", "Turbo 3.6", "30 Jahre Anniversary"],
+    "993": ["Carrera (pre-Varioram)", "Carrera (Varioram)", "Carrera 4"],
+    "996.1": ["Carrera", "Carrera Cabriolet", "Carrera 4", "Carrera 4 Cabriolet"],
+    "997.1": ["Carrera", "Carrera S", "Carrera 4", "Carrera 4S", "Targa 4", "Targa 4S", "Turbo Cabriolet"],
+    "997.2": ["Carrera", "Carrera S", "Carrera 4", "Carrera 4S", "Targa", "GTS", "4 GTS"],
+    "991.1": ["Carrera", "Carrera S", "Carrera 4", "Carrera 4S", "Targa 4", "Targa 4S", "GTS variants"],
+    "991.2": ["Carrera", "Carrera T", "Carrera S / Carrera 4S", "GTS", "Turbo", "Turbo S"],
+    "992.1": ["Carrera", "Carrera S / Carrera 4S", "Targa", "Carrera T", "GTS", "Turbo", "Turbo S"],
+    "boxster_cayman": ["all variants — 986, 987.1/2 Boxster, 981, 982/718 Boxster, 987.1/2 Cayman, 981 Cayman, 982/718 Cayman"]
+  },
+
+  "known_risks": [
+    {
+      "risk": "Source paywalls",
+      "detail": "Excellence Magazine archives may require subscription access. Total 911 PDFs are not publicly indexed. Fallback: Rennlist thread citations where original Excellence sources are quoted.",
+      "severity": "medium"
+    },
+    {
+      "risk": "Rate limits on web search",
+      "detail": "Fetching 100+ individual source pages in a single session may trigger rate limiting on some aggregator sites. Space lookups with appropriate delays.",
+      "severity": "low"
+    },
+    {
+      "risk": "Source conflict on GT2 RS (991.2)",
+      "detail": "Production figure for 991.2 GT2 RS is already flagged as conflicting (~1,000–1,580 worldwide). Multiple sources disagree. This conflict may persist after research; document all cited values.",
+      "severity": "medium"
+    },
+    {
+      "risk": "Pre-A / F-body / G-series variant splits",
+      "detail": "For 356 and early 911 variants, per-body-style production splits may not be independently verifiable across two sources. Accept single reputable source (confidence:medium) for these generations.",
+      "severity": "medium"
+    },
+    {
+      "risk": "Boxster/Cayman data availability",
+      "detail": "Porsche does not release per-variant production figures for Boxster/Cayman to the same standard as the 911. Data from Supercar Nostalgia or jtcars may be the best available; confidence will often be medium.",
+      "severity": "high"
+    },
+    {
+      "risk": "No ANTHROPIC_API_KEY configured",
+      "detail": "If using the Claude API batch script execution mechanism: ANTHROPIC_API_KEY is not in .env.local or .env.example. Key must be added before the script can run.",
+      "severity": "blocker_if_api_script"
+    }
+  ],
+
+  "estimated_scope": {
+    "total_generation_keys_in_scope": 26,
+    "estimated_total_variants": 140,
+    "estimated_variants_needing_new_figures": 75,
+    "estimated_variants_needing_verification_only": 65
+  }
+}

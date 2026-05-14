@@ -1,0 +1,156 @@
+{
+  "audit_session": "s01-gbody-964",
+  "audit_date": "2026-05-14",
+  "file": "lib/era-content/generation-content.ts",
+  "auto_applied_changes": [
+    {
+      "id": "DL-001",
+      "generation": "g-series-2.7",
+      "field": "variants[Carrera 2.7 MFI Euro/RoW].description",
+      "field_path": "Belgian Gendarmerie production count",
+      "old_value": "30 Belgian-Gendarmerie narrow-body 1976 Targas",
+      "new_value": "20 Belgian-Gendarmerie narrow-body 1976 Targas",
+      "confidence": "HIGH",
+      "sources": [
+        { "url": "Bonhams Zoute 2019 lot 19 catalogue", "value": "one of 20 special cars ordered by the Belgian Gendarmerie" },
+        { "url": "carscoops.com Belgian police Porsche article", "value": "Belgian police received 20 Porsche 911 Targas in 1976" },
+        { "url": "metropole.nl dealer listing", "value": "one of only 20 ordered by the Belgian National Guard" },
+        { "url": "carreramfi.com registry", "value": "20 in 1976 for the Belgium police" }
+      ],
+      "note": "Wikipedia says 30 but is contradicted by four specialist sources including Bonhams auction provenance for an actual Belgian-Gendarmerie car. The Bonhams provenance documentation ('one of 20') is definitive.",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "DL-002",
+      "generation": "911-3.2-carrera",
+      "field": "variants[Speedster Turbo-Look].production",
+      "old_value": "1,930 worldwide",
+      "new_value": "1,933 worldwide",
+      "confidence": "HIGH",
+      "sources": [
+        { "url": "stuttcars.com Speedster page", "value": "1,933 Turbo-look" },
+        { "url": "supercarnostalgia.com Speedster guide", "value": "1,933 Turbo-look widebody (129 RHD)" },
+        { "url": "Wikipedia (Porsche 911 classic, implicit via 2,104 total - 171 NB = 1,933)", "value": "1,933" }
+      ],
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "DL-003",
+      "generation": "911-3.2-carrera",
+      "field": "notes[2] — Speedster count in halo tier paragraph",
+      "old_value": "Turbo-Look widebody (1,930 units), total production 2,100 cars built January through July 1989 only",
+      "new_value": "Turbo-Look widebody (1,933 units), total production 2,104 cars built in 1989 only",
+      "confidence": "HIGH",
+      "sources": [
+        { "url": "stuttcars.com Speedster page", "value": "2,104 total; 171 narrow + 1,933 Turbo-look" },
+        { "url": "Wikipedia Porsche 911 (930)", "value": "2,104 total units produced" },
+        { "url": "supercarnostalgia.com", "value": "2104 total (some sources cite 2,056)" }
+      ],
+      "note": "End month removed: sources conflict between July and September 1989. The specific month claim is CONFLICT-confidence and was removed. Staging item ST-003 covers the date dispute.",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "DL-004",
+      "generation": "911-3.2-carrera",
+      "field": "variants[Commemorative Edition / 25th Anniversary].production",
+      "old_value": "870 CE worldwide; 500 25th Anniversary (US only)",
+      "new_value": "875 CE worldwide; 500 25th Anniversary (US only)",
+      "confidence": "HIGH",
+      "sources": [
+        { "url": "stuttcars.com Commemorative Edition page", "value": "875 worldwide (300 US / 250 Germany / 50 UK + others)" },
+        { "url": "supercarnostalgia.com", "value": "875 examples" },
+        { "url": "multiple dealer and auction listings", "value": "875 worldwide" }
+      ],
+      "note": "No source found that gives 870. The 875 figure is universal across all sources consulted.",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "DL-005",
+      "generation": "911-3.2-carrera",
+      "field": "notes[2] — Commemorative Edition count",
+      "old_value": "The 1988 Commemorative Edition (870 units worldwide, including 300 US) marked",
+      "new_value": "The 1988 Commemorative Edition (875 units worldwide, including 300 US) marked",
+      "confidence": "HIGH",
+      "sources": [
+        { "url": "stuttcars.com", "value": "875 worldwide" },
+        { "url": "supercarnostalgia.com", "value": "875 examples" }
+      ],
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "DL-006",
+      "generation": "911-3.2-carrera",
+      "field": "units_produced",
+      "old_value": "~76,470 worldwide (all body styles)",
+      "new_value": "~76,473 worldwide (all body styles)",
+      "confidence": "HIGH",
+      "sources": [
+        { "url": "elferspot.com buyer's guide", "value": "76,473 (35,670 coupe / 19,987 cabriolet / 18,468 targa)" },
+        { "url": "Wikipedia (Porsche 911 classic)", "value": "76,473 cars" },
+        { "url": "supercarnostalgia.com", "value": "76,473 narrative figure" }
+      ],
+      "note": "Stuttcars year-by-year table totals ~80,383, which is a known discrepancy attributed to calendar-year vs model-year counting. The 76,473 figure is the standard cited production figure.",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "DL-007",
+      "generation": "911-3.2-carrera",
+      "field": "notes[0] — total production sentence",
+      "old_value": "was approximately 76,470 units worldwide over six model years.",
+      "new_value": "was approximately 76,473 units worldwide over six model years.",
+      "confidence": "HIGH",
+      "sources": [
+        { "url": "elferspot.com buyer's guide", "value": "76,473" },
+        { "url": "Wikipedia", "value": "76,473" }
+      ],
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "DL-008",
+      "generation": "964",
+      "field": "variants[Turbo S Leichtbau].description — weight saving claim",
+      "old_value": "Approximately 300 lb lighter than the standard Turbo 3.3.",
+      "new_value": "Approximately 397 lb (180 kg) lighter than the standard Turbo 3.3.",
+      "confidence": "HIGH",
+      "sources": [
+        { "url": "elferspot.com Leichtbau portrait", "value": "180 kg lighter than standard Turbo 3.3" },
+        { "url": "carfolio.com specs", "value": "1,470 kg (standard Turbo 3.3) vs 1,290 kg (Leichtbau) = 180 kg / ~397 lb" },
+        { "url": "multiple specialist listings and auction descriptions", "value": "~180 kg / ~397 lb weight saving" }
+      ],
+      "note": "Original claim of '300 lb' had no source support. All sources consistently give 180 kg = 397 lb. This is a major factual error that would be embarrassing in collector contexts.",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "DL-009",
+      "generation": "911-3.2-carrera",
+      "field": "variants[Speedster Turbo-Look].description — end date",
+      "old_value": "All Speedsters were built January through July 1989 only.",
+      "new_value": "All Speedsters were built in 1989 only.",
+      "confidence": "MEDIUM",
+      "sources": [
+        { "url": "stuttcars.com", "value": "production in 1988 for MY1989; no specific end month" },
+        { "url": "supercarnostalgia.com", "value": "January to September 1989" },
+        { "url": "various enthusiast sources", "value": "January through July 1989" }
+      ],
+      "note": "End month removed per MINOR PROSE FIX AUTO-APPLY rule (completion/correction using verified sources). Sources conflict July vs September; 'in 1989 only' is accurate and non-committal on the disputed month. Staging item ST-003 notes the dispute.",
+      "timestamp": "2026-05-14T00:00:00Z"
+    }
+    {
+      "id": "DL-010",
+      "generation": "911-3.2-carrera",
+      "field": "value_drivers[Speedster rarity].description — Turbo-Look count",
+      "old_value": "1,930 units",
+      "new_value": "1,933 units",
+      "confidence": "HIGH",
+      "sources": [
+        { "url": "stuttcars.com Speedster page", "value": "1,933 Turbo-look" },
+        { "url": "supercarnostalgia.com Speedster guide", "value": "1,933 Turbo-look widebody (129 RHD)" },
+        { "url": "Wikipedia (Porsche 911 classic, implicit via 2,104 total - 171 NB = 1,933)", "value": "1,933" }
+      ],
+      "note": "Residual field missed by the DL-002 Node.js auto-apply script. Same sources and confidence as DL-002; caught during REPORT compilation and applied at that time.",
+      "timestamp": "2026-05-14T00:00:00Z"
+    }
+  ],
+  "total_auto_applied": 10,
+  "summary": "10 changes auto-applied: 1 in g-series-2.7 (Belgian Gendarmerie count corrected 30→20), 7 in 911-3.2-carrera (Commemorative Edition 870→875, Speedster TL 1,930→1,933 in variants + notes + value_drivers [DL-002/DL-003/DL-010], Speedster total 2,100→2,104, 76,470→76,473 in two fields, Speedster disputed end month removed), 1 in 964 (Turbo S Leichtbau weight 300lb→397lb/180kg)."
+}

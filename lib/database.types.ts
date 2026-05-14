@@ -42,6 +42,7 @@ export type Database = {
       comp_engine_runs: {
         Row: {
           actual_price: number | null
+          cascade_level: number | null
           comps_used_json: Json
           confidence_score: number | null
           created_at: string
@@ -60,6 +61,7 @@ export type Database = {
         }
         Insert: {
           actual_price?: number | null
+          cascade_level?: number | null
           comps_used_json?: Json
           confidence_score?: number | null
           created_at?: string
@@ -78,6 +80,7 @@ export type Database = {
         }
         Update: {
           actual_price?: number | null
+          cascade_level?: number | null
           comps_used_json?: Json
           confidence_score?: number | null
           created_at?: string

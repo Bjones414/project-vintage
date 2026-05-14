@@ -1,0 +1,58 @@
+{
+  "audit_session": "s07-boxster",
+  "date": "2026-05-14",
+  "auto_applied_count": 3,
+  "changes": [
+    {
+      "id": "s07-auto-001",
+      "generation": "987.2-boxster",
+      "variant": "Boxster S Black Edition",
+      "field": "variants[].production",
+      "location": "lib/era-content/generation-content.ts",
+      "line_approx": 3231,
+      "old_value": "~990 worldwide",
+      "new_value": "987 worldwide",
+      "confidence": "HIGH",
+      "source": "Official Porsche AG press release: 'Only 987 cars: Boxster S Black Edition' — confirmed by Porsche Newsroom, corroborated by stuttcars.com and autoevolution.com. The 987-unit cap was a deliberate reference to the 987 chassis designation.",
+      "notes": "Also fixed in notes prose at same line block — 'exactly 987 units worldwide' replaces '~990 units'."
+    },
+    {
+      "id": "s07-auto-002",
+      "generation": "987.2-boxster",
+      "variant": "Boxster S Black Edition (notes prose)",
+      "field": "notes[2]",
+      "location": "lib/era-content/generation-content.ts",
+      "line_approx": 3201,
+      "old_value": "The Black Edition (MY2011, ~990 units, +10 hp ECU remap, all-black trim)",
+      "new_value": "The Black Edition (MY2011, exactly 987 units worldwide, +10 hp ECU remap, all-black trim)",
+      "confidence": "HIGH",
+      "source": "Same official Porsche AG press release as s07-auto-001.",
+      "notes": "Minor prose fix bundled with numeric correction."
+    },
+    {
+      "id": "s07-auto-003",
+      "generation": "981-boxster",
+      "variant": "Boxster Spyder",
+      "field": "value_drivers[].description",
+      "location": "lib/era-content/generation-content.ts",
+      "line_approx": 3402,
+      "old_value": "~2,400 worldwide production, manual-only...",
+      "new_value": "2,486 worldwide production, manual-only...",
+      "confidence": "HIGH",
+      "source": "Prior audit session established 2,486 as HIGH confidence (Wikipedia, stuttcars, multiple Rennlist/Planet-9 sources). The production field at line 3348 was already updated to 2,486 in that prior session; this fix brings the value_drivers description into consistency.",
+      "notes": "Prior audit updated variants[].production but missed the parallel value_drivers description — consistency fix, not a new research finding."
+    }
+  ],
+  "prior_audit_verification": {
+    "986_boxster_s_50896": {
+      "status": "PRESENT",
+      "location": "generation-content.ts line 3101",
+      "value": "50,896 worldwide (all 986 Boxster S incl. 1,953 50th Anniversary units)"
+    },
+    "981_spyder_2486": {
+      "status": "PRESENT",
+      "location": "generation-content.ts line 3348",
+      "value": "2,486 worldwide; ~829 North America"
+    }
+  }
+}

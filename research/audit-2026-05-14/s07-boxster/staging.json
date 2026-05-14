@@ -1,0 +1,176 @@
+{
+  "audit_session": "s07-boxster",
+  "date": "2026-05-14",
+  "instructions": "USER REVIEW REQUIRED. Each item below is MEDIUM, LOW, or CONFLICT confidence. Review and approve/reject each before applying. HIGH-confidence items have already been auto-applied (see diff-log.json).",
+  "staged_items": [
+    {
+      "id": "s07-stage-001",
+      "confidence": "MEDIUM",
+      "generation": "987.2-boxster",
+      "variant": "Porsche Design Edition 2",
+      "field": "variants[].production AND variants[].description AND notes[2]",
+      "current_value": "250–500 worldwide (sources conflict), 32 US [production field]; 'Production total is disputed (250 vs 500 worldwide)' [description]",
+      "proposed_value": "500 worldwide, 32 US [production field]; remove disputed language from description",
+      "rationale": "Wikipedia and two corroborating sources (elferspot, autoevolution) confirm 500 worldwide, 32 US, 18 Canada. The '250' figure appears only in less-reliable secondary sources. No Porsche Newsroom press release was directly confirmed — hence MEDIUM rather than HIGH.",
+      "action_if_approved": "Change production field to '500 worldwide, 32 US'; update description to remove 'disputed (250 vs 500 worldwide)' note; update notes[2] prose from '250–500 units worldwide and only 32 US' to '500 units worldwide, 32 US'.",
+      "source_citations": [
+        "Wikipedia — '718 Boxster' article states 500 worldwide",
+        "Elferspot.com editorial — confirms 500 limited edition",
+        "Autoevolution.com 987 Boxster spec page — 500 worldwide"
+      ]
+    },
+    {
+      "id": "s07-stage-002",
+      "confidence": "CONFLICT",
+      "generation": "986",
+      "variant": "Boxster 2.7 (post-facelift)",
+      "field": "variants[].power AND engine field",
+      "current_value": "228 hp [variant power]; '217–228 hp' [engine field]",
+      "proposed_value": "225 hp (SAE) [variant power]; update engine field accordingly",
+      "rationale": "The MY2003–2004 M96.23 engine spec is contested. stuttcars shows 225 hp SAE. Some secondary sources show 227 or 228. The 228 figure may be a PS/SAE conversion artifact. Until a Tier 1 Porsche source confirms 225 SAE vs 228 SAE definitively, this is CONFLICT.",
+      "action_if_approved": "Change variants[].power from '228 hp' to '225 hp'. Change engine field from '217–228 hp' to '217–225 hp' for the MY2000–2004 base range.",
+      "source_citations": [
+        "stuttcars.com — M96.23 listed at 225 hp SAE",
+        "Wikipedia (986 Boxster) — '225 PS' for post-facelift base (note: PS, not SAE)",
+        "auto-data.net — 225 hp for M96.23 variant"
+      ]
+    },
+    {
+      "id": "s07-stage-003",
+      "confidence": "MEDIUM",
+      "generation": "987.1-boxster",
+      "variant": "Boxster (base)",
+      "field": "variants[].power",
+      "current_value": "240 hp (applied to full MY2005–2008 year range)",
+      "proposed_value": "240–245 hp (MY2005–2006: 240 hp; MY2007–2008: 245 hp via VarioCam Plus)",
+      "rationale": "The 987.1 base Boxster received a power upgrade when VarioCam Plus was introduced for MY2007, raising output from 240 hp (M96.25) to 245 hp (M97.20). The file's variant entry shows '240 hp' for the full MY2005–2008 range and the description does not mention the MY2007 increase. This is MEDIUM because while the 245 hp figure appears in multiple sources, no Tier 1 Porsche press release was directly accessed.",
+      "action_if_approved": "Update variants[].power to '240–245 hp'. Update variants[].description to note 'MY2005–2006: 240 hp (M96/25); MY2007–2008: 245 hp (M97/20, VarioCam Plus added).' Update engine field in the generation object to include the base engine upgrade.",
+      "source_citations": [
+        "stuttcars.com — 987.1 base listed as 240 hp (M96.25) MY2005–2006 and 245 hp (M97.20) MY2007–2008",
+        "ultimatespecs.com — 2007 Boxster listed at 245 hp",
+        "autoevolution.com — 987.1 base power listed as 240–245 hp across the generation"
+      ]
+    },
+    {
+      "id": "s07-stage-004",
+      "confidence": "CONFLICT",
+      "generation": "981-boxster",
+      "field": "units_produced",
+      "current_value": "'~23,600 total 981 Boxster/Cayman per PAG 2014 annual report'",
+      "proposed_value": "UNCLEAR — figure appears to be a single production year, not the full-generation total",
+      "rationale": "Planet-9 and Rennlist sources indicate Porsche produced approximately 15,000–16,000 Boxsters alone in 2013. If '~23,600' is the MY2013 Boxster+Cayman combined figure from one annual report year, the label is misleading as a 'full generation' production count. A four-year generation (MY2013–MY2016) would be expected to total 50,000–70,000 units combined. No Tier 1 source confirms either interpretation.",
+      "action_if_approved": "Replace with one of: (a) a confirmed full-generation total if source is found, or (b) clarify the field as 'Porsche did not publish model-level production totals for the 981; ~23,600 represents a PAG 2014 annual report figure for combined 981 Boxster/Cayman production in that reporting year.' The ambiguity in the current label should be resolved before the content is user-facing.",
+      "source_citations": [
+        "Planet-9.com thread — estimates 981 Boxster annual production at ~14,000–16,000 units/year",
+        "PAG Annual Report 2014 — cited in file as source but specific page/context not verified"
+      ]
+    },
+    {
+      "id": "s07-stage-005",
+      "confidence": "MEDIUM",
+      "generation": "982-boxster",
+      "action_type": "NEW_VARIANT",
+      "variant": "718 Boxster T",
+      "proposed_content": {
+        "name": "718 Boxster T",
+        "years": "MY2020–2024",
+        "drivetrain": "RWD",
+        "power": "300 hp",
+        "description": "Track-focused lightweight variant of the base 718 Boxster. 6-speed manual only. Lowered 20 mm via sport-tuned PASM suspension, mechanical rear LSD standard, sport exhaust standard, and interior reduced to essentials. The 'T' designation (Touring) follows the 911 T formula: full chassis upgrade at lower price than S, manual-only mandate. Primarily a European-market offering; US allocation was limited and not consistently marketed."
+      },
+      "rationale": "The 718 Boxster T is confirmed by stuttcars and multiple sources as a MY2020–2024 production model. The file omits it entirely. However, US allocation was limited — this is MEDIUM rather than HIGH because the US-market availability/significance needs local market confirmation before adding to a US-focused platform.",
+      "source_citations": [
+        "stuttcars.com — '718 Boxster T 2020–2024'",
+        "autoevolution.com — 718 Boxster T specs page",
+        "Porsche Newsroom (European) — 718 Boxster T announcement"
+      ]
+    },
+    {
+      "id": "s07-stage-006",
+      "confidence": "MEDIUM",
+      "generation": "982-boxster",
+      "action_type": "NEW_VARIANT",
+      "variant": "718 Boxster 25 Years",
+      "proposed_content": {
+        "name": "718 Boxster 25 Years",
+        "years": "MY2021–2022",
+        "drivetrain": "RWD",
+        "power": "394 hp",
+        "production": "1,250 worldwide",
+        "description": "25th-anniversary limited edition celebrating the Boxster's 1996 introduction. 4.0L naturally-aspirated flat-six (same spec as GTS 4.0, 394 hp). GT Silver Metallic standard exterior color — a callback to the original 986's launch color. Bordeaux Red leather interior standard. Six-speed manual or PDK. Authentication requires COA confirming 25 Years designation. A collector's edition more about heritage than hardware differentiation."
+      },
+      "rationale": "Verified by Porsche Newsroom USA (MY2021 announcement) and multiple US-market sources. Production of 1,250 units is confirmed. MEDIUM because precise production year split (MY2021 vs MY2022 deliveries) needs confirmation and the 1,250 figure comes from Tier 2 sources rather than direct Porsche press release access.",
+      "source_citations": [
+        "Porsche Newsroom USA — '718 Boxster 25 Years' announcement 2021",
+        "Edmunds — listed as MY2022 model",
+        "Motor Trend — 1,250 units worldwide confirmed in review coverage"
+      ]
+    },
+    {
+      "id": "s07-stage-007",
+      "confidence": "MEDIUM",
+      "generation": "986 AND 987.1-boxster",
+      "action_type": "WATCH_FOR_ADDITION",
+      "field": "watch_for[]",
+      "proposed_content": {
+        "title": "Air-oil separator (AOS) diaphragm failure",
+        "severity": "caution",
+        "body": "The M96 and M97 crankcase ventilation system uses an air-oil separator with a rubber diaphragm that hardens and cracks with age, particularly above 60,000–80,000 miles. A failed AOS diaphragm allows oil to enter the intake system, causing rough idle, blue smoke at startup, and elevated oil consumption. The repair is moderately priced ($200–$400 in parts, 2–3 hours labor) but is often a sign of deferred maintenance. The 986 and 987.1 share the same M96/M97 engine family and both are susceptible. Pelican Parts publishes a dedicated 986/987 AOS replacement guide.",
+        "buyer_question": "Has the AOS been inspected or replaced? Is there any blue smoke at startup or elevated oil consumption between service intervals? What is the idle quality — smooth or rough?"
+      },
+      "rationale": "AOS failure is a documented and well-known M96/M97 concern. Pelican Parts, LN Engineering, and PCA specialist recommendations all include AOS as a service item for 986 and 987.1 Boxsters. The watch_for section for 987.1 Cayman already includes AOS, but the 986 and 987.1 Boxster sections omit it despite sharing the same engine family. Adding this brings Boxster coverage in line with Cayman coverage. MEDIUM because the severity and frequency on Boxsters specifically (not just 911/Cayman) needs one more confirmation source.",
+      "source_citations": [
+        "Pelican Parts — Boxster AOS replacement guide explicitly for 986/987",
+        "LN Engineering knowledge base — M96/M97 AOS listed as maintenance item",
+        "PCA Technical — AOS included in M96/M97 inspection checklist"
+      ]
+    },
+    {
+      "id": "s07-stage-008",
+      "confidence": "MEDIUM",
+      "generation": "982-boxster",
+      "action_type": "WATCH_FOR_ADDITION",
+      "field": "watch_for[]",
+      "proposed_content": {
+        "title": "Flat-four intake carbon buildup (direct injection)",
+        "severity": "caution",
+        "body": "The 718's 2.0L and 2.5L turbocharged flat-four engines use direct injection only — fuel is injected into the combustion chamber, bypassing the intake valves. Unlike port-injection engines, no fuel mist washes the valve stems, allowing carbon to accumulate over time. Above approximately 60,000 miles without documented cleaning, buildup can cause rough cold-start idle, hesitation, and minor power loss. Walnut-blast intake valve cleaning is the standard remedy — approximately $500–$900 at a specialist — and is a maintenance item, not a defect. This applies to the 2.0L base and 2.5L S/GTS flat-four cars; the 4.0L NA flat-six GTS 4.0 and Spyder are also direct-injection but have a dry-sump design that reduces deposit rate.",
+        "buyer_question": "Has intake valve carbon cleaning (walnut blast) been performed? At what mileage? Is there any rough idle, cold-start hesitation, or elevated oil consumption currently?"
+      },
+      "rationale": "The file covers carbon buildup for the 987.2's 9A1 DFI engine but the 982 watch_for section omits it for the flat-four turbocharged models despite them also using direct injection. 718forum.com and Planet-9 both confirm this is an applicable and practiced maintenance item for the 2.0L and 2.5L. MEDIUM because the severity/timeline on the flat-four specifically (vs the 9A1) needs one more corroborating source.",
+      "source_citations": [
+        "718forum.com — multiple threads on flat-four walnut blast intervals",
+        "Planet-9.com — 718 carbon buildup maintenance discussion",
+        "Independent Porsche specialist recommendation — direct injection carbon maintenance"
+      ]
+    },
+    {
+      "id": "s07-stage-009",
+      "confidence": "LOW",
+      "generation": "ALL (986, 987.1, 987.2, 981, 982)",
+      "action_type": "MEASUREMENT_SYSTEM_NOTE",
+      "field": "Multiple power figures throughout",
+      "current_value": "Various 'hp' figures used throughout (265 hp, 315 hp, 375 hp, 320 hp, etc.)",
+      "proposed_value": "All figures appear to use PS (metric horsepower) labeled as 'hp'. SAE equivalents differ materially for some variants: 265 PS = 261 SAE bhp; 315 PS = 311 SAE bhp; 375 PS = 370 SAE bhp.",
+      "rationale": "The file consistently uses PS figures labeled as 'hp'. For a US-market product, SAE hp is the standard. The gap is small (2–5 hp in most cases) but exists. Correcting all figures to SAE would require touching every power field across all five generations. LOW confidence because: (a) some figures ARE already SAE (300 hp, 350 hp for the 718 flat-fours match both systems); (b) changing to SAE throughout is a large editorial decision that should be made deliberately and uniformly across all generations (Cayman and 911 too), not just Boxster.",
+      "action_if_approved": "Global editorial decision: standardize all power figures to SAE throughout the entire generation-content.ts file. Recommend making this a separate coordinated pass across all generations rather than fixing only Boxster in this session.",
+      "source_citations": [
+        "Porsche Newsroom USA — consistently uses SAE hp in US market press releases",
+        "stuttcars.com — provides both PS and bhp figures for each variant"
+      ]
+    },
+    {
+      "id": "s07-stage-010",
+      "confidence": "LOW",
+      "generation": "986",
+      "field": "variants[].production for Boxster S",
+      "current_value": "50,896 worldwide (all 986 Boxster S incl. 1,953 50th Anniversary units)",
+      "proposed_value": "CANNOT VERIFY — no Tier 1 or Tier 2 open source publishes this figure",
+      "rationale": "The prior audit added 50,896 as the 986 Boxster S total. In this audit, no open source (Wikipedia, stuttcars, Elferspot, autoevolution, Pelican, supercars.net) publishes a discrete 986 S production total. The figure is not contradicted but remains single-source. Flag for the user: if the original source was a Porsche Historisches Archiv reference or a specialist publication with access to factory data, it is likely reliable but cannot be independently verified here.",
+      "action_if_approved": "No change to the value — it is not contradicted. Add a note in the production field comment: 'Source: Porsche historical records (origin should be documented if known).'",
+      "source_citations": [
+        "No Tier 1/2 corroborating source found for 50,896 986 S total"
+      ]
+    }
+  ]
+}

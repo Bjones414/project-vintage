@@ -186,7 +186,10 @@ flag_title: "Dashboard Surface Cracking"
 severity: low
 applicability:
   generation:
-    - "911_G_body"
+    - "g-series-2.7"
+    - "911-sc"
+    - "911-3.2-carrera"
+    - "930"
     - "964"
     - "993"
   year_range: [1974, 1998]
@@ -218,7 +221,10 @@ content_status: draft
 ```yaml
 applicability:
   generations:
-    - "911_G_body"
+    - "g-series-2.7"
+    - "911-sc"
+    - "911-3.2-carrera"
+    - "930"
     - "964"
     - "993"
   year_range: "1974–1998"

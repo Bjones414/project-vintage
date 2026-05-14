@@ -1,0 +1,97 @@
+{
+  "session": "s08-cayman",
+  "audit_date": "2026-05-14",
+  "target_file": "lib/era-content/generation-content.ts",
+  "auto_applied_count": 6,
+  "changes": [
+    {
+      "id": "HIGH-01a",
+      "generation": "987.1-cayman",
+      "location": "notes array",
+      "field": "notes[3]",
+      "old_value": "Design Edition 1 limited to ~770 worldwide (~240 US) — MY2008 appearance package on Cayman S base",
+      "new_value": "Design Edition 1 limited to 777 worldwide (240 US) — MY2008 appearance package on Cayman S base",
+      "confidence": "HIGH",
+      "change_type": "numeric_correction",
+      "sources": [
+        "Porsche USA press release 2007-08-14 (via newsroom.porsche.com)",
+        "stuttcars.com Cayman S Design Edition 1 2008 article",
+        "Wikipedia 987 Cayman article",
+        "motorauthority.com Porsche Design Edition 1 Cayman S"
+      ],
+      "rationale": "Production was exactly 777, not approximately 770. Confirmed by sequentially-numbered plaques in each car. Porsche intentionally chose 777 to reference the 35th anniversary of Porsche Design."
+    },
+    {
+      "id": "HIGH-01b",
+      "generation": "987.1-cayman",
+      "location": "variants[3] — Design Edition 1 description",
+      "field": "variants.Design Edition 1.description",
+      "old_value": "Appearance edition based on the Cayman S. ~770 worldwide, approximately 240 US.",
+      "new_value": "Appearance edition based on the Cayman S. 777 worldwide, 240 US.",
+      "confidence": "HIGH",
+      "change_type": "numeric_correction",
+      "sources": ["Same as HIGH-01a"],
+      "rationale": "Same correction as HIGH-01a, applied to variant description prose."
+    },
+    {
+      "id": "HIGH-02",
+      "generation": "987.1-cayman",
+      "location": "top-level engine field",
+      "field": "engine",
+      "old_value": "3.4L M97/21 flat-six (Cayman S) / 2.7L M96 flat-six (base Cayman)",
+      "new_value": "3.4L M97/21 flat-six (Cayman S) / 2.7L M97/20 flat-six (base Cayman)",
+      "confidence": "HIGH",
+      "change_type": "factual_correction",
+      "sources": [
+        "Wikipedia 987 Cayman article: 'Base Cayman: 2.7L M97.20 flat-6'",
+        "stuttcars.com 987 Cayman guide: 'Engine: M97.20 flat-6'"
+      ],
+      "rationale": "The 987.1 Cayman base used the M97/20 engine (not M96). The M96 was used in the 987.1 Boxster base (M96.26). The Cayman's 2.7L was a new-family M97 unit from launch, sharing the M97 family with the Cayman S (M97/21). Both share the IMS concern, but the engine code is distinct from the Boxster's M96."
+    },
+    {
+      "id": "HIGH-03",
+      "generation": "987.1-cayman",
+      "location": "variants[1] — base Cayman description",
+      "field": "variants.Cayman.description",
+      "old_value": "2.7L M96 flat-six, 199 lb-ft, six-speed manual or five-speed Tiptronic. Base model that rounded out the lineup a model year after the S launch. Same M96 IMS exposure as the Boxster.",
+      "new_value": "2.7L M97/20 flat-six, 201 lb-ft, five-speed manual or five-speed Tiptronic (six-speed optional). Base model that rounded out the lineup a model year after the S launch. Same M97 IMS exposure as the Boxster.",
+      "confidence": "HIGH",
+      "change_type": "multi_field_correction",
+      "sources": [
+        "Wikipedia 987 Boxster/Cayman: 'M97.20 flat-6, 201 lb-ft; 5-speed manual (G87.01) standard, 6-speed manual optional'",
+        "stuttcars.com 987 Cayman guide",
+        "PCA Type 987 model guide"
+      ],
+      "rationale": "Three sub-corrections: (1) engine code M96 → M97/20; (2) torque 199 → 201 lb-ft (272 Nm, not 270 Nm as implied by 199); (3) standard gearbox was 5-speed (G87.01), not 6-speed — 6-speed (A87.20) was a paid option. The Cayman S used 6-speed standard; the base did not."
+    },
+    {
+      "id": "HIGH-05a",
+      "generation": "987.2-cayman",
+      "location": "notes array",
+      "field": "notes[3]",
+      "old_value": "Cayman S Black Edition (MY2012): ~500 US units, appearance package with R engine output — manual or PDK",
+      "new_value": "Cayman S Black Edition (MY2012): ~500 worldwide (~180 US), appearance package with R engine output — manual or PDK",
+      "confidence": "HIGH",
+      "change_type": "factual_correction",
+      "sources": [
+        "Excellence Magazine: 'Cayman S Black Edition: Limited to 500'",
+        "Rennlist registry thread: '2012 Cayman S Black Edition - #209 of 500'",
+        "stuttcars.com Cayman S Black Edition page: '500 units'",
+        "Multiple auction listings confirming worldwide production plaques"
+      ],
+      "rationale": "The 500-unit production cap is worldwide, not US-only. Individual plaques read 'N of 500' — this is the total worldwide build. US allocation was approximately 180 units. The original content's '~500 US units' would imply nearly all production went to the US, which contradicts the numbered registry evidence."
+    },
+    {
+      "id": "HIGH-05b",
+      "generation": "987.2-cayman",
+      "location": "variants[3] — Cayman S Black Edition description",
+      "field": "variants.Cayman S Black Edition.description",
+      "old_value": "Final-run appearance edition with Cayman R engine output (330 hp via ECU remap). ~500 US units.",
+      "new_value": "Final-run appearance edition with Cayman R engine output (330 hp via ECU remap). ~500 worldwide (~180 US).",
+      "confidence": "HIGH",
+      "change_type": "factual_correction",
+      "sources": ["Same as HIGH-05a"],
+      "rationale": "Same correction as HIGH-05a, applied to variant description."
+    }
+  ]
+}

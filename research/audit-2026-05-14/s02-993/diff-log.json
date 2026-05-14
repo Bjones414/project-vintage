@@ -1,0 +1,95 @@
+{
+  "audit_date": "2026-05-14",
+  "generation": "993",
+  "auditor": "Claude Sonnet 4.6 (automated overnight audit)",
+  "auto_applied_count": 5,
+  "changes": [
+    {
+      "id": "993-AUTO-001",
+      "file": "lib/era-content/factory-specs.ts",
+      "key": "993:turbo_s",
+      "field": "top_speed_mph",
+      "old_value": "193 mph",
+      "new_value": "186 mph",
+      "confidence": "HIGH",
+      "sources": [
+        "Stuttcars stuttcars.com/porsche-911-turbo-s-993-1997-1998/ — 184 mph",
+        "Multiple web sources — 184 mph",
+        "Porsche official 300 km/h = 186.4 mph (Porsche press spec)",
+        "UltimateSpecs confirmed standard Turbo 180 mph (290 km/h); Turbo S with larger turbos officially 300 km/h"
+      ],
+      "rationale": "193 mph is factually wrong by 7–9 mph. No credible source supports 193 mph for the 993 Turbo S. Official Porsche spec is 300 km/h = 186 mph. Some sources cite 184 mph (likely rounding of 296 km/h). 186 mph is the conservative correct value consistent with the official 300 km/h claim."
+    },
+    {
+      "id": "993-AUTO-002",
+      "file": "lib/era-content/factory-specs.ts",
+      "key": "993:carrera_s",
+      "field": "curb_weight_lb",
+      "old_value": "3,042 lb",
+      "new_value": "3,064 lb",
+      "confidence": "HIGH",
+      "sources": [
+        "Excellence Magazine specs page for 1997 911 Carrera S (excellence-mag.com/resources/specs/323) — 3,064 lbs manual / 3,120 lbs Tiptronic S",
+        "Web search cross-check confirming 1,390 kg = 3,064 lb for Carrera S (multiple sources)",
+        "Logic check: Carrera S uses Turbo widebody (wider fenders, bigger brakes, heavier front end) — cannot weigh same as narrow-body Carrera at 3,042 lb"
+      ],
+      "rationale": "3,042 lb is the weight of the narrow-body Carrera 2. The Carrera S uses the Turbo widebody with wider rear track and larger brakes, making it heavier. Excellence Magazine (Tier 1 source per project conventions) confirms 3,064 lb (manual) / 3,120 lb (Tiptronic S). The factory-spec entry represents the manual-transmission baseline, so 3,064 lb is correct."
+    },
+    {
+      "id": "993-AUTO-003",
+      "file": "lib/era-content/generation-content.ts",
+      "key": "993",
+      "variant": "Turbo",
+      "field": "production",
+      "old_value": "~6,000 worldwide, 2,662 US",
+      "new_value": "5,978 worldwide, 2,662 US",
+      "confidence": "HIGH",
+      "sources": [
+        "Wikipedia Porsche 911 (993) production table: '993 Turbo 3.6 — 5,978'",
+        "Stuttcars production database: consistent with Wikipedia",
+        "Reference document docs/reference/porsche_1990s_reference.md cites '~6,000 (per Wikipedia / Stuttcars)' confirming Wikipedia as source"
+      ],
+      "rationale": "Wikipedia production table (sourced from Porsche official records) shows exactly 5,978. The prior ~6,000 was a correct approximation; replacing with the precise figure improves accuracy. US figure of 2,662 not contradicted by available sources — left unchanged."
+    },
+    {
+      "id": "993-AUTO-004",
+      "file": "lib/era-content/generation-content.ts",
+      "key": "993",
+      "variant": "Targa",
+      "field": "production",
+      "old_value": "~4,620 worldwide (2,442 in MY1996; 1,843 in MY1997; 334 in MY1998)",
+      "new_value": "4,583 worldwide (2,442 in MY1996; 1,843 in MY1997; ~298 in MY1998)",
+      "confidence": "HIGH",
+      "sources": [
+        "Wikipedia Porsche 911 (993) production table: '993 Targa (285 PS) — 4,583'",
+        "Reference document notes 2,442 (MY1996) + 1,843 (MY1997) + small MY1998 — year splits confirmed",
+        "Math: 2,442 + 1,843 = 4,285; Wikipedia total 4,583 − 4,285 = 298 for MY1998 (vs 334 previously cited)"
+      ],
+      "rationale": "Wikipedia production table gives 4,583 total for the Targa (HIGH confidence as authoritative Porsche source). The MY1996 and MY1997 year splits are confirmed by multiple sources. The MY1998 figure was previously cited as 334 but must be ~298 for the total to match 4,583. The ~298 reconciles the year splits with the Wikipedia total."
+    },
+    {
+      "id": "993-AUTO-005",
+      "file": "lib/era-content/generation-content.ts",
+      "key": "993",
+      "field": "variant_production_additions",
+      "description": "Added production fields to Carrera (pre-Varioram), Carrera (Varioram), and Carrera 4 variant entries from Wikipedia production table",
+      "confidence": "HIGH",
+      "sources": [
+        "Wikipedia Porsche 911 (993) production table (complete, sums to 68,029 matching multiple corroborating sources)"
+      ],
+      "additions": {
+        "Carrera (pre-Varioram)": {
+          "production": "14,541 coupes + 7,730 cabriolets (272 PS group worldwide)",
+          "note": "Wikipedia table groups by 272 PS (pre-Varioram) and 285 PS (Varioram) engine spec"
+        },
+        "Carrera (Varioram)": {
+          "production": "8,586 coupes + 7,769 cabriolets (285 PS group worldwide)"
+        },
+        "Carrera 4 (narrow-body total)": {
+          "production": "7,166 worldwide (2,884 coupe + 1,284 cab at 272 PS; 1,860 coupe + 1,138 cab at 285 PS)"
+        }
+      },
+      "rationale": "These production figures were missing from variant entries in generation-content.ts. Wikipedia production table provides authoritative data. Pre-Varioram (272 PS) and Varioram (285 PS) groups match the existing split in variant entries."
+    }
+  ]
+}

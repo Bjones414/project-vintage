@@ -11,7 +11,7 @@ import { loadEngineConfig } from './config-loader'
 import { runCompEngineV2 } from './engine'
 import { logCompRun } from './logger'
 
-export type { V2CompsResult, V2Subject, V2CompCandidate, EngineConfig } from './types'
+export type { V2CompsResult, V2Subject, V2CompCandidate, EngineConfig, CascadeLevel } from './types'
 export { runCompEngineV2 } from './engine'
 export { loadEngineConfig, loadAllConfigs } from './config-loader'
 export { MODEL_VERSION } from './types'

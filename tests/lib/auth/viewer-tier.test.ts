@@ -8,7 +8,7 @@ function makeClient({
   profile,
 }: {
   user: { id: string } | null
-  profile: { role: string; subscription_tier: string } | null
+  profile: { role: string; subscription_tier: string; account_type?: string } | null
 }) {
   const builder: Record<string, unknown> = {}
   builder['select'] = vi.fn().mockReturnValue(builder)
@@ -97,5 +97,46 @@ describe('getViewerTier', () => {
       makeClient({ user: { id: 'user-1' }, profile: null }) as unknown as ReturnType<typeof createClient>,
     )
     expect(await getViewerTier()).toEqual({ tier: 'free', bypass: false })
+  })
+
+  // account_type alpha bypass
+  it('account_type alpha → pro with bypass', async () => {
+    vi.mocked(createClient).mockReturnValue(
+      makeClient({
+        user: { id: 'user-1' },
+        profile: { role: 'member', subscription_tier: 'free', account_type: 'alpha' },
+      }) as unknown as ReturnType<typeof createClient>,
+    )
+    expect(await getViewerTier()).toEqual({ tier: 'pro', bypass: true })
+  })
+
+  it('account_type admin → pro with bypass', async () => {
+    vi.mocked(createClient).mockReturnValue(
+      makeClient({
+        user: { id: 'user-1' },
+        profile: { role: 'member', subscription_tier: 'free', account_type: 'admin' },
+      }) as unknown as ReturnType<typeof createClient>,
+    )
+    expect(await getViewerTier()).toEqual({ tier: 'pro', bypass: true })
+  })
+
+  it('account_type paid + subscription_tier free → free (no bypass, no pro tier)', async () => {
+    vi.mocked(createClient).mockReturnValue(
+      makeClient({
+        user: { id: 'user-1' },
+        profile: { role: 'member', subscription_tier: 'free', account_type: 'paid' },
+      }) as unknown as ReturnType<typeof createClient>,
+    )
+    expect(await getViewerTier()).toEqual({ tier: 'free', bypass: false })
+  })
+
+  it('account_type free + subscription_tier pro → pro without bypass', async () => {
+    vi.mocked(createClient).mockReturnValue(
+      makeClient({
+        user: { id: 'user-1' },
+        profile: { role: 'member', subscription_tier: 'pro', account_type: 'free' },
+      }) as unknown as ReturnType<typeof createClient>,
+    )
+    expect(await getViewerTier()).toEqual({ tier: 'pro', bypass: false })
   })
 })

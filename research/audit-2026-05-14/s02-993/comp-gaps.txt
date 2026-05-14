@@ -1,0 +1,43 @@
+993 Comp Gaps — variant+year combos with <10 sold comps
+Generated: 2026-05-14
+Source: Supabase listings table, generation_id='993', listing_status='sold'
+Total 993 sold comps in DB: 224
+
+--- GAPS (fewer than 10 sold comps) ---
+1995 911 Carrera 4 Cabriolet     — 4 comps
+1995 911 Carrera 4 Coupe         — 3 comps
+1995 911 Carrera RS              — 5 comps
+1995 911 GT2                     — 1 comp
+1996 911 Carrera 4 Coupe         — 3 comps
+1996 911 Carrera Cabriolet       — 4 comps
+1996 911 Carrera RS              — 1 comp
+1996 911 Targa                   — 5 comps
+1997 911 Carrera Coupe           — 6 comps
+1997 911 GT2                     — 1 comp
+1997 911 Turbo                   — 8 comps
+1997 911 Turbo S                 — 2 comps
+1998 911 Carrera 4S              — 7 comps
+1998 911 Carrera Cabriolet       — 1 comp
+1998 911 Carrera Coupe           — 2 comps
+1998 911 Targa                   — 2 comps
+1998 911 Turbo S                 — 1 comp
+
+--- WELL-COVERED (≥10 comps) ---
+1995 911 Carrera Cabriolet       — 19 comps
+1995 911 Carrera Coupe           — 28 comps
+1996 911 Carrera 4S              — 11 comps
+1996 911 Carrera Coupe           — 24 comps
+1996 911 Turbo                   — 21 comps
+1997 911 Carrera 4S              — 20 comps
+1997 911 Carrera Cabriolet       — 13 comps
+1997 911 Carrera S               — 11 comps
+1998 911 Carrera S               — 21 comps
+
+--- SCRAPING PRIORITIES ---
+Highest gap impact (important variants with thin data):
+1. GT2 (1995, 1997) — 1 comp each; critical halo variant, high value, needs 10+ for fair value
+2. Turbo S (1997, 1998) — 2 and 1 comps; rarest Turbo variant, 2-3x Turbo premium at stake
+3. Carrera RS (1995, 1996) — 5 and 1 comps; rare European special, all-import supply
+4. Carrera 4 Coupe (1995, 1996) — 3 comps each; low-supply variant, important for C4 pricing
+5. 1998 Carrera Coupe — 2 comps; last-year premium often cited, needs confirmation
+6. 1998 Targa — 2 comps; rarest Targa year (~298 units), low supply

@@ -1,0 +1,108 @@
+COMP DATA GAPS — 997.1 (MY2005–2008) AND 997.2 (MY2009–2012)
+Audit date: 2026-05-14
+Query: listings table, make=Porsche, year 2005-2012, grouped by trim+year, <10 priced comps
+
+==============================================================================
+FINDING: CRITICAL — Nearly all 997.1 and 997.2 standard variants have <10 comps
+==============================================================================
+
+Only ONE variant-year combo across both generations meets the ≥10 comp threshold:
+
+  VARIANT                    YEAR   COMPS-WITH-PRICE
+  ─────────────────────────────────────────────────
+  911 GT2                    2008         14          ← Only variant above threshold
+
+==============================================================================
+ALL VARIANTS BELOW 10-COMP THRESHOLD (by model/trim, 2005-2012)
+==============================================================================
+
+NOTE: The database currently lacks generation_id=997.1/997.2 linkage. All Porsches
+MY2005-2012 have generation=NULL. The comp-gap analysis below uses the year range
+as a proxy for 997.1/997.2 coverage.
+
+DATA OBSERVED IN DB (all have <10 priced comps):
+  Carrera "GT" [misclassified — likely Carrera GT supercar]  2005   5 comps
+  911 GT3 Cup                                                2007   1 comp
+  997 GT3 RS 3.6 [model string variant]                      2007   1 comp
+  997 GT3 RS [model string variant]                          2007   1 comp
+  911 GT2 Styled by Magnus Walker                            2008   1 comp
+  911 GT3 Cup Grand-Am                                       2009   1 comp
+  997 Turbo [model string variant]                           2009   1 comp
+  997 GT2 [model string variant]                             2009   1 comp
+  911 GT3 RS                                                 2010   0 comps (no final_price)
+  911 Targa 4S                                               2010   1 comp
+  911 Sport Classic                                          2010   1 comp
+  911 GT2 RS                                                 2011   0 comps
+  911 GT3 RS                                                 2011   1 comp
+  911 GT3 RS 3.8                                             2011   0 comps
+  911 GT3 RS 4.0                                             2011   0 comps
+  911 Speedster                                              2011   2 comps
+
+MISSING ENTIRELY FROM DB (zero records):
+  997.1 Carrera (standard)       — 0 records for any year 2005-2008
+  997.1 Carrera S                — 0 records for any year 2005-2008
+  997.1 Carrera 4                — 0 records for any year 2006-2008
+  997.1 Carrera 4S               — 0 records for any year 2006-2008
+  997.1 Targa 4                  — 0 records
+  997.1 Targa 4S                 — 0 records
+  997.1 Turbo                    — 0 records
+  997.1 GT3 (standard label)     — 0 records
+  997.2 Carrera                  — 0 records for any year 2009-2012
+  997.2 Carrera S                — 0 records for any year 2009-2012
+  997.2 Carrera 4                — 0 records
+  997.2 Carrera 4S               — 0 records
+  997.2 Carrera GTS              — 0 records
+  997.2 Turbo                    — 0 records
+  997.2 Turbo S                  — 0 records
+  997.2 GT3 (3.8L, standard label) — 0 records
+
+==============================================================================
+ADDITIONAL ISSUES OBSERVED
+==============================================================================
+
+1. GENERATION LINKAGE MISSING: generation column is NULL for all 997-era cars.
+   The comp engine cannot correctly group 997.1 vs 997.2 without generation_id.
+   Needed: backfill generation='997.1' for year 2005-2008 and generation='997.2'
+   for year 2009-2012 (using model/year + cross-referencing against known variant
+   tables, since "997" could also appear in trim strings for other platforms).
+
+2. MODEL STRING FRAGMENTATION: The same car appears under different model strings:
+   - "911", "997 GT3 RS", "997 GT3 RS 3.6", "997 GT3 RS 3.8" — all the same variant
+   - Normalization needed to canonicalize model to "911" and push variant detail to trim
+
+3. TRIM NORMALIZATION GAP: No records for "Carrera", "Carrera S", "Carrera 4", etc.
+   in the trim field. The BaT scraper is likely labeling these correctly on BaT, but
+   the listings may not have been imported yet, OR trim values differ.
+
+==============================================================================
+PRIORITY SCRAPING TARGETS (to close the most impactful gaps)
+==============================================================================
+
+Priority 1 — Volume variants (highest user demand):
+  997.1 Carrera S      (42,525 produced — highest-volume 997.1 variant)
+  997.1 Carrera 4S     (27,643 produced)
+  997.2 Carrera S      (16,047 produced)
+  997.2 Carrera 4S     (16,963 produced)
+
+Priority 2 — Collectible variants (search traffic):
+  997.1 GT3            (3,329 produced)
+  997.1 Turbo          (21,725 produced — high absolute volume)
+  997.2 GT3 (3.8L)     (2,256 produced)
+  997.2 Turbo          (5,053 produced)
+
+Priority 3 — GT halo (collector/appraisal use cases):
+  997.2 GT3 RS (3.8L)  (1,619 produced)
+  997.2 GT3 RS 4.0     (613 produced)
+  997.1 GT3 RS         (1,909 produced)
+
+==============================================================================
+QUERY USED
+==============================================================================
+
+SELECT model, COALESCE(trim, 'Unknown') as variant, year,
+  COUNT(*) as total_sold,
+  COUNT(CASE WHEN final_price IS NOT NULL OR high_bid IS NOT NULL THEN 1 END) as with_price
+FROM listings
+WHERE make = 'Porsche' AND year BETWEEN 2005 AND 2012
+GROUP BY model, COALESCE(trim, 'Unknown'), year
+ORDER BY total_sold DESC;

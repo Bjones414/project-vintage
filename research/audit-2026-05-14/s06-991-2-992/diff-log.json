@@ -1,0 +1,150 @@
+{
+  "session": "s06-991-2-992",
+  "audit_date": "2026-05-14",
+  "note": "HIGH-confidence auto-applied changes to lib/era-content/generation-content.ts. Research agent results fully merged.",
+  "status": "COMPLETE",
+
+  "applied_changes": [
+    {
+      "id": "A01",
+      "applied_at": "2026-05-14",
+      "generation": "991.2",
+      "field": "variants[Carrera GTS / 4 GTS].years",
+      "old_value": "'2018–2019'",
+      "new_value": "'2017–2019'",
+      "line": 1166,
+      "confidence": "HIGH",
+      "rationale": "stuttcars.com (Tier 1) explicitly states '2017–2019' for the 991.2 GTS. The GTS launched alongside the 991.2 facelift in MY2017, not MY2018. THREE Tier 1/2 sources (stuttcars, Wikipedia, supercars.net) all confirm 2017 launch.",
+      "sources": ["stuttcars.com 991.2 GTS page ('(2017 – 2019)')", "Wikipedia Porsche 911 (991)", "stuttcars.com 991 generation hub"]
+    },
+    {
+      "id": "A02",
+      "applied_at": "2026-05-14",
+      "generation": "992.1",
+      "field": "variants[Turbo / Turbo S].power",
+      "old_value": "'572 / 640 hp'",
+      "new_value": "'572 / 641 hp'",
+      "line": 1348,
+      "confidence": "HIGH",
+      "rationale": "992.1 Turbo S produces 650 PS / 478 kW / 641 hp SAE. The previous figure of 640 hp matches neither the PS (650) nor the SAE (641) figure. THREE sources confirm 641 hp: Wikipedia (650 PS / 478 kW / 641 hp), auto-data.net (650 PS / 478 kW / 641 hp), multiple search results. The error is one hp but on a paid analytics platform precision matters.",
+      "sources": ["Wikipedia Porsche 911 (992) (650 PS / 478 kW / 641 hp)", "auto-data.net (650 PS / 478 kW / 641 hp)", "Multiple automotive press sources confirming 641 hp SAE"]
+    },
+    {
+      "id": "A03",
+      "applied_at": "2026-05-14",
+      "generation": "992.1",
+      "field": "engine (string) — Turbo S hp figure",
+      "old_value": "Turbo S: 640 hp",
+      "new_value": "Turbo S: 641 hp",
+      "line": 1300,
+      "confidence": "HIGH",
+      "rationale": "Same correction as A02 — the engine description field also contained the incorrect 640 hp figure for Turbo S. Corrected to 641 hp for consistency and accuracy.",
+      "sources": ["Same as A02"]
+    }
+  ],
+
+  "confirmed_no_change": [
+    {
+      "id": "V01", "generation": "991.2", "claim": "Carrera 370 hp", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V02", "generation": "991.2", "claim": "Carrera S/4S 420 hp", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V03", "generation": "991.2", "claim": "GTS 450 hp", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V04", "generation": "991.2", "claim": "Turbo 540 hp from 3.8L", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V05", "generation": "991.2", "claim": "Turbo S 580 hp", "verdict": "CONFIRMED HIGH (580 PS convention)", "action": "No change"
+    },
+    {
+      "id": "V06", "generation": "991.2", "claim": "GT3 500 hp, 4.0L NA, 9,000 rpm", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V07", "generation": "991.2", "claim": "GT3 RS 520 hp, 4.0L NA", "verdict": "CONFIRMED HIGH (520 PS convention)", "action": "No change"
+    },
+    {
+      "id": "V08", "generation": "991.2", "claim": "GT2 RS 700 hp from 3.8L twin-turbo, PDK only, RWD", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V09", "generation": "991.2", "claim": "Speedster 1,948 worldwide, 6MT only", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V10", "generation": "991.2", "claim": "'28-year run of NA base 911s' math (1989→2017)", "verdict": "CONFIRMED HIGH (math correct)", "action": "No change — editorial note in REPORT.md about framing"
+    },
+    {
+      "id": "V11", "generation": "991.2", "claim": "GT3 Touring: 6MT only, wing-deleted", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V12", "generation": "991.2", "claim": "Carrera T years 2018–2019", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V13", "generation": "991.2", "claim": "GT3 RS Nürburgring 6:56.4", "verdict": "CONFIRMED HIGH — Porsche Newsroom confirmed", "action": "No change"
+    },
+    {
+      "id": "V14", "generation": "991.2", "claim": "Speedster 502 hp", "verdict": "CONFIRMED HIGH (502 SAE hp per multiple sources)", "action": "No change"
+    },
+    {
+      "id": "V15", "generation": "991.2", "claim": "'9A2' for 991.2 engine, '9A2 Evo' for 992", "verdict": "CONFIRMED HIGH — distinct designations", "action": "No change"
+    },
+    {
+      "id": "V16", "generation": "992.1", "claim": "Carrera 379 hp, 9A2 Evo", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V17", "generation": "992.1", "claim": "Carrera S/4S 443 hp", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V18", "generation": "992.1", "claim": "GTS 473 hp", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V19", "generation": "992.1", "claim": "Turbo 572 hp from 3.745L", "verdict": "CONFIRMED HIGH (572 SAE hp; 3.745L confirmed)", "action": "No change"
+    },
+    {
+      "id": "V20", "generation": "992.1", "claim": "GT3 502 hp, both 6MT and 7-speed PDK from launch", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V21", "generation": "992.1", "claim": "GT3 RS 518 hp, 860 kg downforce at 285 km/h", "verdict": "CONFIRMED HIGH — both from Porsche press kit via PCA.org", "action": "No change"
+    },
+    {
+      "id": "V22", "generation": "992.1", "claim": "Sport Classic: 1,250 units, 543 hp, 7MT, RWD, Turbo wide-body", "verdict": "CONFIRMED HIGH (all specs except MSRP — see staging S16-REVISED)", "action": "No change on specs; MSRP staged"
+    },
+    {
+      "id": "V23", "generation": "992.1", "claim": "Dakar: 2,500 units, 473 hp, 50mm raised, +30mm pneumatic, PDK only", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V24", "generation": "992.1", "claim": "S/T: 1,963 units, 6MT only, ~1,380 kg", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V25", "generation": "992.1", "claim": "Targa 4S HDE: 992 units, MY2021, Cherry Metallic, first Heritage Design", "verdict": "CONFIRMED HIGH from Porsche Newsroom US", "action": "No change"
+    },
+    {
+      "id": "V26", "generation": "992.1", "claim": "GT3 Touring (992.1): both manual and PDK available", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V27", "generation": "992.1", "claim": "45mm wider body vs 991.2", "verdict": "CONFIRMED HIGH — Wikipedia, stuttcars", "action": "No change"
+    },
+    {
+      "id": "V28", "generation": "992.1", "claim": "Turbo 50 Years: 1,974 units", "verdict": "CONFIRMED HIGH — Porsche.com model page", "action": "No change"
+    },
+    {
+      "id": "V29", "generation": "992.2", "claim": "Carrera 388 hp, PDK-only", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V30", "generation": "992.2", "claim": "Carrera S 473 hp, +30 hp vs 992.1", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V31", "generation": "992.2", "claim": "GTS T-Hybrid: 541 hp (541 PS), 3.6L, 1.9 kWh, non-plug-in", "verdict": "CONFIRMED HIGH (unit convention: 541 PS presented as 541 hp per Porsche convention)", "action": "No change"
+    },
+    {
+      "id": "V32", "generation": "992.2", "claim": "GT3 503 hp, 311 km/h, both 6MT and 7-speed PDK", "verdict": "CONFIRMED HIGH", "action": "No change"
+    },
+    {
+      "id": "V33", "generation": "992.2", "claim": "Turbo S T-Hybrid: 701 hp (711 PS), 7:03.92 Nürburgring, $272,650, AWD", "verdict": "CONFIRMED HIGH from elferspot.com + multiple sources", "action": "No change"
+    },
+    {
+      "id": "V34", "generation": "992.2", "claim": "Carrera T: manual-only (no PDK option)", "verdict": "CONFIRMED HIGH — PCA.org: 'PDK is not available in the Carrera T, even for an extra charge'", "action": "No change"
+    }
+  ]
+}

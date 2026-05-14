@@ -1,0 +1,44 @@
+BOXSTER COMP DATA GAPS — AUDIT S07 — 2026-05-14
+================================================
+
+DB STATE: Extremely sparse. Total sold Boxster listings in database: 2
+
+The query used: listings table, make='Porsche', model ilike '%Boxster%', final_price not null.
+
+EXISTING COMP DATA (only 2 records):
+  986 | 2000 | S trim           → 1 comp (below 10 threshold)
+  987.1-boxster | 2005 | S 6-Speed → 1 comp (below 10 threshold)
+
+ALL OTHER VARIANT/YEAR COMBOS: 0 comps (entire variant/year space is a gap)
+
+GENERATION-LEVEL SUMMARY:
+  986 Boxster (MY1997–2004)      → 1 comp total across all years/trims
+  987.1 Boxster (MY2005–2008)    → 1 comp total
+  987.2 Boxster (MY2009–2012)    → 0 comps
+  981 Boxster (MY2013–2016)      → 0 comps
+  982/718 Boxster (MY2017+)      → 0 comps
+
+SPECIFIC COLLECTOR VARIANTS WITH ZERO COMPS (priority scraping targets):
+  986: 50 Years 550 Spyder (MY2004, 1,953 units)
+  987.1: RS 60 Spyder (MY2008, 1,960 units)
+  987.2: Boxster Spyder (MY2011–2012, 1,944 units)
+  987.2: Porsche Design Edition 2 (MY2009, 500 units)
+  987.2: Black Edition (MY2011, 987 units)
+  981: Boxster GTS (MY2015–2016)
+  981: Boxster Spyder (MY2016, 2,486 units)
+  982: 718 Boxster GTS 4.0 (MY2020–2024)
+  982: 718 Boxster Spyder (MY2020–2024)
+  982: 718 Boxster Spyder RS (MY2024)
+
+NOTE ON 982 BOXSTER:
+The 982 Boxster generation was flagged as having zero listings at handoff (typography-only
+hero fallback). Confirmed: 0 sold listings in the database. Comp data audit needed for
+when listings appear — staging.json items s07-stage-005 and s07-stage-006 cover the
+718 T and 25 Years variants that should be pre-loaded in generation-content.ts.
+
+RECOMMENDED SCRAPING PRIORITY ORDER:
+1. BaT — Boxster S (986) — high volume, populate 986 S comps
+2. BaT — 981 Boxster GTS — actively traded, collector interest
+3. BaT — 987.2 Spyder — collector premium variant, price discovery needed
+4. BaT — 981 Spyder — near-MSRP trading, important reference point
+5. BaT — 718 GTS 4.0 — current-gen reference pricing

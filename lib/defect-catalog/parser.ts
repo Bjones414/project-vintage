@@ -28,6 +28,7 @@ function normalizeExclude(exc: DefectExclude): DefectExclude {
     generation: toStrings(exc.generation as unknown[]),
     engine_family: toStrings(exc.engine_family as unknown[]),
     trim_category: toStrings(exc.trim_category as unknown[]),
+    body: toStrings(exc.body as unknown[]),
   }
 }
 
@@ -46,6 +47,7 @@ function normalizeRecord(record: DefectRecord): DefectRecord {
       generation: toStrings(app.generation as unknown[]),
       engine_family: toStrings(app.engine_family as unknown[]),
       trim_category: toStrings(app.trim_category as unknown[]),
+      body: toStrings(app.body as unknown[]),
       excludes,
     },
   }

@@ -12,7 +12,15 @@ type Props = {
   generation: Tables<'porsche_generations'> | null
   viewerTier: ViewerTier
   watchForItems?: WatchForItem[]
+  make?: string | null
+  model?: string | null
 }
+
+// Porsche models not yet in V1 catalog — full analysis not available.
+// Listings still cache as comparable sale data.
+const OUT_OF_V1_SCOPE_PORSCHE = new Set([
+  '912', '912E', '914', '924', '928', '944', '959', '968',
+])
 
 const SEVERITY_PILL: Record<WatchForSeverity, string> = {
   high:     'bg-[#A32D2D]/10 border border-[#A32D2D]/40 text-severity-concern',
@@ -126,7 +134,43 @@ function WatchForSection({ items }: { items: WatchForItem[] }) {
   )
 }
 
-export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
+export function EraCard({ generation, viewerTier, watchForItems = [], make, model }: Props) {
+  // Non-Porsche or out-of-scope Porsche: render limited-support fallback before
+  // attempting any generation content. These listings are cached as comp data but
+  // no era guide is available.
+  if (generation === null) {
+    const isPorsche = make?.toLowerCase() === 'porsche'
+    const isOutOfScope = isPorsche && model !== null && model !== undefined && OUT_OF_V1_SCOPE_PORSCHE.has(model)
+
+    if (!isPorsche && make) {
+      return (
+        <div className="flex h-full flex-col border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
+          <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">Generation</p>
+          <div className="mt-3 border-t-[0.5px] border-border-default" />
+          <div className="mt-4">
+            <p className="font-serif text-[15px] italic leading-[1.65] text-text-tertiary">
+              We don't currently support {make} for full analysis. Cached as comparable sale data.
+            </p>
+          </div>
+        </div>
+      )
+    }
+
+    if (isOutOfScope) {
+      return (
+        <div className="flex h-full flex-col border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
+          <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">Generation</p>
+          <div className="mt-3 border-t-[0.5px] border-border-default" />
+          <div className="mt-4">
+            <p className="font-serif text-[15px] italic leading-[1.65] text-text-tertiary">
+              Porsche {model} — not yet in V1 catalog. Cached as comparable sale.
+            </p>
+          </div>
+        </div>
+      )
+    }
+  }
+
   const genLabel = generation?.generation_id
     ? formatGenerationFull(generation.generation_id)
     : 'this generation'

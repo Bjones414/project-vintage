@@ -22,9 +22,12 @@ export function deriveTrimCategory(
   if (!trim || !generationId) return null
 
   switch (generationId) {
+    case '930': return derive930(trim)
     case '964': return derive964(trim)
     case '993': return derive993(trim)
-    case '996': return derive996(trim)
+    case '996':
+    case '996.1':
+    case '996.2': return derive996(trim)
     case '997.1':
     case '997.2': return derive997(trim)
     case '991.1':
@@ -42,6 +45,16 @@ export function deriveTrimCategory(
     case '982-cayman': return deriveCayman718(trim)
     default: return null
   }
+}
+
+// ─── 930 (G-series Turbo, 1975–1989) ────────────────────────────────────────
+// All 930s are turbocharged; the only meaningful sub-category is the rare Turbo S.
+
+function derive930(trim: string): TrimCategory | null {
+  const t = trim.toLowerCase()
+  if (t.includes('turbo s')) return 'turbo_s'
+  if (t.includes('turbo')) return 'turbo_base'
+  return null
 }
 
 // ─── 964 (1989–1994) ────────────────────────────────────────────────────────

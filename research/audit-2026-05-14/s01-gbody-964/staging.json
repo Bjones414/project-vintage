@@ -1,0 +1,199 @@
+{
+  "audit_session": "s01-gbody-964",
+  "audit_date": "2026-05-14",
+  "file": "lib/era-content/generation-content.ts",
+  "secondary_file": "lib/era-content/generation-display.ts",
+  "total_staged_items": 11,
+  "items": [
+    {
+      "id": "ST-STRUCT-001",
+      "priority": "HIGH — structural / orphaned dead code",
+      "generation": "N/A",
+      "target_file": "lib/era-content/generation-display.ts",
+      "field": "DISPLAY_OVERRIDES['911-g-body']",
+      "current_value": "'G-body'",
+      "issue": "The key '911-g-body' in the DISPLAY_OVERRIDES map at generation-display.ts line 12 is a dead alias with no live references. Confirmed: no row in the porsche_generations DB table, no entry in CONTENT (generation-content.ts), and 0 listings with generation_id='911-g-body' in the listings table. The G-body era is fully split into 'g-series-2.7', '911-sc', and '911-3.2-carrera' in both DB and content.",
+      "recommended_action": "Remove the '911-g-body': 'G-body' mapping from DISPLAY_OVERRIDES. No live UI surface references this key. Removal is a clean dead-code deletion with no functional impact.",
+      "confidence": "HIGH",
+      "note": "Per original task instructions: 'do NOT auto-fix the key itself — structural fix.' Surfaced here for reviewer approval before removal.",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "ST-001",
+      "priority": "MEDIUM — factual, single-source conflict",
+      "generation": "930",
+      "field": "engine — 3.0L Turbo power rating",
+      "field_path": "CONTENT['930'].engine",
+      "current_value": "3.0L Type 930/50 RoW (245 hp DIN) / 930/51 US (234 hp) — 1975–1977",
+      "conflicting_source": {
+        "source": "Wikipedia (Porsche 911 / 930 article)",
+        "value": "260 PS (256 hp) DIN for the RoW 930/50"
+      },
+      "supporting_current": [
+        "Period Porsche press materials and brochures (1975–1977) consistently cite 245 DIN PS for RoW"
+      ],
+      "issue": "Wikipedia gives 260 PS for the 930/50; period Porsche-issued materials give 245 DIN PS. These cannot both be right. Possible explanations: (1) different SAE vs DIN measurement conventions; (2) different spec years within 1975–1977; (3) Wikipedia error. The variant description (line 2753) repeats 245 hp DIN, consistent with the engine field.",
+      "recommended_action": "Obtain a primary source — factory press kit, Porsche Typ Blätter, or Road & Track road test for a 1975–1977 930 — to resolve the discrepancy. If 260 PS is confirmed, update both CONTENT['930'].engine and the '3.0 Turbo' variant description.",
+      "confidence": "CONFLICT — do not auto-apply",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "ST-002",
+      "priority": "HIGH — confirmed factual error in two locations, REPORT.md priority",
+      "generation": "911-sc",
+      "field": "variants[SC Cabriolet].description AND engineering[4]",
+      "locations": [
+        {
+          "path": "CONTENT['911-sc'].variants[2].description",
+          "approximate_line": 2509,
+          "current_text": "Fully operational power soft top; rear jump seats retained."
+        },
+        {
+          "path": "CONTENT['911-sc'].engineering[4]",
+          "approximate_line": 2525,
+          "current_text": "The SC Cabriolet introduced the open-top body style to the 911 for the first time since the 356, using a power-operated soft top developed with Webasto."
+        }
+      ],
+      "issue": "Both the variant description and the engineering note claim the 1983 SC Cabriolet had a power-operated soft top. This is incorrect. The 1983 SC Cabriolet used a MANUAL soft top. The power-operated top was introduced on the 1987 Carrera 3.2 Cabriolet. The Webasto attribution is also suspect — Webasto is primarily associated with pop-up sunroofs, not Porsche convertible top mechanisms.",
+      "sources": [
+        "Multiple Porsche historian and marque-specialist sources confirm the 1983 SC Cabriolet soft top was manual-operation",
+        "The power soft top is attributed to the Carrera 3.2 Cabriolet from MY1987 across specialist literature",
+        "Porsche service manuals for the SC era describe manual folding soft top operation"
+      ],
+      "recommended_correction": {
+        "variants_description": "The first factory open-top 911 since the 356 era. Manual soft top; rear jump seats retained. All MY1983 Cabriolets use the Type 915 gearbox and the 3.0L engine. The body required sill and floor stiffening to compensate for the removed roof structure. A well-preserved first-year SC Cabriolet commands a meaningful premium over same-year Coupe and Targa.",
+        "engineering_note": "First factory 911 Cabriolet (MY1983): The SC Cabriolet introduced the open-top body style to the 911 for the first time since the 356, using a manual soft top. The structure required stiffening of the body sills and floor. The power-operated soft top arrived on the Carrera 3.2 Cabriolet from MY1987. The Cabriolet body continued into the Carrera 3.2 era and ran through the G-body's end in 1989."
+      },
+      "confidence": "HIGH — confirmed factual error",
+      "note": "This is a SUBSTANTIVE PROSE CHANGE (factual replacement, not minor completion). Per auto-apply rules, this requires reviewer approval before application. Marked HIGH PRIORITY in REPORT.md.",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "ST-003",
+      "priority": "MEDIUM — year discrepancy, conflicting sources",
+      "generation": "964",
+      "field": "notes[1] and engineering[2] — Tiptronic introduction model year",
+      "locations": [
+        {
+          "path": "CONTENT['964'].notes[1]",
+          "approximate_line": 2900,
+          "current_text": "The Tiptronic four-speed automatic, introduced on the Carrera 2 from MY1991"
+        },
+        {
+          "path": "CONTENT['964'].engineering[2]",
+          "approximate_line": 2988,
+          "current_text": "The Tiptronic, developed by Porsche and ZF, debuted on the Carrera 2 from MY1991 as the first production 911 automatic."
+        }
+      ],
+      "issue": "Content claims Tiptronic debuted on the Carrera 2 from MY1991. Research sources indicate the Tiptronic was introduced in January 1990 at the 1990 Geneva Motor Show, entering production as a MY1990 option. The Carrera 2 itself launched for MY1990; having Tiptronic available only from MY1991 would mean the first year of the C2 had no automatic option, which conflicts with marketing materials of the era.",
+      "sources": [
+        "Geneva Motor Show 1990 debut references for 964 Tiptronic",
+        "Multiple 964 buyer guides cite Tiptronic available from MY1990",
+        "Conflict: some sources list MY1991 as first full-year availability; January 1990 launch may have been limited to RoW markets"
+      ],
+      "recommended_action": "Verify MY1990 vs MY1991 using a primary production record source (factory documentation, Typ Blätter, or Automobil Revue). If MY1990 is confirmed, update both notes[1] and engineering[2] to 'from MY1990'. Consider whether the discrepancy is RoW vs US market (US may have received Tiptronic one model year later).",
+      "confidence": "MEDIUM — conflicting sources",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "ST-004",
+      "priority": "HIGH — internal inconsistency, likely error in engine field",
+      "generation": "964",
+      "field": "engine — Turbo 3.3 engine code",
+      "field_path": "CONTENT['964'].engine",
+      "current_value": "3.3L single-turbo M30/69 (Turbo 3.3: 320 hp)",
+      "issue": "The top-level engine field uses 'M30/69' as the code for the standard Turbo 3.3. However, every other reference within the same file calls this engine '930/60' (the carryover code from the 930 Turbo): notes[1] (line ~2900) says 'carryover 930/60 engine'; variants[Turbo 3.3].description says 'carryover Type 930/60 engine from the 930 Turbo'; watch_for[0] (line ~2996) says 'The 964 Turbo 3.3 uses the carryover 930/60 engine'. The 'M30/69 SL' code appears exclusively in the Turbo S Leichtbau variant description, where it correctly refers to the Weissach-prepared Leichtbau engine specifically.",
+      "internal_references_confirming_930_60": [
+        "CONTENT['964'].notes[1]: 'carryover 930/60 engine on the 964 platform'",
+        "CONTENT['964'].variants[Turbo 3.3].description: 'carryover Type 930/60 engine from the 930 Turbo'",
+        "CONTENT['964'].watch_for[0]: 'The 964 Turbo 3.3 uses the carryover 930/60 engine'",
+        "CONTENT['930'].engine field: '3.3L Type 930/60 RoW (300 hp)' — same engine"
+      ],
+      "recommended_correction": "Change '3.3L single-turbo M30/69 (Turbo 3.3: 320 hp)' to '3.3L single-turbo 930/60 (Turbo 3.3: 320 hp)' in the engine field. The M30/69 SL designation belongs only to the Leichtbau variant.",
+      "confidence": "HIGH — internal consistency correction; 930/60 is confirmed by 3+ references within the same file and by the 930 generation's own engine field",
+      "note": "Treated as MEDIUM because engine code nomenclature in Porsche documentation can vary (M and 930 prefixes coexist). Recommend confirming '930/60' in a primary technical source before applying.",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "ST-005",
+      "priority": "LOW — prose, disputed date already removed in DL-009",
+      "generation": "911-3.2-carrera",
+      "field": "Speedster production end month — documented dispute",
+      "issue": "Per DL-009 note: the Speedster end month is disputed between sources. One source (supercarnostalgia.com) says 'January to September 1989'; multiple enthusiast sources say 'January through July 1989'; stuttcars.com does not specify. DL-009 removed the specific month claim from the variant description, making it 'built in 1989 only'. No action needed unless a definitive primary source (Porsche factory records or a COA from a late-production Speedster) is obtained.",
+      "recommended_action": "Retrieve a Porsche Certificate of Authenticity for a Speedster with a high-sequence chassis number to establish the latest production date. If September is confirmed, add 'January through September 1989' to both the variant description and notes[2]. If July is confirmed, use 'January through July 1989'. Until resolved, the current 'in 1989 only' phrasing is accurate and non-committal.",
+      "confidence": "CONFLICT",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "ST-006",
+      "priority": "HIGH — residual missed field from DL-002 auto-apply",
+      "generation": "911-3.2-carrera",
+      "field": "value_drivers[Speedster rarity].description — Turbo-Look count",
+      "field_path": "CONTENT['911-3.2-carrera'].value_drivers[1].description",
+      "old_value": "1,930 units",
+      "new_value": "1,933 units",
+      "issue": "DL-002 corrected the Speedster Turbo-Look count from 1,930 to 1,933 in the variant production field and DL-003 corrected the notes paragraph. The value_drivers entry for 'Speedster rarity' was not included in the Node.js auto-apply script and retains the old '1,930 units' figure. This inconsistency was caught during REPORT compilation and auto-applied as DL-010 (see diff-log).",
+      "sources_already_verified": [
+        "stuttcars.com: 1,933 Turbo-look",
+        "supercarnostalgia.com: 1,933 Turbo-look widebody",
+        "Wikipedia: 1,933 (implicit from 2,104 total - 171 NB)"
+      ],
+      "action_taken": "AUTO-APPLIED as DL-010 during REPORT compilation — same HIGH confidence as DL-002.",
+      "confidence": "HIGH",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "ST-007",
+      "priority": "MEDIUM — production figure to verify",
+      "generation": "964",
+      "field": "variants[Carrera RS (Europe)].description — RS Lightweight count",
+      "current_value": "The 1,910 Lightweight cars are the benchmark",
+      "issue": "Content cites 1,910 Lightweight RS units. Porsche internal records and specialist sources give varying figures: 1,872 Lightweight (base RS without M002/M003 options), approximately 2,282 total RS units across three trim levels. The 1,910 figure may conflate Lightweight and Touring production, or may reflect a different rounding. The total of 2,282 for all three RS variants is well-supported; the Lightweight sub-count needs verification.",
+      "recommended_action": "Cross-reference a primary source listing the Lightweight-only count. If 1,910 is incorrect, update to the verified figure.",
+      "confidence": "MEDIUM",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "ST-008",
+      "priority": "MEDIUM — production figure, conflicting specialist sources",
+      "generation": "964",
+      "field": "notes[2] — Carrera RS 3.8 production count",
+      "current_value": "55 Weissach hand-built examples",
+      "conflicting_sources": [
+        "Some specialist sources: 51 cars",
+        "Other sources: 55 cars",
+        "A third group: 56 cars"
+      ],
+      "issue": "The RS 3.8 production count appears in notes[2]: 'the 55-car Carrera RS 3.8 (MY1993, M64/04 300 hp, Weissach hand-built widebody)'. Sources consulted during this audit give figures of 51, 55, and 56 — insufficient consensus to auto-apply a change.",
+      "recommended_action": "Obtain Porsche factory build data or a verified registry count for the RS 3.8. The majority specialist consensus appears to be 55 but is not conclusive.",
+      "confidence": "LOW/CONFLICT — do not change without primary source",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "ST-009",
+      "priority": "MEDIUM — US allocation figure, conflicting sources",
+      "generation": "911-3.2-carrera",
+      "field": "variants[Club Sport M637].production — US count",
+      "current_value": "340 worldwide, ~28 US",
+      "issue": "Content gives ~28 US Club Sport examples. Some specialist registries and auction house notes indicate a higher number — commonly cited at 50–53 US examples. The 340 worldwide figure is consistently reported; the US sub-count is where sources diverge. Many auction listings for US Club Sports appear in the market, suggesting either the ~28 figure is too low or there is significant title-jurisdiction confusion between US-spec and European-spec cars registered in the US.",
+      "sources_for_higher_count": [
+        "Auction house catalogue notes: multiple cite 'approximately 50 US-delivered examples'",
+        "Club Sport registries: some show higher US counts than 28"
+      ],
+      "recommended_action": "Obtain a registry count from a recognized Club Sport specialist or a factory archive query. If a higher US count is confirmed, update the variant production field accordingly.",
+      "confidence": "MEDIUM — change pending primary source",
+      "timestamp": "2026-05-14T00:00:00Z"
+    },
+    {
+      "id": "ST-010",
+      "priority": "LOW — narrow-body Speedster count, minor rounding question",
+      "generation": "964",
+      "field": "variants[Speedster].production — narrow-body count",
+      "current_value": "930 narrow-body; 15 Exclusiv widebody (Turbo-look)",
+      "issue": "Content lists 930 narrow-body Speedsters. Some factory data sources give 936 units; 930 may be intentional rounding or a coincidence with the 930 Turbo chassis designation number (which could cause confusion). The 15-car Exclusiv widebody count appears consistent across sources.",
+      "recommended_action": "Confirm whether the production count is precisely 930, 936, or another figure. If 936 is the factory count, update the production field.",
+      "confidence": "LOW",
+      "timestamp": "2026-05-14T00:00:00Z"
+    }
+  ]
+}

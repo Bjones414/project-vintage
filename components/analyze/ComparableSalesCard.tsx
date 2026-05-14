@@ -33,6 +33,7 @@ type Props = {
   trimCategory?: string | null
   matchingMode?: 'strict' | 'broad'
   disclaimer?: boolean
+  cascadeCaveat?: string | null
 }
 
 function CompRow({ comp, idx }: { comp: CompListing; idx: number }) {
@@ -129,7 +130,7 @@ function ExpandLink({ expanded, onToggle }: { expanded: boolean; onToggle: () =>
   )
 }
 
-export function ComparableSalesCard({ analysisData, compResult, compListings, viewerTier, trimCategory, matchingMode, disclaimer }: Props) {
+export function ComparableSalesCard({ analysisData, compResult, compListings, viewerTier, trimCategory, matchingMode, disclaimer, cascadeCaveat }: Props) {
   const [expanded, setExpanded] = useState(false)
 
   // Sparse-category path: coachbuilt/limited with fewer than 3 comps.
@@ -187,6 +188,11 @@ export function ComparableSalesCard({ analysisData, compResult, compListings, vi
         {disclaimer && (
           <p className="mt-2 font-serif text-[13px] italic text-text-muted">
             Comps span all mileages — provide a mileage for filtered results.
+          </p>
+        )}
+        {cascadeCaveat && (
+          <p className="mt-2 font-serif text-[13px] italic text-text-muted">
+            {cascadeCaveat}
           </p>
         )}
         <div className="mt-4">

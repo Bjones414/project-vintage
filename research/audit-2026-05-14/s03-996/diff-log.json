@@ -1,0 +1,114 @@
+{
+  "session": "s03-996",
+  "date": "2026-05-14",
+  "auditor": "Claude Sonnet 4.6 (overnight credibility audit)",
+  "target_file": "lib/era-content/generation-content.ts",
+  "generations_audited": ["996.1", "996.2"],
+  "auto_applied_count": 6,
+  "staged_count": 6,
+  "changes": [
+    {
+      "id": "AA-001",
+      "confidence": "HIGH",
+      "status": "AUTO-APPLIED",
+      "generation": "996.1",
+      "variant": "GT3 Mk1",
+      "field": "notes[2]",
+      "description": "GT3 Mk1 production count in notes prose — exact figure replaces approximation",
+      "old_value": "approximately 1,860 units produced worldwide",
+      "new_value": "1,868 units produced worldwide",
+      "sources": [
+        { "name": "Elferspot", "tier": 2, "figure": 1868 },
+        { "name": "supercars.net", "tier": 2, "figure": 1868 },
+        { "name": "Porsche Knowledge", "tier": 2, "figure": 1868 }
+      ],
+      "notes": "Three independent sources give exact figure 1,868. No source disagrees."
+    },
+    {
+      "id": "AA-002",
+      "confidence": "HIGH",
+      "status": "AUTO-APPLIED",
+      "generation": "996.1",
+      "variant": "GT3 Mk1",
+      "field": "variants[].production",
+      "description": "GT3 Mk1 variant production field — exact figure replaces tilde approximation",
+      "old_value": "~1,860 worldwide; 0 US",
+      "new_value": "1,868 worldwide; 0 US",
+      "sources": [
+        { "name": "Elferspot", "tier": 2, "figure": 1868 },
+        { "name": "supercars.net", "tier": 2, "figure": 1868 },
+        { "name": "Porsche Knowledge", "tier": 2, "figure": 1868 }
+      ],
+      "notes": "US figure (0) unchanged — GT3 Mk1 was never federalized, confirmed by all sources."
+    },
+    {
+      "id": "AA-003",
+      "confidence": "HIGH",
+      "status": "AUTO-APPLIED",
+      "generation": "996.2",
+      "variant": "GT2 (combined note)",
+      "field": "notes[1]",
+      "description": "GT2 combined production count in notes prose",
+      "old_value": "approximately 1,280 units",
+      "new_value": "approximately 1,287 units",
+      "sources": [
+        { "name": "Elferspot", "tier": 2, "figure": 1287, "detail": "963 Mk1 + 324 Mk2" },
+        { "name": "supercars.net", "tier": 2, "figure": 1287 }
+      ],
+      "notes": "Two sources agree on exact 1,287 total (963 Mk1 + 324 Mk2). Tilde kept on 'approximately' in prose because Mk1/Mk2 split rounds."
+    },
+    {
+      "id": "AA-004",
+      "confidence": "HIGH",
+      "status": "AUTO-APPLIED",
+      "generation": "996.2",
+      "variant": "GT2 Mk1",
+      "field": "variants[].production",
+      "description": "GT2 Mk1 worldwide production — exact figure replaces tilde approximation",
+      "old_value": "~960 worldwide; ~245 US",
+      "new_value": "963 worldwide; ~245 US",
+      "sources": [
+        { "name": "Elferspot", "tier": 2, "figure": 963 },
+        { "name": "supercars.net", "tier": 2, "detail": "within 1,287 total split" }
+      ],
+      "notes": "Worldwide exact figure 963 confirmed by 2 sources. US figure ~245 kept with tilde — sole reference is indirect forum data (total 996 GT2 US was 317 across both Mk1/Mk2); Mk1-only US split unverifiable from available sources."
+    },
+    {
+      "id": "AA-005",
+      "confidence": "HIGH",
+      "status": "AUTO-APPLIED",
+      "generation": "996.2",
+      "variant": "GT2 Mk2",
+      "field": "variants[].production",
+      "description": "GT2 Mk2 worldwide production — exact figure replaces tilde approximation",
+      "old_value": "~320 worldwide",
+      "new_value": "324 worldwide",
+      "sources": [
+        { "name": "Elferspot", "tier": 2, "figure": 324, "detail": "324 from MY03 onward" },
+        { "name": "supercars.net", "tier": 2, "detail": "within 1,287 total" }
+      ],
+      "notes": "Exact 324 confirmed by 2 sources. Consistent with total GT2 1,287 = 963 + 324."
+    },
+    {
+      "id": "AA-006",
+      "confidence": "HIGH",
+      "status": "AUTO-APPLIED",
+      "generation": "996.2",
+      "variant": "GT3 Mk2",
+      "field": "variants[].production",
+      "description": "GT3 Mk2 worldwide production — prior figure missed MY2005 production of ~276 units",
+      "old_value": "~2,310 worldwide; ~1,010 US",
+      "new_value": "2,589 worldwide; ~960 US",
+      "sources": [
+        { "name": "Elferspot", "tier": 2, "figure": 2589 },
+        { "name": "supercars.net", "tier": 2, "figure": 2589 },
+        {
+          "name": "Year-by-year production breakdown (via 6SpeedOnline forum)",
+          "tier": 2,
+          "detail": "MY2003: 781 + MY2004: 1,532 + MY2005: 276 = 2,589"
+        }
+      ],
+      "notes": "Prior figure ~2,310 traced to Porsche Knowledge, which appears to have omitted MY2005 production (276 units). Three other sources confirm 2,589 worldwide (excludes GT3 RS which is a distinct variant at 682 units). US figure updated from ~1,010 to ~960 per forum year-by-year compilation (257+607+96=960); tilde retained as this is one source."
+    }
+  ]
+}

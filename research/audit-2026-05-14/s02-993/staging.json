@@ -1,0 +1,208 @@
+{
+  "audit_date": "2026-05-14",
+  "generation": "993",
+  "staged_count": 12,
+  "instructions": "USER TO REVIEW each item. Apply if correct; mark as rejected if not. Items in CONFLICT require primary source verification before applying.",
+  "items": [
+    {
+      "id": "993-STAGE-001",
+      "confidence": "CONFLICT",
+      "file": "lib/era-content/factory-specs.ts",
+      "key": "993:gt2",
+      "field": "curb_weight_lb",
+      "current_value": "3,042 lb",
+      "proposed_value": "2,679 lb",
+      "sources": {
+        "UltimateSpecs": "1,215 kg = 2,679 lb",
+        "Carfolio": "1,215 kg = 2,679 lb",
+        "Stuttcars": "2,855 lb = 1,295 kg",
+        "encyCARpedia": "2,844 lb = 1,290 kg",
+        "Auto Motor Sport Jan 1996": "1,316 kg = 2,901 lb"
+      },
+      "conflict_description": "Five sources give five different curb weights ranging from 1,215 kg (2,679 lb) to 1,316 kg (2,901 lb). Current value of 3,042 lb = 1,380 kg appears to be the narrow-body Carrera weight mistakenly applied. All sources agree the GT2 is significantly lighter than the Turbo (3,307 lb / 1,500 kg). Lowest figure (1,215 kg) may be a dry weight rather than curb weight. Recommended research: locate the original Porsche GT2 press kit or porsche-classic.com spec sheet.",
+      "recommended_value": "2,855 lb (1,295 kg)",
+      "recommendation_rationale": "Stuttcars (2,855 lb) and encyCARpedia (2,844 lb) are close and represent the most credible curb-weight (not dry-weight) figures. UltimateSpecs/Carfolio at 1,215 kg is almost certainly a dry weight or missing fuel/fluids. However, this is CONFLICT — do not auto-apply."
+    },
+    {
+      "id": "993-STAGE-002",
+      "confidence": "CONFLICT",
+      "file": "lib/era-content/factory-specs.ts",
+      "key": "993:gt2",
+      "field": "zero_to_sixty",
+      "current_value": "4.4s",
+      "proposed_value": "3.9s",
+      "conflict_description": "Current 4.4s appears to be the 0-100 km/h figure used as 0-60 mph. Stuttcars gives 3.9s for 0-60 mph on the road GT2. The zero_to_sixty field name implies 0-60 mph, not 0-100 km/h. However, the rest of the factory-specs.ts file appears to use 0-100 km/h (0-62 mph) figures consistently — e.g., 993:turbo at 4.5s matches the official Porsche 0-100 km/h figure. User should decide whether zero_to_sixty means 0-60 mph (change to 3.9s) or 0-62 mph / 0-100 km/h (change to 4.4s is then correct per official Porsche spec).",
+      "sources": {
+        "Stuttcars": "0-60 mph: 3.9s",
+        "Porsche official": "0-100 km/h: 4.4s (matches current)"
+      }
+    },
+    {
+      "id": "993-STAGE-003",
+      "confidence": "CONFLICT",
+      "file": "lib/era-content/factory-specs.ts",
+      "key": "993:gt2",
+      "field": "hp",
+      "current_value": "430 hp",
+      "proposed_value": "424 hp",
+      "conflict_description": "The 993 GT2 is rated 430 PS (metric horsepower), which converts to 424 SAE hp. The file labels the field 'hp' implying SAE. However, the Turbo in the same file shows '408 hp' which is 408 PS (the metric figure used directly), not 402 SAE hp. This suggests the file may use PS figures labeled as 'hp' throughout. If PS is the convention, 430 hp is correct. If SAE, 424 hp is correct. generation-content.ts already says '424–444 hp' implying SAE. Recommend aligning factory-specs.ts with generation-content.ts by changing to 424 hp.",
+      "sources": {
+        "Porsche official": "430 PS = 424 SAE hp (base GT2, MY1995-1997)",
+        "generation-content.ts": "uses '424–444 hp' (SAE)"
+      }
+    },
+    {
+      "id": "993-STAGE-004",
+      "confidence": "CONFLICT",
+      "file": "lib/era-content/factory-specs.ts",
+      "key": "993:gt2",
+      "field": "top_speed_mph",
+      "current_value": "183 mph",
+      "proposed_value": "186 mph",
+      "sources": {
+        "Stuttcars": "186 mph / 300 km/h",
+        "Porsche official Newsroom": "295 km/h cited in some materials = 183.4 mph",
+        "Multiple web sources": "183-186 mph range"
+      },
+      "conflict_description": "Sources split between 183 mph (~295 km/h) and 186 mph (300 km/h). Porsche press materials varied; some stated 295 km/h, others 300 km/h. MEDIUM confidence on either value."
+    },
+    {
+      "id": "993-STAGE-005",
+      "confidence": "CONFLICT",
+      "file": "lib/era-content/factory-specs.ts",
+      "key": "993:turbo_s",
+      "field": "zero_to_sixty",
+      "current_value": "4.0s",
+      "proposed_value": "3.7s",
+      "conflict_description": "Same metric ambiguity as STAGE-002. Current 4.0s is the Porsche official 0-100 km/h figure for the 450 PS ROW Turbo S. Actual 0-60 mph is 3.6-3.7s per Stuttcars and multiple performance databases. Decision depends on whether zero_to_sixty means 0-60 mph or 0-62 mph / 0-100 km/h.",
+      "sources": {
+        "Stuttcars": "0-60 mph: 3.6-3.7s",
+        "Porsche official": "0-100 km/h: ~4.0s (matches current)"
+      }
+    },
+    {
+      "id": "993-STAGE-006",
+      "confidence": "CONFLICT",
+      "file": "lib/era-content/generation-content.ts",
+      "key": "993",
+      "variant": "Turbo S",
+      "field": "production (US count)",
+      "current_value": "345 worldwide, 181 US",
+      "conflict_description": "US production count conflict: 181 US (Paternie's Redbook excerpts, cited in existing code comment) vs 176 US (Stuttcars, multiple search results). The worldwide figure of 345 is not in dispute (confirmed by 4+ sources). The existing content has a detailed note explaining the 181/345 figures and debunking 277 (UK Turbo total). Stuttcars may be using delivered-to-customer count vs production count, or US-only vs US+Canada. Recommend keeping 181 until Porsche-official or Paternie primary source can be directly verified.",
+      "sources": {
+        "Stuttcars": "176 US",
+        "Existing content note (Paternie Redbook)": "181 US",
+        "Multiple web sources citing Rennlist": "181 US"
+      },
+      "recommended_action": "Keep 181 US pending primary-source verification. The existing note explaining the conflict is appropriate."
+    },
+    {
+      "id": "993-STAGE-007",
+      "confidence": "MEDIUM",
+      "file": "lib/era-content/factory-specs.ts",
+      "key": "993:carrera_s",
+      "field": "zero_to_sixty",
+      "current_value": "5.1s",
+      "proposed_value": "5.3s",
+      "sources": {
+        "Excellence Magazine (1997 911 Carrera S)": "0-60 mph: 5.3s (manual)",
+        "auto-data.net (285 hp Carrera)": "0-60 mph: 5.1s",
+        "factory-specs.ts 993:carrera_4s": "5.1s"
+      },
+      "conflict_description": "Excellence says 5.3s for Carrera S (widebody, heavier). Auto-data says 5.1s for narrow Carrera 285 hp. Carrera S is ~44 lb heavier than narrow Carrera — reasonable that it is 0.2s slower. 5.3s likely more accurate for the S specifically."
+    },
+    {
+      "id": "993-STAGE-008",
+      "confidence": "MEDIUM",
+      "file": "lib/era-content/factory-specs.ts",
+      "key": "993:carrera_s",
+      "field": "top_speed_mph",
+      "current_value": "168 mph",
+      "proposed_value": "171 mph",
+      "sources": {
+        "Excellence Magazine (1997 Carrera S manual)": "171 mph",
+        "auto-data.net (285 hp Carrera)": "170.88 mph (275 km/h)",
+        "Porsche official stated spec": "270 km/h = 167.8 mph ≈ 168 mph"
+      },
+      "conflict_description": "Excellence Magazine and auto-data agree on 171 mph (275 km/h). Porsche's stated spec is 270 km/h = 168 mph. Excellence and auto-data appear to use independently measured or different-source data. The 168 mph in factory-specs.ts matches Porsche's published claim. MEDIUM — both values are defensible depending on source preference."
+    },
+    {
+      "id": "993-STAGE-009",
+      "confidence": "MEDIUM",
+      "file": "lib/era-content/factory-specs.ts",
+      "description": "Missing Varioram Carrera and Varioram Carrera 4 factory-spec entries",
+      "current_state": "Only '993:carrera' (272 hp, pre-Varioram) and '993:carrera_4' (272 hp) exist. Any lookup for a MY1996-1998 Carrera or Carrera 4 returns the 272 hp spec even though those cars are 285 hp.",
+      "proposed_addition": {
+        "993:carrera_varioram": {
+          "hp": "285 hp",
+          "torque": "251 lb-ft",
+          "zero_to_sixty": "5.1s",
+          "engine": "3.6L M64/21 flat-six (Varioram)",
+          "curb_weight_lb": "3,031 lb",
+          "top_speed_mph": "168 mph",
+          "redline_rpm": "6,100 rpm"
+        },
+        "993:carrera_4_varioram": {
+          "hp": "285 hp",
+          "torque": "251 lb-ft",
+          "zero_to_sixty": "5.3s",
+          "engine": "3.6L M64/21 flat-six (Varioram)",
+          "curb_weight_lb": "3,108 lb",
+          "top_speed_mph": "162 mph",
+          "redline_rpm": "6,100 rpm"
+        }
+      },
+      "sources": {
+        "auto-data.net": "285 hp Carrera specs confirmed",
+        "Stuttcars engine codes": "M64/21 for Varioram",
+        "UltimateSpecs": "curb weight 1,370 kg = 3,020 lb for 285 hp Carrera"
+      },
+      "note": "The lookup function uses longest-prefix matching, so '993:carrera_varioram' would only match trims containing 'varioram'. A better fix may require year-aware lookup logic. Flagging for Session 10 architecture discussion."
+    },
+    {
+      "id": "993-STAGE-010",
+      "confidence": "LOW",
+      "file": "lib/era-content/generation-content.ts and factory-specs.ts",
+      "description": "MSRP USD data — not found from 3+ verified sources",
+      "current_state": "No MSRP USD data present for any 993 variant in either file.",
+      "research_result": "Could not locate verified MSRP USD figures from 3+ Tier-1/Tier-2 sources. Historical US dealer price data not available in public sources consulted. Suggested research approach: Excellence Magazine historical issues (1994-1998 buyer's guides), PCNA historical records, or Porsche AG communication.",
+      "known_approximate_prices": {
+        "source_quality": "LOW — single citations, not triple-verified",
+        "Carrera Coupe MY1995": "~$65,000 USD",
+        "Carrera 4 MY1995": "~$68,000 USD",
+        "Turbo MY1996": "~$99,000 USD",
+        "Turbo S MY1997": "~$150,000 USD",
+        "GT2": "~$250,000+ USD"
+      }
+    },
+    {
+      "id": "993-STAGE-011",
+      "confidence": "MEDIUM",
+      "file": "lib/era-content/factory-specs.ts",
+      "description": "Engine code precision — current entries omit specific M64 sub-codes",
+      "current_state": "All 993 NA entries show 'engine: 3.6L M64 flat-six' without the specific sub-codes.",
+      "proposed_updates": {
+        "993:carrera": "change engine to '3.6L M64/05 flat-six (pre-Varioram, manual)'",
+        "993:turbo": "change engine to '3.6L M64/60 twin-turbo flat-six' (confirmed by UltimateSpecs)",
+        "993:carrera_4s": "change engine to '3.6L M64/21 flat-six (Varioram)'",
+        "993:carrera_s": "change engine to '3.6L M64/21 flat-six (Varioram)'"
+      },
+      "sources": {
+        "Stuttcars engine codes page": "M64/05 (pre-Varioram manual), M64/06 (pre-Varioram Tiptronic), M64/21 (Varioram), M64/60 (Turbo)",
+        "UltimateSpecs 993 Turbo": "M64/60 confirmed",
+        "auto-data.net 285 hp Carrera": "M64/21 confirmed"
+      },
+      "note": "These are additive improvements, not error corrections. The current abbreviated descriptions are not wrong — just less specific."
+    },
+    {
+      "id": "993-STAGE-012",
+      "confidence": "MEDIUM",
+      "file": "lib/era-content/generation-content.ts",
+      "key": "993",
+      "description": "Reference document total-Targa discrepancy — internal reference says ~5,400",
+      "current_state": "docs/reference/porsche_1990s_reference.md Production Volumes table says '~5,400 (1996+1997+small 1998)' for Targa total, but year splits (2,442+1,843+small) don't support ~5,400.",
+      "finding": "The '~5,400' figure in the internal reference document appears to be an error. Wikipedia's 4,583 and the year splits (2,442+1,843+~298=4,583) are internally consistent. The reference document should be updated to correct this. This audit has already corrected generation-content.ts to 4,583; the reference document may need a separate update pass.",
+      "recommended_action": "Update docs/reference/porsche_1990s_reference.md line for Targa total from '~5,400' to '4,583'. Low urgency since generation-content.ts is the single source of truth for the UI."
+    }
+  ]
+}

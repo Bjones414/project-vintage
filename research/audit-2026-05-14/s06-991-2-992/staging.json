@@ -1,0 +1,274 @@
+{
+  "session": "s06-991-2-992",
+  "audit_date": "2026-05-14",
+  "note": "MEDIUM/LOW/CONFLICT items requiring USER review before applying to generation-content.ts. Research agent results fully merged.",
+  "status": "COMPLETE",
+
+  "items": [
+
+    {
+      "id": "S01",
+      "generation": "991.2",
+      "field": "variants[GT3].production",
+      "current_value": "~9,520 worldwide (GT3 + Touring combined); ~3,250 North America",
+      "flag": "MEDIUM",
+      "research_finding": "Community registries consistently cite ~9,500 (not 9,520) worldwide. NA figure of ~3,250 was not directly confirmed — one source cited ~3,187. These are unofficial registry figures.",
+      "recommended_action": "Change '9,520' to '~9,500' for consistency with registry data. Change '~3,250' to '~3,200' or leave as approximate. Add note that these are registry estimates.",
+      "sources": ["porscheknowledge.com (~9,500 units)", "renndriver.com (9,500 units)", "911uk forum (~3,187 NA)"],
+      "line_ref": 1189
+    },
+
+    {
+      "id": "S02",
+      "generation": "991.2",
+      "field": "variants[GT3 RS].production — NA split",
+      "current_value": "~4,750 worldwide; ~1,760 North America (1,465 US + 295 Canada)",
+      "flag": "MEDIUM",
+      "research_finding": "nweuro.com registry data shows 4,750 worldwide confirmed; NA: 1,756 total (1,462 US + 294 Canada). The file's figures are off by 4 total (1,760 vs 1,756) and the US/Canada split is slightly off (1,465/295 vs 1,462/294). These are unofficial registry figures from nweuro.com.",
+      "recommended_action": "If source is nweuro.com, use their exact figures: 4,750 worldwide, 1,756 North America (1,462 US + 294 Canada). If you prefer the rounded version, keep '~1,760 North America' and remove the US/Canada split which is false precision.",
+      "sources": ["nweuro.com (4,750 worldwide, 1,462 US + 294 Canada = 1,756 NA)"],
+      "line_ref": 1197
+    },
+
+    {
+      "id": "S03",
+      "generation": "991.2",
+      "field": "variants[GT2 RS].production",
+      "current_value": "~1,000–1,580 worldwide (source conflict documented); ~1,000–1,315 North America",
+      "flag": "CONFLICT",
+      "research_finding": "Genuine conflict confirmed. Standard road car GT2 RS: ~1,000 units per most sources. Higher figures (1,580) likely include GT2 RS Clubsport track-only variants and possible Manthey Edition cars. Porsche never released an official final count.",
+      "recommended_action": "Add a parenthetical clarifying the conflict source: '~1,000 road cars (Clubsport and Manthey variants bring higher estimates to ~1,500+; no official Porsche total published).' Remove the speculative North America range since it cannot be verified.",
+      "sources": ["Multiple auction/forum sources (range 1,000–1,580)", "exoticcarhacks.com (~1,000 road cars)"],
+      "line_ref": 1205
+    },
+
+    {
+      "id": "S04",
+      "generation": "991.2",
+      "field": "variants[Speedster].production — NA allocation",
+      "current_value": "Exactly 1,948 worldwide; ~717 North America",
+      "flag": "MEDIUM",
+      "research_finding": "1,948 worldwide is CONFIRMED from Porsche press release and multiple sources. The ~717 North America allocation could NOT be confirmed from 2+ credible sources. One source cited ~484 US base units; the 717 NA figure was not found.",
+      "recommended_action": "Keep 'Exactly 1,948 worldwide.' Either verify the 717 NA figure from a registry source, or remove it. If kept, change to 'est.' to signal uncertainty.",
+      "sources": ["Porsche Newsroom US (1,948 worldwide confirmed)", "elferspot.com (1,948 confirmed)", "supercars.net (1,948 confirmed)"],
+      "line_ref": 1213
+    },
+
+    {
+      "id": "S05",
+      "generation": "991.2",
+      "field": "variants[Turbo S].description — Exclusive Series Cabriolet geography",
+      "current_value": "Cabriolet (200 units, NA-only allocation, 607 hp)",
+      "flag": "MEDIUM",
+      "research_finding": "Official Porsche Newsroom press release for the Exclusive Series covers ONLY the 500 Coupes globally; no Cabriolet mentioned. Third-party sources confirm the 200 NA Cabriolets. HP of 607 is confirmed. The 'NA-only' allocation for Cabriolet appears correct per third-party sources but lacks Tier-1 confirmation.",
+      "recommended_action": "Add qualifier: 'Cabriolet (200 units, reportedly North America allocation — 607 hp).' Do not change hp figure.",
+      "sources": ["Porsche Newsroom (500 coupes only, no Cabriolet mentioned)", "Third-party sources (200 NA Cabriolets confirmed)"],
+      "line_ref": 1182
+    },
+
+    {
+      "id": "S06",
+      "generation": "992.1",
+      "field": "variants[GT3 Touring].production",
+      "current_value": "15,667 worldwide (GT3 + Touring combined); 5,328 North America",
+      "flag": "MEDIUM",
+      "research_finding": "These figures are from Rennlist forum community registry compilation. Not official Porsche data. The file's current units_produced field already notes 'per registry compilation' which is correct hedging. The numbers themselves (15,667 / 5,328) are consistent with what's publicly cited from the registry.",
+      "recommended_action": "Keep current values and the 'per registry compilation' qualifier. Consider adding '(Rennlist registry)' as attribution.",
+      "sources": ["Rennlist forum GT3 registry thread (15,667 worldwide / 5,328 NA)"],
+      "line_ref": 1371
+    },
+
+    {
+      "id": "S07",
+      "generation": "992.1",
+      "field": "variants[GT3 RS].power note",
+      "current_value": "518 hp",
+      "flag": "MEDIUM",
+      "research_finding": "518 hp is the SAE hp figure; 525 PS is the metric (European) figure. Both are correct representations of 386 kW. The content's 518 hp is correct for the US market. Consider adding '(525 PS in European spec)' for international clarity.",
+      "recommended_action": "No correction needed. Optional: add '(525 PS)' parenthetical. Upgrade to HIGH — 518 hp (SAE) CONFIRMED by Wikipedia (525 PS / 518 hp / 386 kW).",
+      "sources": ["Wikipedia GT3 (525 PS / 518 hp / 386 kW)", "Porsche GT3 RS press kit"],
+      "line_ref": 1378
+    },
+
+    {
+      "id": "S08",
+      "generation": "992.1",
+      "field": "variants[S/T].power",
+      "current_value": "525 hp",
+      "flag": "MEDIUM",
+      "research_finding": "The S/T uses the GT3 RS 4.0L engine. Research found S/T rated at '518 hp / 525 PS' per most sources. The content's '525 hp' appears to use the PS figure as hp — same convention as other variants. However, some sources specifically cite 525 hp for the S/T as a SAE figure (slightly different tune vs GT3 RS). Carscoops cited '518 hp / 525 PS.'",
+      "recommended_action": "The '525 hp' figure appears to be the PS value used as hp per Porsche's convention. This is consistent with the file's convention throughout. Keep as-is unless you decide to standardize all figures to SAE. NOTE: the engineering note at line ~1396 says 'S/T (1,963 units, MY2024) uses the GT3 RS 4.0L engine at 525 hp' — consistent with the variant entry.",
+      "sources": ["Carscoops (518 hp SAE / 525 PS)", "Motor1.com S/T review (525 PS = 525 hp per their reporting)", "stuttcars.com S/T announcement"],
+      "line_ref": 1386
+    },
+
+    {
+      "id": "S09",
+      "generation": "992.1",
+      "field": "variants[Sport Classic].description — MSRP",
+      "current_value": "MSRP $272,300 US",
+      "flag": "CONFLICT — HIGH PRIORITY",
+      "research_finding": "WRONG. Multiple sources confirm Sport Classic US MSRP was $283,430. The $272,300 figure does not match any source found. Closest incorrect match may be the Dakar's $222,000–$223,450 or a confusion with another model.",
+      "recommended_action": "CORRECTION REQUIRED: Change '$272,300' to '$283,430'. This is confirmed WRONG by the research agent. Recommend treating as HIGH and auto-applying. The correct figure ($283,430) was cited in Porsche US press release coverage.",
+      "sources": ["Multiple search results and Porsche US press coverage ($283,430)", "gtspirit.com (1,250 units, 543 hp, $283,430 base MSRP)"],
+      "line_ref": 1356
+    },
+
+    {
+      "id": "S10",
+      "generation": "992.1",
+      "field": "value_drivers[Sport Classic].description — MSRP",
+      "current_value": "consistent secondary-market premiums above the $272,300 MSRP",
+      "flag": "CONFLICT — HIGH PRIORITY",
+      "research_finding": "Same error as S09 — the $272,300 figure appears in the value_drivers description for Sport Classic as well. Should be $283,430.",
+      "recommended_action": "CORRECTION REQUIRED: Change '$272,300' to '$283,430' in value_drivers description as well.",
+      "sources": ["Same as S09"],
+      "line_ref": 1438
+    },
+
+    {
+      "id": "S11",
+      "generation": "992.1",
+      "field": "variants[Turbo / Turbo S].description — Turbo 50 Years MSRP",
+      "current_value": "$270,500 US MSRP",
+      "flag": "CONFLICT",
+      "research_finding": "The research agent found $261,100 base + $1,995 destination = ~$263,095 for the Turbo 50 Years. The $270,500 figure could not be confirmed from any source. This may include options or dealer markups.",
+      "recommended_action": "Verify $270,500 vs $263,095. If $263,095 is confirmed (base + destination), change accordingly. The figure may be a base-only price from a different source. MEDIUM confidence correction.",
+      "sources": ["Multiple search results (~$261,100 base)", "Porsche.com (Turbo 50 Years pricing not publicly archived)"],
+      "line_ref": 1349
+    },
+
+    {
+      "id": "S12",
+      "generation": "992.1",
+      "field": "variants[Turbo / Turbo S].description — 'Ferry Porsche tribute'",
+      "current_value": "a Ferry Porsche tribute Tartan interior",
+      "flag": "PROSE — SUBSTANTIVE",
+      "research_finding": "The Turbo 50 Years is a 50th-anniversary celebration of the Porsche 911 Turbo model (1974–2024), not specifically a tribute to Ferry Porsche. While the Tartan pattern references the 1970s Porsche era (associated with Ferry Porsche's tenure), calling it a 'Ferry Porsche tribute' overstates the tribute's specific focus. Porsche's own marketing describes it as a '50 Years' anniversary model.",
+      "recommended_action": "Change to: 'a heritage Tartan plaid interior referencing 1970s Porsche interiors' OR 'a classic Tartan interior echoing the original 930 Turbo era.' Remove the 'Ferry Porsche tribute' characterization.",
+      "sources": ["Porsche Newsroom (Turbo 50 Years described as 50th anniversary of 911 Turbo, not Ferry Porsche tribute)"],
+      "line_ref": 1349
+    },
+
+    {
+      "id": "S13",
+      "generation": "992.1",
+      "field": "variants[Dakar].description — Pirelli tire model name",
+      "current_value": "Pirelli Scorpion All Terrain Plus tires",
+      "flag": "LOW",
+      "research_finding": "The specific tire model name 'Scorpion All Terrain Plus' could not be independently confirmed from 2+ sources in the research session. The Dakar does use Pirelli all-terrain tires but the exact model designation needs verification.",
+      "recommended_action": "Verify Pirelli tire model name from official Porsche Dakar press release or Pirelli's own announcement. If unverifiable, change to 'Pirelli all-terrain tires (Scorpion series).'",
+      "sources": ["Dakar press coverage (Pirelli all-terrain confirmed; model name unverified)"],
+      "line_ref": 1364
+    },
+
+    {
+      "id": "S14",
+      "generation": "992.2",
+      "field": "variants[Spirit 70].years",
+      "current_value": "years: '2026'",
+      "flag": "CONFLICT",
+      "research_finding": "Porsche Newsroom confirms EU deliveries from April 2025, US deliveries from summer 2025. Stuttcars.com designates it as 2026 MY. The model year designation is ambiguous — Porsche may internally designate it as MY2026 despite 2025 physical deliveries.",
+      "recommended_action": "Change to '2025–2026' or '2026' per your convention for borderline model years. The key fact (1,500 units, $242,250, GTS Cabriolet T-Hybrid base) are confirmed.",
+      "sources": ["Porsche Newsroom (April 2025 EU delivery, summer 2025 US delivery)", "stuttcars.com (2026 MY designation)"],
+      "line_ref": 1508
+    },
+
+    {
+      "id": "S15",
+      "generation": "992.1",
+      "field": "variants[GT3 Touring 992.1].production — source qualifier",
+      "current_value": "15,667 worldwide (GT3 + Touring combined); 5,328 North America",
+      "flag": "MEDIUM",
+      "research_finding": "These are Rennlist community registry figures, not official Porsche data. The file's units_produced field already notes 'per registry compilation.' The variant field lacks this qualifier, which could give the impression these are official figures.",
+      "recommended_action": "Add 'per registry compilation' qualifier to the variant production field, or rely on the units_produced note at the generation level.",
+      "sources": ["Rennlist forum GT3 production registry"],
+      "line_ref": 1371
+    },
+
+    {
+      "id": "S16",
+      "generation": "991.2",
+      "field": "engineering[GT2 RS].description — wheel weight savings",
+      "current_value": "magnesium BBS wheels saving approximately 8 kg per corner",
+      "flag": "LIKELY ERROR — INTERNAL INCONSISTENCY",
+      "research_finding": "8 kg per corner × 4 = 32 kg from wheels alone would exceed the total claimed Weissach Package savings of ~30 kg. The GT3 RS description (line 1198) cites '11.5 kg unsprung' as the TOTAL savings across all 4 wheels, not per corner. Most likely, the '8 kg per corner' should be '8 kg' total (unsprung) or '~2 kg per corner.' Could not find a 3rd-party source specifically confirming '8 kg per corner.'",
+      "recommended_action": "Change to: 'magnesium BBS wheels saving approximately 8 kg unsprung' (removing 'per corner'). This is consistent with the GT3 RS comparison and makes the math work with the total 30 kg package savings.",
+      "sources": ["Line 1198 comparison (GT3 RS: '11.5 kg unsprung' for all wheels)", "General magnesium vs aluminum wheel weight savings (2-4 kg per wheel is typical)"],
+      "line_ref": 1222
+    },
+
+    {
+      "id": "S17",
+      "generation": "991.2",
+      "field": "engineering[9A2 twist] — NHTSA recall number",
+      "current_value": "NHTSA recall 14V-090 (rod-bolt torque specification, ~785 cars worldwide)",
+      "flag": "MEDIUM",
+      "research_finding": "Could not verify NHTSA recall number 14V-090 specifically for the 991.1 GT3 rod-bolt recall. The recall year prefix '14' (2014) is plausible. The ~785 worldwide car count also could not be independently confirmed from 2+ sources in this session.",
+      "recommended_action": "Verify recall number '14V-090' directly on NHTSA.gov. Search for 'NHTSA Porsche 911 rod bolt recall 2014.' If the number is confirmed, upgrade to HIGH. If wrong, correct it.",
+      "sources": ["Research agent: could not confirm from 2+ sources in session time"],
+      "line_ref": 1219
+    },
+
+    {
+      "id": "S18",
+      "generation": "991.2",
+      "field": "variants[GT3 RS].description — Weissach weight savings",
+      "current_value": "magnesium BBS wheels (−11.5 kg unsprung)",
+      "flag": "MEDIUM",
+      "research_finding": "The 11.5 kg unsprung savings for GT3 RS Weissach magnesium wheels was not independently confirmed from 2+ sources in this research session. The figure is widely cited in enthusiast communities but could not be traced to a Porsche press release.",
+      "recommended_action": "Verify 11.5 kg unsprung figure from Porsche GT3 RS press kit or Weissach Package documentation.",
+      "sources": ["Research agent: 11.5 kg not confirmed from 2+ Tier 1/2 sources"],
+      "line_ref": 1198
+    },
+
+    {
+      "id": "S19",
+      "generation": "992.2",
+      "field": "notes — GT2 RS launch status",
+      "current_value": "The 992 GT2 RS had not been officially launched as of April 2026 despite extensive spy reports.",
+      "flag": "TIME-SENSITIVE",
+      "research_finding": "As of the research session (May 2026), no official GT2 RS launch announcement was found. However, this is a rapidly evolving situation and the status may have changed between 'April 2026' (the in-text cutoff) and the audit date.",
+      "recommended_action": "Verify current status as of May 2026. If GT2 RS has been officially revealed, update the notes and add a new variant entry. If still unlaunched, update the date from 'April 2026' to 'May 2026' in the text.",
+      "sources": ["Research agent: no 992 GT2 RS launch announcement found as of May 2026"],
+      "line_ref": 1475
+    },
+
+    {
+      "id": "S20",
+      "generation": "992.2",
+      "field": "variants[Turbo S T-Hybrid].description — PCCB rotor size comparison",
+      "current_value": "Standard 420mm/410mm PCCB — largest ceramic brake system ever fitted to a two-door Porsche.",
+      "flag": "MEDIUM",
+      "research_finding": "elferspot.com confirmed 420mm front / 410mm rear PCCB for the Turbo S T-Hybrid. 'Largest ceramic brake system ever fitted to a two-door Porsche' claim could not be independently verified from 2+ sources.",
+      "recommended_action": "The rotor sizes (420mm/410mm) are confirmed. The 'largest ever' superlative needs verification from Porsche's own press release for the Turbo S T-Hybrid.",
+      "sources": ["elferspot.com (420mm front / 410mm rear confirmed)"],
+      "line_ref": 1526
+    },
+
+    {
+      "id": "S21",
+      "generation": "991.2 + 992.1",
+      "field": "PROSE ISSUE — Carrera T 'most recent non-GT3 manual' error",
+      "current_value": "992.1 Carrera T variant (line 1334): '...the 992.1 Carrera T manual became the most recent non-GT3 manual 911 above the base Carrera.' Value driver (line 1453): 'the 992.1 Carrera T...became the most recent non-GT3 manual-transmission 911 available.'",
+      "flag": "PROSE — WRONG CLAIM",
+      "research_finding": "The 992.2 Carrera T is also available with a manual (confirmed HIGH by research agent, claim 35: 'PDK is not available in the Carrera T, even for an extra charge' — PCA.org). The 992.1 Carrera T is therefore NOT the most recent non-GT3 manual 911. The correct 'last of its kind' claim for the 992.1 is the manual Carrera S, which was discontinued in the 992.2.",
+      "recommended_action": "CORRECTION REQUIRED (substantive prose change): In line 1334, remove the 'most recent non-GT3 manual 911 above the base Carrera' claim and replace with: 'The 992.1 Carrera S manual (7-speed, RWD/AWD) became the last manually-shifted mid-tier Carrera in production history — the 992.2 Carrera S and GTS are PDK-only.' Alternatively, reframe the value_driver to focus on the 992.1 Carrera S. See REPORT.md PROSE-01 for full correction text.",
+      "sources": ["PCA.org ('PDK is not available in the Carrera T, even for an extra charge' — 992.2)", "Research agent claim 35 CONFIRMED HIGH"],
+      "line_ref": "1334, 1453"
+    },
+
+    {
+      "id": "S22",
+      "generation": "992.1",
+      "field": "engine field — Turbo engine '9A2' vs '9A2 Evo' designation",
+      "current_value": "3.745L 9A2 twin-turbo (Turbo: 572 hp; Turbo S: 641 hp)",
+      "flag": "LOW",
+      "research_finding": "The 992 Carrera and Sport Classic engines in the same field are labeled '9A2 Evo' but the Turbo/Turbo S engine is just '9A2' (no Evo suffix). Research agent confirmed 'Evo' distinguishes the 992's Carrera engine from the 991.2's 9A2. The Turbo's larger-displacement engine may have a different designation. Editorial inconsistency.",
+      "recommended_action": "Either add 'Evo' to the Turbo engine designation for consistency ('3.745L 9A2 Evo twin-turbo') OR research whether the 992 Turbo engine carries the 'Evo' designation separately from the Carrera engine. Low priority.",
+      "sources": ["Research agent claim 13 (9A2 = 991.2; 9A2 Evo = 992 Carrera)"],
+      "line_ref": 1300
+    }
+
+  ]
+}

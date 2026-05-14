@@ -1,0 +1,423 @@
+generation_id,generation_label,model,variant_name,year,body_style,drivetrain,comp_count,tier
+964,964,911,"Carrera 4",1989,Coupe,awd,0,critical
+964,964,911,"Carrera 2",1990,Coupe,rwd,0,critical
+964,964,911,"Carrera 4",1990,Coupe,awd,0,critical
+964,964,911,"Carrera 2",1991,Coupe,rwd,0,critical
+964,964,911,"Carrera 4",1991,Coupe,awd,0,critical
+964,964,911,"Turbo 3.3",1991,Coupe,rwd,0,critical
+964,964,911,"Carrera 2",1992,Coupe,rwd,0,critical
+964,964,911,"Carrera 4",1992,Coupe,awd,0,critical
+964,964,911,"Carrera RS (Europe)",1992,Coupe,rwd,1,critical
+964,964,911,"Turbo 3.3",1992,Coupe,rwd,0,critical
+964,964,911,"Turbo S Leichtbau",1992,Coupe,rwd,0,critical
+964,964,911,"30 Jahre Anniversary",1993,Coupe,awd,0,critical
+964,964,911,"Carrera 2",1993,Coupe,rwd,0,critical
+964,964,911,"Carrera 4",1993,Coupe,awd,0,critical
+964,964,911,"RS America",1993,Coupe,rwd,0,critical
+964,964,911,"Speedster",1993,Speedster,rwd,0,critical
+964,964,911,"Turbo 3.6",1993,Coupe,rwd,0,critical
+964,964,911,"Carrera 2",1994,Coupe,rwd,0,critical
+964,964,911,"Carrera 4",1994,Coupe,awd,0,critical
+964,964,911,"RS America",1994,Coupe,rwd,0,critical
+964,964,911,"Speedster",1994,Speedster,rwd,0,critical
+964,964,911,"Turbo 3.6",1994,Coupe,rwd,2,critical
+964,964,911,"Turbo 3.6 S (Flachbau and Package)",1994,Coupe,rwd,1,critical
+993,993,911,"Carrera (pre-Varioram)",1995,Coupe,rwd,26,sufficient
+993,993,911,"Carrera 4",1995,Coupe,awd,3,critical
+993,993,911,"Carrera RS",1995,Coupe,rwd,2,critical
+993,993,911,"GT2",1995,Coupe,rwd,0,critical
+993,993,911,"Carrera (Varioram)",1996,Coupe,rwd,20,sufficient
+993,993,911,"Carrera 4",1996,Coupe,awd,3,critical
+993,993,911,"Carrera 4S",1996,Coupe,awd,11,warning
+993,993,911,"Carrera RS",1996,Coupe,rwd,1,critical
+993,993,911,"GT2",1996,Coupe,rwd,0,critical
+993,993,911,"Targa",1996,Targa,rwd,5,sparse
+993,993,911,"Turbo",1996,Coupe,awd,19,sufficient
+993,993,911,"Carrera (Varioram)",1997,Coupe,rwd,0,critical
+993,993,911,"Carrera 4",1997,Coupe,awd,0,critical
+993,993,911,"Carrera 4S",1997,Coupe,awd,20,sufficient
+993,993,911,"Carrera S",1997,Coupe,rwd,11,warning
+993,993,911,"GT2",1997,Coupe,rwd,1,critical
+993,993,911,"Targa",1997,Targa,rwd,0,critical
+993,993,911,"Turbo",1997,Coupe,awd,8,sparse
+993,993,911,"Turbo S",1997,Coupe,awd,2,critical
+993,993,911,"Carrera (Varioram)",1998,Coupe,rwd,0,critical
+993,993,911,"Carrera 4",1998,Coupe,awd,0,critical
+993,993,911,"Carrera 4S",1998,Coupe,awd,7,sparse
+993,993,911,"Carrera S",1998,Coupe,rwd,21,sufficient
+993,993,911,"GT2",1998,Coupe,rwd,0,critical
+993,993,911,"Targa",1998,Targa,rwd,2,critical
+993,993,911,"Turbo",1998,Coupe,awd,0,critical
+996.1,996.1,911,"Carrera",1999,Coupe,rwd,0,critical
+996.1,996.1,911,"Carrera 4",1999,Coupe,awd,0,critical
+996.1,996.1,911,"Carrera 4 Cabriolet",1999,Cabriolet,awd,0,critical
+996.1,996.1,911,"Carrera Cabriolet",1999,Cabriolet,rwd,0,critical
+996.1,996.1,911,"GT3 Mk1",1999,Coupe,rwd,0,critical
+996.1,996.1,911,"Carrera",2000,Coupe,rwd,0,critical
+996.1,996.1,911,"Carrera 4",2000,Coupe,awd,0,critical
+996.1,996.1,911,"Carrera 4 Cabriolet",2000,Cabriolet,awd,0,critical
+996.1,996.1,911,"Carrera Cabriolet",2000,Cabriolet,rwd,0,critical
+996.1,996.1,911,"GT3 Mk1",2000,Coupe,rwd,0,critical
+996.1,996.1,911,"Millennium Edition",2000,Coupe,awd,0,critical
+996.1,996.1,911,"Carrera",2001,Coupe,rwd,0,critical
+996.1,996.1,911,"Carrera 4",2001,Coupe,awd,2,critical
+996.1,996.1,911,"Carrera 4 Cabriolet",2001,Cabriolet,awd,0,critical
+996.1,996.1,911,"Carrera Cabriolet",2001,Cabriolet,rwd,0,critical
+996.1,996.1,911,"GT3 Mk1",2001,Coupe,rwd,0,critical
+996.1,996.1,911,"Turbo",2001,Coupe,awd,2,critical
+996.2,996.2,911,"GT2 Mk1",2001,Coupe,rwd,0,critical
+996.2,996.2,911,"Turbo",2001,Coupe,awd,0,critical
+996.2,996.2,911,"Carrera",2002,Coupe,rwd,1,critical
+996.2,996.2,911,"Carrera 4",2002,Coupe,awd,0,critical
+996.2,996.2,911,"Carrera 4 Cabriolet",2002,Cabriolet,awd,0,critical
+996.2,996.2,911,"Carrera 4S",2002,Coupe,awd,0,critical
+996.2,996.2,911,"Carrera Cabriolet",2002,Cabriolet,rwd,0,critical
+996.2,996.2,911,"GT2 Mk1",2002,Coupe,rwd,1,critical
+996.2,996.2,911,"Targa",2002,Targa,rwd,0,critical
+996.2,996.2,911,"Turbo",2002,Coupe,awd,0,critical
+996.2,996.2,911,"Carrera",2003,Coupe,rwd,0,critical
+996.2,996.2,911,"Carrera 4",2003,Coupe,awd,0,critical
+996.2,996.2,911,"Carrera 4 Cabriolet",2003,Cabriolet,awd,0,critical
+996.2,996.2,911,"Carrera 4S",2003,Coupe,awd,0,critical
+996.2,996.2,911,"Carrera Cabriolet",2003,Cabriolet,rwd,0,critical
+996.2,996.2,911,"GT2 Mk1",2003,Coupe,rwd,0,critical
+996.2,996.2,911,"GT3 Mk2",2003,Coupe,rwd,0,critical
+996.2,996.2,911,"Targa",2003,Targa,rwd,0,critical
+996.2,996.2,911,"Turbo",2003,Coupe,awd,0,critical
+996.2,996.2,911,"40 Jahre 911",2004,Coupe,rwd,1,critical
+996.2,996.2,911,"Carrera",2004,Coupe,rwd,1,critical
+996.2,996.2,911,"Carrera 4 Cabriolet",2004,Cabriolet,awd,0,critical
+996.2,996.2,911,"Carrera 4S",2004,Coupe,awd,0,critical
+996.2,996.2,911,"Carrera Cabriolet",2004,Cabriolet,rwd,0,critical
+996.2,996.2,911,"GT2 Mk2",2004,Coupe,rwd,1,critical
+996.2,996.2,911,"GT3 Mk2",2004,Coupe,rwd,1,critical
+996.2,996.2,911,"Targa",2004,Targa,rwd,0,critical
+996.2,996.2,911,"Turbo",2004,Coupe,awd,0,critical
+996.2,996.2,911,"Carrera",2005,Coupe,rwd,0,critical
+996.2,996.2,911,"Carrera 4S",2005,Coupe,awd,0,critical
+996.2,996.2,911,"Carrera Cabriolet",2005,Cabriolet,rwd,0,critical
+996.2,996.2,911,"GT2 Mk2",2005,Coupe,rwd,0,critical
+996.2,996.2,911,"GT3 Mk2",2005,Coupe,rwd,0,critical
+996.2,996.2,911,"Targa",2005,Targa,rwd,0,critical
+996.2,996.2,911,"Turbo",2005,Coupe,awd,0,critical
+996.2,996.2,911,"Turbo S",2005,Coupe,awd,0,critical
+997.1,997.1,911,"Carrera",2005,Coupe,rwd,5,sparse
+997.1,997.1,911,"Carrera S",2005,Coupe,rwd,5,sparse
+997.1,997.1,911,"Carrera",2006,Coupe,rwd,0,critical
+997.1,997.1,911,"Carrera 4",2006,Coupe,awd,0,critical
+997.1,997.1,911,"Carrera 4S",2006,Coupe,awd,0,critical
+997.1,997.1,911,"Carrera S",2006,Coupe,rwd,0,critical
+997.1,997.1,911,"Carrera",2007,Coupe,rwd,1,critical
+997.1,997.1,911,"Carrera 4",2007,Coupe,awd,0,critical
+997.1,997.1,911,"Carrera 4S",2007,Coupe,awd,0,critical
+997.1,997.1,911,"Carrera S",2007,Coupe,rwd,1,critical
+997.1,997.1,911,"GT3",2007,Coupe,rwd,1,critical
+997.1,997.1,911,"GT3 RS",2007,Coupe,rwd,1,critical
+997.1,997.1,911,"Targa 4",2007,Targa,awd,0,critical
+997.1,997.1,911,"Targa 4S",2007,Targa,awd,0,critical
+997.1,997.1,911,"Turbo",2007,Coupe,awd,0,critical
+997.1,997.1,911,"Carrera",2008,Coupe,rwd,1,critical
+997.1,997.1,911,"Carrera 4",2008,Coupe,awd,0,critical
+997.1,997.1,911,"Carrera 4S",2008,Coupe,awd,0,critical
+997.1,997.1,911,"Carrera S",2008,Coupe,rwd,1,critical
+997.1,997.1,911,"GT2",2008,Coupe,rwd,1,critical
+997.1,997.1,911,"GT3",2008,Coupe,rwd,1,critical
+997.1,997.1,911,"GT3 RS",2008,Coupe,rwd,1,critical
+997.1,997.1,911,"Targa 4",2008,Targa,awd,0,critical
+997.1,997.1,911,"Targa 4S",2008,Targa,awd,0,critical
+997.1,997.1,911,"Turbo",2008,Coupe,awd,0,critical
+997.1,997.1,911,"Turbo Cabriolet",2008,Cabriolet,awd,0,critical
+997.1,997.1,911,"GT2",2009,Coupe,rwd,0,critical
+997.1,997.1,911,"GT3",2009,Coupe,rwd,0,critical
+997.1,997.1,911,"GT3 RS",2009,Coupe,rwd,0,critical
+997.1,997.1,911,"Turbo",2009,Coupe,awd,0,critical
+997.1,997.1,911,"Turbo Cabriolet",2009,Cabriolet,awd,0,critical
+997.2,997.2,911,"Carrera",2009,Coupe,rwd,0,critical
+997.2,997.2,911,"Carrera 4",2009,Coupe,awd,0,critical
+997.2,997.2,911,"Carrera 4S",2009,Coupe,awd,0,critical
+997.2,997.2,911,"Carrera S",2009,Coupe,rwd,0,critical
+997.2,997.2,911,"Targa 4 / Targa 4S",2009,Targa,awd,0,critical
+997.2,997.2,911,"Carrera",2010,Coupe,rwd,1,critical
+997.2,997.2,911,"Carrera 4",2010,Coupe,awd,0,critical
+997.2,997.2,911,"Carrera 4S",2010,Coupe,awd,0,critical
+997.2,997.2,911,"Carrera S",2010,Coupe,rwd,1,critical
+997.2,997.2,911,"GT3 (3.8L)",2010,Coupe,rwd,1,critical
+997.2,997.2,911,"GT3 RS (3.8L)",2010,Coupe,rwd,1,critical
+997.2,997.2,911,"Targa 4 / Targa 4S",2010,Targa,awd,0,critical
+997.2,997.2,911,"Turbo",2010,Coupe,awd,0,critical
+997.2,997.2,911,"Carrera",2011,Coupe,rwd,1,critical
+997.2,997.2,911,"Carrera 4",2011,Coupe,awd,0,critical
+997.2,997.2,911,"Carrera 4S",2011,Coupe,awd,0,critical
+997.2,997.2,911,"Carrera GTS",2011,Coupe,rwd,1,critical
+997.2,997.2,911,"Carrera S",2011,Coupe,rwd,1,critical
+997.2,997.2,911,"GT2 RS",2011,Coupe,rwd,1,critical
+997.2,997.2,911,"GT3 (3.8L)",2011,Coupe,rwd,1,critical
+997.2,997.2,911,"GT3 RS (3.8L)",2011,Coupe,rwd,1,critical
+997.2,997.2,911,"GT3 RS 4.0",2011,Coupe,rwd,1,critical
+997.2,997.2,911,"Targa 4 / Targa 4S",2011,Targa,awd,0,critical
+997.2,997.2,911,"Turbo",2011,Coupe,awd,0,critical
+997.2,997.2,911,"Turbo S",2011,Coupe,awd,0,critical
+997.2,997.2,911,"Carrera",2012,Coupe,rwd,0,critical
+997.2,997.2,911,"Carrera 4",2012,Coupe,awd,0,critical
+997.2,997.2,911,"Carrera 4 GTS",2012,Coupe,awd,0,critical
+997.2,997.2,911,"Carrera 4S",2012,Coupe,awd,0,critical
+997.2,997.2,911,"Carrera GTS",2012,Coupe,rwd,0,critical
+997.2,997.2,911,"Carrera S",2012,Coupe,rwd,0,critical
+997.2,997.2,911,"Targa 4 / Targa 4S",2012,Targa,awd,0,critical
+997.2,997.2,911,"Turbo",2012,Coupe,awd,0,critical
+997.2,997.2,911,"Turbo S",2012,Coupe,awd,0,critical
+997.2,997.2,911,"Turbo",2013,Coupe,awd,0,critical
+997.2,997.2,911,"Turbo S",2013,Coupe,awd,0,critical
+991.1,991.1,911,"Carrera",2012,Coupe,rwd,0,critical
+991.1,991.1,911,"Carrera 4",2012,Coupe,awd,0,critical
+991.1,991.1,911,"Carrera 4S",2012,Coupe,awd,0,critical
+991.1,991.1,911,"Carrera S",2012,Coupe,rwd,0,critical
+991.1,991.1,911,"Carrera",2013,Coupe,rwd,1,critical
+991.1,991.1,911,"Carrera 4",2013,Coupe,awd,0,critical
+991.1,991.1,911,"Carrera 4S",2013,Coupe,awd,0,critical
+991.1,991.1,911,"Carrera S",2013,Coupe,rwd,1,critical
+991.1,991.1,911,"50th Anniversary Edition",2014,Coupe,rwd,0,critical
+991.1,991.1,911,"Carrera",2014,Coupe,rwd,0,critical
+991.1,991.1,911,"Carrera 4",2014,Coupe,awd,0,critical
+991.1,991.1,911,"Carrera 4S",2014,Coupe,awd,0,critical
+991.1,991.1,911,"Carrera S",2014,Coupe,rwd,0,critical
+991.1,991.1,911,"GT3",2014,Coupe,rwd,0,critical
+991.1,991.1,911,"Targa 4",2014,Targa,awd,0,critical
+991.1,991.1,911,"Targa 4S",2014,Targa,awd,0,critical
+991.1,991.1,911,"Turbo",2014,Coupe,awd,0,critical
+991.1,991.1,911,"Turbo S",2014,Coupe,awd,0,critical
+991.1,991.1,911,"Carrera",2015,Coupe,rwd,0,critical
+991.1,991.1,911,"Carrera 4",2015,Coupe,awd,0,critical
+991.1,991.1,911,"Carrera 4 GTS",2015,Coupe,awd,0,critical
+991.1,991.1,911,"Carrera 4S",2015,Coupe,awd,0,critical
+991.1,991.1,911,"Carrera GTS",2015,Coupe,rwd,0,critical
+991.1,991.1,911,"Carrera S",2015,Coupe,rwd,0,critical
+991.1,991.1,911,"GT3",2015,Coupe,rwd,0,critical
+991.1,991.1,911,"Targa 4",2015,Targa,awd,0,critical
+991.1,991.1,911,"Targa 4 GTS",2015,Targa,awd,0,critical
+991.1,991.1,911,"Targa 4S",2015,Targa,awd,0,critical
+991.1,991.1,911,"Turbo",2015,Coupe,awd,0,critical
+991.1,991.1,911,"Turbo S",2015,Coupe,awd,0,critical
+991.1,991.1,911,"911 R",2016,Coupe,rwd,0,critical
+991.1,991.1,911,"Carrera",2016,Coupe,rwd,0,critical
+991.1,991.1,911,"Carrera 4",2016,Coupe,awd,0,critical
+991.1,991.1,911,"Carrera 4 GTS",2016,Coupe,awd,0,critical
+991.1,991.1,911,"Carrera 4S",2016,Coupe,awd,0,critical
+991.1,991.1,911,"Carrera GTS",2016,Coupe,rwd,0,critical
+991.1,991.1,911,"Carrera S",2016,Coupe,rwd,0,critical
+991.1,991.1,911,"GT3",2016,Coupe,rwd,0,critical
+991.1,991.1,911,"GT3 RS",2016,Coupe,rwd,0,critical
+991.1,991.1,911,"Targa 4",2016,Targa,awd,0,critical
+991.1,991.1,911,"Targa 4 GTS",2016,Targa,awd,0,critical
+991.1,991.1,911,"Targa 4S",2016,Targa,awd,0,critical
+991.1,991.1,911,"Turbo",2016,Coupe,awd,0,critical
+991.1,991.1,911,"Turbo S",2016,Coupe,awd,0,critical
+991.2,991.2,911,"Carrera",2017,Coupe,rwd,0,critical
+991.2,991.2,911,"Carrera GTS / 4 GTS",2017,Coupe,rwd / awd,0,critical
+991.2,991.2,911,"Carrera S / Carrera 4S",2017,Coupe,rwd / awd,0,critical
+991.2,991.2,911,"Turbo",2017,Coupe,awd,0,critical
+991.2,991.2,911,"Turbo S",2017,Coupe,awd,0,critical
+991.2,991.2,911,"Carrera",2018,Coupe,rwd,3,critical
+991.2,991.2,911,"Carrera GTS / 4 GTS",2018,Coupe,rwd / awd,0,critical
+991.2,991.2,911,"Carrera S / Carrera 4S",2018,Coupe,rwd / awd,0,critical
+991.2,991.2,911,"Carrera T",2018,Coupe,rwd,3,critical
+991.2,991.2,911,"GT2 RS",2018,Coupe,rwd,3,critical
+991.2,991.2,911,"GT3 / GT3 Touring",2018,Coupe,rwd,3,critical
+991.2,991.2,911,"Turbo",2018,Coupe,awd,0,critical
+991.2,991.2,911,"Turbo S",2018,Coupe,awd,0,critical
+991.2,991.2,911,"Carrera",2019,Coupe,rwd,2,critical
+991.2,991.2,911,"Carrera GTS / 4 GTS",2019,Coupe,rwd / awd,0,critical
+991.2,991.2,911,"Carrera S / Carrera 4S",2019,Coupe,rwd / awd,0,critical
+991.2,991.2,911,"Carrera T",2019,Coupe,rwd,2,critical
+991.2,991.2,911,"GT2 RS",2019,Coupe,rwd,2,critical
+991.2,991.2,911,"GT3 / GT3 Touring",2019,Coupe,rwd,2,critical
+991.2,991.2,911,"GT3 RS",2019,Coupe,rwd,2,critical
+991.2,991.2,911,"Speedster",2019,Speedster,rwd,2,critical
+991.2,991.2,911,"Turbo",2019,Coupe,awd,0,critical
+991.2,991.2,911,"Turbo S",2019,Coupe,awd,0,critical
+992.1,992.1,911,"Carrera",2020,Coupe,rwd,0,critical
+992.1,992.1,911,"Carrera S / Carrera 4S",2020,Coupe,rwd / awd,0,critical
+992.1,992.1,911,"Turbo / Turbo S",2020,Coupe,awd,0,critical
+992.1,992.1,911,"Carrera",2021,Coupe,rwd,0,critical
+992.1,992.1,911,"Carrera S / Carrera 4S",2021,Coupe,rwd / awd,0,critical
+992.1,992.1,911,"Targa 4 / Targa 4S",2021,Targa,awd,0,critical
+992.1,992.1,911,"Turbo / Turbo S",2021,Coupe,awd,0,critical
+992.1,992.1,911,"Carrera",2022,Coupe,rwd,2,critical
+992.1,992.1,911,"Carrera GTS / 4 GTS",2022,Coupe,rwd / awd,0,critical
+992.1,992.1,911,"Carrera S / Carrera 4S",2022,Coupe,rwd / awd,0,critical
+992.1,992.1,911,"GT3 / GT3 Touring",2022,Coupe,rwd,2,critical
+992.1,992.1,911,"Targa 4 / Targa 4S",2022,Targa,awd,0,critical
+992.1,992.1,911,"Turbo / Turbo S",2022,Coupe,awd,1,critical
+992.1,992.1,911,"Carrera",2023,Coupe,rwd,2,critical
+992.1,992.1,911,"Carrera GTS / 4 GTS",2023,Coupe,rwd / awd,0,critical
+992.1,992.1,911,"Carrera S / Carrera 4S",2023,Coupe,rwd / awd,0,critical
+992.1,992.1,911,"Carrera T",2023,Coupe,rwd,2,critical
+992.1,992.1,911,"Dakar",2023,Coupe,awd,0,critical
+992.1,992.1,911,"GT3 / GT3 Touring",2023,Coupe,rwd,2,critical
+992.1,992.1,911,"GT3 RS",2023,Coupe,rwd,2,critical
+992.1,992.1,911,"Sport Classic",2023,Coupe,rwd,2,critical
+992.1,992.1,911,"Targa 4 / Targa 4S",2023,Targa,awd,0,critical
+992.1,992.1,911,"Turbo / Turbo S",2023,Coupe,awd,0,critical
+992.1,992.1,911,"911 S/T",2024,Coupe,rwd,0,critical
+992.1,992.1,911,"Carrera",2024,Coupe,rwd,0,critical
+992.1,992.1,911,"Carrera GTS / 4 GTS",2024,Coupe,rwd / awd,0,critical
+992.1,992.1,911,"Carrera S / Carrera 4S",2024,Coupe,rwd / awd,0,critical
+992.1,992.1,911,"Carrera T",2024,Coupe,rwd,0,critical
+992.1,992.1,911,"GT3 / GT3 Touring",2024,Coupe,rwd,0,critical
+992.1,992.1,911,"GT3 RS",2024,Coupe,rwd,0,critical
+992.1,992.1,911,"Targa 4 / Targa 4S",2024,Targa,awd,0,critical
+992.1,992.1,911,"Turbo / Turbo S",2024,Coupe,awd,0,critical
+992.2,992.2,911,"Carrera",2024,Coupe,rwd,0,critical
+992.2,992.2,911,"Carrera GTS T-Hybrid",2024,Coupe,rwd / awd,0,critical
+992.2,992.2,911,"Carrera T",2024,Coupe,rwd,0,critical
+992.2,992.2,911,"GT3 / GT3 Touring (992.2)",2024,Coupe,rwd,0,critical
+992.2,992.2,911,"Carrera",2025,Coupe,rwd,0,critical
+992.2,992.2,911,"Carrera GTS T-Hybrid",2025,Coupe,rwd / awd,0,critical
+992.2,992.2,911,"Carrera S / Carrera 4S / Targa 4S",2025,Targa,rwd / awd,0,critical
+992.2,992.2,911,"Carrera T",2025,Coupe,rwd,0,critical
+992.2,992.2,911,"GT3 / GT3 Touring (992.2)",2025,Coupe,rwd,0,critical
+992.2,992.2,911,"Turbo S T-Hybrid",2025,Coupe,awd,0,critical
+992.2,992.2,911,"Carrera",2026,Coupe,rwd,0,critical
+992.2,992.2,911,"Carrera GTS T-Hybrid",2026,Coupe,rwd / awd,0,critical
+992.2,992.2,911,"Carrera S / Carrera 4S / Targa 4S",2026,Targa,rwd / awd,0,critical
+992.2,992.2,911,"Carrera T",2026,Coupe,rwd,0,critical
+992.2,992.2,911,"GT3 / GT3 Touring (992.2)",2026,Coupe,rwd,0,critical
+992.2,992.2,911,"Spirit 70",2026,Coupe,rwd,0,critical
+992.2,992.2,911,"Turbo S T-Hybrid",2026,Coupe,awd,0,critical
+986,986,Boxster,"Boxster 2.5",1997,Roadster,rwd,0,critical
+986,986,Boxster,"Boxster 2.5",1998,Roadster,rwd,0,critical
+986,986,Boxster,"Boxster 2.5",1999,Roadster,rwd,0,critical
+986,986,Boxster,"Boxster 2.7 (pre-facelift)",2000,Roadster,rwd,0,critical
+986,986,Boxster,"Boxster S",2000,Roadster,rwd,0,critical
+986,986,Boxster,"Boxster 2.7 (pre-facelift)",2001,Roadster,rwd,0,critical
+986,986,Boxster,"Boxster S",2001,Roadster,rwd,0,critical
+986,986,Boxster,"Boxster 2.7 (pre-facelift)",2002,Roadster,rwd,0,critical
+986,986,Boxster,"Boxster S",2002,Roadster,rwd,0,critical
+986,986,Boxster,"Boxster 2.7 (post-facelift)",2003,Roadster,rwd,0,critical
+986,986,Boxster,"Boxster S",2003,Roadster,rwd,0,critical
+986,986,Boxster,"50 Years 550 Spyder",2004,Roadster,rwd,0,critical
+986,986,Boxster,"Boxster 2.7 (post-facelift)",2004,Roadster,rwd,0,critical
+986,986,Boxster,"Boxster S",2004,Roadster,rwd,0,critical
+987.1-boxster,987.1,Boxster,"Boxster (base)",2005,Roadster,rwd,0,critical
+987.1-boxster,987.1,Boxster,"Boxster S (3.2L)",2005,Roadster,rwd,0,critical
+987.1-boxster,987.1,Boxster,"Boxster (base)",2006,Roadster,rwd,0,critical
+987.1-boxster,987.1,Boxster,"Boxster S (3.2L)",2006,Roadster,rwd,0,critical
+987.1-boxster,987.1,Boxster,"Boxster (base)",2007,Roadster,rwd,0,critical
+987.1-boxster,987.1,Boxster,"Boxster S (3.4L, VarioCam Plus)",2007,Roadster,rwd,0,critical
+987.1-boxster,987.1,Boxster,"Boxster (base)",2008,Roadster,rwd,0,critical
+987.1-boxster,987.1,Boxster,"Boxster RS 60 Spyder",2008,Roadster,rwd,0,critical
+987.1-boxster,987.1,Boxster,"Boxster S (3.4L, VarioCam Plus)",2008,Roadster,rwd,0,critical
+987.2-boxster,987.2,Boxster,"Boxster (base)",2009,Roadster,rwd,0,critical
+987.2-boxster,987.2,Boxster,"Boxster S",2009,Roadster,rwd,0,critical
+987.2-boxster,987.2,Boxster,"Porsche Design Edition 2",2009,Roadster,rwd,0,critical
+987.2-boxster,987.2,Boxster,"Boxster (base)",2010,Roadster,rwd,0,critical
+987.2-boxster,987.2,Boxster,"Boxster S",2010,Roadster,rwd,0,critical
+987.2-boxster,987.2,Boxster,"Boxster (base)",2011,Roadster,rwd,0,critical
+987.2-boxster,987.2,Boxster,"Boxster S",2011,Roadster,rwd,0,critical
+987.2-boxster,987.2,Boxster,"Boxster S Black Edition",2011,Roadster,rwd,0,critical
+987.2-boxster,987.2,Boxster,"Boxster Spyder",2011,Roadster,rwd,0,critical
+987.2-boxster,987.2,Boxster,"Boxster (base)",2012,Roadster,rwd,0,critical
+987.2-boxster,987.2,Boxster,"Boxster S",2012,Roadster,rwd,0,critical
+987.2-boxster,987.2,Boxster,"Boxster Spyder",2012,Roadster,rwd,0,critical
+981-boxster,981,Boxster,"Boxster (base)",2013,Roadster,rwd,0,critical
+981-boxster,981,Boxster,"Boxster S",2013,Roadster,rwd,0,critical
+981-boxster,981,Boxster,"Boxster (base)",2014,Roadster,rwd,0,critical
+981-boxster,981,Boxster,"Boxster S",2014,Roadster,rwd,0,critical
+981-boxster,981,Boxster,"Boxster (base)",2015,Roadster,rwd,0,critical
+981-boxster,981,Boxster,"Boxster GTS",2015,Roadster,rwd,0,critical
+981-boxster,981,Boxster,"Boxster S",2015,Roadster,rwd,0,critical
+981-boxster,981,Boxster,"Boxster (base)",2016,Roadster,rwd,0,critical
+981-boxster,981,Boxster,"Boxster GTS",2016,Roadster,rwd,0,critical
+981-boxster,981,Boxster,"Boxster S",2016,Roadster,rwd,0,critical
+981-boxster,981,Boxster,"Boxster Spyder",2016,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster (flat-four)",2017,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster S (flat-four)",2017,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster (flat-four)",2018,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster GTS (flat-four)",2018,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster S (flat-four)",2018,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster (flat-four)",2019,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster GTS (flat-four)",2019,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster S (flat-four)",2019,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster (flat-four)",2020,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster GTS 4.0",2020,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster S (flat-four)",2020,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster Spyder",2020,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster (flat-four)",2021,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster GTS 4.0",2021,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster S (flat-four)",2021,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster Spyder",2021,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster (flat-four)",2022,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster GTS 4.0",2022,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster S (flat-four)",2022,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster Spyder",2022,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster (flat-four)",2023,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster GTS 4.0",2023,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster S (flat-four)",2023,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster Spyder",2023,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster (flat-four)",2024,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster GTS 4.0",2024,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster S (flat-four)",2024,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster Spyder",2024,Roadster,rwd,0,critical
+982-boxster,718,718 Boxster,"718 Boxster Spyder RS",2024,Roadster,rwd,0,critical
+987.1-cayman,987.1,Cayman,"Cayman S",2006,Coupe,unknown,0,critical
+987.1-cayman,987.1,Cayman,"Cayman",2007,Coupe,unknown,0,critical
+987.1-cayman,987.1,Cayman,"Cayman S",2007,Coupe,unknown,0,critical
+987.1-cayman,987.1,Cayman,"Cayman",2008,Coupe,unknown,0,critical
+987.1-cayman,987.1,Cayman,"Cayman S",2008,Coupe,unknown,0,critical
+987.1-cayman,987.1,Cayman,"Cayman S Sport",2008,Coupe,unknown,0,critical
+987.1-cayman,987.1,Cayman,"Design Edition 1",2008,Coupe,unknown,0,critical
+987.2-cayman,987.2,Cayman,"Cayman",2009,Coupe,unknown,0,critical
+987.2-cayman,987.2,Cayman,"Cayman S",2009,Coupe,unknown,0,critical
+987.2-cayman,987.2,Cayman,"Cayman",2010,Coupe,unknown,0,critical
+987.2-cayman,987.2,Cayman,"Cayman S",2010,Coupe,unknown,0,critical
+987.2-cayman,987.2,Cayman,"Cayman",2011,Coupe,unknown,0,critical
+987.2-cayman,987.2,Cayman,"Cayman S",2011,Coupe,unknown,0,critical
+987.2-cayman,987.2,Cayman,"Cayman",2012,Coupe,unknown,1,critical
+987.2-cayman,987.2,Cayman,"Cayman R",2012,Coupe,unknown,1,critical
+987.2-cayman,987.2,Cayman,"Cayman S",2012,Coupe,unknown,1,critical
+987.2-cayman,987.2,Cayman,"Cayman S Black Edition",2012,Coupe,unknown,1,critical
+981-cayman,981,Cayman,"Cayman",2013,Coupe,unknown,0,critical
+981-cayman,981,Cayman,"Cayman S",2013,Coupe,unknown,0,critical
+981-cayman,981,Cayman,"Cayman",2014,Coupe,unknown,0,critical
+981-cayman,981,Cayman,"Cayman S",2014,Coupe,unknown,0,critical
+981-cayman,981,Cayman,"Cayman",2015,Coupe,unknown,0,critical
+981-cayman,981,Cayman,"Cayman GTS",2015,Coupe,unknown,0,critical
+981-cayman,981,Cayman,"Cayman S",2015,Coupe,unknown,0,critical
+981-cayman,981,Cayman,"Cayman",2016,Coupe,unknown,0,critical
+981-cayman,981,Cayman,"Cayman GT4",2016,Coupe,unknown,0,critical
+981-cayman,981,Cayman,"Cayman GTS",2016,Coupe,unknown,0,critical
+981-cayman,981,Cayman,"Cayman S",2016,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman",2017,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman S",2017,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman",2018,Coupe,unknown,7,sparse
+982-cayman,718,718 Cayman,"718 Cayman GTS (flat-four)",2018,Coupe,unknown,7,sparse
+982-cayman,718,718 Cayman,"718 Cayman S",2018,Coupe,unknown,7,sparse
+982-cayman,718,718 Cayman,"718 Cayman",2019,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman GTS (flat-four)",2019,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman S",2019,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman",2020,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman GT4",2020,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman GTS 4.0",2020,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman S",2020,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman",2021,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman GT4",2021,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman GTS 4.0",2021,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman S",2021,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman",2022,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman GT4",2022,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman GT4 RS",2022,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman GTS 4.0",2022,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman S",2022,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman",2023,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman GT4",2023,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman GT4 RS",2023,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman GTS 4.0",2023,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman S",2023,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman",2024,Coupe,unknown,1,critical
+982-cayman,718,718 Cayman,"718 Cayman GT4 RS",2024,Coupe,unknown,1,critical
+982-cayman,718,718 Cayman,"718 Cayman GTS 4.0",2024,Coupe,unknown,1,critical
+982-cayman,718,718 Cayman,"718 Cayman S",2024,Coupe,unknown,1,critical
+982-cayman,718,718 Cayman,"718 Cayman",2025,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman GT4 RS",2025,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman GTS 4.0",2025,Coupe,unknown,0,critical
+982-cayman,718,718 Cayman,"718 Cayman S",2025,Coupe,unknown,0,critical

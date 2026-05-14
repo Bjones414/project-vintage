@@ -1,0 +1,168 @@
+{
+  "session": "s05-991-1",
+  "generation": "991.1",
+  "audit_date": "2026-05-14",
+  "staged_items": [
+    {
+      "id": "STAGE-001",
+      "severity": "MEDIUM",
+      "category": "numeric_unverified",
+      "field_path": "variants[Turbo S].production",
+      "current_value": "9,629 worldwide (Coupe + Cab; Porsche Newsroom); ~4,130 North America",
+      "proposed_change": "Remove or flag ~4,130 North America as unverified",
+      "rationale": "The worldwide figure (9,629) is verified Tier 1. The ~4,130 North America sub-figure appears in no primary or secondary source found. At 43% of worldwide, this would be an unusually high NA share for a low-volume halo variant. Recommend either removing the NA sub-figure or annotating as '(unverified)' until a primary source is located.",
+      "sources_checked": ["Porsche Newsroom", "Stuttcars", "Rennlist", "Autoevolution"],
+      "recommendation": "Add '(unverified)' qualifier to NA figure, or remove NA sub-figure pending source"
+    },
+    {
+      "id": "STAGE-002",
+      "severity": "MEDIUM",
+      "category": "numeric_unverified",
+      "field_path": "variants[Turbo].production",
+      "current_value": "~5,350 worldwide; ~1,710 North America (Coupe + Cab)",
+      "proposed_change": "Flag both figures as unverified",
+      "rationale": "No standalone Turbo (non-S) production figure found in any indexed source (Porsche Newsroom, Stuttcars, Wikipedia, Rennlist, Autoevolution). Stuttcars lists the MA1/71 engine code and specs but provides no production count. If Turbo S = 9,629 and the Turbo-to-Turbo S ratio is ~1:2 (Rennlist community consensus), then Turbo ≈ 4,800. The ~5,350 figure is plausible but unverified.",
+      "sources_checked": ["Porsche Newsroom", "Stuttcars", "Rennlist production thread", "Autoevolution"],
+      "recommendation": "Add '(unverified)' qualifier or remove until primary source confirmed"
+    },
+    {
+      "id": "STAGE-003",
+      "severity": "MEDIUM",
+      "category": "numeric_update",
+      "field_path": "variants[GT3].production",
+      "current_value": "~6,050 worldwide; ~2,070 North America",
+      "proposed_change": "~6,300 worldwide; ~2,070–2,133 North America",
+      "rationale": "Multiple secondary sources cluster at ~6,300 worldwide: Stuttcars cites '~6,300 units', porscheknowledge.com cites '6,300 units for 991.1 GT3'. A Rennlist community thread cites 6,520 with a per-year NA breakdown: 2014=602, 2015=1,342, 2016=189 totaling 2,133. The current ~6,050 is slightly low vs the consensus. Neither figure is from a Porsche primary source.",
+      "sources": [
+        {"name": "Stuttcars", "figure": "~6,300", "url": "https://www.stuttcars.com/porsche-911-gt3-991-2014-2016/"},
+        {"name": "porscheknowledge.com", "figure": "6,300"},
+        {"name": "Rennlist unofficial GT3 RS stats thread", "figure": "6,520 worldwide / 2,133 NA"}
+      ],
+      "confidence": "MEDIUM",
+      "recommendation": "Update to ~6,300 worldwide — more consistent with sources. NA ~2,133 is a modest uplift from ~2,070 and supported by Rennlist per-year breakdown."
+    },
+    {
+      "id": "STAGE-004",
+      "severity": "MEDIUM",
+      "category": "numeric_update",
+      "field_path": "variants[GT3 RS].production",
+      "current_value": "~4,250 worldwide; ~1,530 North America",
+      "proposed_change": "~4,596 worldwide; ~1,529 North America",
+      "rationale": "Multiple secondary sources cluster at 4,520–4,596 worldwide: nweuro.com cites '4,596 worldwide | USA 1,318 | Canada 211 = 1,529 NA'; autofolio.info cites '4,596 globally'; porscheknowledge.com cites '4,500'; Rennlist unofficial cites '4,520 worldwide / 1,530 NA'. The current ~4,250 is consistently below all available source figures. NA figure ~1,530 is well-supported and accurate as-is.",
+      "sources": [
+        {"name": "nweuro.com", "figure": "4,596 worldwide; 1,318 USA + 211 Canada = 1,529 NA"},
+        {"name": "autofolio.info", "figure": "4,596 globally"},
+        {"name": "porscheknowledge.com", "figure": "4,500"},
+        {"name": "Rennlist unofficial", "figure": "4,520 worldwide / 1,530 NA"}
+      ],
+      "confidence": "MEDIUM",
+      "recommendation": "Update to ~4,596 worldwide; NA stays ~1,529–1,530 (consistent, accurate)"
+    },
+    {
+      "id": "STAGE-005",
+      "severity": "MEDIUM",
+      "category": "numeric_unverified",
+      "field_path": "variants[50th Anniversary Edition].production",
+      "current_value": "Exactly 1,963 worldwide; ~750 North America",
+      "proposed_change": "Flag ~750 North America as unverified",
+      "rationale": "1,963 worldwide is verified by Porsche Newsroom and Wikipedia. The ~750 North America sub-figure appears in no primary or secondary source found. Based on Porsche's typical NA allocation for special editions (~35–40% of worldwide), a plausible estimate would be ~690–785. The ~750 figure may be correct but is not sourced.",
+      "sources_checked": ["Porsche Newsroom", "renndriver.com", "Wikipedia"],
+      "recommendation": "Add '(unverified)' qualifier to ~750 NA figure"
+    },
+    {
+      "id": "STAGE-006",
+      "severity": "MEDIUM",
+      "category": "factual_correction",
+      "field_path": "engineering[GT3 rod-bolt recall].body + watch_for[GT3 rod-bolt recall].body",
+      "current_value": "approximately 785 cars worldwide (~400 US) had their complete engines replaced",
+      "proposed_change": "approximately 785 US vehicles covered by the recall had their engines replaced",
+      "rationale": "NHTSA recall 14V-090 document explicitly states 785 vehicles affected in the US (manufactured Oct 19, 2013 – Jan 16, 2014). The figure 785 is the US count, not a worldwide count. The current text ('785 worldwide, ~400 US') appears to have the relationship inverted. The worldwide recall count (including European/global markets) is not stated in NHTSA documentation and would likely be higher than 785. The '~400 US' sub-figure may refer to cars that had been delivered to customers vs those still in dealer stock at the time of the recall.",
+      "sources": [
+        {"name": "NHTSA recall document RCRIT-14V090", "url": "https://static.nhtsa.gov/odi/rcl/2014/RCRIT-14V090-2676.pdf"},
+        {"name": "Wikipedia 911 GT3", "quote": "'all 785 GT3s produced up to that point were recalled'"}
+      ],
+      "confidence": "MEDIUM",
+      "note": "Affects two locations: engineering[] array and watch_for[] array. Both currently say '785 cars worldwide (~400 US)'. Correction direction: 785 is the US/NHTSA-scope figure. Worldwide total is unknown but higher.",
+      "recommendation": "Change to: 'approximately 785 US vehicles had their engines replaced (NHTSA recall 14V-090); worldwide total is undisclosed by Porsche but higher'"
+    },
+    {
+      "id": "STAGE-007",
+      "severity": "LOW",
+      "category": "factual_clarification",
+      "field_path": "variants[Carrera 4].years + variants[Carrera 4S].years",
+      "current_value": "2012–2016",
+      "proposed_change": "2013–2016",
+      "rationale": "The 991 Carrera 4 and Carrera 4S were announced at the 2012 Paris Motor Show as MY2013 models. The base Carrera and Carrera S launched as MY2012. Classic.com market data confirms production years 2013–2016 for both Carrera 4 and Carrera 4S. Secondary source confidence; not verified from a Porsche primary press release.",
+      "sources": [
+        {"name": "Classic.com market page", "note": "confirms 2013–2016 for Carrera 4 and 4S"}
+      ],
+      "confidence": "LOW",
+      "recommendation": "Update Carrera 4 and Carrera 4S years to '2013–2016' after confirming via Porsche Newsroom/press kit"
+    },
+    {
+      "id": "STAGE-008",
+      "severity": "MEDIUM",
+      "category": "label_ambiguity",
+      "field_path": "variants[Carrera GTS].production",
+      "current_value": "~8,634 worldwide RWD GTS (5,510 Coupe; 3,124 Cab)",
+      "proposed_change": "Review whether 8,634 total includes Carrera 4 GTS (AWD) in the Coupe/Cab split",
+      "rationale": "The label says 'RWD GTS' but the breakdown (5,510 Coupe + 3,124 Cab = 8,634) may represent all Carrera GTS body types (coupe + cab) including both RWD and AWD (Carrera 4 GTS). The split between RWD and AWD within the GTS totals is not available from public sources. If the 8,634 figure includes Carrera 4 GTS coupes, calling it 'RWD GTS' is misleading. However, this cannot be confirmed without a primary source breakdown.",
+      "sources_checked": ["JTcars synthesis", "Rennlist", "Stuttcars"],
+      "confidence": "MEDIUM",
+      "recommendation": "Either (a) verify the 8,634 is RWD-only (Coupe + Cab) and retain the label, or (b) update to 'all Carrera GTS variants (Coupe + Cab; RWD + AWD)'. Pending source confirmation."
+    },
+    {
+      "id": "STAGE-009",
+      "severity": "LOW",
+      "category": "engine_code_precision",
+      "field_path": "engine (generation-level field)",
+      "current_value": "3.4L 9A1 NA (Carrera/C4: 350 hp); 3.8L 9A1 NA (Carrera S/4S/GTS: 400–430 hp); 3.8L 9A1 twin-turbo (Turbo: 520 hp; Turbo S: 560 hp)",
+      "proposed_change": "Notation clarification only — '9A1' is correct as a colloquial family name but the Turbo/Turbo S specific code is MA1/71",
+      "rationale": "Research confirms: '9A1' is the commonly used colloquial family name for all modern water-cooled Porsche flat-sixes, but technically the Turbo/Turbo S engine is sub-designated MA1/71 (per Stuttcars). The NA Carrera engines are MA1/MAB variants. MA175 = GT3 3.8L; MA176 = GT3 RS 4.0L. The current usage of '9A1' for the entire family is standard industry shorthand and is not wrong — this is a precision note only.",
+      "confidence": "LOW",
+      "recommendation": "No change required — '9A1' is accepted industry shorthand. Optional: add '(MA1/71)' parenthetical to the Turbo engine entry for precision. Not urgent."
+    },
+    {
+      "id": "STAGE-010",
+      "severity": "LOW",
+      "category": "numeric_unverified",
+      "field_path": "variants[911 R].production",
+      "current_value": "Exactly 991 worldwide; ~323 North America",
+      "proposed_change": "~323 North America qualifier: MEDIUM confidence",
+      "rationale": "991 worldwide is universally confirmed (symbolic production limit). ~323 North America is sourced from the Rennlist unofficial production stats thread, not a Porsche primary source. One secondary source cites 325 NA. The ~323 figure is plausible and consistent across community sources but not Porsche-primary verified.",
+      "sources": [
+        {"name": "Rennlist unofficial GT3 RS stats thread", "figure": "991 worldwide / 323 NA"},
+        {"name": "Alternative secondary source", "figure": "325 NA"}
+      ],
+      "confidence": "MEDIUM (worldwide) / LOW (NA figure)",
+      "recommendation": "Retain as-is with awareness that ~323 NA is community-sourced. May add '(unofficial)' qualifier."
+    }
+  ],
+  "prior_audit_items_verified": [
+    {
+      "id": "PRIOR-001",
+      "field": "variants[Carrera GTS].production",
+      "value": "~8,634 worldwide RWD GTS (5,510 Coupe; 3,124 Cab)",
+      "status": "MEDIUM — consistent across secondary sources but no Porsche primary source found; GTS label ambiguity noted in STAGE-008"
+    },
+    {
+      "id": "PRIOR-002",
+      "field": "variants[Targa 4 GTS].production",
+      "value": "1,525 worldwide",
+      "status": "MEDIUM — consistent across secondary sources; Stuttcars cites official Porsche press materials. 'First-ever 911 Targa GTS' claim CONFIRMED by official Porsche press release."
+    }
+  ],
+  "summary": {
+    "total_staged": 10,
+    "severity_breakdown": {"MEDIUM": 7, "LOW": 3},
+    "categories": {
+      "numeric_unverified": 3,
+      "numeric_update": 2,
+      "factual_correction": 1,
+      "factual_clarification": 1,
+      "label_ambiguity": 1,
+      "engine_code_precision": 1,
+      "numeric_qualifier": 1
+    }
+  }
+}

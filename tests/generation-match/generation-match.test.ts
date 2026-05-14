@@ -491,4 +491,39 @@ describe('Additional coverage', () => {
     // No make guard fires; year+family finds 992.1
     expect(result.generation_id).toBe('992.1')
   })
+
+  // Early 911 variant-letter titles (no VIN decode for pre-1981)
+  it('resolves g-series-2.7 from "1975 Porsche 911S Targa" title (variant-letter suffix)', () => {
+    const result = match({
+      decoded_year: null,
+      decoded_make: null,
+      parsed_title: '1975 Porsche 911S Targa',
+    })
+    expect(result.generation_id).toBe('g-series-2.7')
+    expect(result.confidence).toBe('medium')
+    expect(result.needs_review).toBe(false)
+  })
+
+  it('resolves 911-sc from "1983 Porsche 911SC Cabriolet" title (SC suffix)', () => {
+    const result = match({
+      decoded_year: null,
+      decoded_make: null,
+      parsed_title: '1983 Porsche 911SC Cabriolet',
+    })
+    expect(result.generation_id).toBe('911-sc')
+    expect(result.confidence).toBe('medium')
+  })
+
+  it('resolves g-series-2.7 from year 1975 decoded, title "1975 Porsche 911S Targa"', () => {
+    // Post-fix: when year is decoded separately and title has variant-letter suffix
+    const result = match({
+      decoded_year: 1975,
+      decoded_make: 'PORSCHE',
+      decoded_model: '911',
+      parsed_title: '1975 Porsche 911S Targa',
+    })
+    // Year 1975, family '911', no turbo → g-series-2.7
+    expect(result.generation_id).toBe('g-series-2.7')
+    expect(result.confidence).toBe('high')
+  })
 })

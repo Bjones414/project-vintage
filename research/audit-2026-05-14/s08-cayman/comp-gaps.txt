@@ -1,0 +1,88 @@
+COMP GAPS REPORT — Cayman Generations
+Session: s08-cayman | Date: 2026-05-14
+Query: listings table, make=Porsche, generation_id IN (987.1-cayman, 987.2-cayman, 981-cayman, 982-cayman)
+Threshold: <10 comp listings per variant+generation combination
+============================================================
+
+SUMMARY
+  Total Cayman listings in DB: 17 across all 4 generations
+  Variants with ≥10 comps: NONE
+  All Cayman variants are below the 10-comp threshold
+
+------------------------------------------------------------
+987.1-CAYMAN (MY2006–2008) — 0 LISTINGS TOTAL
+------------------------------------------------------------
+  Status: ZERO LISTINGS — no comp data available for any variant
+  Affected variants:
+    - Cayman S (2006–2008): 0 comps
+    - Cayman (base, 2007–2008): 0 comps
+    - Cayman S Sport (2008): 0 comps
+    - Design Edition 1 (2008): 0 comps
+  Note: Generation has no auction data; comp engine cannot price 987.1 Cayman.
+  Hero fallback: typography-only (confirmed per handoff, unchanged)
+
+------------------------------------------------------------
+987.2-CAYMAN (MY2009–2012) — 3 LISTINGS TOTAL
+------------------------------------------------------------
+  Listings detail:
+    - Cayman R (trim="R"), 2012, final_price=$68,000
+    - Cayman R (trim="R 6-Speed"), 2012, final_price=$50,000
+    - Cayman (base, trim="6-Speed"), 2009, final_price=$42,000
+  Affected variants (all <10 comps):
+    - Cayman (base): 1 comp
+    - Cayman S: 0 comps
+    - Cayman R: 2 comps
+    - Cayman S Black Edition: 0 comps
+  Note: Only Cayman R has any listing data; S and Black Edition have zero.
+
+------------------------------------------------------------
+981-CAYMAN (MY2013–2016) — 1 LISTING TOTAL
+------------------------------------------------------------
+  Listings detail:
+    - Cayman GT4 Clubsport (model="Cayman GT4 Clubsport"), 2016, final_price=$168,000
+      NOTE: Clubsport is a racing/track-day variant, not a standard road car.
+      This listing does NOT represent the standard 981 Cayman GT4 street spec.
+  Affected variants (all <10 standard road car comps):
+    - Cayman (base): 0 comps
+    - Cayman S: 0 comps
+    - Cayman GTS: 0 comps
+    - Cayman GT4 (road): 0 comps (1 Clubsport listing not applicable to road car valuation)
+
+------------------------------------------------------------
+982-CAYMAN (MY2017–2025) — 13 LISTINGS TOTAL
+------------------------------------------------------------
+  Listings detail:
+    - 718 Cayman GTS (trim="GTS"), 2018 ×7 (prices: $68,500; $40,000; null; $77,000; $68,000; null; not listed)
+    - 718 Cayman GTS 6-Speed (trim="GTS 6-Speed"), 2018 ×3 (prices: $80,000; $76,000; $70,718)
+    - Cayman GT4 RS (model="Cayman GT4 RS"), 2023 ×1 ($201,600)
+    - 718 Cayman GT4 RS Weissach, 2024 ×2 ($185,000; $180,000)
+    - 718 (model="718", trim="Cayman GT4"), 2022 ×1 (null price)
+  Affected variants (all <10):
+    - 718 Cayman (base): 0 comps
+    - 718 Cayman T: 0 comps
+    - 718 Cayman S: 0 comps
+    - 718 Cayman GTS (flat-four): ~10 comps for 2018 only (threshold borderline — 9 by trim="GTS", 10 if GTS 6-Speed counted together)
+    - 718 Cayman GTS 4.0: 0 comps
+    - 718 Cayman GT4: 1 comp (no price)
+    - 718 Cayman GT4 RS: 3 comps (Weissach×2, standard×1)
+    - 25 Years Anniversary: 0 comps (variant existence disputed — see staging.json CONFLICT-01)
+  Note: GTS flat-four (2018) is the only variant approaching threshold; all others severely under-represented.
+  Note: GT4 RS Weissach listings exist; standard GT4 RS has only 1 confirmed-price listing.
+  Note: The 982 listing taxonomy has inconsistencies (model="718" with trim="Cayman GT4" vs model="Cayman GT4 RS") — comp engine may need trim normalization.
+
+------------------------------------------------------------
+PRIORITY SCRAPING GAPS
+------------------------------------------------------------
+  High priority (collector-grade variants with no comps):
+    1. 981 Cayman GT4 — 0 street-spec comps; most-searched 981 variant
+    2. 981 Cayman GTS — 0 comps
+    3. 987.2 Cayman S — 0 comps; most-searched 987.2 variant
+    4. 982 GTS 4.0 — 0 comps
+    5. 987.1 Cayman S — 0 comps (entire generation empty)
+
+  Medium priority:
+    6. 982 718 Cayman GT4 — 1 comp (no price); needs more listings
+    7. 987.2 Cayman S Black Edition — 0 comps
+    8. 987.1 Design Edition 1 — 0 comps
+
+============================================================

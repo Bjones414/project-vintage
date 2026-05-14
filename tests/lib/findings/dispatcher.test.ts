@@ -32,7 +32,7 @@ const baseListing: CanonicalListing = {
   raw_data: {},
 }
 
-const baseInput: RuleInput = { listing: baseListing, generationId: '996' }
+const baseInput: RuleInput = { listing: baseListing, generationId: '996.2' }
 
 describe('runFindingsRules dispatcher', () => {
   it('returns an array', () => {

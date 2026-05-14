@@ -7,6 +7,7 @@ export interface DefectExclude {
   engine_family?: string[]
   year_range?: number[]
   trim_category?: string[]
+  body?: string[]
 }
 
 export interface DefectApplicability {
@@ -14,6 +15,7 @@ export interface DefectApplicability {
   engine_family?: string[]
   year_range?: number[]
   trim_category?: string[]
+  body?: string[]
   excludes?: DefectExclude | DefectExclude[]
 }
 

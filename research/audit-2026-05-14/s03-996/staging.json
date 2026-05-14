@@ -1,0 +1,121 @@
+{
+  "session": "s03-996",
+  "date": "2026-05-14",
+  "status": "PENDING USER REVIEW",
+  "instructions": "Each item below is a MEDIUM/LOW/CONFLICT finding that was NOT auto-applied. Review each recommendation and apply manually if you agree. Items are ordered by priority.",
+  "items": [
+    {
+      "id": "ST-001",
+      "priority": "HIGH",
+      "confidence": "CONFLICT",
+      "generation": "996.2",
+      "variant": "Carrera 4S Coupe",
+      "field": "variants[].production",
+      "current_value": "17,283 Coupes; 5,757 Cabriolets worldwide (all transmissions)",
+      "recommended_value": "17,298 Coupes; 5,757 Cabriolets worldwide (all transmissions)",
+      "change_delta": "+15 units on Coupe figure",
+      "supporting_sources": [
+        { "name": "Elferspot", "figure": 17298 },
+        { "name": "supercars.net", "figure": 17298 },
+        {
+          "name": "Autowin citing Adrian Streather 'Porsche 996 The Essential Companion' (Porsche Archive data)",
+          "figure": 17298,
+          "note": "Streather's book draws from official Porsche factory production records"
+        }
+      ],
+      "conflicting_source": { "name": "Supercar Nostalgia (source used for tonight's manual additions)", "figure": 17283 },
+      "recommendation": "APPLY — three sources including Porsche archive-based data agree on 17,298. The 15-unit discrepancy from Supercar Nostalgia is likely a transcription error in that source.",
+      "apply_instruction": "Change '17,283 Coupes' to '17,298 Coupes' in the Carrera 4S variant production field.",
+      "cabriolet_status": "5,757 CONFIRMED correct — all three sources agree, no change needed."
+    },
+    {
+      "id": "ST-002",
+      "priority": "HIGH",
+      "confidence": "CONFLICT",
+      "generation": "996.2",
+      "variant": "Targa",
+      "field": "variants[].production",
+      "current_value": "5,089 worldwide (all transmissions)",
+      "recommended_value": "5,152 worldwide (all transmissions)",
+      "change_delta": "+63 units",
+      "supporting_sources": [
+        { "name": "Stuttcars.com (dedicated 996 Targa model page)", "figure": 5152 },
+        { "name": "supercars.net", "figure": 5152 },
+        { "name": "Elferspot", "figure": 5142, "note": "Elferspot gives 5,142 — very close but slightly lower than 5,152" }
+      ],
+      "conflicting_source": { "name": "Supercar Nostalgia (source used for tonight's manual additions)", "figure": 5089 },
+      "recommendation": "APPLY 5,152 — Stuttcars and supercars.net both specifically state 5,152; Elferspot's 5,142 is within noise. Supercar Nostalgia (5,089) is the outlier. If applying, use 5,152 not 5,142.",
+      "apply_instruction": "Change '5,089 worldwide' to '5,152 worldwide' in the Targa variant production field."
+    },
+    {
+      "id": "ST-003",
+      "priority": "MEDIUM",
+      "confidence": "MEDIUM",
+      "generation": "996.2",
+      "variant": "GT3 Mk2",
+      "field": "variants[].production — US figure only",
+      "current_value": "2,589 worldwide; ~960 US",
+      "note": "Worldwide was just auto-applied (AA-006). This item is for the US figure only.",
+      "recommended_value": "2,589 worldwide; ~960 US",
+      "status": "Already applied in AA-006 with ~960 from forum data. User should verify.",
+      "source": {
+        "name": "6SpeedOnline forum compilation (Divexxtreme)",
+        "detail": "2003 MY: 257 + 2004: 607 + 2005: 96 = 960 US units",
+        "note": "Single source; prior figure ~1,010 was also unverified. The ~960 figure is plausible and consistent with the worldwide ratio."
+      },
+      "original_us_figure": "~1,010",
+      "applied_us_figure": "~960",
+      "recommendation": "Verify — if you can confirm from a second source, the ~960 stands. If not confirmed, revert US figure to ~1,010 until verified."
+    },
+    {
+      "id": "ST-004",
+      "priority": "MEDIUM",
+      "confidence": "LOW",
+      "generation": "996.1",
+      "field": "units_produced (generation-level QuickFacts summary)",
+      "current_value": "~37,750 Carrera Coupes worldwide (all 996 combined)",
+      "recommended_value": "DELETE or REPLACE with accurate figure",
+      "analysis": "The figure ~37,750 does not reconcile with the per-variant data. All 996 Carrera Coupes across both generations = 31,688 (996.1) + 14,629 (996.2) = 46,317. All 996.1 coupes (Carrera + C4) = 31,688 + 12,720 = 44,408. None of these equal ~37,750. This field appears to predate the detailed per-variant research and should be recomputed.",
+      "suggested_replacement_options": [
+        {
+          "option": "A",
+          "value": "55,562 Carrera + 22,284 Carrera 4 (996.1 total)",
+          "explanation": "Total 996.1 Carrera-family (coupe+cab) from the per-variant data"
+        },
+        {
+          "option": "B",
+          "value": "~77,850 total 996.1 Carrera-family (all body styles)",
+          "explanation": "Combined 996.1: Carrera (55,562) + C4 (22,284) = 77,846"
+        }
+      ],
+      "recommendation": "Replace with a meaningful and accurate summary. Suggest: '55,562 Carrera (coupe + cab); 22,284 Carrera 4 (coupe + cab)' — this directly matches the per-variant data."
+    },
+    {
+      "id": "ST-005",
+      "priority": "MEDIUM",
+      "confidence": "LOW",
+      "generation": "996.2",
+      "field": "units_produced (generation-level QuickFacts summary)",
+      "current_value": "~29,380 Carrera Coupes worldwide; ~17,290 Carrera 4S Coupes worldwide",
+      "recommended_value": "UPDATE both figures",
+      "analysis": {
+        "carrera_coupes_claim": "~29,380 Carrera Coupes — does not reconcile with per-variant data. Carrera Coupe (14,629) + Carrera Cab (14,961) = 29,590 (close but not exactly 29,380; may be using the rounded display values from the manual prompt). OR Carrera Coupe (14,629) + C4 Coupe (3,231) + Targa (5,089) + 40 Jahre (1,963) = 24,912. No combination of per-variant figures produces ~29,380 exactly.",
+        "c4s_coupes_claim": "~17,290 Carrera 4S Coupes — should be 17,298 per ST-001 recommendation (or 17,283 per current file). The ~17,290 is a rounding of the existing figure.",
+        "likely_intent": "The ~29,380 likely represents Carrera Coupe + Carrera Cabriolet combined (14,629 + 14,961 = 29,590 ≈ 29,380 using the rounded display values ~14,500 + ~15,000 = ~29,500). This is a plausible reading but should be documented as 'Carrera (coupe + cab)' not 'Carrera Coupes'."
+      },
+      "recommendation": "Update to: '29,590 Carrera RWD (coupe + cab); 17,298 Carrera 4S (coupe + cab combined 23,055)' OR reword to clarify what is being counted. The C4S Cabriolet (5,757) should be added for a complete 4S total."
+    },
+    {
+      "id": "ST-006",
+      "priority": "LOW",
+      "confidence": "LOW",
+      "generation": "996.2",
+      "variant": "GT2 Mk1",
+      "field": "variants[].production — US figure only",
+      "current_value": "963 worldwide; ~245 US",
+      "recommended_value": "963 worldwide; US figure UNVERIFIED",
+      "analysis": "The ~245 US figure for GT2 Mk1 cannot be verified from available sources. Forum data shows TOTAL 996 GT2 US production (Mk1 + Mk2 combined) was 317 units. If Mk2 was ~72 US, then Mk1 ~245 is plausible; if Mk2 was fewer, Mk1 could be higher. The split between Mk1 and Mk2 in the US is not in available sources.",
+      "recommendation": "Either verify the ~245 US figure against a second source, or remove the US figure and note 'worldwide' only. The total GT2 US production (317) could be cited instead."
+    }
+  ]
+}

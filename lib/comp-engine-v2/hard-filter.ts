@@ -23,7 +23,58 @@ import type { V2Subject, V2CompCandidate, TrimTaxonomyEntry } from './types'
 
 // These categories are always treated as separate markets regardless of taxonomy config.
 // They must only comp against their own category; null-trim comps are excluded.
-const ALWAYS_SEPARATE_MARKET = new Set(['coachbuilt', 'limited'])
+// Expanding this set is belt-and-suspenders: even when the DB taxonomy is incomplete or
+// a listing has null trim_category (D6 fires), known halo/performance categories never
+// bleed into base Carrera pools and vice versa.
+const ALWAYS_SEPARATE_MARKET = new Set([
+  // Already-existing entries
+  'coachbuilt',         // Singer, RUF, other restomod builds
+  'limited',            // Sport Classic, R, Speedster (generic limited-edition bucket)
+
+  // Turbo variants — every generation, never comp with Carrera
+  'turbo_base',
+  'turbo_s',
+  'turbo_x50',          // 993 Turbo X50
+  'turbo_look_m491',    // 993 Turbo Look (M491 option)
+
+  // GT programme — each is its own market
+  'gt2',
+  'gt2_rs',
+  'gt2_evo',            // 993 GT2 Evo
+  'gt3',
+  'gt3_rs',
+
+  // Anniversary / homologation editions
+  'anniversary',        // 40 Jahre 911, 50 Jahre, etc.
+
+  // 911 R and S/T — limited halo production
+  'r',                  // 991 R, 997.2 R
+  'st',                 // 911 S/T
+
+  // RS variants — all own market
+  'rs_lightweight',     // 964 RS / Leichtbau
+  'rs_america',         // 964 RS America (US-market lightweight)
+  'rs_touring',         // 993 RS Touring
+  'rs_clubsport',       // 993 RS Clubsport
+  'rs_club',            // alias used in older catalog entries
+
+  // Cup / Supercup / race-homologation
+  'supercup',
+  'cup',
+
+  // Sport Classic — 997 limited
+  'sport_classic',
+
+  // Boxster / 718 halo models
+  'boxster_spyder',     // 987/718 Spyder
+  'boxster_gt4',        // 718 Boxster GT4
+  'boxster_gt4_rs',     // 718 Boxster GT4 RS
+
+  // Cayman halo models
+  'cayman_r',           // 987 Cayman R
+  'cayman_gt4',         // 981/718 Cayman GT4 — never comp with base Cayman
+  'cayman_gt4_rs',      // 718 Cayman GT4 RS
+])
 
 function normalizeBodyStyle(raw: string | null): string | null {
   if (!raw) return null

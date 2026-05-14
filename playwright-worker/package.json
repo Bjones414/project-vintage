@@ -1,0 +1,30 @@
+{
+  "name": "playwright-worker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright-based fetch worker for SPA auction sites — deployed to Railway",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "PLAYWRIGHT_HEADLESS=false tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "playwright": "^1.49.0",
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

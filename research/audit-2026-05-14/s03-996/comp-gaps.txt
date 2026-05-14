@@ -1,0 +1,45 @@
+COMP GAP REPORT — 996.1 and 996.2
+Generated: 2026-05-14T08:45:52.265Z
+Total sold listings in DB: 36
+Total variant+year buckets: 25
+Buckets with <10 comps: 25
+Buckets with ≥10 comps: 0
+
+═══════════════════════════════════════════════════
+GAPS — VARIANT+YEAR COMBOS WITH <10 SOLD COMPS
+═══════════════════════════════════════════════════
+  996.1 | 1999 | 996 Carrera — 1 comp
+  996.1 | 1999 | Carrera 4 Coupe — 1 comp
+  996.1 | 1999 | Carrera Cabriolet 6-Speed — 3 comps
+  996.1 | 1999 | Carrera Coupe — 1 comp
+  996.1 | 2000 | Carrera Cabriolet 6-Speed — 1 comp
+  996.1 | 2001 | Carrera Cabriolet — 2 comps
+  996.1 | 2001 | Turbo Coupe — 2 comps
+  996.1 | 2001 | Turbo Coupe 6-Speed — 4 comps
+  996.2 | 2002 | 996 Carrera 4 Gemballa GTR 500 — 1 comp
+  996.2 | 2002 | Carrera Cabriolet 6-Speed — 1 comp
+  996.2 | 2002 | Carrera Coupe — 2 comps
+  996.2 | 2002 | Carrera Coupe 6-Speed — 3 comps
+  996.2 | 2002 | Carrera Targa 6-Speed — 1 comp
+  996.2 | 2002 | GT2 — 1 comp
+  996.2 | 2002 | Turbo Coupe 6-Speed — 1 comp
+  996.2 | 2003 | Carrera Cabriolet 6-Speed — 1 comp
+  996.2 | 2003 | Carrera Coupe 6-Speed — 1 comp
+  996.2 | 2003 | Turbo Coupe — 1 comp
+  996.2 | 2003 | Turbo Coupe 6-Speed — 1 comp
+  996.2 | 2004 | 996 GT3 RS — 1 comp
+  996.2 | 2004 | Carrera 4S Cabriolet 6-Speed — 1 comp
+  996.2 | 2004 | Carrera Coupe 6-Speed — 1 comp
+  996.2 | 2004 | GT3 — 1 comp
+  996.2 | 2004 | Turbo Cabriolet 6-Speed — 2 comps
+  996.2 | 2005 | 996 Turbo S Cabriolet — 1 comp
+
+═══════════════════════════════════════════════════
+ADEQUATE — VARIANT+YEAR COMBOS WITH ≥10 SOLD COMPS
+═══════════════════════════════════════════════════
+
+═══════════════════════════════════════════════════
+GENERATION TOTALS
+═══════════════════════════════════════════════════
+  996.1: 15 sold listings
+  996.2: 21 sold listings

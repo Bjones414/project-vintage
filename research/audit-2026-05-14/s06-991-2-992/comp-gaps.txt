@@ -1,0 +1,131 @@
+COMP DATA GAPS REPORT — 991.2 + 992 GENERATIONS
+Audit session: s06-991-2-992
+Query date: 2026-05-14
+DB: wbtgrmpojkpcdqyiohow.supabase.co (production)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+METHODOLOGY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Query: SELECT year, model, trim, status, final_price, auction_outcome
+       FROM listings
+       WHERE make='Porsche' AND model LIKE '%911%' AND year >= 2017
+
+Note: The `generation` field is NULL for ALL records in the 991.2/992 era.
+The `status` field contains "active" for all records — regardless of whether the
+auction has concluded. This reflects the current data pipeline state where
+auction_outcome and final settlement are not yet being written back to `status`.
+Comp gap analysis is therefore based on records where final_price IS NOT NULL
+as a proxy for "sold/closed" listings.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DATABASE STATE SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Total 911 listings (2017–2025, any status):  27
+With final_price populated (proxy for sold):  ~20
+generation field populated:                   0 (all NULL)
+status='sold' records:                        0
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VARIANT+YEAR COMP COUNTS — 991.2 (MY2017–2019)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VARIANT                          YEAR   DB RECORDS   HAS PRICE   GAP?
+───────────────────────────────────────────────────────────────────────────
+Carrera (base)                   2017   0            0           YES <10
+Carrera (base)                   2018   0            0           YES <10
+Carrera (base)                   2019   0            0           YES <10
+Carrera T                        2018   0            0           YES <10
+Carrera T                        2019   0            0           YES <10
+Carrera S                        2017   0            0           YES <10
+Carrera S                        2018   0            0           YES <10
+Carrera S                        2019   0            0           YES <10
+Carrera 4 / Carrera 4S           2017   0            0           YES <10
+Carrera 4 / Carrera 4S           2018   0            0           YES <10
+Carrera 4 / Carrera 4S           2019   0            0           YES <10
+Carrera GTS / 4 GTS / Targa GTS  2018   0            0           YES <10
+Carrera GTS / 4 GTS / Targa GTS  2019   0            0           YES <10
+Targa 4                          2017   0            0           YES <10
+Targa 4S                         2017   0            0           YES <10
+Turbo                            2017   0            0           YES <10
+Turbo                            2018   0            0           YES <10
+Turbo                            2019   0            0           YES <10
+Turbo S                          2017   0            0           YES <10
+Turbo S                          2018   0            0           YES <10  (but see below)
+Turbo S Exclusive (Coupe)        2018   2            2           YES <10
+Turbo S Exclusive (Coupe)        2019   0            0           YES <10
+GT3 / GT3 Touring                2018   1            1           YES <10
+GT3 / GT3 Touring                2019   0            0           YES <10
+GT3 RS                           2019   1            1           YES <10
+GT2 RS / GT2 RS Weissach         2018   5            2           YES <10
+GT2 RS / GT2 RS Weissach         2019   2            2           YES <10
+Speedster                        2019   3            2           YES <10
+
+NOTE: Records identified by matching model/trim fields. Multiple naming variants
+exist (e.g., "911 GT3 Touring" vs "911" + trim="GT3 Touring Package"). No
+deduplication applied — these may count the same car under different ingestion
+naming schemes.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VARIANT+YEAR COMP COUNTS — 992.1 (MY2020–2024)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VARIANT                          YEAR    DB RECORDS  HAS PRICE   GAP?
+───────────────────────────────────────────────────────────────────────────
+Carrera (base)                   20–24   0           0           YES <10
+Carrera T                        23–24   0           0           YES <10
+Carrera S / 4S                   20–24   0           0           YES <10
+Targa 4 / Targa 4S               21–24   0           0           YES <10
+Targa 4S Heritage Design Ed.     2021    0           0           YES <10
+Carrera GTS / 4 GTS / Targa GTS  22–24   0           0           YES <10
+Turbo / Turbo S                  20–24   0           0           YES <10
+Turbo S Lightweight              2022    1           1           YES <10
+Sport Classic                    2023    2           2           YES <10
+Dakar                            2023    0           0           YES <10
+GT3 / GT3 Touring                2022    4           3           YES <10
+GT3 / GT3 Touring                2023    0           0           YES <10
+GT3 / GT3 Touring                2024    0           0           YES <10
+GT3 RS                           2023    0           0           YES <10
+GT3 RS                           2024    2           2           YES <10
+911 S/T                          2024    0           0           YES <10
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VARIANT+YEAR COMP COUNTS — 992.2 (MY2025+)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+No MY2025+ records found in database as of 2026-05-14.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PIPELINE ISSUES IDENTIFIED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. CRITICAL: `generation` field is NULL for all 2017+ listings. Comp engine
+   cannot filter by generation without this field. Needs backfill or rule-based
+   assignment (year-range → generation mapping).
+
+2. CRITICAL: `status` field does not reflect auction outcome. All records are
+   "active" regardless of sale status. Comp engine needs confirmed-sold status
+   to identify valid comps.
+
+3. HIGH: Model naming is inconsistent. "911 GT3 Touring" as model vs. "911" +
+   trim="GT3 Touring Package" for the same variant. Deduplication and
+   canonical model/trim normalization needed.
+
+4. MEDIUM: Only 27 total 911 listings exist for 2017+. Standard Carrera/S/GTS
+   variants (the highest-volume trims) have ZERO records. Current ingestion
+   appears heavily skewed toward high-value GT and special-edition cars that
+   appear on Bring a Trailer's premium auction calendar.
+
+5. MEDIUM: Prices stored in cents (integer). Prices observed: $128,000–$940,000
+   range for GT2 RS. All appear reasonable but should be verified against
+   source listing as part of regular QA.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Every single variant+year combination for 991.2, 992.1, and 992.2 has fewer
+than 10 comp records. The database is in an early-population state for the
+modern era. Comp engine accuracy is severely limited for these generations
+until scraping volume increases across all platforms (BaT, Cars & Bids,
+PCarMarket, Collecting Cars) and historical auction archives are ingested.
+
+Priority ingestion targets:
+  1. Carrera S (2017–2024) — highest-volume trim, zero records
+  2. Carrera 4S (2017–2024) — second-highest volume, zero records
+  3. Turbo S (2017–2024) — highest-value standard production, near-zero
+  4. GT3 / Touring (2018–2024) — some records but below 10 for any year

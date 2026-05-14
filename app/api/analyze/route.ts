@@ -25,6 +25,7 @@ import { extractSourceMentions, platformToPublication } from '@/lib/extractors/s
 import { getRecallsByMakeModelYear } from '@/lib/recalls/nhtsa'
 import { shouldRefetch, toCacheStatus } from '@/lib/listing-cache'
 import { deriveTrimCategory } from '@/lib/trim-category'
+import { writeListingCapture } from '@/lib/data-capture/write'
 
 export async function POST(request: NextRequest) {
   // Validate body
@@ -296,8 +297,11 @@ export async function POST(request: NextRequest) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       findings: findings as any,
       finding_count: findings.length,
-    }) as unknown as Promise<{ error: { message: string } | null }>)
-  const { error: analysisError } = analysisResult
+    })
+    .select('id')
+    .single() as unknown as Promise<{ data: { id: string } | null; error: { message: string } | null }>)
+  const { data: analysisData, error: analysisError } = analysisResult
+  const analysisId = analysisData?.id ?? null
 
   if (analysisError) {
     console.error('[api/analyze] listing_analyses insert failed (non-fatal)', {
@@ -313,6 +317,23 @@ export async function POST(request: NextRequest) {
     console.error('[api/analyze] computeCompsV2 failed (non-fatal)', {
       listing_id: listingId,
       error: compErr instanceof Error ? compErr.message : String(compErr),
+    })
+  }
+
+  // Data capture: side-effect of the analyze run. Non-fatal.
+  // Kill switch (DATA_CAPTURE_ENABLED) is checked inside writeListingCapture.
+  try {
+    await writeListingCapture(supabaseAdmin, {
+      listing,
+      listingId,
+      analyzeRunId: analysisId,
+      generationId: generationResult.generation_id,
+      generationNeedsReview: generationResult.needs_review,
+    })
+  } catch (captureErr) {
+    console.error('[api/analyze] listing capture write failed (non-fatal)', {
+      listing_id: listingId,
+      error: captureErr instanceof Error ? captureErr.message : String(captureErr),
     })
   }
 

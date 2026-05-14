@@ -1,6 +1,7 @@
 import { parseBaTListing } from './bring-a-trailer'
 import { parseBonhamsListing } from './bonhams'
 import { parseGoodingListing } from './gooding'
+import { parsePcaMartListing } from './pca-mart'
 import { PlatformNotSupportedError } from './types'
 import type { ListingParseResult } from './types'
 
@@ -25,6 +26,11 @@ export async function parseListing(url: string): Promise<ListingParseResult> {
 
     if (/goodingco\.com$/.test(hostname)) {
       const listing = await parseGoodingListing(url)
+      return { success: true, listing }
+    }
+
+    if (hostname === 'mart.pca.org') {
+      const listing = await parsePcaMartListing(url)
       return { success: true, listing }
     }
 

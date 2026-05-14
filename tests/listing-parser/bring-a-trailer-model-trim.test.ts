@@ -99,12 +99,71 @@ describe('splitModelTrim', () => {
     expect(warnSpy).toHaveBeenCalledOnce()
   })
 
+  // --- Early air-cooled 911 variant-letter suffixes ---
+
+  it('"911S Targa" → model "911", trim "S Targa"', () => {
+    expect(splitModelTrim('911S Targa')).toEqual({ model: '911', trim: 'S Targa' })
+  })
+
+  it('"911T Coupe" → model "911", trim "T Coupe"', () => {
+    expect(splitModelTrim('911T Coupe')).toEqual({ model: '911', trim: 'T Coupe' })
+  })
+
+  it('"911E" (exact variant, no body suffix) → model "911", trim "E"', () => {
+    expect(splitModelTrim('911E')).toEqual({ model: '911', trim: 'E' })
+  })
+
+  it('"911SC Cabriolet" → model "911", trim "SC Cabriolet"', () => {
+    expect(splitModelTrim('911SC Cabriolet')).toEqual({ model: '911', trim: 'SC Cabriolet' })
+  })
+
+  it('"911L" → model "911", trim "L"', () => {
+    expect(splitModelTrim('911L')).toEqual({ model: '911', trim: 'L' })
+  })
+
+  // --- Hyphenated sub-model: 914-6 ---
+
+  it('"914-6 Coupe" → model "914", trim "6 Coupe" (leading hyphen stripped)', () => {
+    expect(splitModelTrim('914-6 Coupe')).toEqual({ model: '914', trim: '6 Coupe' })
+  })
+
+  it('"914-6" (exact sub-model, no body) → model "914", trim "6"', () => {
+    expect(splitModelTrim('914-6')).toEqual({ model: '914', trim: '6' })
+  })
+
   // --- No partial-word prefix bleeding ---
 
   it('"9110 Race Car" does not match "911" prefix — null, null', () => {
-    // "9110" starts with "911" as a substring but "911" + " " test fails here
-    // because "9110" !== "911" and "9110" does not start with "911 "
+    // "9110" starts with "911" as a substring; digit after prefix is not a valid separator
     const result = splitModelTrim('9110 Race Car')
     expect(result).toEqual({ model: null, trim: null })
+  })
+
+  // --- 930 (air-cooled Turbo) ---
+
+  it('"930 3.3 Turbo Coupe" → model "930", trim "3.3 Turbo Coupe"', () => {
+    expect(splitModelTrim('930 3.3 Turbo Coupe')).toEqual({ model: '930', trim: '3.3 Turbo Coupe' })
+  })
+
+  it('"930" exact match → model "930", trim null', () => {
+    expect(splitModelTrim('930')).toEqual({ model: '930', trim: null })
+  })
+
+  // --- 356 (pre-911 air-cooled) ---
+
+  it('"356A Coupe" → model "356", trim "A Coupe" (uppercase letter separator)', () => {
+    expect(splitModelTrim('356A Coupe')).toEqual({ model: '356', trim: 'A Coupe' })
+  })
+
+  it('"356 Speedster" → model "356", trim "Speedster" (space separator)', () => {
+    expect(splitModelTrim('356 Speedster')).toEqual({ model: '356', trim: 'Speedster' })
+  })
+
+  it('"356C Cabriolet" → model "356", trim "C Cabriolet"', () => {
+    expect(splitModelTrim('356C Cabriolet')).toEqual({ model: '356', trim: 'C Cabriolet' })
+  })
+
+  it('"356B Super 90" → model "356", trim "B Super 90"', () => {
+    expect(splitModelTrim('356B Super 90')).toEqual({ model: '356', trim: 'B Super 90' })
   })
 })

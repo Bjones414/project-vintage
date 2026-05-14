@@ -1,0 +1,119 @@
+{
+  "audit_session": "s04-997",
+  "audit_date": "2026-05-14",
+  "note": "Items requiring USER REVIEW before applying. Organized by priority.",
+  "items": [
+    {
+      "id": "ST-001",
+      "priority": "HIGH — was one of the 3 flagged conflicts",
+      "status": "CONFLICT RESOLVED via arithmetic — auto-applied as DA-004 but flagging for human verification",
+      "generation": "997.1",
+      "variant": "GT3",
+      "field": "variants[GT3].production",
+      "current_value_in_file": "3,329 worldwide; ~910 US",
+      "was_in_file_before_audit": "~2,370 worldwide; ~910 US",
+      "conflict": {
+        "figure_A": "3,329",
+        "figure_A_sources": ["ianbevis.co.uk (year-by-year arithmetic)", "elferspot.com specs table"],
+        "figure_B": "2,378",
+        "figure_B_sources": ["porscheknowledge.com", "Total 911 magazine (via Rennlist)"]
+      },
+      "adjudication": "RESOLVED: 3,329. Arithmetic proof: Ian Bevis year-by-year sums 2005(1)+2006(44)+2007(2333)+2008(951)=3,329 for 997.1 GT3. The 997.2 GT3 = 2,256 is confirmed by ALL sources and exactly equals Ian Bevis's 2009-2011 calendar-year production (766+1,167+320+3=2,256), leaving zero room for the 2008 production (951 units) to belong to the 997.2. Therefore, 2008 production (951) must be 997.1 GT3, making the total 3,329. The 2,378 figure from Total 911 and porscheknowledge appears to count only through calendar year 2007 (i.e., MY2007 only), excluding the MY2008 production run of ~951 units. This was auto-applied as HIGH confidence; user should verify the arithmetic is not being misread.",
+      "confidence": "HIGH — auto-applied",
+      "user_action": "Verify: does Ian Bevis's 2008 GT3 build count of 951 represent the 997.1 MY2008 GT3 or early 997.2 production? (The latter is implausible since 997.2 GT3 debuted MY2010 with 3.8L and all sources account for 2,256 997.2 GT3 units in 2009-2011 calendar years.)"
+    },
+    {
+      "id": "ST-002",
+      "priority": "HIGH — was one of the 3 flagged conflicts",
+      "status": "RESOLVED — auto-applied as DA-002",
+      "generation": "997.1",
+      "variant": "Turbo",
+      "field": "variants[Turbo].production",
+      "current_value_in_file": "21,725 worldwide (15,626 Coupe; 6,099 Cab); ~8,869 US",
+      "was_in_file_before_audit": "~19,200 worldwide; ~8,870 US combined Coupe and Cabriolet",
+      "conflict": {
+        "figure_A": "21,725",
+        "figure_A_sources": ["ianbevis.co.uk (year-by-year arithmetic: coupe 15,626 + cab 6,099)", "elferspot.com buyer's guide (explicit quote: '15,626, with 6,099 cabrios')"],
+        "figure_B": "~19,200 (prior file) / 19,201 (Rennlist)",
+        "figure_B_sources": ["Total 911 magazine via Rennlist forum (stated as 'coupes worldwide')"]
+      },
+      "adjudication": "RESOLVED: 21,725. The ~19,200 figure in the old file is almost certainly the sum of 997.1 Turbo coupes (15,626) + 997.2 Turbo coupes (3,301) = 18,927 ≈ ~19,200 — a combined-generation coupe total erroneously attributed to the 997.1 alone. The Rennlist/Total 911 citation of 19,201 as 'coupes worldwide' is internally inconsistent with Ian Bevis's 15,626 coupe figure and likely misidentifies either the generation scope or coupe vs. total. Ian Bevis arithmetic is independently verifiable: 13+2,150+7,885+4,263+1,315=15,626 (coupe) and 608+4,282+1,209=6,099 (cab). The combined 21,725 is the correct 997.1 Turbo worldwide total.",
+      "confidence": "HIGH — auto-applied"
+    },
+    {
+      "id": "ST-003",
+      "priority": "HIGH — was one of the 3 flagged conflicts",
+      "status": "RESOLVED — auto-applied as DA-008",
+      "generation": "997.2",
+      "variant": "GT3 RS (3.8L)",
+      "field": "variants[GT3 RS (3.8L)].production",
+      "current_value_in_file": "1,619 worldwide; ~612 North America",
+      "was_in_file_before_audit": "~2,000 worldwide; ~610 North America",
+      "conflict": {
+        "figure_A": "1,619",
+        "figure_A_sources": ["ianbevis.co.uk (year-by-year: 2010:1223+2010.2R:295+2011:100=1,618≈1,619)", "elferspot.com specs table (1,619)"],
+        "figure_B": "~1,500",
+        "figure_B_sources": ["nweuro.com (1,500 worldwide)", "autofolio.info (1,500 worldwide)", "Total 911 magazine via Rennlist (1,500)"],
+        "figure_C": "~2,000",
+        "figure_C_sources": ["porscheknowledge.com (2,000)", "GT3RS registry cited in Rennlist (2,000 .2 RS)"],
+        "figure_D": "2,000 (combined 3.8L + 4.0L?)",
+        "figure_D_note": "The GT3RS registry figure of '2,000 .2 RS' may combine the 3.8L (1,619) with some part of the 4.0L run, or may be a rounded early-count figure. Ian Bevis separates the 4.0L (613 units) from the 3.8L (1,618 units)."
+      },
+      "adjudication": "RESOLVED: 1,619 for the 3.8L variant specifically. Ian Bevis year-by-year is the most granular source and resolves the split: 997.2 GT3 RS 3.8 = 1,618 (rounds to 1,619 per elferspot), 997.2 GT3 RS 4.0 = 613. The ~1,500 figure (nweuro, autofolio, Total 911) appears to be the announced production target/cap, not the actual build count. The ~2,000 figure (porscheknowledge, GT3RS registry) appears to conflate the 3.8L with some 4.0L production or use a rounded pre-completion count. NA figure: nweuro gives 541 US + 71 Canada = 612, closely matching the prior ~610 estimate (updated to ~612).",
+      "confidence": "HIGH — auto-applied"
+    },
+    {
+      "id": "ST-004",
+      "priority": "MEDIUM — minor production precision note",
+      "status": "USER REVIEW — not auto-applied",
+      "generation": "997.2",
+      "variant": "GT3 RS 4.0",
+      "field": "variants[GT3 RS 4.0].production",
+      "current_value_in_file": "600 worldwide cap; 158 North America (141 US + 17 Canada)",
+      "recommended_value": "613 built (600 worldwide cap); 158 North America (141 US + 17 Canada)",
+      "rationale": "Ian Bevis year-by-year: 2011(550)+2012(63)=613 actual builds vs the 600-unit announced cap. Elferspot also shows 613. The distinction between 'cap' and 'actual production' is real and collector-relevant. Current language ('600 worldwide cap') is not wrong but misses that production slightly exceeded the cap. Recommend adding '613 built' qualifier.",
+      "confidence": "MEDIUM",
+      "user_action": "Decide whether to distinguish cap (600) from actual build count (613). Both figures are accurate for their respective meaning."
+    },
+    {
+      "id": "ST-005",
+      "priority": "MEDIUM — minor production precision note",
+      "status": "USER REVIEW — not auto-applied",
+      "generation": "997.2",
+      "variant": "GT2 RS",
+      "field": "variants[GT2 RS].production",
+      "current_value_in_file": "500 worldwide cap; 142 North America (132 US + 10 Canada)",
+      "recommended_value": "~510 built (500 worldwide cap); 142 North America (132 US + 10 Canada)",
+      "rationale": "Elferspot shows 510 actual production vs 500-unit cap. Same pattern as GT3 RS 4.0 (DA-004 note). Current 'cap' language is not wrong.",
+      "confidence": "MEDIUM",
+      "user_action": "Same decision as ST-004: whether to add 'built' vs 'cap' distinction."
+    },
+    {
+      "id": "ST-006",
+      "priority": "LOW — PDK watch-for gap",
+      "status": "INFORMATIONAL — cannot auto-apply (watch-for catalog is Session 11 scope)",
+      "generation": "997.2",
+      "variant": "all PDK-equipped variants",
+      "field": "watch_for",
+      "current_state": "watch_for section has a service note on PDK fluid but no dedicated watch_for entry for PDK clutch pack wear/failure",
+      "recommended_addition": "A watch_for entry for 997.2 PDK clutch pack degradation: PDK-equipped 997.2s with high mileage (80,000+ miles) or track history can exhibit clutch pack slip—symptoms are hesitation on initial engagement after a cold start and reduced shift quality. Severity: caution. Buyer question: PDK service history, any noted hesitation under load.",
+      "confidence": "LOW (content is correct, gap is real but severity is 'caution' not 'concern')",
+      "user_action": "Add PDK clutch pack watch_for entry when Session 11 scope is open. This is the watch_for catalog; do not modify during this session."
+    },
+    {
+      "id": "ST-007",
+      "priority": "LOW — Turbo Cabriolet years note",
+      "status": "INFORMATIONAL — current years correct per model year convention",
+      "generation": "997.1",
+      "variant": "Turbo Cabriolet",
+      "field": "years",
+      "current_value_in_file": "MY2008–2009",
+      "note": "Ian Bevis shows 608 Turbo Cabriolets built in calendar year 2007 — these are MY2008 delivery cars built in advance. The 'MY2008–2009' designation is correct per Porsche model-year convention. No change needed.",
+      "confidence": "HIGH — no change warranted"
+    }
+  ],
+  "total_staged": 7,
+  "user_review_required": 2,
+  "conflicts_resolved_auto_applied": 3,
+  "informational_only": 2
+}

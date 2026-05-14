@@ -12,6 +12,7 @@ const {
   mockMatchGeneration,
   mockComputeCompsV2,
   mockGetRecalls,
+  mockWriteCapture,
 } = vi.hoisted(() => ({
   mockGetSession:       vi.fn(),
   mockParseListing:     vi.fn(),
@@ -19,6 +20,7 @@ const {
   mockMatchGeneration:  vi.fn(),
   mockComputeCompsV2:   vi.fn(),
   mockGetRecalls:       vi.fn(),
+  mockWriteCapture:     vi.fn(),
 }))
 
 vi.mock('@/lib/supabase/server', () => ({
@@ -30,6 +32,7 @@ vi.mock('@/lib/vin-decode/nhtsa', () => ({ decodeVin: mockDecodeVin }))
 vi.mock('@/lib/generation-match', () => ({ matchGeneration: mockMatchGeneration }))
 vi.mock('@/lib/comp-engine-v2', () => ({ computeCompsV2: mockComputeCompsV2 }))
 vi.mock('@/lib/recalls/nhtsa', () => ({ getRecallsByMakeModelYear: mockGetRecalls }))
+vi.mock('@/lib/data-capture/write', () => ({ writeListingCapture: mockWriteCapture }))
 
 // Mutable holders so individual tests can swap chain behaviour
 let mockSingle = vi.fn()
@@ -55,7 +58,13 @@ vi.mock('@supabase/supabase-js', () => ({
         }
       }
       if (table === 'listing_analyses') {
-        return { insert: (row: unknown) => mockInsert(row) }
+        return {
+          insert: (row: unknown) => ({
+            select: () => ({
+              single: () => mockInsert(row),
+            }),
+          }),
+        }
       }
       return {}
     },
@@ -132,9 +141,10 @@ beforeEach(() => {
     error: null,
   })
 
-  mockInsert = vi.fn().mockResolvedValue({ error: null })
+  mockInsert = vi.fn().mockResolvedValue({ data: { id: 'analysis-id-001' }, error: null })
   mockComputeCompsV2.mockResolvedValue(undefined)
   mockGetRecalls.mockResolvedValue([])
+  mockWriteCapture.mockResolvedValue(undefined)
 })
 
 // ---------------------------------------------------------------------------
@@ -267,5 +277,37 @@ describe('POST /api/analyze — success', () => {
     expect(res.status).toBe(200)
     const body = await res.json() as { listingId: string }
     expect(body.listingId).toBe('listing-db-uuid-001')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// Data capture hook
+// ---------------------------------------------------------------------------
+describe('POST /api/analyze — data capture', () => {
+  it('calls writeListingCapture after a successful analyze run', async () => {
+    await POST(makeRequest({ url: 'https://bringatrailer.com/listing/test' }))
+    expect(mockWriteCapture).toHaveBeenCalledOnce()
+  })
+
+  it('passes listing, listingId, and analyzeRunId to writeListingCapture', async () => {
+    await POST(makeRequest({ url: 'https://bringatrailer.com/listing/test' }))
+    const call = (mockWriteCapture.mock.calls[0] as [unknown, Record<string, unknown>])[1]
+    expect(call.listingId).toBe('listing-db-uuid-001')
+    expect(call.analyzeRunId).toBe('analysis-id-001')
+    expect(call.listing).toMatchObject({ source_platform: 'bring-a-trailer' })
+  })
+
+  it('capture failure is non-fatal — still returns 200 with listingId', async () => {
+    mockWriteCapture.mockRejectedValueOnce(new Error('capture write failed'))
+    const res = await POST(makeRequest({ url: 'https://bringatrailer.com/listing/test' }))
+    expect(res.status).toBe(200)
+    const body = await res.json() as { listingId: string }
+    expect(body.listingId).toBe('listing-db-uuid-001')
+  })
+
+  it('response body does not contain a raw_description key', async () => {
+    const res = await POST(makeRequest({ url: 'https://bringatrailer.com/listing/test' }))
+    const body = await res.json() as Record<string, unknown>
+    expect(Object.keys(body)).not.toContain('raw_description')
   })
 })

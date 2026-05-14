@@ -44,7 +44,7 @@ description: >
   family, and not in scope of the dog-ring pop-out pattern described here.
 
 applicability:
-  generation: [911_G_body, 964, 993]
+  generation: [911-3.2-carrera, 964, 993]
   engine_family: [air_cooled_911]
   year_range: [1987, 1998]
   trim_category: [carrera, carrera_4, turbo, rs]

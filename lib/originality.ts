@@ -44,7 +44,9 @@ export interface ListingContext {
   engine_family: string | null
   year: number | null
   mileage: number | null
-  trim?: string | null  // raw listing trim text; used to derive engine family for mixed-engine generations
+  trim?: string | null          // raw listing trim text; used to derive engine family for mixed-engine generations
+  trim_category?: string | null // structured trim category stored in DB (e.g. '993_C2', 'Carrera_S')
+  body_style?: string | null    // listing body style (e.g. 'Coupe', 'Targa', 'Cabriolet')
 }
 
 // Derives 'Mezger' from trim text when the listing is in a mixed-engine generation.
@@ -109,6 +111,28 @@ function matchesExclude(exclude: DefectExclude, context: ListingContext): boolea
     // If ef is null we cannot verify — skip this criterion rather than over-excluding.
   }
 
+  if (exclude.trim_category && exclude.trim_category.length > 0) {
+    const tc = context.trim_category
+    if (tc) {
+      hasActionableCriteria = true
+      if (!exclude.trim_category.some((e) => e.toLowerCase() === tc.toLowerCase())) {
+        return false
+      }
+    }
+    // If trim_category is null on the context we cannot verify — skip rather than over-excluding.
+  }
+
+  if (exclude.body && exclude.body.length > 0) {
+    const bs = context.body_style
+    if (bs) {
+      hasActionableCriteria = true
+      if (!exclude.body.some((b) => b.toLowerCase() === bs.toLowerCase())) {
+        return false
+      }
+    }
+    // If body_style is null on the context we cannot verify — skip rather than over-excluding.
+  }
+
   return hasActionableCriteria
 }
 
@@ -149,6 +173,24 @@ export function matchDefects(context: ListingContext): WatchForItem[] {
       }
     }
 
+    // Positive trim_category check: skip records whose trim_category list doesn't include
+    // this listing's trim_category. Conservative: include when trim_category unknown.
+    if (applicability.trim_category?.length && context.trim_category) {
+      const tc = context.trim_category
+      if (!applicability.trim_category.some((t) => t.toLowerCase() === tc.toLowerCase())) {
+        continue
+      }
+    }
+
+    // Positive body check: skip records whose body list doesn't include this listing's
+    // body style. Conservative: include when body_style unknown.
+    if (applicability.body?.length && context.body_style) {
+      const bs = context.body_style
+      if (!applicability.body.some((b) => b.toLowerCase() === bs.toLowerCase())) {
+        continue
+      }
+    }
+
     if (isExcluded(applicability, context)) continue
 
     const description = (record.editorial_note ?? record.description ?? '').trim()
@@ -159,7 +201,8 @@ export function matchDefects(context: ListingContext): WatchForItem[] {
     const relevance_score =
       (applicability.year_range ? 1 : 0) +
       (applicability.engine_family?.length ? 1 : 0) +
-      (applicability.trim_category?.length ? 1 : 0)
+      (applicability.trim_category?.length ? 1 : 0) +
+      (applicability.body?.length ? 1 : 0)
 
     results.push({
       title: record.flag_title,

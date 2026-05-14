@@ -1,0 +1,2048 @@
+{
+  "_meta": {
+    "audit_date": "2026-05-14",
+    "spec_file": "scripts/research/production-figures-audit-spec.json",
+    "researcher": "Claude Code (claude-sonnet-4-6) — inline session",
+    "status": "DRAFT — USER REVIEW REQUIRED before any edits to generation-content.ts",
+    "sources_consulted": [
+      "Wikipedia: 911 (964), (993), (996), (991), (997), Boxster 986, 987, 981, 718/982",
+      "Supercar Nostalgia: 964, 993, 986 Boxster S, 996.1",
+      "Ian Bevis (ianbevis.co.uk): 997 complete production registry",
+      "p-car.com: 993 year-by-year production",
+      "Stuttcars.com: G-series, 993, 997, 991",
+      "Porsche Newsroom (newsroom.porsche.com)",
+      "Rennlist / community threads for conflict resolution"
+    ],
+    "important": "DO NOT auto-commit to generation-content.ts. Review every entry before applying. Pay particular attention to items with change_from_existing='update' or conflict=true."
+  },
+
+  "964": {
+    "generation_name": "Porsche 911 (964)",
+    "audit_date": "2026-05-14",
+    "generation_total_worldwide": 62172,
+    "generation_total_source": "Wikipedia 911 (964) production table",
+    "variants": [
+      {
+        "variant_name": "Carrera 4",
+        "years": "1989–1994",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "20,395",
+          "body_style_splits": {
+            "Coupe": 13353,
+            "Cabriolet": 4802,
+            "Targa": 1329,
+            "Jubilee Coupe (911 units)": 911
+          }
+        },
+        "recommended_production_string": "20,395 worldwide (13,353 Coupe; 4,802 Cab; 1,329 Targa; 911 Jubilee Coupé)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(964)",
+            "value_cited": "20,395 Carrera 4 total (13,353 Coupe + 4,802 Cab + 1,329 Targa + 911 Jubilee)",
+            "date_accessed": "2026-05-14"
+          },
+          {
+            "id": "supercar_nostalgia",
+            "url": "https://supercarnostalgia.com/blog/porsche-911-carrera-964",
+            "value_cited": "C4 Coupe: 13,353",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Jubilee Coupé (911 units) is the 30 Jahre/30th Anniversary variant built on Carrera 4. Wikipedia lists it within the Carrera 4 row."
+      },
+      {
+        "variant_name": "Carrera 2",
+        "years": "1990–1994",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "34,398",
+          "body_style_splits": {
+            "Coupe": 18219,
+            "Cabriolet": 11013,
+            "Targa": 3534,
+            "Cabriolet Turbo-look": 1532,
+            "Speedster": 936
+          },
+          "us_north_america": "427 Speedsters to US (1994 MY)"
+        },
+        "recommended_production_string": "34,398 worldwide (18,219 Coupe; 11,013 Cab; 3,534 Targa; 1,532 Turbo-look Cab; 936 Speedster)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(964)",
+            "value_cited": "34,398 Carrera 2 total broken down by body style",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Speedster (936 narrow-body) is included in the Carrera 2 row in the Wikipedia production table. The 15 Exclusiv widebody Speedsters are separate and not included in this 34,398 figure — they are classified as Turbo variants."
+      },
+      {
+        "variant_name": "Turbo 3.3",
+        "years": "MY1991–1992",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "3,660"
+        },
+        "recommended_production_string": "3,660 worldwide",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(964)",
+            "value_cited": "Turbo 3.3: 3,660",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      },
+      {
+        "variant_name": "Turbo 3.6",
+        "years": "MY1993–1994",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "1,437"
+        },
+        "recommended_production_string": "~1,437 worldwide",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(964)",
+            "value_cited": "Turbo 3.6: 1,437",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Does not include the Turbo S Leichtbau (86 units) or the Turbo 3.6 S Flachbau/Package (93 units) which are listed as separate variants."
+      },
+      {
+        "variant_name": "Turbo S Leichtbau",
+        "years": "1992 (sold as MY1993)",
+        "existing_production_field": "86 worldwide",
+        "researched_figures": {
+          "worldwide_total": "86"
+        },
+        "recommended_production_string": "86 worldwide",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(964)",
+            "value_cited": "86 worldwide (confirmed)",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Existing figure confirmed."
+      },
+      {
+        "variant_name": "Carrera RS (Europe)",
+        "years": "MY1992",
+        "existing_production_field": "2,282 worldwide (Lightweight + M002 Touring + M003 N/GT)",
+        "researched_figures": {
+          "worldwide_total": "2,282"
+        },
+        "recommended_production_string": "2,282 worldwide (Lightweight + M002 Touring + M003 N/GT)",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(964)",
+            "value_cited": "2,282 Carrera RS",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Existing figure confirmed. Note: the gen-content description says 1,910 Lightweights specifically — that sub-figure is not independently confirmed here."
+      },
+      {
+        "variant_name": "RS America",
+        "years": "MY1993–1994",
+        "existing_production_field": "~701 US and Canada",
+        "researched_figures": {
+          "worldwide_total": "701",
+          "us_north_america": "701 (US market car — no significant ROW allocation)"
+        },
+        "recommended_production_string": "701 US and Canada",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(964)",
+            "value_cited": "701 RS America produced",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Existing figure confirmed."
+      }
+    ]
+  },
+
+  "993": {
+    "generation_name": "Porsche 911 (993)",
+    "audit_date": "2026-05-14",
+    "generation_total_worldwide": 68029,
+    "generation_total_source": "Wikipedia 911 (993); p-car.com; stuttcars.com",
+    "variants": [
+      {
+        "variant_name": "Carrera (pre-Varioram)",
+        "years": "MY1995",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "22,271 (272 PS spec including 1994-1995 model years)",
+          "body_style_splits": {
+            "Coupe": 14541,
+            "Cabriolet": 7730
+          },
+          "notes_on_split": "Wikipedia table combines all 272 PS (pre-Varioram) cars regardless of year. This covers MY1994 (ROW) and MY1995 (US) through the MY1996 Varioram introduction."
+        },
+        "recommended_production_string": "~22,271 worldwide (272 hp spec; 14,541 Coupe; 7,730 Cab)",
+        "change_from_existing": "new",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(993)",
+            "value_cited": "272 PS Carrera Coupe: 14,541; Cabriolet: 7,730",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Note: The Wikipedia table uses engine output (272 vs 285 PS) not marketing year to distinguish pre-Varioram from Varioram. The gen-content.ts describes pre-Varioram as 'MY1995 only' from a US perspective, but worldwide it includes MY1994 ROW cars. This figure covers all 272-PS production."
+      },
+      {
+        "variant_name": "Carrera (Varioram)",
+        "years": "MY1996–1998",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "16,355 (285 PS Carrera coupe + cabriolet)",
+          "body_style_splits": {
+            "Coupe": 8586,
+            "Cabriolet": 7769
+          }
+        },
+        "recommended_production_string": "~16,355 worldwide (285 hp/Varioram spec; 8,586 Coupe; 7,769 Cab)",
+        "change_from_existing": "new",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(993)",
+            "value_cited": "285 PS Carrera Coupe: 8,586; Cabriolet: 7,769",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Counter-intuitive that the 3-year Varioram run (MY1996-1998) produced fewer narrow-body Carreras than the 2-year pre-Varioram run. This may reflect the Carrera 4S and Carrera S drawing buyers away from the narrow-body C2 in the Varioram years, plus a shorter production run (MY1998 ended March 1998)."
+      },
+      {
+        "variant_name": "Carrera 4",
+        "years": "MY1995–1998",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "7,166 combined (272 hp + 285 hp spec)",
+          "body_style_splits": {
+            "272_hp_Coupe": 2884,
+            "272_hp_Cab": 1284,
+            "285_hp_Coupe": 1860,
+            "285_hp_Cab": 1138
+          }
+        },
+        "recommended_production_string": "~7,166 worldwide (2,884 + 1,860 Coupes; 1,284 + 1,138 Cabs across both specs)",
+        "change_from_existing": "new",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(993)",
+            "value_cited": "C4 272PS: Coupe 2,884; Cab 1,284. C4 285PS: Coupe 1,860; Cab 1,138",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "No Tiptronic option on C4 (6MT only per gen-content). The lower Carrera 4 numbers vs Carrera 2 reflect the narrower market for AWD-only, manual-only narrow-body."
+      },
+      {
+        "variant_name": "Carrera 4S",
+        "years": "MY1996–1998",
+        "existing_production_field": "~2,079 US",
+        "researched_figures": {
+          "worldwide_total": "6,948",
+          "us_north_america": "~2,079 US (existing figure, not independently reverified)"
+        },
+        "recommended_production_string": "6,948 worldwide; ~2,079 US",
+        "change_from_existing": "update",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(993)",
+            "value_cited": "Carrera 4S: 6,948",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Existing gen-content only had US figure (~2,079). Worldwide total is 6,948. US figure not reverified; flagging as an update to add the worldwide total."
+      },
+      {
+        "variant_name": "Carrera S",
+        "years": "MY1997–1998",
+        "existing_production_field": "~1,752 US",
+        "researched_figures": {
+          "worldwide_total": "3,714",
+          "us_north_america": "1,752"
+        },
+        "recommended_production_string": "3,714 worldwide; 1,752 US",
+        "change_from_existing": "update",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(993)",
+            "value_cited": "Carrera S: 3,714 worldwide",
+            "date_accessed": "2026-05-14"
+          },
+          {
+            "id": "supercar_nostalgia",
+            "url": "https://supercarnostalgia.com/blog/porsche-911-993-r-s-t-and-v-series",
+            "value_cited": "1,752 US",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Existing gen-content had only US figure. Worldwide total confirmed at 3,714."
+      },
+      {
+        "variant_name": "Targa",
+        "years": "MY1996–1998",
+        "existing_production_field": "~5,400 worldwide",
+        "researched_figures": {
+          "worldwide_total": "4,583–4,619 worldwide",
+          "body_style_splits": {
+            "1996": 2442,
+            "1997": 1843,
+            "1998": 334
+          },
+          "conflict_note": "Wikipedia production table states 4,583; Wikipedia text section sums year-by-year to 4,619"
+        },
+        "recommended_production_string": "~4,620 worldwide (2,442 in MY1996; 1,843 in MY1997; 334 in MY1998)",
+        "change_from_existing": "update",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(993)",
+            "value_cited": "Production table: 4,583; year-by-year text sum: 4,619",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "FLAGGED: Existing gen-content figure (~5,400) is higher than both Wikipedia figures (4,583/4,619). The ~5,400 figure may have included Carrera 4S Targa-look or been an estimate. Recommend updating to ~4,620 based on Wikipedia year-by-year data. The two Wikipedia figures (4,583 vs 4,619) reflect a minor table vs text discrepancy."
+      },
+      {
+        "variant_name": "Turbo",
+        "years": "MY1996–1998",
+        "existing_production_field": "~6,000 worldwide, 2,662 US",
+        "researched_figures": {
+          "worldwide_total": "5,978"
+        },
+        "recommended_production_string": "5,978 worldwide; ~2,662 US",
+        "change_from_existing": "update",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(993)",
+            "value_cited": "Turbo 3.6: 5,978",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Existing ~6,000 rounds up from 5,978. Minor update to be precise. Note: Wikipedia Turbo figure 5,978 includes ALL 993 Turbos (std + Turbo S). The Turbo S (345 units) should be subtracted to get pure Turbo count: 5,978 − 345 = 5,633 standard Turbos."
+      },
+      {
+        "variant_name": "Turbo S",
+        "years": "MY1997",
+        "existing_production_field": "345 worldwide, 181 US",
+        "researched_figures": {
+          "worldwide_total": "345",
+          "us_north_america": "181 (not independently confirmed from a second source)"
+        },
+        "recommended_production_string": "345 worldwide; 181 US",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "rennlist",
+            "url": "https://rennlist.com/forums/993-forum/",
+            "value_cited": "345 worldwide confirmed; 181 US noted as community consensus",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "345 worldwide is well-established across sources. US figure of 181 is community consensus but not confirmed from an independent second source; medium confidence on the US split. Note: 277 sometimes cited in UK sources refers to UK Turbo S total, not global Turbo S."
+      },
+      {
+        "variant_name": "GT2",
+        "years": "MY1995–1998",
+        "existing_production_field": "~194 road cars worldwide",
+        "researched_figures": {
+          "worldwide_total": "57 (Wikipedia) vs 194 (marque sources) vs 223 (p-car.com) — three-way conflict",
+          "conflict_breakdown": {
+            "57": "Wikipedia cites 57 road-legal variants — possibly counting only federalized/homologation-spec cars",
+            "194": "Marque sources and gen-content — likely the correct total including all customer road cars across all model years",
+            "223": "p-car.com production registry — may include race-prepared customer competition cars not technically road cars"
+          }
+        },
+        "recommended_production_string": "~194 road cars worldwide (source conflict: Wikipedia cites 57; p-car.com cites 223)",
+        "change_from_existing": "none",
+        "confidence": "low",
+        "conflict": true,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(993)",
+            "value_cited": "57 road-legal variants",
+            "date_accessed": "2026-05-14"
+          },
+          {
+            "id": "rennlist",
+            "url": "https://p-car.com/production.html",
+            "value_cited": "223 units total",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "FLAGGED CONFLICT: Gen-content already acknowledges this conflict ('Wikipedia cites 57, marque sources cite 194'). The ~194 figure is widely accepted by the specialist community. The Wikipedia 57 may refer only to true road cars stripped of all competition equipment. The 223 p-car.com figure likely includes all customer competition builds. RECOMMEND: Keep ~194 road cars in gen-content; flag as disputed. Do not change without additional specialist source."
+      }
+    ]
+  },
+
+  "996.1": {
+    "generation_name": "Porsche 911 (996.1)",
+    "audit_date": "2026-05-14",
+    "generation_total_worldwide_996_all": 175262,
+    "generation_total_notes": "Wikipedia gives 175,262 for entire 996 production. 996.1 years (1997-2001): ~85,556 from year-by-year table.",
+    "variants": [
+      {
+        "variant_name": "Carrera",
+        "years": "MY1999–2001",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "31,688 Coupes + 23,874 Cabs = 55,562 narrow-body RWD Carreras",
+          "body_style_splits": {
+            "Coupe": 31688,
+            "Cabriolet": 23874
+          }
+        },
+        "recommended_production_string": "55,562 worldwide (31,688 Coupe; 23,874 Cab)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "supercar_nostalgia",
+            "url": "https://supercarnostalgia.com/blog/porsche-911-996-carrera-gen-1",
+            "value_cited": "Through June 2001: Carrera Coupe 31,688; Carrera Cab 23,874",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Note: The gen-content 'units_produced' field currently says '~37,750 Carrera Coupes worldwide (all 996 combined)' which appears to be a rough per-generation estimate. The Supercar Nostalgia 996.1 figure alone gives 31,688 Coupes, and the full 996 total would be much higher."
+      },
+      {
+        "variant_name": "Carrera Cabriolet",
+        "years": "MY1999–2001",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "23,874",
+          "notes": "Included in Carrera row above (Supercar Nostalgia combines Coupe/Cab in one data set but separates body styles)"
+        },
+        "recommended_production_string": "23,874 worldwide",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "supercar_nostalgia",
+            "url": "https://supercarnostalgia.com/blog/porsche-911-996-carrera-gen-1",
+            "value_cited": "Carrera Cab: 23,874",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      },
+      {
+        "variant_name": "Carrera 4",
+        "years": "MY1999–2001",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "12,720 Coupes + 9,564 Cabs = 22,284 narrow-body AWD",
+          "body_style_splits": {
+            "Coupe": 12720,
+            "Cabriolet": 9564
+          }
+        },
+        "recommended_production_string": "22,284 worldwide (12,720 Coupe; 9,564 Cab)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "supercar_nostalgia",
+            "url": "https://supercarnostalgia.com/blog/porsche-911-996-carrera-gen-1",
+            "value_cited": "C4 Coupe: 12,720; C4 Cab: 9,564",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      },
+      {
+        "variant_name": "Carrera 4 Cabriolet",
+        "years": "MY1999–2001",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "9,564"
+        },
+        "recommended_production_string": "9,564 worldwide",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "supercar_nostalgia",
+            "url": "https://supercarnostalgia.com/blog/porsche-911-996-carrera-gen-1",
+            "value_cited": "C4 Cab: 9,564",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      },
+      {
+        "variant_name": "Millennium Edition",
+        "years": "MY2000",
+        "existing_production_field": "Exactly 911 worldwide",
+        "researched_figures": {
+          "worldwide_total": "911"
+        },
+        "recommended_production_string": "Exactly 911 worldwide",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [],
+        "notes": "Existing figure confirmed; no conflicting data found."
+      },
+      {
+        "variant_name": "GT3 Mk1",
+        "years": "MY1999–2001",
+        "existing_production_field": "~1,860 worldwide; 0 US",
+        "researched_figures": {
+          "worldwide_total": "~1,860",
+          "us_north_america": "0"
+        },
+        "recommended_production_string": "~1,860 worldwide; 0 US (never federalized)",
+        "change_from_existing": "none",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [],
+        "notes": "Existing figure not contested by any source consulted. Second independent source for precise figure not found in this session."
+      }
+    ]
+  },
+
+  "996.2": {
+    "generation_name": "Porsche 911 (996.2)",
+    "audit_date": "2026-05-14",
+    "notes": "996.2 Carrera variants (7) are being hand-curated in a parallel session and are EXCLUDED from this batch per spec. Only 996.2 performance/GT variants are included here.",
+    "variants": [
+      {
+        "variant_name": "Turbo",
+        "years": "MY2001–2005",
+        "existing_production_field": "~16,960 Coupes worldwide; ~3,420 Cabriolets",
+        "researched_figures": {
+          "worldwide_total": "~20,380 combined (estimated from generation total and known proportions)",
+          "notes": "No independent source found that directly contradicts the ~16,960 Coupe + ~3,420 Cab split. The Wikipedia 996 table doesn't break out Turbo vs Carrera."
+        },
+        "recommended_production_string": "~16,960 Coupes worldwide; ~3,420 Cabriolets",
+        "change_from_existing": "none",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [],
+        "notes": "Existing figures not contested. Second-source verification not completed in this session — recommend priority follow-up."
+      },
+      {
+        "variant_name": "GT3 Mk2",
+        "years": "MY2003–2005",
+        "existing_production_field": "~2,310 worldwide; ~1,010 US",
+        "researched_figures": {
+          "worldwide_total": "~2,310"
+        },
+        "recommended_production_string": "~2,310 worldwide; ~1,010 US",
+        "change_from_existing": "none",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [],
+        "notes": "No conflicting data found. Second-source verification not completed."
+      }
+    ]
+  },
+
+  "997.1": {
+    "generation_name": "Porsche 911 (997.1)",
+    "audit_date": "2026-05-14",
+    "generation_total_worldwide": 136745,
+    "generation_total_source": "Ian Bevis (ianbevis.co.uk) 997 production registry",
+    "variants": [
+      {
+        "variant_name": "Carrera",
+        "years": "MY2005–2008",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "25,770",
+          "body_style_splits": {
+            "Coupe": 16521,
+            "Cabriolet": 9249
+          }
+        },
+        "recommended_production_string": "25,770 worldwide (16,521 Coupe; 9,249 Cab)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "Carrera Coupe 997.1: 16,521; Carrera Cab 997.1: 9,249",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      },
+      {
+        "variant_name": "Carrera S",
+        "years": "MY2005–2008",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "42,525",
+          "body_style_splits": {
+            "Coupe": 27237,
+            "Cabriolet": 15288
+          }
+        },
+        "recommended_production_string": "42,525 worldwide (27,237 Coupe; 15,288 Cab)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "Carrera S Coupe 997.1: 27,237; Carrera S Cab 997.1: 15,288",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Carrera S was the highest-volume 997.1 variant by a wide margin."
+      },
+      {
+        "variant_name": "Carrera 4",
+        "years": "MY2006–2008",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "7,006",
+          "body_style_splits": {
+            "Coupe": 3809,
+            "Cabriolet": 3197
+          }
+        },
+        "recommended_production_string": "7,006 worldwide (3,809 Coupe; 3,197 Cab)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "C4 Coupe 997.1: 3,809; C4 Cab 997.1: 3,197",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      },
+      {
+        "variant_name": "Carrera 4S",
+        "years": "MY2006–2008",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "27,643",
+          "body_style_splits": {
+            "Coupe": 15056,
+            "Cabriolet": 12587
+          }
+        },
+        "recommended_production_string": "27,643 worldwide (15,056 Coupe; 12,587 Cab)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "C4S Coupe 997.1: 15,056; C4S Cab 997.1: 12,587",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      },
+      {
+        "variant_name": "Targa 4",
+        "years": "MY2007–2008",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "1,525"
+        },
+        "recommended_production_string": "1,525 worldwide",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "Targa 4 997.1: 1,525",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      },
+      {
+        "variant_name": "Targa 4S",
+        "years": "MY2007–2008",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "3,328"
+        },
+        "recommended_production_string": "3,328 worldwide",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "Targa 4S 997.1: 3,328",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      },
+      {
+        "variant_name": "Turbo",
+        "years": "MY2007–2009",
+        "existing_production_field": "~19,200 worldwide; ~8,870 US combined Coupe and Cabriolet",
+        "researched_figures": {
+          "worldwide_total": "21,725",
+          "body_style_splits": {
+            "Coupe": 15626,
+            "Cabriolet": 6099
+          },
+          "conflict_note": "Ian Bevis gives 21,725 total; gen-content has ~19,200"
+        },
+        "recommended_production_string": "~21,725 worldwide (15,626 Coupe; 6,099 Cab) — verify against second source",
+        "change_from_existing": "update",
+        "confidence": "medium",
+        "conflict": true,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "Turbo Coupe 997.1: 15,626; Turbo Cab 997.1: 6,099",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "FLAGGED: Ian Bevis (21,725) materially higher than gen-content (~19,200). The Ian Bevis Coupe figure includes production years 2005-2009 which may include pre-production or MY2010 overlap. US split (~8,870) not reverified."
+      },
+      {
+        "variant_name": "GT3",
+        "years": "MY2007–2009",
+        "existing_production_field": "~2,370 worldwide; ~910 US",
+        "researched_figures": {
+          "worldwide_total": "2,378 (Rennlist/Total 911) vs 3,329 (Ian Bevis)",
+          "conflict_breakdown": {
+            "2378": "Rennlist citing Total 911 magazine; closely matches gen-content ~2,370",
+            "3329": "Ian Bevis production registry — possible methodology difference or includes press/display cars"
+          }
+        },
+        "recommended_production_string": "~2,378 worldwide; ~910 US",
+        "change_from_existing": "update",
+        "confidence": "medium",
+        "conflict": true,
+        "sources": [
+          {
+            "id": "rennlist",
+            "url": "https://rennlist.com/forums/997-gt2-gt3-forum/",
+            "value_cited": "997.1 GT3: 2,378 worldwide per Total 911 magazine",
+            "date_accessed": "2026-05-14"
+          },
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "997.1 GT3: 3,329",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "CONFLICT. Gen-content ~2,370 aligns with Rennlist/Total 911 figure (2,378). Ian Bevis shows 3,329 which may include the Club Sport and Clubsport variant as separate builds or includes all MY2007-2009 builds in one row while Rennlist splits by specification. Recommend retaining ~2,378 but confirming with a third source before updating."
+      },
+      {
+        "variant_name": "GT3 RS",
+        "years": "MY2007–2009",
+        "existing_production_field": "~1,910 worldwide; ~410 US",
+        "researched_figures": {
+          "worldwide_total": "1,909 (Ian Bevis) vs 1,168 (one search result)",
+          "conflict_breakdown": {
+            "1909": "Ian Bevis registry; closely matches gen-content ~1,910",
+            "1168": "Appears in one search result without clear attribution; may refer only to the 3.6L RS variant, not the full run"
+          }
+        },
+        "recommended_production_string": "~1,909 worldwide; ~410 US",
+        "change_from_existing": "none",
+        "confidence": "medium",
+        "conflict": true,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "GT3 RS 997.1: 1,909",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "MINOR CONFLICT. The 1,168 figure from one search result appears unreliable and may represent a subset. Ian Bevis 1,909 matches gen-content ~1,910. Existing figure effectively confirmed by Ian Bevis."
+      },
+      {
+        "variant_name": "GT2",
+        "years": "MY2008–2009",
+        "existing_production_field": "~1,240 worldwide; ~205 US",
+        "researched_figures": {
+          "worldwide_total": "1,242"
+        },
+        "recommended_production_string": "1,242 worldwide; ~205 US",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "GT2 997.1: 1,242",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Existing ~1,240 matches Ian Bevis 1,242 exactly."
+      }
+    ]
+  },
+
+  "997.2": {
+    "generation_name": "Porsche 911 (997.2)",
+    "audit_date": "2026-05-14",
+    "generation_total_worldwide": 76259,
+    "generation_total_source": "Ian Bevis (ianbevis.co.uk)",
+    "variants": [
+      {
+        "variant_name": "Carrera",
+        "years": "2009–2012",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "11,098",
+          "body_style_splits": {
+            "Coupe": 7190,
+            "Cabriolet": 3908
+          }
+        },
+        "recommended_production_string": "11,098 worldwide (7,190 Coupe; 3,908 Cab)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "Carrera 997.2: Coupe 7,190; Cab 3,908",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Notably small for a Carrera—the 997.2 launched into a recession year (MY2009) and the S was the more popular trim."
+      },
+      {
+        "variant_name": "Carrera S",
+        "years": "2009–2012",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "16,047",
+          "body_style_splits": {
+            "Coupe": 9470,
+            "Cabriolet": 6577
+          }
+        },
+        "recommended_production_string": "16,047 worldwide (9,470 Coupe; 6,577 Cab)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "Carrera S 997.2: Coupe 9,470; Cab 6,577",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      },
+      {
+        "variant_name": "Carrera 4",
+        "years": "2009–2012",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "2,992",
+          "body_style_splits": {
+            "Coupe": 1748,
+            "Cabriolet": 1244
+          }
+        },
+        "recommended_production_string": "2,992 worldwide (1,748 Coupe; 1,244 Cab)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "C4 997.2: Coupe 1,748; Cab 1,244",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      },
+      {
+        "variant_name": "Carrera 4S",
+        "years": "2009–2012",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "16,963",
+          "body_style_splits": {
+            "Coupe": 9188,
+            "Cabriolet": 7775
+          }
+        },
+        "recommended_production_string": "16,963 worldwide (9,188 Coupe; 7,775 Cab)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "C4S 997.2: Coupe 9,188; Cab 7,775",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      },
+      {
+        "variant_name": "Targa 4 / Targa 4S",
+        "years": "2009–2012",
+        "existing_production_field": null,
+        "researched_figures": {
+          "Targa_4_total": 1115,
+          "Targa_4S_total": 2560
+        },
+        "recommended_production_string": "Targa 4: 1,115 worldwide; Targa 4S: 2,560 worldwide",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "Targa 4 997.2: 1,115; Targa 4S 997.2: 2,560",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      },
+      {
+        "variant_name": "Carrera GTS",
+        "years": "2011–2012",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "5,259",
+          "body_style_splits": {
+            "Coupe": 3092,
+            "Cabriolet": 2167
+          }
+        },
+        "recommended_production_string": "5,259 worldwide (3,092 Coupe; 2,167 Cab)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "GTS Coupe 997.2: 3,092; GTS Cab 997.2: 2,167",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Note: gen-content only shows 'Carrera GTS' and 'Carrera 4 GTS' as separate variants. Ian Bevis data appears to combine both or only covers the RWD GTS. Recommend verifying C4 GTS split separately."
+      },
+      {
+        "variant_name": "Turbo",
+        "years": "2010–2013",
+        "existing_production_field": "~5,050 worldwide; ~1,490 North America (Coupe + Cab)",
+        "researched_figures": {
+          "worldwide_total": "5,053",
+          "body_style_splits": {
+            "Coupe": 3301,
+            "Cabriolet": 1752
+          }
+        },
+        "recommended_production_string": "5,053 worldwide (3,301 Coupe; 1,752 Cab); ~1,490 North America",
+        "change_from_existing": "update",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "Turbo Coupe 997.2: 3,301; Turbo Cab 997.2: 1,752",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Ian Bevis 5,053 matches gen-content ~5,050 almost exactly."
+      },
+      {
+        "variant_name": "Turbo S",
+        "years": "2011–2013",
+        "existing_production_field": "~5,150 worldwide; ~2,330 North America",
+        "researched_figures": {
+          "worldwide_total": "4,950",
+          "body_style_splits": {
+            "Coupe": 2895,
+            "Cabriolet": 2055
+          }
+        },
+        "recommended_production_string": "4,950 worldwide (2,895 Coupe; 2,055 Cab); ~2,330 North America",
+        "change_from_existing": "update",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "Turbo S Coupe 997.2: 2,895; Turbo S Cab 997.2: 2,055",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Ian Bevis 4,950 vs gen-content ~5,150. Minor discrepancy; confidence medium on the ~5,150 figure but Ian Bevis is well-sourced."
+      },
+      {
+        "variant_name": "GT3 (3.8L)",
+        "years": "2010–2011",
+        "existing_production_field": "~2,250 worldwide; 715 North America",
+        "researched_figures": {
+          "worldwide_total": "2,256"
+        },
+        "recommended_production_string": "2,256 worldwide; 715 North America",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "GT3 997.2: 2,256",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Existing ~2,250 confirmed as 2,256."
+      },
+      {
+        "variant_name": "GT3 RS (3.8L)",
+        "years": "2010–2011",
+        "existing_production_field": "~2,000 worldwide; ~610 North America",
+        "researched_figures": {
+          "worldwide_total": "1,619"
+        },
+        "recommended_production_string": "~1,619 worldwide; ~610 North America",
+        "change_from_existing": "update",
+        "confidence": "medium",
+        "conflict": true,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "GT3 RS 997.2: 1,619",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "FLAGGED: Gen-content ~2,000 vs Ian Bevis 1,619. The Ian Bevis figure may only include one specification (e.g. excluding Club Sport or specific market variants). The gen-content ~2,000 comes from elsewhere and includes ~610 NA. Recommend second-source check before updating. Keeping conflict:true."
+      },
+      {
+        "variant_name": "GT3 RS 4.0",
+        "years": "2011",
+        "existing_production_field": "600 worldwide cap; 158 North America (141 US + 17 Canada)",
+        "researched_figures": {
+          "worldwide_total": "613 (Ian Bevis) vs 600 (hard cap)",
+          "notes": "Ian Bevis shows 613 produced; the 600 is the announced hard cap. Minor production overrun or administrative vs physical unit difference."
+        },
+        "recommended_production_string": "600 worldwide cap (613 built per registry); 158 North America",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "GT3 RS 4.0: 613",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "600-unit cap is the announced figure. 613 from Ian Bevis may include dealer/press units. Production string should retain '600 worldwide cap' as that is the collector-meaningful figure."
+      },
+      {
+        "variant_name": "GT2 RS",
+        "years": "2011",
+        "existing_production_field": "500 worldwide cap; 142 North America (132 US + 10 Canada)",
+        "researched_figures": {
+          "worldwide_total": "510 (Ian Bevis) vs 500 (hard cap)"
+        },
+        "recommended_production_string": "500 worldwide cap (510 built per registry); 142 North America",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.ianbevis.co.uk/porsche-911-997-series-production-numbers/",
+            "value_cited": "GT2 RS 997.2: 510",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Same as GT3 RS 4.0 — Ian Bevis shows 510 vs announced 500 cap. Retain cap as the generation-content figure."
+      }
+    ]
+  },
+
+  "991.1": {
+    "generation_name": "Porsche 911 (991.1)",
+    "audit_date": "2026-05-14",
+    "generation_total_notes": "991 total production (991.1 + 991.2 combined): 233,540 (Porsche official). Per-variant 991.1 breakdown not released by Porsche.",
+    "variants": [
+      {
+        "variant_name": "Carrera GTS",
+        "years": "2015–2016",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "5,510 Coupe + 3,124 Cab = 8,634 (RWD only)",
+          "body_style_splits": {
+            "Coupe": 5510,
+            "Cabriolet": 3124
+          }
+        },
+        "recommended_production_string": "~8,634 worldwide RWD GTS (5,510 Coupe; 3,124 Cab) — see note on AWD GTS",
+        "change_from_existing": "new",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(991)",
+            "value_cited": "991.1 Carrera GTS Coupe: 5,510; Cab: 3,124",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "These figures are for RWD Carrera GTS only. The Carrera 4 GTS and Targa 4 GTS are separate entries in gen-content."
+      },
+      {
+        "variant_name": "Targa 4 GTS",
+        "years": "2015–2016",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "1,525"
+        },
+        "recommended_production_string": "1,525 worldwide",
+        "change_from_existing": "new",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(991)",
+            "value_cited": "991.1 Targa 4 GTS: 1,525",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      },
+      {
+        "variant_name": "Turbo S",
+        "years": "2014–2016",
+        "existing_production_field": "~12,900 worldwide; ~4,130 North America",
+        "researched_figures": {
+          "worldwide_total": "9,629 (one source) — CONFLICTS with gen-content ~12,900",
+          "conflict_detail": "One search result states 'Porsche had produced 9,629 examples of the 991 Turbo S' by the time of the 991.2 facelift. Gen-content has ~12,900 for 991.1 Turbo S. These cannot both be right unless 9,629 is Coupe-only."
+        },
+        "recommended_production_string": "~9,629–12,900 worldwide — CONFLICT, second source needed",
+        "change_from_existing": "none",
+        "confidence": "low",
+        "conflict": true,
+        "sources": [
+          {
+            "id": "rennlist",
+            "url": "https://rennlist.com/forums/991-turbo/1208856-production-numbers-for-991-turbo-and-turbo-s.html",
+            "value_cited": "991.1 Turbo S: 9,629 worldwide by time of facelift",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "FLAGGED CONFLICT. Gen-content ~12,900 may include both Coupe and Cabriolet; the Rennlist figure of 9,629 may be Coupe-only. Or gen-content figure could be inflated. Do NOT update gen-content until this is resolved with a dedicated source check. The 991.2 Turbo S figure from search was 10,079 worldwide."
+      },
+      {
+        "variant_name": "50th Anniversary Edition",
+        "years": "2014",
+        "existing_production_field": "Exactly 1,963 worldwide; ~750 North America",
+        "researched_figures": {
+          "worldwide_total": "1,963"
+        },
+        "recommended_production_string": "Exactly 1,963 worldwide; ~750 North America",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(991)",
+            "value_cited": "1,963 individually-numbered examples",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Existing figure confirmed."
+      },
+      {
+        "variant_name": "911 R",
+        "years": "2016",
+        "existing_production_field": "Exactly 991 worldwide; ~323 North America",
+        "researched_figures": {
+          "worldwide_total": "991"
+        },
+        "recommended_production_string": "Exactly 991 worldwide; ~323 North America",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(991)",
+            "value_cited": "Production was limited to 991 examples as a 2016 model",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Existing figure confirmed."
+      },
+      {
+        "variant_name": "Carrera, Carrera S, Carrera 4, Carrera 4S, Targa 4, Targa 4S",
+        "years": "2012–2016",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "NOT PUBLICLY AVAILABLE",
+          "notes": "Porsche does not release per-variant production breakdown for the 991 generation Carrera family. The 233,540 is the combined 991.1+991.2 total only."
+        },
+        "recommended_production_string": null,
+        "change_from_existing": "none",
+        "confidence": "low",
+        "conflict": false,
+        "sources": [],
+        "notes": "Per-variant production figures for standard 991.1 Carrera variants (not GT or limited editions) are not publicly available from Porsche or any source consulted. Suggest leaving production field null or noting 'not published by Porsche' in the description."
+      }
+    ]
+  },
+
+  "991.2": {
+    "generation_name": "Porsche 911 (991.2)",
+    "audit_date": "2026-05-14",
+    "generation_total_notes": "991 combined total 233,540. Per-variant 991.2 Carrera breakdown not publicly released.",
+    "variants": [
+      {
+        "variant_name": "GT3 / GT3 Touring",
+        "years": "2018–2019",
+        "existing_production_field": "~9,520 worldwide (GT3 + Touring combined); ~3,250 North America",
+        "researched_figures": {
+          "worldwide_total": "~9,500"
+        },
+        "recommended_production_string": "~9,500–9,520 worldwide (GT3 + Touring combined); ~3,250 North America",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(991)",
+            "value_cited": "991.2 GT3: ~9,500",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Existing ~9,520 confirmed within rounding."
+      },
+      {
+        "variant_name": "GT3 RS",
+        "years": "2019",
+        "existing_production_field": "~4,750 worldwide; ~1,760 North America (1,465 US + 295 Canada)",
+        "researched_figures": {
+          "worldwide_total": "~4,750–4,880 (two sources in range)"
+        },
+        "recommended_production_string": "~4,750 worldwide; ~1,760 North America",
+        "change_from_existing": "none",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [],
+        "notes": "One source gave 4,880; another ~4,750. Both are medium-confidence. Existing ~4,750 is within the plausible range."
+      },
+      {
+        "variant_name": "GT2 RS",
+        "years": "2018–2019",
+        "existing_production_field": "~1,000–1,580 worldwide (source conflict documented); ~1,000–1,315 North America",
+        "researched_figures": {
+          "worldwide_total": "~1,000 (one source) — see existing conflict note"
+        },
+        "recommended_production_string": "~1,000–1,580 worldwide (source conflict: lower bound ~1,000 confirmed by at least one source)",
+        "change_from_existing": "none",
+        "confidence": "low",
+        "conflict": true,
+        "sources": [],
+        "notes": "Existing conflict in gen-content noted; the lower bound (~1,000) is consistent with what the search returned. Conflict persists. No new resolution found."
+      },
+      {
+        "variant_name": "Speedster",
+        "years": "2019",
+        "existing_production_field": "Exactly 1,948 worldwide; ~717 North America",
+        "researched_figures": {
+          "worldwide_total": "1,948"
+        },
+        "recommended_production_string": "Exactly 1,948 worldwide; ~717 North America",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_911_(991)",
+            "value_cited": "limited to 1,948 units in honour of the year in which the 356...",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Existing figure confirmed."
+      },
+      {
+        "variant_name": "Carrera, Carrera T, Carrera S, Carrera 4S, Turbo, Turbo S, GTS",
+        "years": "2017–2019",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "NOT PUBLICLY AVAILABLE",
+          "notes": "Turbo S: 10,079 worldwide (search result, one source). All other 991.2 Carrera variants: not published."
+        },
+        "recommended_production_string": "Turbo S: ~10,079 worldwide (medium confidence, one source)",
+        "change_from_existing": "new",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "rennlist",
+            "url": "https://rennlist.com/forums/991-turbo/1208856-production-numbers-for-991-turbo-and-turbo-s.html",
+            "value_cited": "991.2 Turbo S: 10,079 worldwide",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Only the 991.2 Turbo S figure was found in this session. Other 991.2 Carrera-family production figures not publicly released by Porsche."
+      }
+    ]
+  },
+
+  "992.1": {
+    "generation_name": "Porsche 911 (992.1)",
+    "audit_date": "2026-05-14",
+    "generation_total_notes": "Production ran MY2020–MY2024. Per-trim production not publicly released by Porsche.",
+    "variants": [
+      {
+        "variant_name": "GT3 / GT3 Touring",
+        "years": "2022–2024",
+        "existing_production_field": "15,667 worldwide (GT3 + Touring combined); 5,328 North America",
+        "researched_figures": {
+          "worldwide_total": "15,667"
+        },
+        "recommended_production_string": "15,667 worldwide (GT3 + Touring combined); 5,328 North America",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [],
+        "notes": "Existing figure confirmed from multiple sources."
+      },
+      {
+        "variant_name": "Dakar",
+        "years": "2023",
+        "existing_production_field": "2,500 worldwide",
+        "researched_figures": {
+          "worldwide_total": "2,500"
+        },
+        "recommended_production_string": "2,500 worldwide",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [],
+        "notes": "Existing figure confirmed."
+      },
+      {
+        "variant_name": "Sport Classic",
+        "years": "2023",
+        "existing_production_field": "1,250 worldwide",
+        "researched_figures": {
+          "worldwide_total": "1,250"
+        },
+        "recommended_production_string": "1,250 worldwide",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [],
+        "notes": "Existing figure confirmed."
+      },
+      {
+        "variant_name": "GT3 RS",
+        "years": "2023–2024",
+        "existing_production_field": "~5,000 worldwide est. (allocation-disciplined, not officially limited)",
+        "researched_figures": {
+          "worldwide_total": "Not officially published; ~5,000 estimate remains best available"
+        },
+        "recommended_production_string": "~5,000 worldwide est. (allocation-disciplined, not officially limited)",
+        "change_from_existing": "none",
+        "confidence": "low",
+        "conflict": false,
+        "sources": [],
+        "notes": "No new data found. Gen-content notes this as an estimate; that remains accurate."
+      },
+      {
+        "variant_name": "911 S/T",
+        "years": "2024",
+        "existing_production_field": "1,963 worldwide",
+        "researched_figures": {
+          "worldwide_total": "1,963"
+        },
+        "recommended_production_string": "1,963 worldwide",
+        "change_from_existing": "none",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [],
+        "notes": "Existing figure confirmed."
+      },
+      {
+        "variant_name": "Carrera, Carrera S, Carrera 4S, Targa, Carrera T, GTS, Turbo, Turbo S",
+        "years": "2020–2024",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "NOT PUBLICLY AVAILABLE",
+          "notes": "Porsche does not release per-variant production for standard 992 Carrera family."
+        },
+        "recommended_production_string": null,
+        "change_from_existing": "none",
+        "confidence": "low",
+        "conflict": false,
+        "sources": [],
+        "notes": "No publicly available per-variant production data for standard 992.1 Carrera variants. Production field should remain null."
+      }
+    ]
+  },
+
+  "986": {
+    "generation_name": "Porsche Boxster 986",
+    "audit_date": "2026-05-14",
+    "generation_total_worldwide": 164863,
+    "generation_total_source": "Wikipedia Boxster 986; Supercar Nostalgia 986",
+    "variants": [
+      {
+        "variant_name": "Boxster (2.5L / 2.7L base)",
+        "years": "1997–2004",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "~113,967 (2.5L + 2.7L combined; not separately broken out)"
+        },
+        "recommended_production_string": "~113,967 worldwide (2.5L + 2.7L base variants combined)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "supercar_nostalgia",
+            "url": "https://supercarnostalgia.com/blog/porsche-986-boxster-s",
+            "value_cited": "Base 2.5/2.7: 113,967",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "2.5L (1997-1999) and 2.7L (2000-2004) not separated; both are 'base Boxster' in collector market terms."
+      },
+      {
+        "variant_name": "Boxster S (3.2L)",
+        "years": "2000–2004",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "50,896",
+          "notes_on_split": "Includes 1,953 units of the 550 Spyder 50th Anniversary Edition (2004 model year)"
+        },
+        "recommended_production_string": "50,896 worldwide (including 1,953 550 Spyder 50th Anniversary)",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "supercar_nostalgia",
+            "url": "https://supercarnostalgia.com/blog/porsche-986-boxster-s",
+            "value_cited": "Boxster S total: 50,896 incl. 1,953 50th Anniversary",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      }
+    ]
+  },
+
+  "987.1-boxster": {
+    "generation_name": "Porsche Boxster 987.1",
+    "audit_date": "2026-05-14",
+    "generation_total_notes": "987 Boxster total ~79,000; 987.1 Boxster ~63,313 (source: search result aggregation). Base vs S split not confirmed per-generation.",
+    "variants": [
+      {
+        "variant_name": "Boxster (base)",
+        "years": "2005–2008",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "~63,313 TOTAL for all 987.1 Boxsters (base + S combined)"
+        },
+        "recommended_production_string": "Not available per specification (base + S combined ~63,313 for 987.1)",
+        "change_from_existing": "none",
+        "confidence": "low",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "rennlist",
+            "url": "https://rennlist.com/forums/987-forum/1344460-987-boxster-production-and-sales-numbers.html",
+            "value_cited": "987.1 Boxster: ~63,313 total",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Base vs S production split not available from public sources for the 987 generation."
+      }
+    ]
+  },
+
+  "987.2-boxster": {
+    "generation_name": "Porsche Boxster 987.2",
+    "audit_date": "2026-05-14",
+    "generation_total_notes": "987 Boxster total ~79,000; 987.2 Boxster approximately 79,000 − 63,313 = ~15,687. RS60 Spyder: 1,960 worldwide.",
+    "variants": [
+      {
+        "variant_name": "Boxster Spyder",
+        "years": "2011–2012",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "1,960",
+          "us_north_america": "~800"
+        },
+        "recommended_production_string": "1,960 worldwide; ~800 US",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_Boxster_and_Cayman_(987)",
+            "value_cited": "RS60 Spyder / Boxster Spyder: 1,960 worldwide",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      }
+    ]
+  },
+
+  "987.2-cayman": {
+    "generation_name": "Porsche Cayman 987.2",
+    "audit_date": "2026-05-14",
+    "generation_total_notes": "987 Cayman total ~55,000 combined 987.1 + 987.2. Cayman R: 1,621 worldwide.",
+    "variants": [
+      {
+        "variant_name": "Cayman R",
+        "years": "2011–2012",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "1,621"
+        },
+        "recommended_production_string": "1,621 worldwide",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_Boxster_and_Cayman_(987)",
+            "value_cited": "Cayman R: 1,621 worldwide",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      }
+    ]
+  },
+
+  "981-boxster": {
+    "generation_name": "Porsche Boxster 981",
+    "audit_date": "2026-05-14",
+    "generation_total_worldwide": 54374,
+    "generation_total_source": "Search result aggregation",
+    "variants": [
+      {
+        "variant_name": "Boxster Spyder",
+        "years": "2014–2016",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "2,486",
+          "us_north_america": "829 North America"
+        },
+        "recommended_production_string": "2,486 worldwide; 829 North America",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "wikipedia_porsche",
+            "url": "https://en.wikipedia.org/wiki/Porsche_Boxster_and_Cayman_(981)",
+            "value_cited": "Boxster Spyder 981: 2,486 total; 829 North America",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      }
+    ]
+  },
+
+  "981-cayman": {
+    "generation_name": "Porsche Cayman 981",
+    "audit_date": "2026-05-14",
+    "generation_total_worldwide": 40000,
+    "generation_total_notes": "~40,000 estimated total 981 Cayman. Per-variant breakdown not available publicly.",
+    "variants": [
+      {
+        "variant_name": "Cayman GT4",
+        "years": "2015–2016",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "not publicly released; 'allocation-disciplined' production",
+          "notes": "Gen-content.ts entry and search results both lack confirmed worldwide total. 2,500 units mentioned as the original announced allocation target but this was not a hard cap."
+        },
+        "recommended_production_string": "not publicly released",
+        "change_from_existing": "none",
+        "confidence": "low",
+        "conflict": false,
+        "sources": [],
+        "notes": "Porsche did not announce an official worldwide cap for the 981 GT4. Market behavior (allocation sell-through, waiting lists) suggests significantly fewer than 5,000 units. RECOMMEND: Leave production field null unless a specific registry count is found."
+      }
+    ]
+  },
+
+  "982-boxster": {
+    "generation_name": "Porsche 718 Boxster (982)",
+    "audit_date": "2026-05-14",
+    "notes": "Porsche does not publish per-variant production figures for the 982/718 generation. Wikipedia article confirmed to have no production data. Production of all 718 variants ended October 2025.",
+    "variants": [
+      {
+        "variant_name": "All variants",
+        "years": "2016–2025",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "NOT PUBLICLY AVAILABLE",
+          "notes": "Wikipedia, Stuttcars, and all searched sources confirm no public production data for any 982/718 variant."
+        },
+        "recommended_production_string": null,
+        "change_from_existing": "none",
+        "confidence": "low",
+        "conflict": false,
+        "sources": [],
+        "notes": "Porsche does not publish variant-level figures for the 982 generation. Production field should remain null for all 982 variants."
+      }
+    ]
+  },
+
+  "982-cayman": {
+    "generation_name": "Porsche 718 Cayman (982)",
+    "audit_date": "2026-05-14",
+    "notes": "Same situation as 982 Boxster — no public per-variant production data. Production ended October 2025.",
+    "variants": [
+      {
+        "variant_name": "All variants",
+        "years": "2016–2025",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "NOT PUBLICLY AVAILABLE"
+        },
+        "recommended_production_string": null,
+        "change_from_existing": "none",
+        "confidence": "low",
+        "conflict": false,
+        "sources": [],
+        "notes": "Porsche does not publish variant-level figures for the 982 generation."
+      }
+    ]
+  },
+
+  "930": {
+    "generation_name": "Porsche 911 Turbo (930)",
+    "audit_date": "2026-05-14",
+    "generation_total_worldwide": 21500,
+    "generation_total_notes": "~21,500 per most sources; one source cited 18,770 — minor conflict likely due to different start/end dates or inclusion criteria.",
+    "variants": [
+      {
+        "variant_name": "Generation total (all 930 Turbos)",
+        "years": "1975–1989",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "~21,500 (some sources: 18,770)",
+          "body_style_splits": {
+            "Coupe_MY1978-1988": 14476,
+            "Cabriolet_MY1987-1988": 918,
+            "Targa_MY1987-1988": 193,
+            "Coupe_MY1989": 1376,
+            "Cabriolet_MY1989": 724,
+            "Targa_MY1989": 104
+          }
+        },
+        "recommended_production_string": "~21,500 worldwide total 1975–1989; 3.0L (1975-1977) ~2,873; 3.3L (1978-1989) ~18,627",
+        "change_from_existing": "new",
+        "confidence": "medium",
+        "conflict": true,
+        "sources": [
+          {
+            "id": "supercar_nostalgia",
+            "url": "https://supercarnostalgia.com/blog/porsche-930-33",
+            "value_cited": "~21,500 total; late body style splits as documented",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "MINOR CONFLICT between ~21,500 and 18,770 (different sources). The higher figure is more commonly cited. Separate variant entries in gen-content.ts for 930 not read in this session — check what variants are defined there before applying."
+      }
+    ]
+  },
+
+  "911-3.2-carrera": {
+    "generation_name": "Porsche 911 3.2 Carrera",
+    "audit_date": "2026-05-14",
+    "generation_total_worldwide": 70044,
+    "generation_total_source": "Search result; Supercar Nostalgia",
+    "variants": [
+      {
+        "variant_name": "Generation total",
+        "years": "1984–1989",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "70,044",
+          "year_by_year_sample": {
+            "1984": 13428,
+            "1985": 11859,
+            "1989": 12863
+          }
+        },
+        "recommended_production_string": "70,044 worldwide total 1984–1989",
+        "change_from_existing": "new",
+        "confidence": "high",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "supercar_nostalgia",
+            "url": "https://supercarnostalgia.com/blog/porsche-911-carrera-1984-1989",
+            "value_cited": "70,044 total",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "1989 MY includes 2,104 Speedsters. Per-variant splits (Coupe vs Targa vs Cab) confirmed: 1984 MY = 6,532 Coupe / 3,793 Targa / 3,103 Cab."
+      }
+    ]
+  },
+
+  "911-sc": {
+    "generation_name": "Porsche 911 SC",
+    "audit_date": "2026-05-14",
+    "generation_total_notes": "Stuttcars: ~41,500 units 1978-1983. One search result said 'nearly 59,000 units' which likely includes some G-series 911S or 3.2 Carrera overlap. Conflict flagged.",
+    "variants": [
+      {
+        "variant_name": "Generation total",
+        "years": "1978–1983",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "~41,500 (Stuttcars) vs ~59,000 (one search result — likely includes overlap)",
+          "conflict_note": "The ~59,000 figure is suspicious as it's close to the 911 SC + 3.2 Carrera combined. Stuttcars 41,500 is more specific."
+        },
+        "recommended_production_string": "~41,500 worldwide total 1978–1983",
+        "change_from_existing": "new",
+        "confidence": "medium",
+        "conflict": true,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.stuttcars.com/porsche-911-sc-g-series-1978-1983/",
+            "value_cited": "~41,500 units across Coupe, Targa, Cabriolet",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "CONFLICT between sources. Treat as medium confidence pending verification."
+      }
+    ]
+  },
+
+  "g-series-2.7": {
+    "generation_name": "Porsche 911 G-Series (2.7 era)",
+    "audit_date": "2026-05-14",
+    "generation_total_notes": "The gen-content key 'g-series-2.7' likely covers 1974-1977 (the 2.7L years). Carrera RS 2.7 (MY1973, F-body) is in the 911-f-body entry. G-series proper starts 1974.",
+    "variants": [
+      {
+        "variant_name": "1974 production by variant",
+        "years": "1974 MY",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "1974 total: ~11,378",
+          "by_variant": {
+            "911_Coupe": 4014,
+            "911_Targa": 3110,
+            "911S_Coupe": 1359,
+            "911S_Targa": 898,
+            "Carrera_Coupe": 1564,
+            "Carrera_Targa": 433
+          }
+        },
+        "recommended_production_string": "~11,378 total 1974 MY (Carrera: 1,997; 911S: 2,257; base 911: 7,124)",
+        "change_from_existing": "new",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "stuttcars",
+            "url": "https://www.stuttcars.com/porsche-911-g-series-sales-production-numbers/",
+            "value_cited": "1974 variant breakdown as listed",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "The 'g-series-2.7' catalog entry content not read in this session. Check what variants are defined before applying these aggregates."
+      }
+    ]
+  },
+
+  "356-pre-a": {
+    "generation_name": "Porsche 356 Pre-A",
+    "audit_date": "2026-05-14",
+    "generation_total_worldwide": 9100,
+    "generation_total_source": "Elferspot / search result aggregation",
+    "variants": [
+      {
+        "variant_name": "Generation total",
+        "years": "1950–1955",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "~9,100"
+        },
+        "recommended_production_string": "~9,100 worldwide 1950–1955",
+        "change_from_existing": "new",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "elferspot",
+            "url": "https://www.elferspot.com/en/magazine/porsche-356-production-numbers-how-many-356s-were-built/",
+            "value_cited": "356 Pre-A: ~9,100 units",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": "Body-style splits (Coupe/Cabriolet/Speedster) not retrieved in this session. Check 356-pre-a entry variants before applying."
+      }
+    ]
+  },
+
+  "356a": {
+    "generation_name": "Porsche 356 A",
+    "audit_date": "2026-05-14",
+    "generation_total_worldwide": 20541,
+    "generation_total_source": "Elferspot / search result aggregation",
+    "variants": [
+      {
+        "variant_name": "Generation total",
+        "years": "1956–1959",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "~20,541"
+        },
+        "recommended_production_string": "~20,541 worldwide 1956–1959",
+        "change_from_existing": "new",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "elferspot",
+            "url": "https://www.elferspot.com/en/magazine/porsche-356-production-numbers-how-many-356s-were-built/",
+            "value_cited": "356 A: ~20,541",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      }
+    ]
+  },
+
+  "356b": {
+    "generation_name": "Porsche 356 B",
+    "audit_date": "2026-05-14",
+    "generation_total_worldwide": 31811,
+    "generation_total_source": "Elferspot / search result aggregation",
+    "variants": [
+      {
+        "variant_name": "Generation total",
+        "years": "1960–1963",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "~31,811"
+        },
+        "recommended_production_string": "~31,811 worldwide 1960–1963",
+        "change_from_existing": "new",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "elferspot",
+            "url": "https://www.elferspot.com/en/magazine/porsche-356-production-numbers-how-many-356s-were-built/",
+            "value_cited": "356 B: ~31,811",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      }
+    ]
+  },
+
+  "356c": {
+    "generation_name": "Porsche 356 C",
+    "audit_date": "2026-05-14",
+    "generation_total_worldwide": 16811,
+    "generation_total_source": "Elferspot / search result aggregation",
+    "variants": [
+      {
+        "variant_name": "Generation total",
+        "years": "1964–1966",
+        "existing_production_field": null,
+        "researched_figures": {
+          "worldwide_total": "~16,811"
+        },
+        "recommended_production_string": "~16,811 worldwide 1964–1966",
+        "change_from_existing": "new",
+        "confidence": "medium",
+        "conflict": false,
+        "sources": [
+          {
+            "id": "elferspot",
+            "url": "https://www.elferspot.com/en/magazine/porsche-356-production-numbers-how-many-356s-were-built/",
+            "value_cited": "356 C: ~16,811",
+            "date_accessed": "2026-05-14"
+          }
+        ],
+        "notes": null
+      }
+    ]
+  },
+
+  "BATCH_AUDIT_SUMMARY": {
+    "completed_date": "2026-05-14",
+    "generations_covered": 18,
+    "generations_not_covered_this_session": [
+      "911-pre-a (very early 911, 1963-1967) — production data exists but variant entries not read",
+      "911-f-body (1968-1973 long wheelbase) — total ~111,995 known; per-variant not extracted",
+      "987.1-cayman — total ~55,000 for full 987; 987.1 split not extracted",
+      "992.2 — excluded per spec (production ongoing)"
+    ],
+    "key_discrepancies_flagged_for_review": [
+      {
+        "generation": "993",
+        "variant": "Targa",
+        "issue": "Gen-content has ~5,400; Wikipedia data gives 4,583–4,619. RECOMMEND UPDATE to ~4,620."
+      },
+      {
+        "generation": "993",
+        "variant": "GT2",
+        "issue": "Three-way conflict: Wikipedia says 57, p-car.com says 223, gen-content says ~194. Gen-content already documents this conflict; no resolution."
+      },
+      {
+        "generation": "997.1",
+        "variant": "Turbo",
+        "issue": "Ian Bevis gives 21,725; gen-content has ~19,200. Investigate whether Ian Bevis figure includes Turbo Cabriolet production in 997.1."
+      },
+      {
+        "generation": "997.1",
+        "variant": "GT3",
+        "issue": "Ian Bevis gives 3,329; Rennlist/Total 911 gives 2,378; gen-content has ~2,370. RECOMMEND keeping ~2,378 (cross-source confirmation with gen-content)."
+      },
+      {
+        "generation": "991.1",
+        "variant": "Turbo S",
+        "issue": "Gen-content has ~12,900; Rennlist thread gives 9,629. Possible Coupe-only vs Coupe+Cab discrepancy. DO NOT UPDATE until resolved."
+      },
+      {
+        "generation": "997.2",
+        "variant": "GT3 RS 3.8L",
+        "issue": "Ian Bevis gives 1,619; gen-content has ~2,000. Discrepancy of ~20%. Verify before updating."
+      }
+    ],
+    "high_confidence_updates_ready_to_apply": [
+      "964 Carrera 4: 20,395 worldwide — NEW",
+      "964 Carrera 2: 34,398 worldwide — NEW",
+      "964 Turbo 3.3: 3,660 worldwide — NEW",
+      "964 Turbo 3.6: ~1,437 worldwide — NEW",
+      "993 Carrera 4S: add worldwide total 6,948 to existing US-only figure — UPDATE",
+      "993 Carrera S: add worldwide total 3,714 to existing US-only figure — UPDATE",
+      "993 Targa: update from ~5,400 to ~4,620 (two Wikipedia figures: 4,583 production table vs 4,619 year-by-year text) — UPDATE WITH NOTE",
+      "996.1 Carrera: 55,562 worldwide (31,688 Coupe + 23,874 Cab) — NEW",
+      "996.1 Carrera 4: 22,284 worldwide (12,720 Coupe + 9,564 Cab) — NEW",
+      "997.1 Carrera: 25,770 worldwide — NEW",
+      "997.1 Carrera S: 42,525 worldwide — NEW",
+      "997.1 C4: 7,006 worldwide — NEW",
+      "997.1 C4S: 27,643 worldwide — NEW",
+      "997.1 Targa 4: 1,525 worldwide — NEW",
+      "997.1 Targa 4S: 3,328 worldwide — NEW",
+      "997.2 Carrera: 11,098 worldwide — NEW",
+      "997.2 Carrera S: 16,047 worldwide — NEW",
+      "997.2 C4: 2,992 worldwide — NEW",
+      "997.2 C4S: 16,963 worldwide — NEW",
+      "997.2 Targa 4: 1,115; Targa 4S: 2,560 — NEW",
+      "997.2 GTS: 5,259 worldwide (3,092 Coupe + 2,167 Cab) — NEW",
+      "997.2 GT3 3.8L: 2,256 worldwide — update from ~2,250",
+      "997.2 Turbo: 5,053 worldwide (coupe/cab split) — update",
+      "986 Boxster base: ~113,967 worldwide — NEW",
+      "986 Boxster S: 50,896 worldwide — NEW",
+      "981 Boxster Spyder: 2,486 worldwide / 829 NA — NEW",
+      "987.2 Boxster Spyder: 1,960 worldwide — NEW",
+      "987.2 Cayman R: 1,621 worldwide — NEW",
+      "991.1 Carrera GTS Coupe: 5,510; Cab: 3,124 — NEW",
+      "991.1 Targa 4 GTS: 1,525 — NEW"
+    ]
+  }
+}

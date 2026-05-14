@@ -7,9 +7,16 @@ import type { GreetingAccount, GreetingNotifications } from '@/lib/greeting-engi
 interface Props {
   account: GreetingAccount
   notifications: GreetingNotifications
+  showWelcome?: boolean   // true → welcome headline + dek instead of standard greeting
+  hasVehicles?: boolean   // false → empty-garage status line instead of standard summary
 }
 
-export function GreetingHeader({ account, notifications }: Props) {
+export function GreetingHeader({
+  account,
+  notifications,
+  showWelcome = false,
+  hasVehicles = true,
+}: Props) {
   const { metaStrip, salutation, headlineBody, standfirst } = computeGreeting(
     account,
     notifications,
@@ -32,30 +39,54 @@ export function GreetingHeader({ account, notifications }: Props) {
         {metaStrip}
       </p>
 
-      {/* Greeting headline: "{salutation}, {firstName}. {headlineBody}" */}
-      <h1
-        className="font-serif font-normal text-text-primary"
-        style={{ fontSize: 38, lineHeight: 1.15, letterSpacing: '-0.01em' }}
-      >
-        <span className="text-text-secondary">{salutation}, </span>
-        {account.firstName}. {headlineBody}
-      </h1>
+      {/* Greeting headline */}
+      {showWelcome ? (
+        <h1
+          className="font-serif font-normal text-text-primary"
+          style={{ fontSize: 38, lineHeight: 1.15, letterSpacing: '-0.01em' }}
+        >
+          Welcome, {account.firstName}.
+        </h1>
+      ) : (
+        <h1
+          className="font-serif font-normal text-text-primary"
+          style={{ fontSize: 38, lineHeight: 1.15, letterSpacing: '-0.01em' }}
+        >
+          <span className="text-text-secondary">{salutation}, </span>
+          {account.firstName}. {headlineBody}
+        </h1>
+      )}
 
-      {/* Standfirst — italic editorial sentence */}
-      <p
-        className="font-serif italic text-text-secondary"
-        style={{
-          fontSize: 17,
-          lineHeight: 1.7,
-          marginTop: 14,
-          maxWidth: 820,
-        }}
-      >
-        {standfirst}
-      </p>
+      {/* Standfirst / welcome dek */}
+      {showWelcome ? (
+        <p
+          className="font-serif italic text-text-secondary"
+          style={{
+            fontSize: 17,
+            lineHeight: 1.7,
+            marginTop: 14,
+            maxWidth: 820,
+          }}
+        >
+          Two places to start: add a car to your garage, and tell us what you&rsquo;re
+          hunting. Below is a preview of how Project Vintage will read once it knows
+          you.
+        </p>
+      ) : (
+        <p
+          className="font-serif italic text-text-secondary"
+          style={{
+            fontSize: 17,
+            lineHeight: 1.7,
+            marginTop: 14,
+            maxWidth: 820,
+          }}
+        >
+          {standfirst}
+        </p>
+      )}
 
-      {/* Garage summary line — static for V1 */}
-      {/* TODO: replace with real garage summary from session */}
+      {/* Garage status line */}
       <div
         className="font-serif text-text-tertiary"
         style={{
@@ -70,14 +101,28 @@ export function GreetingHeader({ account, notifications }: Props) {
           lineHeight: 1.6,
         }}
       >
-        <span className="italic">
-          In the garage:{' '}
-          <strong className="not-italic font-medium text-text-primary">
-            four cars, all well.
-          </strong>{' '}
-          The 991.1 GT3 RS led the week and a top-end refresh on the 993 is the only thing
-          approaching the horizon.
-        </span>
+        {!hasVehicles ? (
+          <span className="italic">
+            Your garage is empty.{' '}
+            {/* TODO: update href to /garage/new once that route is built */}
+            <a
+              href="/garage"
+              className="font-sans text-[13px] font-medium text-accent-primary"
+              style={{ letterSpacing: '0.02em' }}
+            >
+              Add your first car &rarr;
+            </a>
+          </span>
+        ) : (
+          <span className="italic">
+            In the garage:{' '}
+            <strong className="not-italic font-medium text-text-primary">
+              four cars, all well.
+            </strong>{' '}
+            The 991.1 GT3 RS led the week and a top-end refresh on the 993 is the
+            only thing approaching the horizon.
+          </span>
+        )}
         <Link
           href="/garage"
           className="font-sans text-[13px] font-medium text-accent-primary whitespace-nowrap"

@@ -42,6 +42,7 @@ export type Database = {
       comp_engine_runs: {
         Row: {
           actual_price: number | null
+          cascade_level: number | null
           comps_used_json: Json
           confidence_score: number | null
           created_at: string
@@ -60,6 +61,7 @@ export type Database = {
         }
         Insert: {
           actual_price?: number | null
+          cascade_level?: number | null
           comps_used_json?: Json
           confidence_score?: number | null
           created_at?: string
@@ -78,6 +80,7 @@ export type Database = {
         }
         Update: {
           actual_price?: number | null
+          cascade_level?: number | null
           comps_used_json?: Json
           confidence_score?: number | null
           created_at?: string
@@ -1033,11 +1036,19 @@ export type Database = {
       }
       users: {
         Row: {
+          account_type: Database["public"]["Enums"]["account_type_t"]
+          alpha_expires_at: string | null
           avatar_url: string | null
           created_at: string
           display_name: string | null
           email: string
+          first_name: string | null
+          home_city: string | null
+          home_lat: number | null
+          home_lng: number | null
+          home_state: string | null
           id: string
+          last_name: string | null
           onboarding_complete: boolean
           preferred_currency: string
           preferred_mileage: string
@@ -1050,11 +1061,19 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          account_type?: Database["public"]["Enums"]["account_type_t"]
+          alpha_expires_at?: string | null
           avatar_url?: string | null
           created_at?: string
           display_name?: string | null
           email: string
+          first_name?: string | null
+          home_city?: string | null
+          home_lat?: number | null
+          home_lng?: number | null
+          home_state?: string | null
           id: string
+          last_name?: string | null
           onboarding_complete?: boolean
           preferred_currency?: string
           preferred_mileage?: string
@@ -1067,11 +1086,19 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          account_type?: Database["public"]["Enums"]["account_type_t"]
+          alpha_expires_at?: string | null
           avatar_url?: string | null
           created_at?: string
           display_name?: string | null
           email?: string
+          first_name?: string | null
+          home_city?: string | null
+          home_lat?: number | null
+          home_lng?: number | null
+          home_state?: string | null
           id?: string
+          last_name?: string | null
           onboarding_complete?: boolean
           preferred_currency?: string
           preferred_mileage?: string
@@ -1082,6 +1109,24 @@ export type Database = {
           subscription_tier?: string
           trial_ends_at?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      v1_waitlist: {
+        Row: {
+          id: string
+          email: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          email: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string
+          created_at?: string
         }
         Relationships: []
       }
@@ -1231,9 +1276,22 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_alpha_user: {
+        Args: {
+          p_id: string
+          p_email: string
+          p_first_name: string
+          p_last_name: string
+          p_home_city: string
+          p_home_state: string
+          p_home_lat: number
+          p_home_lng: number
+        }
+        Returns: Json
+      }
     }
     Enums: {
+      account_type_t: "alpha" | "free" | "paid" | "admin"
       content_status_t: "draft" | "verified" | "published"
     }
     CompositeTypes: {
@@ -1365,6 +1423,7 @@ export const Constants = {
   },
   public: {
     Enums: {
+      account_type_t: ["alpha", "free", "paid", "admin"],
       content_status_t: ["draft", "verified", "published"],
     },
   },

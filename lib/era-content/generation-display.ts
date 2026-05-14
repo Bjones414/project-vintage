@@ -9,7 +9,6 @@ type BodyModel = typeof BODY_MODELS[number]
 const DISPLAY_OVERRIDES: Record<string, string> = {
   '911-pre-a':       'pre-A',
   '911-f-body':      'F-body',
-  '911-g-body':      'G-body',
   '911-3.2-carrera': '3.2 Carrera',
   'g-series-2.7':    'G-series 2.7',
   '911-sc':          'SC',

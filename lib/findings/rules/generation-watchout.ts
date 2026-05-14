@@ -2,9 +2,10 @@
 // extract the era-specific concerns into a config keyed by (marque, generation_code).
 import type { RuleFn } from '../types'
 
-// 996 and first-generation 997 are at risk for IMS bearing failure.
-// Update this set if generation_id values change in porsche_generations.
-const IMS_AT_RISK_GENERATION_IDS = new Set(['996', '997', '997-gen1'])
+// 996.1, 996.2, and 997.1 carry pre-DFI M96/M97 engines with the IMS bearing failure mode.
+// 997.2 introduced DFI and eliminated the IMS design; 998+ generations are unaffected.
+// Generation IDs match the porsche_generations table format (e.g. '996.1', not '996').
+const IMS_AT_RISK_GENERATION_IDS = new Set(['996.1', '996.2', '997.1'])
 
 const IMS_ADDRESSED_KEYWORDS = [
   'ims retrofit',

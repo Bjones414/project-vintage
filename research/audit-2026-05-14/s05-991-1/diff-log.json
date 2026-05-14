@@ -1,0 +1,32 @@
+{
+  "session": "s05-991-1",
+  "generation": "991.1",
+  "audit_date": "2026-05-14",
+  "auto_applied": [
+    {
+      "id": "AUTO-001",
+      "field_path": "variants[Turbo S].production",
+      "old_value": "~12,900 worldwide; ~4,130 North America",
+      "new_value": "9,629 worldwide (Coupe + Cab; Porsche Newsroom); ~4,130 North America",
+      "confidence": "HIGH",
+      "change_type": "numeric_correction",
+      "sources": [
+        {
+          "name": "Porsche Newsroom — 911 Turbo S History press kit",
+          "tier": 1,
+          "quote": "By the time of the model facelift, Porsche had produced 9,629 examples.",
+          "url": "https://newsroom.porsche.com/en/press-kits/pfv-porsche-911-turbo-s/Porsche-911-Turbo-S--history.html",
+          "scope": "Turbo S only (Coupe + Cab combined), 991.1 generation only (2013–2016)"
+        }
+      ],
+      "adjudication": "9,629 is the exact figure from Porsche's own Newsroom press kit. The prior ~12,900 figure most likely represents Turbo (non-S) + Turbo S combined. Community consensus places the Turbo-to-Turbo S ratio at approximately 1:2; if Turbo S = 9,629 then Turbo ≈ 3,200–4,800, putting the combined figure in the 12,800–14,400 range consistent with ~12,900.",
+      "note_on_na_figure": "~4,130 North America figure is retained as-is pending verification — no primary source found. Flagged in staging.json as MEDIUM item for review."
+    }
+  ],
+  "minor_prose_applied": [],
+  "summary": {
+    "total_auto_applied": 1,
+    "numeric_corrections": 1,
+    "prose_fixes": 0
+  }
+}

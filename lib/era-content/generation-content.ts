@@ -69,6 +69,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY1995',
         drivetrain: 'RWD',
         power: '272 hp',
+        production: '14,541 coupes + 7,730 cabriolets (272 PS group worldwide)',
         description: 'Single model year only — identified by the absence of Varioram tubes in the intake manifold. Sells at a modest discount to Varioram for the same body style. 4-speed Tiptronic available alongside the standard 6MT.',
       },
       {
@@ -76,13 +77,15 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY1996–1998',
         drivetrain: 'RWD',
         power: '285 hp',
+        production: '8,586 coupes + 7,769 cabriolets (285 PS group worldwide)',
         description: 'Most common 993 specification. The MY1996 Varioram update added variable-length intake runners, lifting output to 285 hp and broadening the torque curve. Available as Coupe, Cabriolet, and Targa (MY1996+). Tiptronic S with steering-wheel buttons added at this revision.',
       },
       {
         name: 'Carrera 4',
         years: 'MY1995–1998',
         drivetrain: 'AWD',
-        power: '285 hp',
+        power: '272–285 hp',
+        production: '7,166 worldwide (2,884 coupe + 1,284 cab pre-Varioram; 1,860 coupe + 1,138 cab Varioram)',
         description: 'Narrow-body AWD Carrera with a viscous-coupling AWD system — simpler and more reliable than the 964\'s electronically-controlled setup. No Tiptronic option; 6MT only. Lower US uptake than RWD Carrera.',
       },
       {
@@ -90,7 +93,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY1996–1998',
         drivetrain: 'AWD',
         power: '285 hp',
-        production: '~2,079 US',
+        production: '6,948 worldwide; ~2,079 US',
         description: 'Turbo widebody on the C4 AWD drivetrain with the NA engine — the first Turbo-bodied naturally-aspirated 911. The 4S established the widebody NA design language that continued through every subsequent Carrera 4S generation. Coupe only.',
       },
       {
@@ -98,7 +101,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY1997–1998',
         drivetrain: 'RWD',
         power: '285 hp',
-        production: '~1,752 US',
+        production: '3,714 worldwide; 1,752 US',
         description: 'Same widebody and brakes as the 4S, but RWD — marketed primarily in North America. Carries a Tiptronic option. Purists prize the S for the widebody aesthetic with manual-friendly RWD dynamics.',
       },
       {
@@ -106,7 +109,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY1996–1998',
         drivetrain: 'RWD',
         power: '285 hp',
-        production: '~5,400 worldwide',
+        production: '4,583 worldwide (2,442 in MY1996; 1,843 in MY1997; ~298 in MY1998)',
         description: 'Panoramic glass roof that retracts electrically beneath the rear window — a fundamentally different Targa concept than the 911 Targa\'s traditional roll-bar design. Architecture continued directly into the 996 and 997 Targa.',
       },
       {
@@ -114,7 +117,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY1996–1998',
         drivetrain: 'AWD',
         power: '408 hp',
-        production: '~6,000 worldwide, 2,662 US',
+        production: '5,978 worldwide, 2,662 US',
         description: 'Twin K16 turbochargers, G64 6-speed manual, and AWD — the first AWD 911 Turbo. Aerokit I body with the fixed rear wing. The standard Turbo is the entry point to 993 Turbo ownership; it is not a diluted car.',
       },
       {
@@ -236,7 +239,7 @@ const CONTENT: Record<string, GenerationContent> = {
     notes: [
       'The 996 was the most consequential 911 in the marque\'s history — and the most controversial. Porsche\'s survival as an independent company in the mid-1990s required a complete redesign: a new water-cooled engine, a new platform shared with the Boxster 986, and front bodywork (doors, hood, headlamps, windscreen) shared across both cars. The "fried-egg" composite headlamps were the visible symbol of platform-sharing economics, and they drove early 996 valuations significantly below equivalent 993s — a discount that persists today and continues to attract buyers who understand the platform for what it is.',
       'Two distinct engine families coexist in the 996.1 lineup. Base Carrera and Carrera 4 models use the M96 flat-six — an all-new water-cooled design with an integrated wet sump that eliminated the external dry-sump oil tank of every air-cooled 911. The GT3 and Turbo use the Mezger-derived engine, an architecture descended directly from the 911 GT1 Le Mans race car with a separate dry-sump system, no intermediate shaft bearing, and none of the M96\'s documented failure modes. The split matters fundamentally: buying a 996.1 GT3 or Turbo is categorically different from buying a 996.1 Carrera.',
-      'The GT3 Mk1 (1999–2001) produced 360 hp from the naturally aspirated Mezger 3.6L and was never federalized for North America — approximately 1,860 units produced worldwide with zero US-legal examples as new cars. The 996.1 Turbo debuted for MY2001 with 415 hp and AWD, arriving with Turbo-specific headlamps that previewed the forthcoming 996.2 facelift. The base Carrera\'s market position has compressed significantly since its launch-era discount: the M96 engine concerns are now well-documented, the IMS and bore-scoring remediation is established, and properly maintained examples offer genuine 911 character at entry pricing.',
+      'The GT3 Mk1 (1999–2001) produced 360 hp from the naturally aspirated Mezger 3.6L and was never federalized for North America — 1,868 units produced worldwide with zero US-legal examples as new cars. The 996.1 Turbo debuted for MY2001 with 415 hp and AWD, arriving with Turbo-specific headlamps that previewed the forthcoming 996.2 facelift. The base Carrera\'s market position has compressed significantly since its launch-era discount: the M96 engine concerns are now well-documented, the IMS and bore-scoring remediation is established, and properly maintained examples offer genuine 911 character at entry pricing.',
     ],
     variants: [
       {
@@ -244,6 +247,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY1999–2001',
         drivetrain: 'RWD',
         power: '300 hp',
+        production: '55,562 worldwide (31,688 Coupe; 23,874 Cab)',
         description: 'Narrow-body RWD coupe on the new water-cooled 3.4L M96. MY2000 revised output from 296 hp to 300 hp. Most common 996.1 specification; the IMS bearing and bore-scoring considerations apply directly. 5-speed Tiptronic S optional alongside the standard 6-speed manual.',
       },
       {
@@ -251,6 +255,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY1999–2001',
         drivetrain: 'RWD',
         power: '300 hp',
+        production: '23,874 worldwide',
         description: 'Soft-top convertible on the narrow-body Carrera platform. Shares all M96 drivetrain components and associated service considerations. Power soft top with heated glass rear window.',
       },
       {
@@ -258,6 +263,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY1999–2001',
         drivetrain: 'AWD',
         power: '300 hp',
+        production: '22,284 worldwide (12,720 Coupe; 9,564 Cab)',
         description: 'Narrow-body AWD Carrera — the final generation of the narrow-body C4. From MY2002 onward, the Carrera 4 moved to the wide-body C4S body. 6-speed manual only; no Tiptronic option on C4.',
       },
       {
@@ -265,6 +271,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY1999–2001',
         drivetrain: 'AWD',
         power: '300 hp',
+        production: '9,564 worldwide',
         description: 'AWD soft-top companion to the narrow-body C4 Coupe. Continues as the narrow-body C4 Cabriolet into the 996.2 facelift, where the Coupe does not.',
       },
       {
@@ -280,7 +287,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY1999–2001',
         drivetrain: 'RWD',
         power: '360 hp',
-        production: '~1,860 worldwide; 0 US',
+        production: '1,868 worldwide; 0 US',
         description: 'Mezger 3.6L naturally aspirated engine derived directly from the 911 GT1 Le Mans race program. Never federalized for North America; no US-market GT3 Mk1 exists as a new-car sale. M003 Clubsport package (roll cage, harnesses, Recaro racing seats) available on roughly one-third of Mk1 production. The Mk1 is the rarer of the two 996 GT3 generations.',
       },
       {
@@ -382,7 +389,7 @@ const CONTENT: Record<string, GenerationContent> = {
     units_produced: '~29,380 Carrera Coupes worldwide; ~17,290 Carrera 4S Coupes worldwide',
     notes: [
       'The 996.2 facelift is distinguished externally by Turbo-derived headlamps that replaced the controversial "fried-egg" composite units of the 996.1, a redesigned front fascia, and the addition of a glove box — correcting an omission that had puzzled early buyers. The 3.4L M96 was replaced by a 3.6L unit producing 320 hp, a 20 hp gain that also brought a revised lubrication system to the cylinder head area. The X51 Power Kit (factory option) raised output to 345 hp via revised heads, camshafts, intake, and exhaust manifolds.',
-      'The 996.2 hosts the most diverse halo variant lineup of any 996 generation. The GT3 Mk2 (MY2003–2005) produced 381 hp from a naturally aspirated Mezger 3.6L and was the first 911 GT3 ever sold legally in the United States. The GT2 evolved from 462 hp (Mk1, 2001–2003) to 483 hp (Mk2, 2004–2005), making the combined 996 GT2 production of approximately 1,280 units one of the rarest non-limited-edition 996 variants in the market. The Turbo Cabriolet (MY2003) was the first mass-production 911 Turbo Cabriolet since the 930 ended in 1989.',
+      'The 996.2 hosts the most diverse halo variant lineup of any 996 generation. The GT3 Mk2 (MY2003–2005) produced 381 hp from a naturally aspirated Mezger 3.6L and was the first 911 GT3 ever sold legally in the United States. The GT2 evolved from 462 hp (Mk1, 2001–2003) to 483 hp (Mk2, 2004–2005), making the combined 996 GT2 production of approximately 1,287 units one of the rarest non-limited-edition 996 variants in the market. The Turbo Cabriolet (MY2003) was the first mass-production 911 Turbo Cabriolet since the 930 ended in 1989.',
       'The 40 Jahre 911 (40th Anniversary Edition, MY2004) produced exactly 1,963 units worldwide — a number deliberate in its reference to the 911\'s 1963 debut. Built on the narrow-body Carrera platform with the X51 Power Kit (345 hp), a limited-slip differential, the M030 sport suspension, and the Turbo front bumper, the 40th Anniversary is the most desirable narrow-body 996.2 Carrera variant. Approximately 800 went to North America.',
     ],
     variants: [
@@ -463,7 +470,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2001–2003',
         drivetrain: 'RWD',
         power: '462 hp',
-        production: '~960 worldwide; ~245 US',
+        production: '963 worldwide; ~245 US',
         description: 'Mezger twin-turbo, rear-wheel drive, 6MT only. PCCB ceramic brakes standard. The 996 GT2 was the only twin-turbo RWD 911 of its era — no AWD as on the Turbo.',
       },
       {
@@ -471,7 +478,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2004–2005',
         drivetrain: 'RWD',
         power: '483 hp',
-        production: '~320 worldwide',
+        production: '324 worldwide',
         description: 'Power upgrade for the final two production years; otherwise identical to Mk1 specification.',
       },
       {
@@ -479,8 +486,17 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2003–2005',
         drivetrain: 'RWD',
         power: '381 hp',
-        production: '~2,310 worldwide; ~1,010 US',
+        production: '2,589 worldwide; ~960 US',
         description: 'First 911 GT3 sold legally in the United States. Mezger 3.6L naturally aspirated; 6MT only. The Mk2 introduced the RS as a separate variant. A US-market 996 GT3 is by definition a Mk2.',
+      },
+      {
+        name: 'GT3 RS',
+        years: 'MY2004',
+        drivetrain: 'RWD',
+        power: '381 hp',
+        production: '682 worldwide',
+        // TODO: Verify exact US allocation, RS-specific weight figure, and any dealer-exclusive market restrictions from a primary source before publication.
+        description: 'Motorsport-focused lightweight variant of the 996.2 GT3 Mk2. Same Mezger 3.6L NA producing 381 hp; 6MT only. Wide body sourced from the Turbo/GT2 platform — the first RS to adopt the wide-body shell in the water-cooled era. Interior stripped of most sound deadening and convenience equipment; fixed rear wing standard. No IMS concern (Mezger engine). Extremely limited production and motorsport provenance support a meaningful premium over the GT3 Mk2.',
       },
     ],
     engineering: [
@@ -566,7 +582,7 @@ const CONTENT: Record<string, GenerationContent> = {
     body_styles: 'Coupe, Cabriolet, Targa (AWD only)',
     engine: '3.6L M96/05 (Carrera: 320 hp SAE); 3.8L M97/01 (Carrera S: 355 hp SAE); 3.6L Mezger VTG twin-turbo (Turbo: 480 hp); 3.6L Mezger NA (GT3: 415 hp); 3.6L Mezger twin-turbo (GT2: 530 hp)',
     cooling: 'Water-cooled',
-    units_produced: '~16,580 Carrera Coupes; ~25,690 Carrera S Coupes worldwide (approx.)',
+    units_produced: '16,521 Carrera Coupes; 27,237 Carrera S Coupes worldwide',
     notes: [
       'The 997.1 marked a decisive stylistic retreat from the 996\'s Boxster-shared design. Round headlamps returned — the design cue most associated with the 911 since 1963 — alongside a wider track, more muscular fender flares, and a nose that reads unambiguously as 911 rather than platform-shared economy. The exterior change was commercially significant: 997 sales significantly outpaced the 996 it replaced, validating the design pivot.',
       'The most important 997.1 engineering development arrived on the Turbo: variable turbine geometry (VTG) turbochargers — the first use of VTG on a production gasoline engine. VTG had been established in diesel applications for its broad torque bandwidth; adapting it to gasoline required solving sustained exposure to significantly higher exhaust temperatures. The result was 480 hp with Diesel-like response across the RPM range. The X50 Power Kit (factory option) raised the Turbo to 530 hp.',
@@ -578,6 +594,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2005–2008',
         drivetrain: 'RWD',
         power: '320 hp',
+        production: '25,770 worldwide (16,521 Coupe; 9,249 Cab)',
         description: 'Narrow-body RWD with the 3.6L M96/05. IMS bearing and bore-scoring considerations apply; the 997.1 carries the larger non-serviceable IMS bearing inherited from late 996.2 production — approximately 1% estimated failure rate, materially lower than the single-row bearing in MY2000–2005 996/987 cars. 5-speed Tiptronic S optional alongside 6MT.',
       },
       {
@@ -585,6 +602,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2005–2008',
         drivetrain: 'RWD',
         power: '355 hp (X51: 376 hp)',
+        production: '42,525 worldwide (27,237 Coupe; 15,288 Cab)',
         description: 'The most popular 997.1 trim. 3.8L M97/01 engine with 355 hp; X51 Power Kit raises output to 376 hp. IMS and bore-scoring concerns apply; same bearing specification as the 3.6L Carrera. PASM active suspension standard.',
       },
       {
@@ -592,6 +610,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2006–2008',
         drivetrain: 'AWD',
         power: '320 hp',
+        production: '7,006 worldwide (3,809 Coupe; 3,197 Cab)',
         description: 'Narrow-body AWD with the new PTM (Porsche Traction Management) electronically controlled AWD system — a significant improvement over the 996\'s viscous coupling. 6MT or Tiptronic S.',
       },
       {
@@ -599,6 +618,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2006–2008',
         drivetrain: 'AWD',
         power: '355 hp (X51: 376 hp)',
+        production: '27,643 worldwide (15,056 Coupe; 12,587 Cab)',
         description: 'Wide-body AWD with the 3.8L S engine and PTM. The 997.1 C4S is the most common wide-body 997.1 variant and broadly considered the strongest value proposition in the 997.1 lineup.',
       },
       {
@@ -606,6 +626,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2007–2008',
         drivetrain: 'AWD',
         power: '320 hp',
+        production: '1,525 worldwide',
         description: 'First AWD-only 997 Targa. Same 3.6L M96/05 as the base Carrera. Sliding glass electric roof continuing the 993/996 architecture. All 997.1 Targas are AWD — no RWD Targa option.',
       },
       {
@@ -613,6 +634,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2007–2008',
         drivetrain: 'AWD',
         power: '355 hp',
+        production: '3,328 worldwide',
         description: 'Wide-body AWD Targa with the 3.8L S engine. Same sliding glass roof architecture as the Targa 4.',
       },
       {
@@ -620,7 +642,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2007–2009',
         drivetrain: 'AWD',
         power: '480 hp (X50: 530 hp)',
-        production: '~19,200 worldwide; ~8,870 US combined Coupe and Cabriolet',
+        production: '21,725 worldwide (15,626 Coupe; 6,099 Cab); ~8,869 US',
         description: 'First gasoline production car with VTG (variable turbine geometry) turbochargers. 3.6L Mezger engine — no IMS, external dry-sump. X50 Power Kit raises to 530 hp with no exterior badge change. Mezger architecture; none of the M96/M97 concerns apply.',
       },
       {
@@ -628,6 +650,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2008–2009',
         drivetrain: 'AWD',
         power: '480 hp',
+        production: '6,099 worldwide',
         description: 'Convertible companion to the Turbo Coupe. Mezger engine with VTG turbochargers.',
       },
       {
@@ -635,7 +658,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2007–2009',
         drivetrain: 'RWD',
         power: '415 hp',
-        production: '~2,370 worldwide; ~910 US',
+        production: '3,329 worldwide; ~910 US',
         description: 'Mezger 3.6L naturally aspirated; 6MT only. No IMS concern. The 997.1 GT3 is the first generation of GT3 that commands a meaningful collector premium on the secondary market as a 911 driving purist\'s car.',
       },
       {
@@ -643,7 +666,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2007–2009',
         drivetrain: 'RWD',
         power: '415 hp',
-        production: '~1,910 worldwide; ~410 US',
+        production: '1,909 worldwide; ~413 US',
         description: 'First US-legal 911 GT3 RS in any generation — the 996 GT3 RS Mk2 was RoW-only. Wider track and body versus the GT3, carbon rear wing, polycarbonate rear window on European cars. Mezger engine; 6MT only.',
       },
       {
@@ -651,7 +674,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2008–2009',
         drivetrain: 'RWD',
         power: '530 hp',
-        production: '~1,240 worldwide; ~205 US',
+        production: '1,242 worldwide; ~205 US',
         description: 'Mezger twin-turbo, rear-wheel drive, 6MT only. The only 997.1 combining Mezger turbocharging with rear-wheel drive. PCCB standard. Approximately 205 came to the US.',
       },
     ],
@@ -739,7 +762,7 @@ const CONTENT: Record<string, GenerationContent> = {
     body_styles: 'Coupe, Cabriolet, Targa (AWD only)',
     engine: '3.6L 9A1 DFI (Carrera: 345 hp); 3.8L 9A1 DFI (Carrera S/GTS: 385–408 hp); 3.8L Mezger twin-turbo (Turbo: 500–530 hp); 3.8L Mezger NA (GT3: 435–450 hp); 4.0L Mezger NA (GT3 RS 4.0: 500 hp); 3.6L Mezger twin-turbo (GT2 RS: 620 hp)',
     cooling: 'Water-cooled',
-    units_produced: '~10,500 Carreras; ~15,000 Carrera S; ~5,050 Turbos worldwide (approx.)',
+    units_produced: '11,098 Carreras; 16,047 Carrera S; 5,053 Turbos worldwide',
     notes: [
       'The 997.2\'s MY2009 launch was the most consequential engineering transition in water-cooled 911 history. Three simultaneous changes — the new 9A1 direct-injection engine, the 7-speed PDK dual-clutch gearbox replacing the 5-speed Tiptronic, and LED daytime running lights — transformed the platform. The 9A1\'s defining change is the elimination of the intermediate shaft entirely. No intermediate shaft means no IMS bearing, and no IMS bearing means no IMS bearing failure mode. This architectural decision had been anticipated by the community since the 996\'s documented problems, and its arrival in the 997.2 marked a clean break from the M96/M97 era\'s most serious concern.',
       'The 997.2 GT halo variants are among the most significant collector Porsches of any era. The GT3 RS 4.0 (MY2011) uses the RSR motorsport crankshaft with an 80.4mm stroke in a 4.0L naturally aspirated Mezger producing 500 hp — hard-capped at 600 units worldwide, 158 in North America. The GT2 RS (MY2011) produces 620 hp from a 3.6L Mezger twin-turbo, capped at 500 units worldwide, 142 in North America. Both represent the final road-going expressions of the Mezger engine: the GT3 RS 4.0 is the last Mezger NA, the GT2 RS the last Mezger turbocharged road car. From the 991 onward, no road-going 911 in any trim uses the Mezger.',
@@ -751,6 +774,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '2009–2012',
         drivetrain: 'RWD',
         power: '345 hp',
+        production: '11,098 worldwide (7,190 Coupe; 3,908 Cab)',
         description: '9A1 3.6L DFI; no intermediate shaft, no IMS concern. 6MT or 7-speed PDK. Manual examples command a premium at current market; ~30% of production was manual-equipped.',
       },
       {
@@ -758,6 +782,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '2009–2012',
         drivetrain: 'RWD',
         power: '385 hp (X51: 408 hp)',
+        production: '16,047 worldwide (9,470 Coupe; 6,577 Cab)',
         description: '9A1 3.8L DFI. No IMS concern. X51 Power Kit option raises output to 408 hp via revised heads and intake. PASM active suspension standard.',
       },
       {
@@ -765,6 +790,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '2009–2012',
         drivetrain: 'AWD',
         power: '345 hp',
+        production: '2,992 worldwide (1,748 Coupe; 1,244 Cab)',
         description: '9A1 3.6L DFI with updated PTM AWD. No IMS concern.',
       },
       {
@@ -772,6 +798,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '2009–2012',
         drivetrain: 'AWD',
         power: '385 hp',
+        production: '16,963 worldwide (9,188 Coupe; 7,775 Cab)',
         description: 'Wide-body AWD with 9A1 3.8L and PTM. No IMS concern.',
       },
       {
@@ -779,6 +806,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '2009–2012',
         drivetrain: 'AWD',
         power: '345 / 385 hp',
+        production: 'Targa 4: 1,115 worldwide; Targa 4S: 2,560 worldwide',
         description: 'Sliding glass panoramic roof (AWD only; this Targa design was retired with the 997.2 — the 991 Targa returned to the classic bar design). No IMS concern.',
       },
       {
@@ -786,6 +814,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '2011–2012',
         drivetrain: 'RWD',
         power: '408 hp',
+        production: '5,259 worldwide (3,092 Coupe; 2,167 Cab)',
         description: 'X51 Power Kit (408 hp), wide-body C4 bodywork, centre-lock wheels, Sport Exhaust, and Alcantara interior on the RWD drivetrain. The GTS is the most performance-focused naturally aspirated 997.2; its NA status makes it increasingly collectible as the 991.2 and later moved all Carreras to forced induction.',
       },
       {
@@ -800,7 +829,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '2010–2013',
         drivetrain: 'AWD',
         power: '500 hp',
-        production: '~5,050 worldwide; ~1,490 North America (Coupe + Cab)',
+        production: '5,053 worldwide (3,301 Coupe; 1,752 Cab); ~1,490 North America',
         description: 'First 911 Turbo to offer PDK as an option alongside the 6-speed manual. 3.8L Mezger twin-turbo — final generation of Turbo production using the Mezger engine.',
       },
       {
@@ -808,7 +837,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '2011–2013',
         drivetrain: 'AWD',
         power: '530 hp',
-        production: '~5,150 worldwide; ~2,330 North America',
+        production: '5,150 worldwide (3,095 Coupe; 2,055 Cab); ~2,330 North America',
         description: 'PDK only — no manual option on the Turbo S. PCCB ceramic brakes and Sport Chrono standard. The 997.2 Turbo S is PDK-only and is the more common of the two Turbo variants in North America.',
       },
       {
@@ -816,7 +845,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '2010–2011',
         drivetrain: 'RWD',
         power: '435 hp',
-        production: '~2,250 worldwide; 715 North America',
+        production: '2,256 worldwide; 715 North America',
         description: 'Mezger 3.8L NA; 6MT only — the last GT3 with manual-only transmission until the 991.2 GT3. No IMS concern.',
       },
       {
@@ -824,7 +853,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '2010–2011',
         drivetrain: 'RWD',
         power: '450 hp',
-        production: '~2,000 worldwide; ~610 North America',
+        production: '1,619 worldwide; ~612 North America',
         description: 'Mezger 3.8L; wider track than GT3; magnesium roof on later production. 6MT only.',
       },
       {
@@ -975,6 +1004,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '2015–2016',
         drivetrain: 'RWD',
         power: '430 hp',
+        production: '~8,634 worldwide RWD GTS (5,510 Coupe; 3,124 Cab)',
         description: 'X51 Power Kit (430 hp), wide-body bodywork on the RWD drivetrain, centre-lock wheels standard, Sport Exhaust, Alcantara interior. The most collectible naturally aspirated non-GT 991.1 variant. NA status makes it increasingly scarce as the 991.2 GTS moved to turbocharging.',
       },
       {
@@ -989,6 +1019,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '2015–2016',
         drivetrain: 'AWD',
         power: '430 hp',
+        production: '1,525 worldwide',
         description: 'First-ever 911 Targa GTS in any generation. Wide-body, AWD, motorized classic Targa bar, 430 hp.',
       },
       {
@@ -1004,7 +1035,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '2014–2016',
         drivetrain: 'AWD',
         power: '560 hp',
-        production: '~12,900 worldwide; ~4,130 North America',
+        production: '9,629 worldwide (Coupe + Cab; Porsche Newsroom); ~4,130 North America',
         description: 'PCCB ceramic brakes and dynamic engine mounts standard. PDK only. More common than the base Turbo in North America.',
       },
       {
@@ -1144,7 +1175,7 @@ const CONTENT: Record<string, GenerationContent> = {
       },
       {
         name: 'Carrera GTS / 4 GTS',
-        years: '2018–2019',
+        years: '2017–2019',
         drivetrain: 'RWD / AWD',
         power: '450 hp',
         description: 'First turbocharged Carrera GTS in 911 history. 3.0L 9A2 at 450 hp with Sport Chrono, sport exhaust, and PASM Sport standard. Four-wheel steering (rear-axle steering) was optional on GTS trims. Available as Coupe, Cabriolet; Targa 4 GTS also produced.',
@@ -1225,7 +1256,7 @@ const CONTENT: Record<string, GenerationContent> = {
       {
         title: '9A1 GT3 rod-bolt recall — does not apply to 991.2',
         severity: 'caution',
-        body: 'A common buyer confusion: NHTSA recall 14V-090 (rod-bolt torque specification, ~785 cars worldwide) applies to the 991.1 GT3 with the MA175 3.8L engine only. The 991.2 GT3 uses a different 4.0L engine derived from the 991 RSR motorsport program. The recall does not apply to any 991.2 car. A seller presenting 991.2 GT3 recall documentation tied to the 14V-090 campaign has misidentified the car. Verify the model year on the title and confirm it is 2018 or later.',
+        body: 'A common buyer confusion: NHTSA recall 14V-090 (rod-bolt torque specification, ~785 US cars) applies to the 991.1 GT3 with the MA175 3.8L engine only. The 991.2 GT3 uses a different 4.0L engine derived from the 991 RSR motorsport program. The recall does not apply to any 991.2 car. A seller presenting 991.2 GT3 recall documentation tied to the 14V-090 campaign has misidentified the car. Verify the model year on the title and confirm it is 2018 or later.',
         buyer_question: 'Is this confirmed as a 991.2 (MY2018 or later) GT3 by VIN and title? Has the seller confused any recall paperwork with the 991.1 MA175 rod-bolt recall, which does not apply to 991.2 engines?',
       },
       {
@@ -1278,7 +1309,7 @@ const CONTENT: Record<string, GenerationContent> = {
     intro: 'The 992.1 debuted MY2020 on an all-new platform: 45mm wider body with uniform wide rear arches across all variants, an 8-speed PDK, and the first 911 GT3 to offer both manual and PDK as no-cost options from launch. An unusually dense limited-edition program — Sport Classic, Dakar, S/T, and Heritage Design editions — defines the generation\'s collector character.',
     production_years: '2020–2024',
     body_styles: 'Coupe, Cabriolet, Targa (4 and 4S only)',
-    engine: '3.0L 9A2 Evo twin-turbo flat-six (Carrera/S/4/4S/GTS/Dakar: 379–473 hp); 3.745L 9A2 twin-turbo (Turbo: 572 hp; Turbo S: 640 hp); 3.7L 9A2 Evo twin-turbo (Sport Classic: 543 hp); 4.0L NA flat-six (GT3/GT3 RS/GT3 Touring/S/T: 502–525 hp)',
+    engine: '3.0L 9A2 Evo twin-turbo flat-six (Carrera/S/4/4S/GTS/Dakar: 379–473 hp); 3.745L 9A2 twin-turbo (Turbo: 572 hp; Turbo S: 641 hp); 3.7L 9A2 Evo twin-turbo (Sport Classic: 543 hp); 4.0L NA flat-six (GT3/GT3 RS/GT3 Touring/S/T: 502–525 hp)',
     cooling: 'Water-cooled',
     units_produced: 'Production ran MY2020–MY2024; per-trim data not publicly broken out. GT3 + GT3 Touring combined: 15,667 worldwide / 5,328 North America per registry compilation.',
     notes: [
@@ -1326,7 +1357,7 @@ const CONTENT: Record<string, GenerationContent> = {
         name: 'Turbo / Turbo S',
         years: '2020–2024',
         drivetrain: 'AWD',
-        power: '572 / 640 hp',
+        power: '572 / 641 hp',
         description: '3.745L 9A2 twin-turbo; PDK only; AWD. Turbo 50 Years (MY2024, 1,974 units) closed the 992.1 Turbo line with a Ferry Porsche tribute Tartan interior and $270,500 US MSRP.',
       },
       {
@@ -1335,7 +1366,7 @@ const CONTENT: Record<string, GenerationContent> = {
         drivetrain: 'RWD',
         power: '543 hp',
         production: '1,250 worldwide',
-        description: '3.7L 9A2 Evo twin-turbo; 7-speed manual only; Turbo wide-body platform on RWD. Heritage Design #2: ducktail rear spoiler, Sport Classic Grey Metallic (exclusive color), Pepita houndstooth seat inserts. The only modern production 911 combining the Turbo wide-body with a manual transmission and rear-wheel drive. MSRP $272,300 US.',
+        description: '3.7L 9A2 Evo twin-turbo; 7-speed manual only; Turbo wide-body platform on RWD. Heritage Design #2: ducktail rear spoiler, Sport Classic Grey Metallic (exclusive color), Pepita houndstooth seat inserts. The only modern production 911 combining the Turbo wide-body with a manual transmission and rear-wheel drive. MSRP $283,430 US.',
       },
       {
         name: 'Dakar',
@@ -1417,7 +1448,7 @@ const CONTENT: Record<string, GenerationContent> = {
     value_drivers: [
       {
         name: 'Sport Classic — manual wide-body, 1,250 units',
-        description: 'The 992.1 Sport Classic combines the Turbo wide-body with a seven-speed manual and RWD — a combination with no prior modern 911 precedent. Heritage Design status and 1,250-unit production cap have driven consistent secondary-market premiums above the $272,300 MSRP.',
+        description: 'The 992.1 Sport Classic combines the Turbo wide-body with a seven-speed manual and RWD — a combination with no prior modern 911 precedent. Heritage Design status and 1,250-unit production cap have driven consistent secondary-market premiums above the $283,430 MSRP.',
       },
       {
         name: '911 S/T — lightest 992, GT3 RS engine, 6MT only',
@@ -2344,7 +2375,7 @@ const CONTENT: Record<string, GenerationContent> = {
         drivetrain: 'RWD',
         power: '207 hp DIN (210 PS) — Type 911/83 Bosch MFI',
         production: '~1,630 Coupes + ~630 Targas worldwide; MY1976 DE Sondermodell: 113 coupes',
-        description: 'The most desired naturally aspirated G-body configuration. Wide RS-style rear arches; ducktail spoiler standard on MY1974 cars (whale-tail optional from MY1975). Same Type 911/83 engine as the 1973 Carrera RS 2.7 — same MFI, same 210 PS — in a galvanized G-body shell. Never sold in the US as new production. The MY1976 German Sondermodell (113 coupes) exhausted the last stock of 911/83 RS engines; the 30 Belgian-Gendarmerie narrow-body 1976 Targas are scarcer still. The Euro Carrera 2.7 MFI is the last mechanical-injection street 911.',
+        description: 'The most desired naturally aspirated G-body configuration. Wide RS-style rear arches; ducktail spoiler standard on MY1974 cars (whale-tail optional from MY1975). Same Type 911/83 engine as the 1973 Carrera RS 2.7 — same MFI, same 210 PS — in a galvanized G-body shell. Never sold in the US as new production. The MY1976 German Sondermodell (113 coupes) exhausted the last stock of 911/83 RS engines; the 20 Belgian-Gendarmerie narrow-body 1976 Targas are scarcer still. The Euro Carrera 2.7 MFI is the last mechanical-injection street 911.',
       },
       {
         name: 'Carrera 2.7 K-Jet (US-spec)',
@@ -2487,7 +2518,7 @@ const CONTENT: Record<string, GenerationContent> = {
         drivetrain: 'RWD',
         power: '180 hp DIN (US); 204 PS (RoW)',
         production: '~4,210 worldwide (introductory year only)',
-        description: 'The first factory open-top 911 since the 356 era. Fully operational power soft top; rear jump seats retained. All MY1983 Cabriolets use the Type 915 gearbox and the 3.0L engine. The body required sill and floor stiffening to compensate for the removed roof structure. A well-preserved first-year SC Cabriolet commands a meaningful premium over same-year Coupe and Targa.',
+        description: 'The first factory open-top 911 since the 356 era. Manual soft top; rear jump seats retained. All MY1983 Cabriolets use the Type 915 gearbox and the 3.0L engine. The body required sill and floor stiffening to compensate for the removed roof structure. A well-preserved first-year SC Cabriolet commands a meaningful premium over same-year Coupe and Targa.',
       },
       {
         name: '911 SC/RS (Type 954)',
@@ -2503,7 +2534,7 @@ const CONTENT: Record<string, GenerationContent> = {
       "Type 915 five-speed gearbox throughout: All SC production uses the Type 915 gearbox introduced with the 2.4L F-body in MY1972. The 915 is known for characteristically notchy shift quality in cold conditions and oil-seal degradation with age — inspection items rather than defects, but relevant on high-mileage cars. The Carrera 3.2 replaced the 915 with the Getrag G50 from MY1987; the G50's shift quality improvement is widely considered the most significant mid-cycle improvement in G-body history.",
       'K-Jetronic fuel injection retained and refined: The SC uses Bosch K-Jetronic mechanical CIS injection, carried forward from the G-body era. By the SC era the system is well-understood by Porsche specialists; aging fuel distributors, warm-up regulators, and injection line check valves are the primary maintenance items after four decades. The Carrera 3.2 replaced K-Jet with Bosch Motronic — a substantially more reliable electronic system — which accounts for the Carrera\'s stronger reputation as a daily-usable air-cooled 911.',
       'Pre-1984 chain tensioners apply through MY1983: The oil-fed hydraulic tensioner retrofit that eliminates the chain-jump failure mode was introduced on the 1984 Carrera 3.2. All SC engines through MY1983 retain the sealed mechanical tensioners. The retrofit kit (P/N 930 105 911 99) applies to SC engines without modification; no adapter pipes are required. Documenting the retrofit is the single most important pre-purchase action on any SC.',
-      'First factory 911 Cabriolet (MY1983): The SC Cabriolet introduced the open-top body style to the 911 for the first time since the 356, using a power-operated soft top developed with Webasto. The structure required stiffening of the body sills and floor. The Cabriolet body continued into the Carrera 3.2 era and ran through the G-body\'s end in 1989.',
+      'First factory 911 Cabriolet (MY1983): The SC Cabriolet introduced the open-top body style to the 911 for the first time since the 356, using a manual soft top. The power-operated soft top arrived on the Carrera 3.2 Cabriolet from MY1987. The structure required stiffening of the body sills and floor. The Cabriolet body continued into the Carrera 3.2 era and ran through the G-body\'s end in 1989.',
     ],
     watch_for: [
       {
@@ -2574,11 +2605,11 @@ const CONTENT: Record<string, GenerationContent> = {
     body_styles: 'Coupe, Targa, Cabriolet, Speedster (1989)',
     engine: '3.2L Type 930/20 (RoW) / 930/21 (US) air-cooled flat-six, Bosch Motronic; 207 hp US (1984–1986), 214–217 hp US (1987–1989), 231 hp RoW',
     cooling: 'Air-cooled',
-    units_produced: '~76,470 worldwide (all body styles)',
+    units_produced: '~76,473 worldwide (all body styles)',
     notes: [
-      'The 3.2 Carrera launched for MY1984 as the replacement for the 911 SC, distinguished by a decisive engineering step: Bosch Motronic 2.x fully electronic engine management replaced the SC\'s mechanical K-Jetronic fuel injection, lifting displacement to 3,164 cc, power to 207 hp US and 231 hp RoW, and dramatically reducing the mixture sensitivity that had plagued the older injection system. The hydraulic chain tensioner — replacing the spring-loaded units prone to catastrophic failure on SC-era engines — arrived at the same time. The factory Cabriolet, introduced for the SC\'s final year in 1983, continued through the full 3.2 Carrera run. Total production across Coupe, Targa, Cabriolet, and Speedster was approximately 76,470 units worldwide over six model years.',
+      'The 3.2 Carrera launched for MY1984 as the replacement for the 911 SC, distinguished by a decisive engineering step: Bosch Motronic 2.x fully electronic engine management replaced the SC\'s mechanical K-Jetronic fuel injection, lifting displacement to 3,164 cc, power to 207 hp US and 231 hp RoW, and dramatically reducing the mixture sensitivity that had plagued the older injection system. The hydraulic chain tensioner — replacing the spring-loaded units prone to catastrophic failure on SC-era engines — arrived at the same time. The factory Cabriolet, introduced for the SC\'s final year in 1983, continued through the full 3.2 Carrera run. Total production across Coupe, Targa, Cabriolet, and Speedster was approximately 76,473 units worldwide over six model years.',
       'The MY1987 introduction of the Getrag G50 five-speed manual gearbox is the generation\'s defining event. The Type 915 it replaced was a direct descendant of the 1972 911 gearbox, carrying notchy synchronisation and a cable clutch. The G50 brought BorgWarner synchromesh, a hydraulic clutch actuator (identifiable by the reservoir in the front trunk), and a conventional H-pattern shift layout. Power rose to 214–217 hp US concurrently. Post-G50 Carreras are universally preferred by buyers, and 1987-and-later examples command a meaningful collector premium over pre-G50 cars in all body styles. The M491 Turbo-Look package (also called \'Supersport\' in the UK) carried the 930 Turbo\'s wider body, brakes, and suspension on the naturally-aspirated 3.2 engine from 1984 — Coupe first, extended to Targa and Cabriolet from 1986; approximately 3,660 units total.',
-      'Three limited variants define the Carrera 3.2\'s halo tier. The Club Sport (M637, 1987–1989) is the most performance-focused: blueprinted engine with hollow intake valves and a raised 6,840 rpm rev limit, approximately 70 kg saved by deleting sound deadening, A/C, rear seats, and other comfort equipment, and an \'SP\' stamp on the crankcase and cylinder head — 340 units worldwide with only 28 documented US examples. The Speedster (M503, 1989 only) is a body style premium in two specifications: narrow-body (171 units, very rare) and Turbo-Look widebody (1,930 units), total production 2,100 cars built January through July 1989 only. The 1988 Commemorative Edition (870 units worldwide, including 300 US) marked the 250,000th 911; the 1989 25th Anniversary (500 units, US only) carried Ferry Porsche\'s signature in the headrest area.',
+      'Three limited variants define the Carrera 3.2\'s halo tier. The Club Sport (M637, 1987–1989) is the most performance-focused: blueprinted engine with hollow intake valves and a raised 6,840 rpm rev limit, approximately 70 kg saved by deleting sound deadening, A/C, rear seats, and other comfort equipment, and an \'SP\' stamp on the crankcase and cylinder head — 340 units worldwide with only 28 documented US examples. The Speedster (M503, 1989 only) is a body style premium in two specifications: narrow-body (171 units, very rare) and Turbo-Look widebody (1,933 units), total production 2,104 cars built in 1989 only. The 1988 Commemorative Edition (875 units worldwide, including 300 US) marked the 250,000th 911; the 1989 25th Anniversary (500 units, US only) carried Ferry Porsche\'s signature in the headrest area.',
     ],
     variants: [
       {
@@ -2624,15 +2655,15 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '1989',
         drivetrain: 'RWD',
         power: '217 hp (US); 231 hp (RoW)',
-        production: '1,930 worldwide',
-        description: 'Wide-body Speedster using 930 Turbo fenders, brakes, and wheels on the Carrera 3.2 drivetrain. Narrow-body and Turbo-Look were built on the same Cabriolet-derived floor; the wide-body version accounts for the vast majority of Speedster production. All Speedsters were built January through July 1989 only.',
+        production: '1,933 worldwide',
+        description: 'Wide-body Speedster using 930 Turbo fenders, brakes, and wheels on the Carrera 3.2 drivetrain. Narrow-body and Turbo-Look were built on the same Cabriolet-derived floor; the wide-body version accounts for the vast majority of Speedster production. All Speedsters were built in 1989 only.',
       },
       {
         name: 'Commemorative Edition / 25th Anniversary',
         years: '1988–1989',
         drivetrain: 'RWD',
         power: '217 hp (US)',
-        production: '870 CE worldwide; 500 25th Anniversary (US only)',
+        production: '875 CE worldwide; 500 25th Anniversary (US only)',
         description: 'Colour and trim packages with no mechanical differentiation. The 1988 Commemorative Edition (CE) used Diamond Blue Metallic paint with colour-matched Fuchs centres to mark the 250,000th 911; 300 US examples split across Coupe, Cabriolet, and Targa. The 1989 25th Anniversary was a US-only package in Silver or Satin Black Metallic with Ferry Porsche\'s signature in the headrest.',
       },
     ],
@@ -2686,7 +2717,7 @@ const CONTENT: Record<string, GenerationContent> = {
       },
       {
         name: 'Speedster rarity',
-        description: 'The 1989 Speedster narrow-body (171 units worldwide) commands a substantial premium above the Turbo-Look Speedster (1,930 units), which itself commands a collector premium above standard Cabriolets of comparable condition and mileage.',
+        description: 'The 1989 Speedster narrow-body (171 units worldwide) commands a substantial premium above the Turbo-Look Speedster (1,933 units), which itself commands a collector premium above standard Cabriolets of comparable condition and mileage.',
       },
       {
         name: 'Club Sport M637',
@@ -2887,6 +2918,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '1989–1994',
         drivetrain: 'AWD',
         power: '247 hp',
+        production: '20,395 worldwide (13,353 Coupe; 4,802 Cab; 1,329 Targa; 911 Jubilee Coupé)',
         description: 'First series-production AWD 911 and the only model offered for MY1989. Electronically-controlled viscous centre differential distributes torque approximately 31/69 front/rear under normal conditions, with the front differential able to close during severe rear slip. The electronic AWD control system is more complex than the 993\'s later viscous-coupling setup; control module failures and engagement irregularities are documented age items.',
       },
       {
@@ -2894,6 +2926,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: '1990–1994',
         drivetrain: 'RWD',
         power: '247 hp',
+        production: '34,398 worldwide (18,219 Coupe; 11,013 Cab; 3,534 Targa; 1,532 Turbo-look Cab; 936 Speedster)',
         description: 'Rear-wheel-drive Carrera on the standard 3.6L M64. Lighter than the Carrera 4 and the chassis preferred by driver-oriented buyers. Offered with the five-speed G50 manual or the Tiptronic four-speed automatic (MY1991+). Coupe, Cabriolet, and Targa body styles available. Tiptronic-equipped examples trade at a consistent discount in the collector market.',
       },
       {
@@ -2901,6 +2934,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY1991–1992',
         drivetrain: 'RWD',
         power: '320 hp',
+        production: '3,660 worldwide',
         description: 'The 964 Turbo\'s first two years used the carryover Type 930/60 engine from the 930 Turbo — K-Jetronic mechanical injection, single KKK turbocharger, no intercooler improvements beyond what the 930 already had. The 964 Turbo 3.3 is a 930 engine in a modernised body; that heritage is part of its identity. Not the rarer Turbo, but the entry point to 964 Turbo ownership.',
       },
       {
@@ -2908,6 +2942,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY1993–1994',
         drivetrain: 'RWD',
         power: '355 hp',
+        production: '~1,437 worldwide',
         description: 'The 964 Turbo\'s final two model years received a new turbocharged 3.6L engine — M64-derived but with a single large turbocharger and significantly improved low-end torque versus the 3.3L. Fewer than 1,500 worldwide; the Turbo 3.6 is the mainstream rarity of the 964 lineup and commands a clear premium over the Turbo 3.3 at auction.',
       },
       {
@@ -2916,7 +2951,7 @@ const CONTENT: Record<string, GenerationContent> = {
         drivetrain: 'RWD',
         power: '381 hp',
         production: '86 worldwide',
-        description: 'Weissach-built at the Exclusiv facility in a single batch beginning July 1992. M30/69 SL specification 3.3L engine at 381 hp, Kevlar body panels replacing steel front fenders and bonnet, aluminium doors, no power steering, no air conditioning standard. Approximately 300 lb lighter than the standard Turbo 3.3. The Turbo S Leichtbau is the top of the 964 collector tier and the direct ancestor of the 993 Turbo S.',
+        description: 'Weissach-built at the Exclusiv facility in a single batch beginning July 1992. M30/69 SL specification 3.3L engine at 381 hp, Kevlar body panels replacing steel front fenders and bonnet, aluminium doors, no power steering, no air conditioning standard. Approximately 397 lb (180 kg) lighter than the standard Turbo 3.3. The Turbo S Leichtbau is the top of the 964 collector tier and the direct ancestor of the 993 Turbo S.',
       },
       {
         name: 'Turbo 3.6 S (Flachbau and Package)',
@@ -3076,6 +3111,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2000–2004',
         drivetrain: 'RWD',
         power: '250–258 hp',
+        production: '50,896 worldwide (all 986 Boxster S incl. 1,953 50th Anniversary units)',
         description: '3.2L M96/21, six-speed manual (versus five-speed base), larger four-piston front calipers in red, wider rear track, third grille opening in the front bumper. The preferred collector specification: more power, better brakes, six-speed gearbox. Power rose from 250 to 258 hp across the production run.',
       },
       {
@@ -3174,7 +3210,7 @@ const CONTENT: Record<string, GenerationContent> = {
     notes: [
       'The 987.2 launched for MY2009 alongside the 997.2, both sharing the new 9A1 direct-injection engine and 7-speed PDK dual-clutch transmission. The 9A1 is an architectural departure from the M96/M97: direct fuel injection instead of port injection, no intermediate shaft, and no IMS bearing. The engine code change from M97 to 9A1 marks the most significant mid-cycle improvement in Boxster history from a reliability standpoint. A 987.1 and a 987.2 are not the same risk proposition despite the similar body. The base 987.2 uses a 2.9L 9A1 (255 hp); the S uses the 3.4L 9A1 (310 hp). The 7-speed PDK replaced the 5-speed Tiptronic as the automatic option; the six-speed manual carried over.',
       'The Boxster Spyder (MY2011–MY2012) is the 987.2\'s halo variant and was Porsche\'s lightest production car at launch: 1,275 kg achieved through aluminum doors and decklid (saving ~15 kg combined), a manually operated canvas top replacing the power roof (saving 21 kg), and deleted carpets and air conditioning as standard. The 3.4L 9A1 was tuned to 320 hp with a 20 mm lower sport suspension and sport exhaust. The Porsche Historisches Archiv records total Spyder production at 1,944 units: 33 cars built in CY2009, 1,418 in CY2010, 493 in CY2011. Approximately 890 were US-allocation. PDK take rate on the Spyder was higher than the enthusiast demographic later recalled.',
-      'The 987.2 closed the 987 body style in MY2012, superseded by the entirely new 981 for MY2013. The Black Edition (MY2011, ~990 units, +10 hp ECU remap, all-black trim) and Porsche Design Edition 2 (MY2009, 250–500 units worldwide and only 32 US, Carrara White with white-faced gauges) are the generation\'s limited editions outside the Spyder. For collectors the 987.2 Spyder is the primary target — COA authentication and physical confirmation of aluminum doors/decklid are the key verification steps.',
+      'The 987.2 closed the 987 body style in MY2012, superseded by the entirely new 981 for MY2013. The Black Edition (MY2011, exactly 987 units worldwide, +10 hp ECU remap, all-black trim) and Porsche Design Edition 2 (MY2009, 250–500 units worldwide and only 32 US, Carrara White with white-faced gauges) are the generation\'s limited editions outside the Spyder. For collectors the 987.2 Spyder is the primary target — COA authentication and physical confirmation of aluminum doors/decklid are the key verification steps.',
     ],
     variants: [
       {
@@ -3204,8 +3240,8 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2011',
         drivetrain: 'RWD',
         power: '320 hp',
-        production: '~990 worldwide',
-        description: 'Final-run special with +10 hp ECU remap, all-black exterior and interior trim, 19-inch wheels, unique badging. Based on the Boxster S. A clean valedictory edition at the close of the 987 body style. Less collectible than the Spyder due to appearance-only differentiation.',
+        production: '987 worldwide',
+        description: 'Final-run special with +10 hp ECU remap, all-black exterior and interior trim, 19-inch wheels, unique badging. Based on the Boxster S. Production capped at exactly 987 units — a deliberate reference to the 987 chassis designation. Less collectible than the Spyder due to appearance-only differentiation.',
       },
       {
         name: 'Porsche Design Edition 2',
@@ -3322,7 +3358,7 @@ const CONTENT: Record<string, GenerationContent> = {
         years: 'MY2016',
         drivetrain: 'RWD',
         power: '375 hp',
-        production: '~2,400 worldwide, ~850 US',
+        production: '2,486 worldwide; ~829 North America',
         description: '3.8L 9A1 from the 991.1 Carrera S (detuned from 400 hp). Six-speed manual only — no PDK. GT4 front and rear fascias, manually-folding canvas top, aluminum doors and decklid, 991 Turbo S steering rack, 20 mm lower suspension. Manual-only is a deliberate collector specification.',
       },
     ],
@@ -3375,7 +3411,7 @@ const CONTENT: Record<string, GenerationContent> = {
       },
       {
         name: 'Boxster Spyder',
-        description: '~2,400 worldwide production, manual-only, 3.8L Carrera S engine, and GT-department hardware command the generation\'s highest premium. Full documentation (COA, original spec, correct color) supports the premium; modified or undocumented Spyders do not command equivalent values.',
+        description: '2,486 worldwide production, manual-only, 3.8L Carrera S engine, and GT-department hardware command the generation\'s highest premium. Full documentation (COA, original spec, correct color) supports the premium; modified or undocumented Spyders do not command equivalent values.',
       },
       {
         name: 'GTS trim (MY2015–2016 only)',
@@ -3642,14 +3678,14 @@ const CONTENT: Record<string, GenerationContent> = {
     intro: 'The 987.1 Cayman arrived in MY2006 as the Cayman S, carrying the 3.4L M97/21 flat-six that the contemporary Boxster S would not receive until the 987.2 update. That displacement advantage defined the 987.1 Cayman\'s character: more power, better torsional rigidity from its fixed roof, and a driving dynamic that enthusiasts ranked above the Boxster of the same era. The base 2.7L Cayman followed in MY2007, completing the lineup.',
     production_years: '2006–2008',
     body_styles: 'Coupe',
-    engine: '3.4L M97/21 flat-six (Cayman S) / 2.7L M96 flat-six (base Cayman)',
+    engine: '3.4L M97/21 flat-six (Cayman S) / 2.7L M97/20 flat-six (base Cayman)',
     cooling: 'Water-cooled',
     units_produced: '~23,000 worldwide (estimated)',
     notes: [
       'Cayman S launched MY2006 with 3.4L M97/21 — one displacement class above the 987.1 Boxster S (3.2L at launch)',
       'Base 2.7L Cayman followed MY2007',
       'M96/M97 IMS bearing concern applies equally to all 987.1 Cayman engines',
-      'Design Edition 1 limited to ~770 worldwide (~240 US) — MY2008 appearance package on Cayman S base',
+      'Design Edition 1 limited to 777 worldwide (240 US) — MY2008 appearance package on Cayman S base',
       'Cayman S Sport limited to ~700 worldwide (~100 US) — MY2008, 303 hp via ECU remap, PASM standard',
     ],
     variants: [
@@ -3663,7 +3699,7 @@ const CONTENT: Record<string, GenerationContent> = {
         name: 'Cayman',
         years: '2007–2008',
         power: '245 hp',
-        description: '2.7L M96 flat-six, 199 lb-ft, six-speed manual or five-speed Tiptronic. Base model that rounded out the lineup a model year after the S launch. Same M96 IMS exposure as the Boxster.',
+        description: '2.7L M97/20 flat-six, 201 lb-ft, five-speed manual or five-speed Tiptronic (six-speed optional). Base model that rounded out the lineup a model year after the S launch. Same M97 IMS exposure as the Boxster.',
       },
       {
         name: 'Cayman S Sport',
@@ -3675,7 +3711,7 @@ const CONTENT: Record<string, GenerationContent> = {
         name: 'Design Edition 1',
         years: '2008',
         power: '295 hp',
-        description: 'Appearance edition based on the Cayman S. ~770 worldwide, approximately 240 US. Distinguishable by its two-tone Sport Design exterior and specific interior treatment. Same mechanical specification as the standard Cayman S.',
+        description: 'Appearance edition based on the Cayman S. 777 worldwide, 240 US. Distinguishable by its two-tone Sport Design exterior and specific interior treatment. Same mechanical specification as the standard Cayman S.',
       },
     ],
     engineering: [
@@ -3756,7 +3792,7 @@ const CONTENT: Record<string, GenerationContent> = {
       '9A1 DFI engine eliminates the intermediate shaft (IMS) — no IMS bearing failure risk',
       'PDK 7-speed dual-clutch available for the first time in the Cayman',
       'Cayman R (MY2012): 330 hp, mechanical LSD, aluminum doors and decklid, ~55 kg lighter than standard S — manual only',
-      'Cayman S Black Edition (MY2012): ~500 US units, appearance package with R engine output — manual or PDK',
+      'Cayman S Black Edition (MY2012): ~500 worldwide (~180 US), appearance package with R engine output — manual or PDK',
     ],
     variants: [
       {
@@ -3775,13 +3811,14 @@ const CONTENT: Record<string, GenerationContent> = {
         name: 'Cayman R',
         years: '2012',
         power: '330 hp',
+        production: '1,621 worldwide',
         description: '3.4L 9A1 flat-six, mechanical LSD, aluminum doors and decklid, 20mm lower ride height, approximately 55 kg lighter than the standard Cayman S. Manual-only — no PDK offered. Air conditioning and audio system deleted from base specification. Track-focused factory lightweight that defines the top of the 987.2 collector hierarchy.',
       },
       {
         name: 'Cayman S Black Edition',
         years: '2012',
         power: '330 hp',
-        description: 'Final-run appearance edition with Cayman R engine output (330 hp via ECU remap). ~500 US units. Jet Black exterior with matching black interior and accent package. Manual or PDK available, unlike the R.',
+        description: 'Final-run appearance edition with Cayman R engine output (330 hp via ECU remap). ~500 worldwide (~180 US). Jet Black exterior with matching black interior and accent package. Manual or PDK available, unlike the R.',
       },
     ],
     engineering: [

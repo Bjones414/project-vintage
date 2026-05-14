@@ -112,13 +112,18 @@ severity: catastrophic
 # repair pricing matrix in a future pass, this record can be
 # updated.
 
-prevalence_rate: "manufacturer-acknowledged (2014 recall: 100% of 2014 MY GT3 population, ~785 cars worldwide; subsequent FF wear: rate not published, sufficient for Porsche to extend warranty 10yr/120k transferable globally)"
+prevalence_rate: "manufacturer-acknowledged (2014 recall: 100% of 2014 MY GT3 population, ~785 US cars per NHTSA 14V-090; subsequent FF wear: rate not published, sufficient for Porsche to extend warranty 10yr/120k transferable globally)"
 prevalence_source_anchor: |
   The 2014 rod-bolt recall is documented in NHTSA campaign 14V-090
   (which mirrors Porsche Technical Information Service 20/14 ENU
-  AE01), covering approximately 785 vehicles worldwide and
-  approximately 400 in the United States [NHTSA-RCRIT, NHTSA-RCONL,
-  SPRINT-RECALL]. The 2017 finger-follower warranty extension was
+  AE01), a US-only campaign covering approximately 785 US vehicles
+  [NHTSA-RCRIT, NHTSA-RCONL]. Note: the Sprint Motorsports
+  write-up [SPRINT-RECALL] states "~785 cars worldwide and ~400
+  in the United States" — an internally inconsistent pair. Because
+  NHTSA 14V-090 is the authoritative Tier-A record and is US-only
+  by jurisdiction, the 785 figure is used here as the US recall
+  count; the ~400 figure from that source is not retained.
+  The 2017 finger-follower warranty extension was
   announced via formal letter from Porsche Cars North America to
   all 991.1 GT3 owners following a Concerned Owners Group meeting
   attended by Dr. Frank-Steffen Walliser of Porsche Motorsport
@@ -211,7 +216,7 @@ evidence_basis: manufacturer_acknowledged
 sources:
   - "[NHTSA-RCRIT] NHTSA — Recall Campaign 14V-090 RCRIT (mirrors Porsche TIS 20/14 ENU AE01, the engine replacement procedure for the 2014 GT3 recall). Tier A"
   - "[NHTSA-RCONL] NHTSA — Recall Campaign 14V-090 RCONL (owner notification). Tier A"
-  - "[SPRINT-RECALL] Sprint Motorsports — Porsche Replacing Engine in the 911 GT3 (specialist write-up of the 2014 recall, ~785 cars worldwide and ~400 in the US). Tier B"
+  - "[SPRINT-RECALL] Sprint Motorsports — Porsche Replacing Engine in the 911 GT3 (specialist write-up of the 2014 recall; article states ~785 cars worldwide and ~400 in the US — internally inconsistent pair superseded by the Tier-A NHTSA 14V-090 record, which establishes the US count as ~785). Tier B"
   - "[CALLAS-RR] Callas Rennsport — 2014 GT3 Engine Failures technical writeup (specialist analysis of rod-bolt failure mechanism). Tier B"
   - "[P9-LETTER] Planet-9 Forum — 991.1 GT3 Engine Warranty Enhancement (PCNA letter text quoted in full; covers all internal engine components for 10yr/120k). Tier C"
   - "[CARBUZZ-FF] Carbuzz — Porsche extends warranty for 991.1 911 GT3 to 10 years and 120,000 miles (2017). Tier C"
@@ -660,7 +665,7 @@ https://static.nhtsa.gov/odi/rcl/2014/RCRIT-14V090-2676.pdf
 [NHTSA-RCONL] NHTSA — Recall Campaign 14V-090 RCONL (owner notification). Tier A.
 https://static.nhtsa.gov/odi/rcl/2014/RCONL-14V090-2309.pdf
 
-[SPRINT-RECALL] Sprint Motorsports — Porsche Replacing Engine in the 911 GT3 (specialist write-up of the 2014 recall, ~785 cars worldwide and ~400 in the US). Tier B.
+[SPRINT-RECALL] Sprint Motorsports — Porsche Replacing Engine in the 911 GT3 (specialist write-up of the 2014 recall; article states ~785 cars worldwide and ~400 in the US — internally inconsistent pair superseded by the Tier-A NHTSA 14V-090 record, which establishes the US count as ~785). Tier B.
 https://sprintmotorsports.com/porsche-replacing-engine-911-gt3/
 
 [CALLAS-RR] Callas Rennsport — 2014 GT3 Engine Failures (specialist analysis of rod-bolt failure mechanism). Tier B.

@@ -12,6 +12,7 @@ import type {
   V2CompsResult,
   EngineConfig,
   ScoredComp,
+  CascadeLevel,
 } from './types'
 import { applyHardFilters } from './hard-filter'
 import { applyCohortSeparation } from './mileage-cohort'
@@ -23,6 +24,7 @@ import {
   capConfidenceForCount,
 } from './aggregation'
 import { buildMethodologyText } from './methodology'
+import { selectCascadePool, getCascadeCaveat } from './cascade'
 
 export function runCompEngineV2(
   subject: V2Subject,
@@ -48,6 +50,8 @@ export function runCompEngineV2(
     generation_used: config.generationUsed,
     weights_used: config.weights.weights,
     insufficient_reason: reason,
+    cascade_level: null,
+    cascade_caveat: null,
     ...partial,
   })
 
@@ -68,43 +72,59 @@ export function runCompEngineV2(
     soldPool.push(c)
   }
 
-  // Stage 1: Hard categorical filters
+  // Stage 1: Hard categorical filters (trim isolation + body style + bilateral gate)
   const afterHardFilter = applyHardFilters(subject, soldPool, config.taxonomy)
 
-  // Stage 2: Sample-size floor
-  if (afterHardFilter.length < 3) {
-    // Sparse-category path: coachbuilt and limited are rare by design.
-    // Return whatever comps exist as individual data points rather than suppressing entirely.
-    const isSparseCategory =
-      subject.trim_category === 'coachbuilt' || subject.trim_category === 'limited'
-    if (isSparseCategory && afterHardFilter.length > 0) {
-      const sparseComps: ScoredComp[] = afterHardFilter.map(c => ({
-        listing_id: c.listing_id,
-        price_cents: c.final_price_cents,
-        similarity_score: 0,
-        recency_weight: 0,
-        final_weight: 0,
-        factor_scores: {},
-      }))
-      return emptyResult('insufficient_comps', 'sparse_category', {
-        comp_count: afterHardFilter.length,
-        comps_used: sparseComps,
-      })
-    }
-    return emptyResult('insufficient_comps', 'post_hard_filter_count', {
+  // Stage 2: Sample-size floor — use cascade to find the broadest qualifying pool.
+  // Sparse-category path (coachbuilt / limited): return raw data points rather than
+  // suppressing entirely — these categories are rare by design.
+  const isSparseCategory =
+    subject.trim_category === 'coachbuilt' || subject.trim_category === 'limited'
+
+  if (isSparseCategory && afterHardFilter.length > 0 && afterHardFilter.length < 3) {
+    const sparseComps: ScoredComp[] = afterHardFilter.map(c => ({
+      listing_id: c.listing_id,
+      price_cents: c.final_price_cents,
+      similarity_score: 0,
+      recency_weight: 0,
+      final_weight: 0,
+      factor_scores: {},
+    }))
+    return emptyResult('insufficient_comps', 'sparse_category', {
       comp_count: afterHardFilter.length,
+      comps_used: sparseComps,
+      cascade_level: 3,  // hard filter level is equivalent to cascade level 3
+      cascade_caveat: null,
     })
   }
+
+  // Cascade: try progressively broader pools until MIN_COMPS is reached.
+  // fullPool (soldPool) is passed for Carrera-family expansion at levels 5-6.
+  const cascadeResult = selectCascadePool(subject, afterHardFilter, soldPool)
+
+  if (cascadeResult === null || cascadeResult.pool.length === 0) {
+    return emptyResult('insufficient_comps', 'post_hard_filter_count', {
+      comp_count: afterHardFilter.length,
+      cascade_level: null,
+      cascade_caveat: null,
+    })
+  }
+
+  const cascadePool = cascadeResult.pool
+  const cascadeLevel: CascadeLevel = cascadeResult.level
+  const cascade_caveat = getCascadeCaveat(cascadeLevel, subject.generation_id)
 
   // Stage 3: Museum mileage cohort separation
   const { pool: afterCohort, isMuseumSubject } = applyCohortSeparation(
     subject.mileage,
-    afterHardFilter,
+    cascadePool,
   )
 
   if (afterCohort.length < 3) {
     return emptyResult('insufficient_comps', 'post_cohort_separation', {
       comp_count: afterCohort.length,
+      cascade_level: cascadeLevel,
+      cascade_caveat,
     })
   }
 
@@ -119,6 +139,8 @@ export function runCompEngineV2(
   if (scored.length < 3) {
     return emptyResult('insufficient_comps', 'post_similarity_drop_threshold', {
       comp_count: scored.length,
+      cascade_level: cascadeLevel,
+      cascade_caveat,
     })
   }
 
@@ -130,6 +152,8 @@ export function runCompEngineV2(
   if (afterRecency.length < 3) {
     return emptyResult('insufficient_comps', 'post_recency_drop', {
       comp_count: afterRecency.length,
+      cascade_level: cascadeLevel,
+      cascade_caveat,
     })
   }
 
@@ -139,7 +163,10 @@ export function runCompEngineV2(
   // Stage 6: Weighted median + P25/P75
   const fairValue = computeWeightedFairValue(afterRecency)
   if (!fairValue) {
-    return emptyResult('insufficient_comps', 'fair_value_computation_failed')
+    return emptyResult('insufficient_comps', 'fair_value_computation_failed', {
+      cascade_level: cascadeLevel,
+      cascade_caveat,
+    })
   }
 
   // Stage 7: Confidence score
@@ -184,5 +211,7 @@ export function runCompEngineV2(
     comps_failed,
     generation_used: config.generationUsed,
     weights_used: config.weights.weights,
+    cascade_level: cascadeLevel,
+    cascade_caveat,
   }
 }

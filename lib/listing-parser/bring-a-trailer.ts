@@ -25,9 +25,11 @@ export const PORSCHE_MODEL_PREFIXES: readonly string[] = [
   '914',
   '924',
   '928',
+  '930',
   '944',
   '959',
   '968',
+  '356',
   '911',
   '912',
 ]
@@ -38,12 +40,25 @@ export const PORSCHE_MODEL_PREFIXES: readonly string[] = [
  *
  * Returns { model: null, trim: null } when no prefix matches and logs a
  * warning — callers must not fall back to storing the raw string.
+ *
+ * Handles concatenated variant designators: "911S Targa" → model "911", trim "S Targa".
+ * Handles hyphenated sub-models: "914-6 Coupe" → model "914", trim "6 Coupe".
  */
 export function splitModelTrim(postMake: string): { model: string | null; trim: string | null } {
   for (const prefix of PORSCHE_MODEL_PREFIXES) {
-    if (postMake === prefix || postMake.startsWith(prefix + ' ')) {
-      const remainder = postMake.slice(prefix.length).trim()
-      return { model: prefix, trim: remainder || null }
+    if (postMake === prefix) {
+      return { model: prefix, trim: null }
+    }
+    if (postMake.startsWith(prefix)) {
+      const next = postMake[prefix.length]
+      // Valid separator after prefix: space (normal trim), uppercase letter (e.g. 911S),
+      // or hyphen (e.g. 914-6). Digits are NOT valid — prevents "9110" matching "911".
+      if (next === ' ' || next === '-' || /^[A-Z]/.test(next)) {
+        const remainder = postMake.slice(prefix.length).trim()
+        // Strip leading hyphen so "914-6 Coupe" → trim "6 Coupe", not "-6 Coupe"
+        const trimValue = remainder.startsWith('-') ? remainder.slice(1).trim() : remainder
+        return { model: prefix, trim: trimValue || null }
+      }
     }
   }
   console.warn(`[BaT parser] unrecognized model string, leaving unparsed: "${postMake}"`)
@@ -557,9 +572,18 @@ export function parseBatHtml(html: string, sourceUrl: string): CanonicalListing 
     make = parts[0] ?? null
     const postMake = parts.slice(1).join(' ')
     if (postMake) {
-      const parsed = splitModelTrim(postMake)
-      model = parsed.model
-      trim = parsed.trim
+      if (make?.toLowerCase() === 'porsche') {
+        // Porsche-specific prefix matching (validates against known model list)
+        const parsed = splitModelTrim(postMake)
+        model = parsed.model
+        trim = parsed.trim
+      } else {
+        // Generic non-Porsche: treat first token as model, remainder as trim.
+        // Skips Porsche-specific validation; allows caching for comparable sale data.
+        const nonPorscheParts = postMake.split(/\s+/)
+        model = nonPorscheParts[0] ?? null
+        trim = nonPorscheParts.slice(1).join(' ') || null
+      }
     }
   }
 

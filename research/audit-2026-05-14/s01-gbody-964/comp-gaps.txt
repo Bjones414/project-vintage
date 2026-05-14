@@ -1,0 +1,72 @@
+# Comp Gaps — G-body (MY1974–1989) and 964 (MY1989–1994)
+# Generated: 2026-05-14
+# Threshold: fewer than 10 comparable sales (final_price not null)
+# Format: "YEAR GENERATION TRIM [n comps]"
+# Note: 964/1993/carrera_2_narrow has 15 comps and is the ONLY adequately covered group.
+#
+# ── GENERATION g-series-2.7 (MY 1974–1977) ──────────────────────────────────
+1974 911 Carrera 2.7 MFI (g-series-2.7, no trim_category, n=6)
+1975 911 Carrera (g-series-2.7, no trim_category, n=1)
+1976 911 Carrera 2.7 MFI (g-series-2.7, no trim_category, n=1)
+# ZERO COMPS — no listings with final_price for these years:
+1974 911 base 2.7 (g-series-2.7, 0 comps)
+1974 911 S 2.7 (g-series-2.7, 0 comps)
+1975 911 base 2.7 (g-series-2.7, 0 comps)
+1975 911 S 2.7 (g-series-2.7, 0 comps)
+1975 Silver Anniversary Edition (g-series-2.7, 0 comps)
+1976 Carrera 3.0 (g-series-2.7, 0 comps)
+1977 911 S 2.7 / Lux 2.7 (g-series-2.7, 0 comps)
+1977 Carrera 3.0 (g-series-2.7, 0 comps)
+
+# ── GENERATION 911-sc (MY 1978–1983) ──────────────────────────────────────────
+1982 911 SC Coupe (911-sc, no trim_category, n=1)
+1983 911 SC Cabriolet (911-sc, no trim_category, n=1)
+# ZERO COMPS — no listings with final_price for these years:
+1978 911 SC (911-sc, 0 comps)
+1979 911 SC (911-sc, 0 comps)
+1980 911 SC (911-sc, 0 comps)
+1981 911 SC (911-sc, 0 comps)
+1983 911 SC Coupe (911-sc, 0 comps)
+
+# ── GENERATION 911-3.2-carrera (MY 1984–1989) ─────────────────────────────────
+1985 911 Carrera 3.2 (911-3.2-carrera, no trim_category, n=2)
+1987 911 Carrera 3.2 Cabriolet G50 (911-3.2-carrera, no trim_category, n=2)
+1988 911 Carrera 3.2 Cabriolet (911-3.2-carrera, no trim_category, n=1)
+1989 911 Speedster (911-3.2-carrera, limited, n=2)
+1989 911 Carrera 3.2 unclassified (911-3.2-carrera, no trim_category, n=3)
+# ZERO COMPS — no listings with final_price for these years/trims:
+1984 911 Carrera 3.2 (911-3.2-carrera, 0 comps)
+1986 911 Carrera 3.2 (911-3.2-carrera, 0 comps)
+1987 Club Sport M637 (911-3.2-carrera, 0 comps)
+1988 Commemorative Edition (911-3.2-carrera, 0 comps)
+1989 25th Anniversary (911-3.2-carrera, 0 comps)
+1984-1989 M491 Turbo-Look (911-3.2-carrera, 0 comps)
+
+# ── GENERATION 964 (MY 1989–1994) ─────────────────────────────────────────────
+# NOTE: 1993/carrera_2_narrow is the ONLY adequately covered group (n=15)
+1990 964 Carrera (Singer reimagined, coachbuilt, n=1)
+1990 964 Carrera unclassified (964, no trim_category, n=3)
+1991 964 Singer reimagined (964, coachbuilt, n=1)
+1991 964 Carrera unclassified (964, no trim_category, n=1)
+1992 964 Carrera RS N/GT (964, rs_lightweight, n=1)
+1992 964 Singer reimagined (964, coachbuilt, n=1)
+1992 964 Carrera RS unclassified (964, no trim_category, n=6)
+1993 964 Singer reimagined (964, coachbuilt, n=1)
+1993 964 S Lightweight (964, rs_lightweight, n=1)
+1993 964 Turbo S Leichtbau (964, turbo_s, n=2)
+1993 964 Carrera unclassified (964, no trim_category, n=1)
+1994 964 Speedster (964, limited, n=1)
+1994 964 Turbo 3.6 (964, turbo_base, n=3)
+1994 964 Turbo S Flachbau (964, turbo_s, n=1)
+1994 964 Carrera unclassified (964, no trim_category, n=3)
+# ZERO COMPS — no listings with final_price for these year/trim combos:
+1989 964 Carrera 4 (first model year, 0 comps)
+1990 964 Carrera 4 (964, 0 comps — all 1990 listings are Singer coachbuilt or unclassified)
+1991 964 Carrera 4 (964, 0 comps)
+1991 964 Carrera 2 (964, 0 comps)
+1992 964 Turbo 3.3 (964, 0 comps — likely classified under no trim_category)
+1993 964 Carrera 4 (964, 0 comps)
+1993 964 30 Jahre Anniversary (964, 0 comps)
+1993 964 RS 3.8 (964, 0 comps)
+1993 964 Turbo 3.6 (964, 0 comps — only 1 comp at 1994)
+1994 964 Carrera 4 (964, 0 comps)

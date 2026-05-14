@@ -57,21 +57,32 @@ Records in this file are framed as inspection priorities, not universal defect r
 ---
 
 ```yaml
-record_id: REGION_25_001
-title: "Pre-996 Air-Cooled 911 Salt-Belt Underbody and Structural Corrosion"
-file: 25
-section: Region-Specific — Salt-Belt Corrosion
+id: REGION_25_001
+flag_title: "Pre-996 Air-Cooled 911 Salt-Belt Underbody and Structural Corrosion"
 severity: high
-severity_rationale: >
-  Structural corrosion on pre-996 air-cooled 911s is severity high because: (1) it can
-  affect load-bearing structural elements including sills, floor pans, subframe pickup
-  points, and torsion tube housings; (2) visible surface rust is described by specialists
-  as "only the tip of it" — once structural rust is present, repair escalates significantly;
-  (3) proper rectification of a heavily corroded G-body or F-body 911 can exceed the
-  car's market value; (4) salt-belt cars that have been cosmetically prepared can conceal
-  structural corrosion that a non-specialist inspector will miss. A clean-looking car from
-  a rust-belt state without documented restoration history is a high-risk purchase.
-content_status: draft
+description: >
+  Pre-996 air-cooled 911s built before Porsche's full hot-dip galvanization program
+  (introduced 1975–1977) are structurally vulnerable to salt-accelerated corrosion
+  that can reach load-bearing structural elements including sills, floor pans, and
+  torsion tube housings. Even post-1976 cars are now 50+ years old; zinc is sacrificial
+  and depletes over decades of salt exposure. Visible rust is a late-stage indicator —
+  by the time blistering appears, underlying damage is typically significant. A
+  specialist pre-purchase inspection on a lift is required for any salt-belt car.
+applicability:
+  generation:
+    - "911-f-body"
+    - "g-series-2.7"
+    - "911-sc"
+    - "911-3.2-carrera"
+    - "930"
+    - "964"
+    - "993"
+  year_range: [1963, 1998]
+buyer_questions:
+  - "Where has this car spent its life? Has it been used in winter conditions or in a salt-belt region?"
+  - "Is there documentation of an underbody restoration or rust prevention treatment?"
+  - "Has the car had a full underbody inspection on a lift as part of its recent service history?"
+  - "Is there documented metalwork in the car's history — and if so, by whom and when?"
 ```
 
 **Applicability**
@@ -79,8 +90,10 @@ content_status: draft
 ```yaml
 applicability:
   generations:
-    - "911_F_body"
-    - "911_G_body"
+    - "911-f-body"
+    - "g-series-2.7"
+    - "911-sc"
+    - "911-3.2-carrera"
     - "930"
     - "964"
     - "993"
@@ -243,22 +256,39 @@ A car with no visible rust from a salt-belt region without documented restoratio
 ---
 
 ```yaml
-record_id: REGION_25_002
-title: "California CARB Emissions Compliance — Modified Water-Cooled Porsches"
-file: 25
-section: Region-Specific — California Emissions
+id: REGION_25_002
+flag_title: "California CARB Emissions Compliance — Modified Water-Cooled Porsches"
 severity: moderate
-severity_rationale: >
-  Severity is moderate because: (1) a modified California-registered Porsche with
-  non-CARB-approved parts faces mandatory smog check failure — it cannot legally be
-  registered without remediation; (2) since July 2021, California smog checks include
-  ECU calibration verification (CVN checksum) that detects DME tuning, even if the
-  tune was reverted before testing; (3) remediation may require sourcing OEM or
-  CARB-approved replacement parts that are scarce or expensive on older water-cooled
-  cars; (4) a buyer unaware of this compliance requirement faces unexpected costs and
-  potential inability to register the vehicle. Cost of remediation is variable but
-  can be significant if OEM parts require sourcing.
-content_status: draft
+description: >
+  California-registered water-cooled Porsches with aftermarket emissions modifications face
+  three compliance risks: non-CARB-EO catalytic converters fail smog visual inspection;
+  ECU/DME tunes without a CARB Executive Order number trigger CVN checksum failure (enforced
+  since July 2021); OBD-II readiness monitors not set after battery work or ECU reflash
+  require a specific drive cycle before the smog check can pass. Applies equally in
+  CARB-mandate states that follow California standards. Fully stock cars are not
+  materially affected.
+applicability:
+  generation:
+    - "996.1"
+    - "996.2"
+    - "997.1"
+    - "997.2"
+    - "991.1"
+    - "991.2"
+    - "992.1"
+    - "992.2"
+    - "987.1"
+    - "987.2"
+    - "981"
+    - "718"
+  year_range: [1996, 2030]
+buyer_questions:
+  - "Is the car registered in California or a CARB-mandate state?"
+  - "Has the car had any aftermarket emissions modifications: catalytic converters, exhaust, or ECU/DME tune?"
+  - "Are aftermarket cats CARB EO-numbered (look for the EO label on the cat heat shield)?"
+  - "Has the car passed its most recent smog check? When, and at what type of station (standard or STAR)?"
+  - "If tuned: does the tune have a CARB Executive Order number?"
+  - "Has the car had a battery disconnect, ECU reflash, or extended storage period recently?"
 ```
 
 **Applicability**
@@ -401,27 +431,47 @@ For tuned cars: the most reliable pre-purchase check is to plug in a Durametric 
 ---
 
 ```yaml
-record_id: REGION_25_003
-title: "Import and Grey-Market Compliance — European and ROW-Spec Porsches in the US"
-file: 25
-section: Region-Specific — Import Compliance
+id: REGION_25_003
+flag_title: "Import and Grey-Market Compliance — European and ROW-Spec Porsches in the US"
 severity: moderate
-severity_rationale: >
-  Severity is moderate for the typical buyer scenario — a 25-year-eligible classic
-  Porsche (the most common import case for air-cooled and early water-cooled generations)
-  where federal compliance cost is near-zero and the risk is primarily failure to identify
-  spec differences or state-level registration complications.
-
-  For the sub-population of under-25-year non-US-spec cars, the scenario is high
-  severity: RI conversion costs of $9,500–$28,500 plus compliance bond represent a
-  material cost, and some vehicles cannot be legally imported at any price if no RI
-  holds an approved procedure. Buyers considering under-25-year ROW-spec Porsches
-  should treat this record as high severity for their specific situation.
-
-  Overall classification is moderate because the 25-year cohort (pre-2001 Porsches
-  as of 2026) encompasses the majority of desirable collector Porsches likely to be
-  imported, and their compliance pathway is straightforward.
-content_status: draft
+description: >
+  European and ROW-spec Porsches differ from US-spec in lighting, bumpers, speedometer
+  calibration, emissions equipment, and sometimes engine tune. Cars 25+ years old are
+  fully exempt from NHTSA and EPA federal compliance requirements (Box 1 import, no
+  Registered Importer required). Under-25-year non-US-spec cars require a NHTSA Registered
+  Importer conversion ($9,500–$28,500); if no RI holds an approved procedure, the car
+  cannot enter for road use. California buyers face additional CARB requirements even on
+  25-year-eligible imports. Confirm the NHTSA compliance label on the door jamb to
+  identify market specification.
+applicability:
+  generation:
+    - "911-f-body"
+    - "g-series-2.7"
+    - "911-sc"
+    - "911-3.2-carrera"
+    - "930"
+    - "964"
+    - "993"
+    - "996.1"
+    - "996.2"
+    - "997.1"
+    - "997.2"
+    - "991.1"
+    - "991.2"
+    - "992.1"
+    - "992.2"
+    - "987.1"
+    - "987.2"
+    - "981"
+    - "718"
+  year_range: [1963, 2030]
+buyer_questions:
+  - "Is this car US-spec or ROW-spec? Is the NHTSA compliance label present on the door jamb?"
+  - "What is the car's original market of sale? (Check the Porsche CoA or Kardex record.)"
+  - "Has the car already cleared US Customs and been titled in a US state?"
+  - "If under 25 years old and ROW-spec: has an RI conversion been completed? What is the RI documentation?"
+  - "Are the headlights DOT/SAE marked? Does the speedometer show mph as primary?"
+  - "What additional steps are required for registration in the buyer's state?"
 ```
 
 **Applicability**
@@ -429,8 +479,10 @@ content_status: draft
 ```yaml
 applicability:
   generations:
-    - "911_F_body"
-    - "911_G_body"
+    - "911-f-body"
+    - "g-series-2.7"
+    - "911-sc"
+    - "911-3.2-carrera"
     - "930"
     - "964"
     - "993"

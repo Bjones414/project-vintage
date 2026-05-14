@@ -1,0 +1,79 @@
+991.1 COMP DATA GAPS
+Generated: 2026-05-14 via scripts/research/s09-comp-gap-audit.ts
+Threshold: variants with <10 comps in the listings database
+
+SUMMARY
+=======
+Total 991.1 variant+year combos audited: 44
+  Critical (0–4 comps): 44  (all combos)
+  Sparse   (5–9 comps):  0
+  Warning (10–14 comps): 0
+  Sufficient (15+ comps): 0
+
+All 44 991.1 variant+year combos are CRITICAL (0 comps), except:
+  - 2013 Carrera (Coupe, RWD): 1 comp
+  - 2013 Carrera S (Coupe, RWD): 1 comp
+
+The 991.1 generation is effectively unserved by comp data. Priority BaT/C&B
+scraping runs targeting 2012–2016 Porsches are required before the 991.1
+analysis page can deliver meaningful valuation outputs.
+
+FULL CRITICAL LIST (44 combos)
+================================
+991.1 | 2012 | Carrera         | Coupe  | RWD | 0 comps
+991.1 | 2012 | Carrera 4       | Coupe  | AWD | 0 comps
+991.1 | 2012 | Carrera 4S      | Coupe  | AWD | 0 comps
+991.1 | 2012 | Carrera S       | Coupe  | RWD | 0 comps
+991.1 | 2013 | Carrera         | Coupe  | RWD | 1 comp   ← sparse/critical border
+991.1 | 2013 | Carrera 4       | Coupe  | AWD | 0 comps
+991.1 | 2013 | Carrera 4S      | Coupe  | AWD | 0 comps
+991.1 | 2013 | Carrera S       | Coupe  | RWD | 1 comp   ← sparse/critical border
+991.1 | 2014 | 50th Anniversary Edition | Coupe | RWD | 0 comps
+991.1 | 2014 | Carrera         | Coupe  | RWD | 0 comps
+991.1 | 2014 | Carrera 4       | Coupe  | AWD | 0 comps
+991.1 | 2014 | Carrera 4S      | Coupe  | AWD | 0 comps
+991.1 | 2014 | Carrera S       | Coupe  | RWD | 0 comps
+991.1 | 2014 | GT3             | Coupe  | RWD | 0 comps
+991.1 | 2014 | Targa 4         | Targa  | AWD | 0 comps
+991.1 | 2014 | Targa 4S        | Targa  | AWD | 0 comps
+991.1 | 2014 | Turbo           | Coupe  | AWD | 0 comps
+991.1 | 2014 | Turbo S         | Coupe  | AWD | 0 comps
+991.1 | 2015 | Carrera         | Coupe  | RWD | 0 comps
+991.1 | 2015 | Carrera 4       | Coupe  | AWD | 0 comps
+991.1 | 2015 | Carrera 4 GTS   | Coupe  | AWD | 0 comps
+991.1 | 2015 | Carrera 4S      | Coupe  | AWD | 0 comps
+991.1 | 2015 | Carrera GTS     | Coupe  | RWD | 0 comps
+991.1 | 2015 | Carrera S       | Coupe  | RWD | 0 comps
+991.1 | 2015 | GT3             | Coupe  | RWD | 0 comps
+991.1 | 2015 | Targa 4         | Targa  | AWD | 0 comps
+991.1 | 2015 | Targa 4 GTS     | Targa  | AWD | 0 comps
+991.1 | 2015 | Targa 4S        | Targa  | AWD | 0 comps
+991.1 | 2015 | Turbo           | Coupe  | AWD | 0 comps
+991.1 | 2015 | Turbo S         | Coupe  | AWD | 0 comps
+991.1 | 2016 | 911 R           | Coupe  | RWD | 0 comps
+991.1 | 2016 | Carrera         | Coupe  | RWD | 0 comps
+991.1 | 2016 | Carrera 4       | Coupe  | AWD | 0 comps
+991.1 | 2016 | Carrera 4 GTS   | Coupe  | AWD | 0 comps
+991.1 | 2016 | Carrera 4S      | Coupe  | AWD | 0 comps
+991.1 | 2016 | Carrera GTS     | Coupe  | RWD | 0 comps
+991.1 | 2016 | Carrera S       | Coupe  | RWD | 0 comps
+991.1 | 2016 | GT3             | Coupe  | RWD | 0 comps
+991.1 | 2016 | GT3 RS          | Coupe  | RWD | 0 comps
+991.1 | 2016 | Targa 4         | Targa  | AWD | 0 comps
+991.1 | 2016 | Targa 4 GTS     | Targa  | AWD | 0 comps
+991.1 | 2016 | Targa 4S        | Targa  | AWD | 0 comps
+991.1 | 2016 | Turbo           | Coupe  | AWD | 0 comps
+991.1 | 2016 | Turbo S         | Coupe  | AWD | 0 comps
+
+NOTE: Cabriolet variants are not yet modeled in the comp engine for 991.1
+(body_style = 'Cabriolet' combos not in DB variant list). This is a separate gap.
+
+RECOMMENDED SCRAPING PRIORITY (by collector value + buyer interest)
+======================================================================
+1. GT3 (2014–2016) — $80K–$130K range, high buyer interest, recall awareness drives searches
+2. Carrera GTS (2015–2016) — NA collectibility driver, ~$90K–$120K
+3. Turbo S (2014–2016) — 9,629 units, $140K–$200K range
+4. 911 R (2016) — 991 units, $300K–$450K+ range, extreme comp value
+5. GT3 RS (2016) — ~4,596 units, $130K–$200K range
+6. Carrera S (2012–2016) — high volume, core reference anchor for the generation
+7. Turbo (2014–2016) — baseline for Turbo S premium analysis

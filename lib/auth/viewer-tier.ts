@@ -15,7 +15,7 @@ export async function getViewerTier(): Promise<{ tier: ViewerTier; bypass: boole
 
   const { data: profile } = await supabase
     .from('users')
-    .select('role, subscription_tier')
+    .select('role, subscription_tier, account_type')
     .eq('id', user.id)
     .single()
 
@@ -23,18 +23,18 @@ export async function getViewerTier(): Promise<{ tier: ViewerTier; bypass: boole
     return { tier: 'free', bypass: false }
   }
 
-  // admin/beta role → pro tier via bypass
-  // TODO: bypass mechanism is provisional — when real Pro entitlements ship, this needs
-  // to read from a subscriptions table or equivalent.
-  if (['admin', 'beta'].includes(profile.role)) {
+  // account_type IN ('alpha', 'admin') → full bypass (alpha account system)
+  if (profile.account_type === 'alpha' || profile.account_type === 'admin') {
     return { tier: 'pro', bypass: true }
   }
 
-  // subscription_tier is the source of truth for pro entitlements; no separate
-  // is_pro flag exists on the users table.
-  // TODO: until a subscriptions table ships, manually setting subscription_tier is
-  // the only way to grant pro access outside admin/beta bypass.
-  if (['pro', 'collector'].includes(profile.subscription_tier)) {
+  // Legacy role bypass — preserved for backward compatibility with existing admin/beta rows
+  if (profile.role === 'admin' || profile.role === 'beta') {
+    return { tier: 'pro', bypass: true }
+  }
+
+  // subscription_tier is the source of truth for paid pro entitlements.
+  if (profile.subscription_tier === 'pro' || profile.subscription_tier === 'collector') {
     return { tier: 'pro', bypass: false }
   }
 

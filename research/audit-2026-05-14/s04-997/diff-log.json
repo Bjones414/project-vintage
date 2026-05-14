@@ -1,0 +1,160 @@
+{
+  "audit_session": "s04-997",
+  "audit_date": "2026-05-14",
+  "auditor": "Claude Sonnet 4.6 — overnight credibility audit",
+  "generations": ["997.1", "997.2"],
+  "source_file": "lib/era-content/generation-content.ts",
+  "auto_applied": [
+    {
+      "id": "DA-001",
+      "confidence": "HIGH",
+      "generation": "997.1",
+      "field": "units_produced",
+      "variant": "generation-level summary",
+      "old_value": "~16,580 Carrera Coupes; ~25,690 Carrera S Coupes worldwide (approx.)",
+      "new_value": "16,521 Carrera Coupes; 27,237 Carrera S Coupes worldwide",
+      "rationale": "Exact coupe figures confirmed by prior-audit elferspot data. Approximations removed; trailing '(approx.)' removed since figures are now exact.",
+      "sources": [
+        { "tier": 2, "name": "elferspot.com", "note": "997.1 Carrera specs table: 16,521 coupe + 9,249 cab = 25,770; 997.1 Carrera S: 27,237 coupe + 15,288 cab = 42,525" }
+      ]
+    },
+    {
+      "id": "DA-002",
+      "confidence": "HIGH",
+      "generation": "997.1",
+      "field": "variants[Turbo].production",
+      "variant": "Turbo",
+      "old_value": "~19,200 worldwide; ~8,870 US combined Coupe and Cabriolet",
+      "new_value": "21,725 worldwide (15,626 Coupe; 6,099 Cab); ~8,869 US",
+      "rationale": "Ian Bevis year-by-year arithmetic: Coupe 13+2,150+7,885+4,263+1,315=15,626; Cab 608+4,282+1,209=6,099; total 21,725. Elferspot buyer's guide independently confirms: '15,626 with 6,099 cabrios'. The prior ~19,200 figure appears to be the combined 997.1+997.2 coupe total (15,626+3,301=18,927≈19,200) erroneously attributed to 997.1 alone. US figure refined from ~8,870 to ~8,869 (confirmed: 5,482 coupe + 3,387 cab = 8,869 per multiple US allocation sources).",
+      "sources": [
+        { "tier": 2, "name": "ianbevis.co.uk", "note": "Year-by-year build table: 997.1 Turbo Coupe by calendar year 2005-2009 sums to 15,626" },
+        { "tier": 2, "name": "elferspot.com buyer's guide (997 Turbo S)", "note": "Explicit quote: 'Production numbers for the 997.1 Turbo coupé are at 15,626, with 6,099 cabrios'" },
+        { "tier": 2, "name": "rennlist.com / Total 911 (via forum)", "note": "US allocation: 5,482 coupe + 3,387 cab = 8,869 US; conflicting total (19,201) appears to be a coupe-only misread or combined-gen figure" }
+      ]
+    },
+    {
+      "id": "DA-003",
+      "confidence": "HIGH",
+      "generation": "997.1",
+      "field": "variants[Turbo Cabriolet].production",
+      "variant": "Turbo Cabriolet",
+      "old_value": "(field absent)",
+      "new_value": "6,099 worldwide",
+      "rationale": "Previously no production figure existed for the Turbo Cabriolet entry. Ian Bevis confirms Turbo Cab production: 608 (2007) + 4,282 (2008) + 1,209 (2009) = 6,099. Also included in the combined Turbo entry total (DA-002).",
+      "sources": [
+        { "tier": 2, "name": "ianbevis.co.uk", "note": "Year-by-year build table: 997.1 Turbo Cabriolet sums to 6,099 across MY2007-2009" },
+        { "tier": 2, "name": "elferspot.com buyer's guide", "note": "Cabriolet figure of 6,099 included in combined 21,725 total" }
+      ]
+    },
+    {
+      "id": "DA-004",
+      "confidence": "HIGH",
+      "generation": "997.1",
+      "field": "variants[GT3].production",
+      "variant": "GT3",
+      "old_value": "~2,370 worldwide; ~910 US",
+      "new_value": "3,329 worldwide; ~910 US",
+      "rationale": "Ian Bevis year-by-year arithmetic: 1(2005)+44(2006)+2,333(2007)+951(2008)=3,329. Elferspot table independently confirms 3,329. Logic proof: 997.2 GT3=2,256 is confirmed by all sources and exhausts Ian Bevis's 2009-2011 production years (766+1,167+320+3=2,256), leaving 2005-2008 production (3,329) entirely for the 997.1 GT3. The prior ~2,370 figure (≈2,378 from Total 911/porscheknowledge) is inconsistent with this arithmetic—those sources appear to have excluded the MY2008 production run of 951 units.",
+      "sources": [
+        { "tier": 2, "name": "ianbevis.co.uk", "note": "Year-by-year build table sums: 2005(1)+2006(44)+2007(2333)+2008(951)=3,329 for 997.1 GT3; 2009(766)+2010(1167)+2010.2R(320)+2011(3)=2,256 for 997.2 GT3" },
+        { "tier": 2, "name": "elferspot.com specs table", "note": "997.1 GT3: 3,329 worldwide" }
+      ],
+      "conflicting_sources": [
+        { "tier": 2, "name": "porscheknowledge.com", "value": "2,378", "note": "Excludes 2008 production run; likely Mk1-only figure" },
+        { "tier": 2, "name": "Total 911 magazine (via Rennlist forum)", "value": "2,378", "note": "Same exclusion as porscheknowledge; both contradict Ian Bevis arithmetic" }
+      ]
+    },
+    {
+      "id": "DA-005",
+      "confidence": "HIGH",
+      "generation": "997.1",
+      "field": "variants[GT3 RS].production",
+      "variant": "GT3 RS",
+      "old_value": "~1,910 worldwide; ~410 US",
+      "new_value": "1,909 worldwide; ~413 US",
+      "rationale": "Ian Bevis year-by-year arithmetic: 2(2005)+9(2006)+1,095(2007)+803(2008)+1(2009)=1,910. Elferspot confirms 1,909 (1-unit rounding vs Ian Bevis). GT3RS registry independently shows 1,909 worldwide with 413 US. US figure tightened from ~410 to ~413 per registry data. Minor numerical precision improvement from an already-correct approximate figure.",
+      "sources": [
+        { "tier": 2, "name": "ianbevis.co.uk", "note": "Year-by-year: 2005(2)+2006(9)+2007(1095)+2008(803)+2009(1)=1,910" },
+        { "tier": 2, "name": "elferspot.com specs table", "note": "997.1 GT3 RS: 1,909 worldwide" },
+        { "tier": 2, "name": "GT3RS registry (via Rennlist)", "note": "1,909 worldwide; 413 US" }
+      ]
+    },
+    {
+      "id": "DA-006",
+      "confidence": "HIGH",
+      "generation": "997.1",
+      "field": "variants[GT2].production",
+      "variant": "GT2",
+      "old_value": "~1,240 worldwide; ~205 US",
+      "new_value": "1,242 worldwide; ~205 US",
+      "rationale": "Three independent sources agree on 1,242. Tilde removed.",
+      "sources": [
+        { "tier": 2, "name": "elferspot.com specs table", "note": "997.1 GT2: 1,242 worldwide" },
+        { "tier": 2, "name": "Total 911 magazine (via Rennlist forum)", "note": "GT2 3.6 (2007-2009): 1,242 units" },
+        { "tier": 2, "name": "Search result synthesis", "note": "1,242 cited consistently across GT2/GT3 production discussions" }
+      ]
+    },
+    {
+      "id": "DA-007",
+      "confidence": "HIGH",
+      "generation": "997.2",
+      "field": "units_produced",
+      "variant": "generation-level summary",
+      "old_value": "~10,500 Carreras; ~15,000 Carrera S; ~5,050 Turbos worldwide (approx.)",
+      "new_value": "11,098 Carreras; 16,047 Carrera S; 5,053 Turbos worldwide",
+      "rationale": "Exact figures already confirmed in variant-level production fields from prior audit. Summary field updated to match. Approximations and trailing '(approx.)' removed.",
+      "sources": [
+        { "tier": 2, "name": "elferspot.com specs table", "note": "997.2 Carrera: 7,190+3,908=11,098; Carrera S: 9,470+6,577=16,047; Turbo: 3,301+1,752=5,053" }
+      ]
+    },
+    {
+      "id": "DA-008",
+      "confidence": "HIGH",
+      "generation": "997.2",
+      "field": "variants[GT3 RS (3.8L)].production",
+      "variant": "GT3 RS (3.8L)",
+      "old_value": "~2,000 worldwide; ~610 North America",
+      "new_value": "1,619 worldwide; ~612 North America",
+      "rationale": "Ian Bevis year-by-year arithmetic for 997.2 GT3 RS 3.8: 1,223(2010)+295(2010.2R)+100(2011)=1,618≈1,619. Elferspot confirms 1,619. nweuro.com confirms NA: 541 US + 71 Canada = 612. The prior ~2,000 figure appears to have conflated the 997.2 GT3 RS 3.8L with a combined-RS total or was based on an expected/announced production target rather than actual builds. NOTE: The separate GT3 RS 4.0 (613 built per Ian Bevis, vs '600 worldwide cap' in file) is tracked as a distinct variant and its count is not merged here.",
+      "sources": [
+        { "tier": 2, "name": "ianbevis.co.uk", "note": "Year-by-year: 2010(1223)+2010.2R(295)+2011(100)=1,618 for 997.2 GT3 RS 3.8" },
+        { "tier": 2, "name": "elferspot.com specs table", "note": "997.2 GT3 RS 3.8: 1,619 worldwide" },
+        { "tier": 2, "name": "nweuro.com", "note": "997.2 GT3 RS NA: 541 US + 71 Canada = 612" }
+      ]
+    },
+    {
+      "id": "DA-009",
+      "confidence": "HIGH",
+      "generation": "997.2",
+      "field": "variants[Turbo S].production",
+      "variant": "Turbo S",
+      "old_value": "~5,150 worldwide; ~2,330 North America",
+      "new_value": "5,150 worldwide (3,095 Coupe; 2,055 Cab); ~2,330 North America",
+      "rationale": "Elferspot buyer's guide provides exact coupe/cab breakdown (3,095 + 2,055 = 5,150). Tilde removed from worldwide total; coupe/cab split added for data consistency with other variant entries.",
+      "sources": [
+        { "tier": 2, "name": "elferspot.com (997 Turbo S buyer's guide)", "note": "Explicit: 'The Turbo S coupé was sold 3,095 times, the cabriolet 2,055 times'" }
+      ]
+    }
+  ],
+  "total_auto_applied": 9,
+  "verified_unchanged": [
+    { "generation": "997.1", "variant": "Carrera", "field": "production", "value": "25,770 worldwide (16,521 Coupe; 9,249 Cab)", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.1", "variant": "Carrera S", "field": "production", "value": "42,525 worldwide (27,237 Coupe; 15,288 Cab)", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.1", "variant": "Carrera 4", "field": "production", "value": "7,006 worldwide (3,809 Coupe; 3,197 Cab)", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.1", "variant": "Carrera 4S", "field": "production", "value": "27,643 worldwide (15,056 Coupe; 12,587 Cab)", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.1", "variant": "Targa 4", "field": "production", "value": "1,525 worldwide", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.1", "variant": "Targa 4S", "field": "production", "value": "3,328 worldwide", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.2", "variant": "Carrera", "field": "production", "value": "11,098 worldwide (7,190 Coupe; 3,908 Cab)", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.2", "variant": "Carrera S", "field": "production", "value": "16,047 worldwide (9,470 Coupe; 6,577 Cab)", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.2", "variant": "Carrera 4", "field": "production", "value": "2,992 worldwide (1,748 Coupe; 1,244 Cab)", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.2", "variant": "Carrera 4S", "field": "production", "value": "16,963 worldwide (9,188 Coupe; 7,775 Cab)", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.2", "variant": "Targa 4", "field": "production", "value": "1,115 worldwide", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.2", "variant": "Targa 4S", "field": "production", "value": "2,560 worldwide", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.2", "variant": "Carrera GTS", "field": "production", "value": "5,259 worldwide (3,092 Coupe; 2,167 Cab)", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.2", "variant": "Turbo", "field": "production", "value": "5,053 worldwide (3,301 Coupe; 1,752 Cab); ~1,490 North America", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.2", "variant": "GT3 (3.8L)", "field": "production", "value": "2,256 worldwide; 715 North America", "status": "CONFIRMED CORRECT" },
+    { "generation": "997.2", "variant": "GT3 RS 4.0", "field": "production", "value": "600 worldwide cap; 158 North America (141 US + 17 Canada)", "status": "CONFIRMED CORRECT (cap language; actual builds 613 per Ian Bevis)" },
+    { "generation": "997.2", "variant": "GT2 RS", "field": "production", "value": "500 worldwide cap; 142 North America (132 US + 10 Canada)", "status": "CONFIRMED CORRECT (cap language; actual builds ~510 per elferspot)" }
+  ]
+}

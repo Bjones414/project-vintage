@@ -45,7 +45,7 @@ description: |
   additional adapter pipe to fit the retrofit.
 
 applicability:
-  generation: [911_F_body, 911_G_body, 930]
+  generation: [911-f-body, g-series-2.7, 911-sc, 911-3.2-carrera, 930]
   engine_family: [aircooled_flat_6_pre_carrera]
   year_range: [1965, 1983]
   trim_category: [911, 911T, 911E, 911S, 911SC, Carrera_2_7, 911_Turbo_3_0, 911_Turbo_3_3]
@@ -169,7 +169,7 @@ description: |
   into the case to provide stronger threads for the studs to anchor in.
 
 applicability:
-  generation: [911_F_body, 911_G_body, 930]
+  generation: [911-f-body, g-series-2.7, 911-sc, 911-3.2-carrera, 930]
   engine_family: [aircooled_flat_6_magnesium_case]
   year_range: [1968, 1977]
   trim_category: [911, 911T, 911E, 911S, Carrera_2_7, 911_Turbo_3_0]
@@ -291,7 +291,7 @@ description: |
   commonly affected.
 
 applicability:
-  generation: [911_G_body, 964, 993, 930]
+  generation: [g-series-2.7, 911-sc, 911-3.2-carrera, 964, 993, 930]
   engine_family: [aircooled_flat_6_aluminum_case]
   year_range: [1978, 1998]
   trim_category: [911SC, Carrera_3_2, 964_C2, 964_C4, 964_RS, 993_C2, 993_C4, 993_C4S, 993_RS, 911_Turbo_3_3, 993_Turbo]
@@ -417,7 +417,7 @@ description: |
   routine job that doesn't require engine removal on most years.
 
 applicability:
-  generation: [911_F_body, 911_G_body, 964, 993, 930]
+  generation: [911-f-body, g-series-2.7, 911-sc, 911-3.2-carrera, 964, 993, 930]
   engine_family: [aircooled_flat_6]
   year_range: [1965, 1998]
 
