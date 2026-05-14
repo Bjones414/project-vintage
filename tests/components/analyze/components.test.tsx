@@ -475,17 +475,17 @@ describe('EraCard', () => {
     expect(html).toContain('last air-cooled 911')
     expect(html).not.toContain('Production ended')
     expect(html).toContain('Full era guide available with a free account')
-    // Metadata grid — all 6 fields present for 993
+    // Metadata grid — production, body styles, engine, MSRP, cooling (units_produced moved to ChassisIdentityCard)
     expect(t(html)).toContain('1995–1998')
     expect(t(html)).toContain('Coupe, Cabriolet, Targa')
     expect(t(html)).toContain('M64 air-cooled flat-six, 3.6L')
-    expect(t(html)).toContain('~67,000 worldwide')
+    expect(t(html)).not.toContain('~67,000 worldwide')
     expect(t(html)).toContain('Air-cooled')
     // Labels
     expect(t(html)).toContain('Production')
     expect(t(html)).toContain('Body styles')
     expect(t(html)).toContain('Engine')
-    expect(t(html)).toContain('Units produced')
+    expect(t(html)).not.toContain('Units produced')
     expect(t(html)).toContain('Cooling')
   })
 
@@ -497,9 +497,9 @@ describe('EraCard', () => {
     expect(t(html)).toContain('Production ended')
     expect(t(html)).toContain('Carrera RS 3.8')
     expect(t(html)).not.toContain('available with a free account')
-    // Metadata still visible for free tier
+    // Metadata still visible for free tier (units_produced moved to ChassisIdentityCard)
     expect(t(html)).toContain('1995–1998')
-    expect(t(html)).toContain('~67,000 worldwide')
+    expect(t(html)).not.toContain('~67,000 worldwide')
   })
 
   it('published generation with null metadata fields — omits those rows', () => {

@@ -1,6 +1,7 @@
 import type { Tables } from '@/lib/supabase/types'
 import { formatGenerationDisplay } from '@/lib/era-content/generation-display'
 import { lookupFactorySpecs } from '@/lib/era-content/factory-specs'
+import { lookupVariantProduction } from '@/lib/era-content/generation-content'
 
 type Props = {
   listing: Tables<'listings'>
@@ -108,6 +109,7 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
 
   const specsGenerationId = listing.generation ?? generation?.generation_id ?? null
   const specs = lookupFactorySpecs(specsGenerationId, listing.trim)
+  const variantProduction = lookupVariantProduction(specsGenerationId, listing.trim)
   const specItems = specs
     ? [
         { label: 'Power',    value: specs.hp },
@@ -180,9 +182,21 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
             </p>
           )}
 
+          {/* Variant production figure — shown when a trim-specific figure exists */}
+          {variantProduction !== null && (
+            <p className={`hyphens-none break-words ${vinValue !== null ? 'mt-2' : 'mt-0'}`}>
+              <span className="font-serif text-[10px] uppercase tracking-[0.16em] text-text-quaternary">
+                {variantProduction.variantName} built:{' '}
+              </span>
+              <span className="font-serif text-[13px] italic text-text-secondary">
+                {variantProduction.production}
+              </span>
+            </p>
+          )}
+
           {/* 10-field grid (5 rows × 2 cols — always even, no orphan cells) */}
           <dl
-            className={`${vinValue !== null ? 'mt-4 border-t-[0.5px] border-border-subtle pt-4' : ''} flex-1 grid grid-cols-2 gap-x-4 gap-y-4 content-between`}
+            className={`${vinValue !== null || variantProduction !== null ? 'mt-4 border-t-[0.5px] border-border-subtle pt-4' : ''} flex-auto content-between grid grid-cols-2 gap-x-4 gap-y-4`}
           >
             {/* Rows 1–4: 8 uniform fields */}
             {fields.map(({ label, value }) => (
@@ -262,12 +276,12 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
           </dl>
 
           {specItems !== null && (
-            <>
+            <div className="flex flex-auto flex-col">
               <div className="border-t-[0.5px] border-border-subtle" />
               <p className="mt-4 font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">
                 Factory Specs
               </p>
-              <dl className="mt-4 space-y-3.5">
+              <dl className="mt-4 flex flex-1 flex-col justify-between">
                 {specItems.map(({ label, value }) => (
                   <div key={label} className="flex items-baseline justify-between">
                     <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">
@@ -277,7 +291,7 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
                   </div>
                 ))}
               </dl>
-            </>
+            </div>
           )}
         </div>
       )}

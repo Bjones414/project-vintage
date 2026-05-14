@@ -236,7 +236,6 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
       { label: 'Body styles',    value: bodyStylesDisplay },
       { label: 'Engine',         value: generation?.engine_family ?? decadeFallback?.engine ?? genContent?.engine },
       { label: 'Original MSRP',  value: rawMsrp, msrpParts },
-      { label: 'Units produced', value: generation?.units_produced ?? genContent?.units_produced },
       { label: 'Cooling',        value: generation?.engine_type ?? decadeFallback?.cooling ?? genContent?.cooling },
     ] as Array<{
       label: string
@@ -328,7 +327,6 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
     { label: 'Body styles',    value: bodyStylesDisplay },
     { label: 'Engine',         value: generation.engine_family },
     { label: 'Original MSRP',  value: rawMsrp, msrpParts },
-    { label: 'Units produced', value: generation.units_produced },
     { label: 'Cooling',        value: generation.engine_type },
   ] as Array<{
     label: string

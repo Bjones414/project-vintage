@@ -4055,6 +4055,37 @@ export function getValueDrivers(id: string): ValueDriver[] | null {
   return CONTENT[id]?.value_drivers ?? null
 }
 
+export function lookupVariantProduction(
+  generationId: string | null | undefined,
+  trim: string | null | undefined,
+): { variantName: string; production: string } | null {
+  if (!generationId) return null
+  const content = getGenerationContent(generationId)
+  if (!content?.variants?.length) return null
+  const variants = content.variants.filter(
+    (v): v is typeof v & { production: string } => !!v.production,
+  )
+  if (!variants.length || !trim) return null
+  const normTrim = trim.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+  for (const v of variants) {
+    const normVariant = v.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+    if (normTrim === normVariant) return { variantName: v.name, production: v.production }
+  }
+  let bestMatch: (typeof variants)[0] | null = null
+  let bestLen = 0
+  for (const v of variants) {
+    const normVariant = v.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+    if (
+      (normTrim.startsWith(normVariant) || normVariant.startsWith(normTrim)) &&
+      normVariant.length > bestLen
+    ) {
+      bestMatch = v
+      bestLen = normVariant.length
+    }
+  }
+  return bestMatch ? { variantName: bestMatch.name, production: bestMatch.production } : null
+}
+
 /**
  * Generation IDs for which no acceptable hero image could be sourced.
  * The generation page hero renders a warm gradient fallback for these
