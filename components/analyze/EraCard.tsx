@@ -149,7 +149,7 @@ export function EraCard({ generation, viewerTier, watchForItems = [], make, mode
           <div className="mt-3 border-t-[0.5px] border-border-default" />
           <div className="mt-4">
             <p className="font-serif text-[15px] italic leading-[1.65] text-text-tertiary">
-              We don't currently support {make} for full analysis. Cached as comparable sale data.
+              We don&apos;t currently support {make} for full analysis. Cached as comparable sale data.
             </p>
           </div>
         </div>
