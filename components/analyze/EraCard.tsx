@@ -221,7 +221,6 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
     const msrpParts = rawMsrp ? splitParenthetical(rawMsrp) : null
 
     const metadataFields = ([
-      { label: 'Production',     value: generation?.production_years ?? decadeFallback?.production_years ?? genContent?.production_years },
       { label: 'Body styles',    value: bodyStylesDisplay },
       { label: 'Engine',         value: generation?.engine_family ?? decadeFallback?.engine ?? genContent?.engine },
       { label: 'Original MSRP',  value: rawMsrp, msrpParts },
@@ -320,7 +319,6 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
     value: string
     msrpParts?: { main: string; paren: string | null } | null
   }> = ([
-    { label: 'Production',     value: generation.production_years },
     { label: 'Body styles',    value: bodyStylesDisplay },
     { label: 'Engine',         value: generation.engine_family },
     { label: 'Original MSRP',  value: rawMsrp, msrpParts },

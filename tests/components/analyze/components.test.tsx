@@ -475,14 +475,14 @@ describe('EraCard', () => {
     expect(html).toContain('last air-cooled 911')
     expect(html).not.toContain('Production ended')
     expect(html).toContain('Full era guide available with a free account')
-    // Metadata grid — production, body styles, engine, MSRP, cooling (units_produced moved to ChassisIdentityCard)
-    expect(t(html)).toContain('1995–1998')
+    // Metadata grid — body styles, engine, MSRP, cooling (Production row removed; date range must not show under PRODUCTION label)
+    expect(t(html)).not.toContain('1995–1998')
     expect(t(html)).toContain('Coupe, Cabriolet, Targa')
     expect(t(html)).toContain('M64 air-cooled flat-six, 3.6L')
     expect(t(html)).not.toContain('~67,000 worldwide')
     expect(t(html)).toContain('Air-cooled')
-    // Labels
-    expect(t(html)).toContain('Production')
+    // "Production" as a standalone metadata <dt> label must be absent; date range is not units count
+    expect(html).not.toMatch(/>Production<\/dt>/)
     expect(t(html)).toContain('Body styles')
     expect(t(html)).toContain('Engine')
     expect(t(html)).not.toContain('Units produced')
@@ -497,8 +497,8 @@ describe('EraCard', () => {
     expect(t(html)).toContain('Production ended')
     expect(t(html)).toContain('Carrera RS 3.8')
     expect(t(html)).not.toContain('available with a free account')
-    // Metadata still visible for free tier (units_produced moved to ChassisIdentityCard)
-    expect(t(html)).toContain('1995–1998')
+    // Metadata grid visible for free tier — Production row removed; date range not shown
+    expect(t(html)).not.toContain('1995–1998')
     expect(t(html)).not.toContain('~67,000 worldwide')
   })
 
@@ -521,6 +521,31 @@ describe('EraCard', () => {
     // Nulled fields are gone — no label without a value
     expect(html).not.toContain('~67,000')
     expect(html).not.toContain('M64')
+  })
+
+  it('PRODUCTION row never shows date range — hidden when variant production data unavailable', () => {
+    // GENERATION_993_PUBLISHED has production_years: '1995–1998'.
+    // Before fix: that string appeared under a "Production" metadata label in the grid.
+    // After fix: the Production metadata row is removed entirely; date range must not substitute for units count.
+    // Note: the word "Production" can legitimately appear in prose ("Production ended in 1998...").
+    // We assert the metadata <dt> label is absent and the date range string is absent.
+    const html = renderToString(
+      <EraCard generation={GENERATION_993_PUBLISHED} viewerTier="free" />,
+    )
+    // Date range string must not appear anywhere — it is NOT a valid production figure
+    expect(t(html)).not.toContain('1995–1998')
+    // Units-produced count must not appear (belongs in ChassisIdentityCard only)
+    expect(t(html)).not.toContain('~67,000')
+    // "Production" as a standalone metadata <dt> label must be absent
+    // (the word may appear in prose, so we match the dt pattern)
+    expect(html).not.toMatch(/>Production<\/dt>/)
+    // Remaining metadata grid fields still render
+    expect(t(html)).toContain('Body styles')
+    expect(t(html)).toContain('Coupe, Cabriolet, Targa')
+    expect(t(html)).toContain('Engine')
+    expect(t(html)).toContain('M64 air-cooled flat-six, 3.6L')
+    expect(t(html)).toContain('Cooling')
+    expect(t(html)).toContain('Air-cooled')
   })
 })
 
