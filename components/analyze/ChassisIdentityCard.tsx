@@ -159,7 +159,7 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
   const hasAnyContent = vinValue !== null || listing.model != null || listing.year != null
 
   return (
-    <div className="flex flex-col border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
+    <div className="flex h-full flex-col border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
       <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">
         Chassis Identity
       </p>
@@ -167,10 +167,10 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
       {!hasAnyContent ? (
         <p className="mt-4 font-sans text-[13px] text-text-tertiary">No chassis data available.</p>
       ) : (
-        <>
+        <div className="mt-4 flex flex-1 flex-col">
           {/* VIN — full-width single-line header */}
           {vinValue !== null && (
-            <p className="mt-4 hyphens-none break-all">
+            <p className="hyphens-none break-all">
               <span className="font-serif text-[10px] uppercase tracking-[0.16em] text-text-quaternary">
                 {vinLabel}:{' '}
               </span>
@@ -182,7 +182,7 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
 
           {/* 10-field grid (5 rows × 2 cols — always even, no orphan cells) */}
           <dl
-            className={`${vinValue !== null ? 'mt-4 border-t-[0.5px] border-border-subtle pt-4' : 'mt-4'} grid grid-cols-2 gap-x-4 gap-y-4`}
+            className={`${vinValue !== null ? 'mt-4 border-t-[0.5px] border-border-subtle pt-4' : ''} grid grid-cols-2 gap-x-4 gap-y-4`}
           >
             {/* Rows 1–4: 8 uniform fields */}
             {fields.map(({ label, value }) => (
@@ -261,10 +261,13 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
             </div>
           </dl>
 
+          {/* Spacer — grows to fill card height; keeps Factory Specs bottom-anchored */}
+          <div className="min-h-5 flex-1" />
+
           {specItems !== null && (
             <>
-              <div className="mt-5 border-t-[0.5px] border-border-subtle" />
-              <p className="mt-7 font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">
+              <div className="border-t-[0.5px] border-border-subtle" />
+              <p className="mt-4 font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">
                 Factory Specs
               </p>
               <dl className="mt-4 space-y-3.5">
@@ -279,7 +282,7 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
               </dl>
             </>
           )}
-        </>
+        </div>
       )}
     </div>
   )

@@ -175,8 +175,8 @@ export default async function ListingDetailPage({ params }: PageProps) {
           viewerTier={viewerTier}
         />
 
-        {/* Two-column: Chassis Identity | Era Card — items-start so content drives height */}
-        <div className="mt-6 grid grid-cols-1 items-start gap-4 md:grid-cols-2">
+        {/* Two-column: Chassis Identity | Era Card — stretch so both cards share the taller height */}
+        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div id="chassis">
             <ChassisIdentityCard listing={listing} generation={generation} colorData={colorData} />
           </div>

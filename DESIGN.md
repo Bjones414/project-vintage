@@ -287,6 +287,8 @@ When two cards or sections sit side-by-side, never force them to equal height by
 
 This principle applies to every page: analyze, generation, full report, member dashboard, garage, and all future surfaces. Whenever a side-by-side layout feels off, the question is "what content lives where" — not "how do we force the heights to match."
 
+**Exception — Chassis Identity + Generation card pair on the analyze page:** This specific card pair is intentionally forced to equal height by design decision. The generation card drives the height; the chassis identity card auto-spaces to match using `h-full` and an internal `flex-1` spacer. Within the chassis card, the extra space grows between the identity block (VIN header + identity fields) and the Factory Specs section — not between individual field rows — so the Factory Specs section anchors to the card bottom as a distinct editorial section. This resolves the L-shaped void that mismatched card heights create against the full-width rows below. The "no forced equal-height" principle still applies everywhere else.
+
 ---
 
 ## Constraints and Anti-Patterns
