@@ -422,6 +422,63 @@ export function extractCurrentBid(visibleText: string): number | null {
   return Math.round(amount * 100)
 }
 
+// Requires at least one of these context words to qualify a bullet as a transmission entry.
+// Prevents false-positive matches on "Automatic Climate Control", "Manual mirrors", etc.
+const TX_CONTEXT =
+  /transaxle|transmission|gearbox|\bPDK\b|\bTiptronic\b|\b(three|four|five|six|seven|eight|nine|\d+)[\s‑-]?speed\b|\bG(50|96|81)\b/i
+
+const WORD_TO_DIGIT: Record<string, string> = {
+  three: '3', four: '4', five: '5', six: '6', seven: '7', eight: '8', nine: '9',
+}
+
+/**
+ * Returns true only when the bullet text contains transmission-specific context.
+ * Standalone "Automatic" or "Manual" words are NOT sufficient.
+ */
+export function isTransmissionBullet(text: string): boolean {
+  return TX_CONTEXT.test(text)
+}
+
+/**
+ * Converts a raw BaT transmission bullet to a compact canonical form:
+ *   "Six-Speed Manual Transaxle"            → "6-Speed Manual"
+ *   "G50 Five-Speed Manual Transaxle"       → "5-Speed Manual (G50)"
+ *   "Seven-Speed PDK Dual-Clutch Transaxle" → "7-Speed PDK"
+ *   "Four-Speed Tiptronic Automatic Transaxle" → "4-Speed Tiptronic"
+ *   "Tiptronic S Automatic Transaxle"       → "Tiptronic S"
+ */
+export function normalizeTransmission(raw: string): string {
+  // Normalize non-breaking hyphens to regular hyphens
+  let s = raw.replace(/‑/g, '-').trim()
+  // Convert word numbers to digit form: "Six-Speed" → "6-Speed"
+  s = s.replace(
+    /\b(three|four|five|six|seven|eight|nine)([\s-]?)speed\b/gi,
+    (_, word) => `${WORD_TO_DIGIT[word.toLowerCase()]}-Speed`,
+  )
+
+  const speedMatch = s.match(/\b(\d+)[\s-]?[Ss]peed\b/)
+  const speed = speedMatch ? speedMatch[1] : null
+  const speedStr = speed ? `${speed}-Speed` : ''
+
+  const isPDK       = /\bPDK\b/i.test(s)
+  const isTipS      = /\bTiptronic\s+S\b/i.test(s)
+  const isTip       = /\bTiptronic\b/i.test(s)
+  const isManual    = /\bManual\b/i.test(s)
+  const gboxMatch   = s.match(/\bG(50|96|81)\b/i)
+  const gcode       = gboxMatch ? `G${gboxMatch[1]}` : null
+
+  if (isPDK)    return speedStr ? `${speedStr} PDK`        : 'PDK'
+  if (isTipS)   return speedStr ? `${speedStr} Tiptronic S` : 'Tiptronic S'
+  if (isTip)    return speedStr ? `${speedStr} Tiptronic`   : 'Tiptronic'
+  if (isManual) {
+    const base = speedStr ? `${speedStr} Manual` : 'Manual'
+    return gcode ? `${base} (${gcode})` : base
+  }
+  if (speedStr) return `${speedStr} Automatic`
+
+  return s
+}
+
 /**
  * Pure HTML parser — steps 3–12 of the original parsing logic.
  * Accepts already-fetched HTML and the normalized source URL.
@@ -583,8 +640,8 @@ export function parseBatHtml(html: string, sourceUrl: string): CanonicalListing 
       return
     }
 
-    if (/\b(Manual|Automatic|PDK|Tiptronic)\b/.test(text)) {
-      transmission = text
+    if (transmission === null && isTransmissionBullet(text)) {
+      transmission = normalizeTransmission(text)
       return
     }
 
