@@ -154,7 +154,6 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
     return (
       <div className="flex h-full flex-col border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
         <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary" style={liningNums}>{sectionLabel}</p>
-        <p className="mt-1 font-serif text-[13px] italic text-text-tertiary">What every 997.2 has in common</p>
         <div className="mt-3 border-t-[0.5px] border-border-default" />
 
         <div className="mt-4 flex flex-1 flex-col">
@@ -238,11 +237,6 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
     return (
       <div className="flex h-full flex-col border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
         <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary" style={liningNums}>{sectionLabel}</p>
-        <p className="mt-1 font-serif text-[13px] italic text-text-tertiary">
-          {generation?.generation_id
-            ? `What every ${formatGenerationDisplay(generation.generation_id)} has in common`
-            : 'What every generation has in common'}
-        </p>
         <div className="mt-3 border-t-[0.5px] border-border-default" />
 
         <div className="mt-4 flex flex-1 flex-col">
@@ -254,7 +248,7 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
 
           {metadataFields.length > 0 && (
             <div className={introText ? 'mt-4 border-t-[0.5px] border-border-subtle pt-4' : 'mt-4'}>
-              <dl className="grid grid-cols-2 gap-x-6 gap-y-3">
+              <dl className="grid gap-y-3">
                 {metadataFields.map(({ label, value, msrpParts: mp }) => (
                   <div key={label}>
                     <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">{label}</dt>
@@ -335,9 +329,6 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
   return (
     <div className="flex h-full flex-col border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
       <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary" style={liningNums}>{sectionLabel}</p>
-      <p className="mt-1 font-serif text-[13px] italic text-text-tertiary">
-        {`What every ${formatGenerationDisplay(generation.generation_id)} has in common`}
-      </p>
       <div className="mt-3 border-t-[0.5px] border-border-default" />
 
       <div className="mt-4 flex flex-1 flex-col">
@@ -359,11 +350,11 @@ export function EraCard({ generation, viewerTier, watchForItems = [] }: Props) {
 
         {metadataFields.length > 0 && (
           <div className="mt-4 border-t-[0.5px] border-border-subtle pt-4">
-            <dl className="grid grid-cols-2 gap-x-6 gap-y-4">
+            <dl className="grid gap-y-3">
               {metadataFields.map(({ label, value, msrpParts: mp }) => (
                 <div key={label}>
                   <dt className="font-sans text-[10px] uppercase tracking-[0.06em] text-text-quaternary">{label}</dt>
-                  <dd className="mt-1 font-serif text-[14px] text-text-primary">
+                  <dd className="mt-0.5 font-serif text-[14px] text-text-primary">
                     {mp ? (
                       <>
                         {mp.main}

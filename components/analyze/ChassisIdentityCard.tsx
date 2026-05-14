@@ -169,12 +169,8 @@ export function ChassisIdentityCard({ listing, generation, colorData }: Props) {
 
   return (
     <div className="flex h-full flex-col border-[0.5px] border-border-default bg-bg-surface px-6 py-5">
-      {/* Section label + editorial subtitle */}
       <p className="font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary">
         Chassis Identity
-      </p>
-      <p className="mt-1 font-serif text-[13px] italic text-text-tertiary">
-        This specific car
       </p>
       <div className="mt-3 border-t-[0.5px] border-border-default" />
 
