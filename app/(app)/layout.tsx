@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { Nav } from '@/components/layout/Nav'
 
 function computeInitials(
@@ -17,11 +17,14 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   let initials = '?'
   if (user) {
-    const { data: profile } = await supabase
+    const supabaseAdmin = createAdminClient()
+    const { data: profile, error } = await supabaseAdmin
       .from('users')
       .select('first_name, last_name')
       .eq('id', user.id)
       .single()
+
+    console.log('[DEBUG layout profile]', { userId: user.id, data: profile, error })
 
     initials = computeInitials(
       profile?.first_name ?? null,
