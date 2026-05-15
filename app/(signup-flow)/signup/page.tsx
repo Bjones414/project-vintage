@@ -409,7 +409,7 @@ export default function SignupPage() {
         </div>
 
         {/* Location explainer */}
-        <p className="mt-[-6px] font-serif italic text-[13px] text-text-tertiary">
+        <p className="mt-2 font-serif italic text-[13px] text-text-tertiary">
           For regional events, local specialists, and market context.
         </p>
 
