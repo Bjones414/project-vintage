@@ -420,7 +420,7 @@ export default async function HomePage() {
               className="font-serif font-normal text-text-primary"
               style={{ fontSize: 24, lineHeight: 1.3, marginTop: 6 }}
             >
-              Three shops worth knowing about.
+              Four shops worth knowing about.
             </h2>
             <p
               className="font-serif italic text-text-tertiary"
