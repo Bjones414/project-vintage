@@ -36,22 +36,16 @@ export default function AnalyzePage() {
   }
 
   return (
-    <main className="min-h-screen bg-bg-canvas">
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '72px 28px' }}>
-        <h1
-          className="font-serif font-normal text-text-primary"
-          style={{ fontSize: 38, lineHeight: 1.15, letterSpacing: '-0.01em', marginBottom: 12 }}
-        >
+    <main className="flex min-h-screen flex-col items-center justify-center px-6 py-16">
+      <div className="w-full max-w-[640px]">
+        <h1 className="mb-4 text-center font-serif text-h1 text-text-primary">
           Know what you&rsquo;re bidding on.
         </h1>
-        <p
-          className="font-serif italic text-text-secondary"
-          style={{ fontSize: 17, lineHeight: 1.7, marginBottom: 32, maxWidth: 640 }}
-        >
+        <p className="mx-auto mb-8 max-w-[580px] text-balance text-center font-serif text-[15px] italic leading-[1.65] text-text-tertiary">
           Paste any auction listing URL below. You&rsquo;ll get comparables, a fair-value
           verdict, and condition flags in about 15 seconds.
         </p>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', gap: 12, maxWidth: 640 }}>
+        <form onSubmit={handleSubmit} className="flex gap-3">
           <input
             type="text"
             value={url}
