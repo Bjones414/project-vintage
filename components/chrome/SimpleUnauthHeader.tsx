@@ -12,7 +12,7 @@ export function SimpleUnauthHeader() {
         </Link>
         <Link
           href="/login"
-          className="font-sans text-[13px] text-text-tertiary hover:text-text-primary"
+          className="font-sans text-[13px] leading-none pb-1 text-text-tertiary transition-colors hover:text-text-primary"
         >
           Sign in
         </Link>
