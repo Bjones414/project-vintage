@@ -18,6 +18,8 @@ const NAV_LINKS = [
   { label: 'Research',    href: '/research' },
   { label: 'Watchlist',   href: '/watchlist' },
   { label: 'Generations', href: '/generations' },
+  { label: 'Garage',      href: '/garage' },
+  { label: 'About',       href: '/about' },
 ] as const
 
 interface NavProps {
