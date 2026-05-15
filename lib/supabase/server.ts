@@ -26,3 +26,13 @@ export function createClient() {
     }
   );
 }
+
+// Service-role client for Server Components that must bypass RLS.
+// Safe to call server-side only — SUPABASE_SERVICE_ROLE_KEY is never sent to the browser.
+export function createAdminClient() {
+  return createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { cookies: { getAll: () => [], setAll: () => {} } }
+  );
+}

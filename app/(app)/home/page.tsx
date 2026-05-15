@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { GreetingHeader } from '@/components/GreetingHeader'
 import type { GreetingAccount, GreetingNotifications } from '@/lib/greeting-engine/types'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import {
   SAMPLE_FEATURED_EVENT,
   SAMPLE_SECONDARY_EVENTS,
@@ -38,8 +38,11 @@ export default async function HomePage() {
     redirect('/login?next=/home')
   }
 
-  // Fetch profile fields needed for greeting and first-login detection
-  const { data: profile } = await supabase
+  // Fetch profile fields needed for greeting and first-login detection.
+  // Uses service-role client to bypass RLS — public.users has no SELECT policy
+  // for the anon key, so the authenticated session cannot read its own row.
+  const supabaseAdmin = createAdminClient()
+  const { data: profile } = await supabaseAdmin
     .from('users')
     .select('first_name, last_name, home_city')
     .eq('id', user.id)

@@ -1,15 +1,23 @@
+// @vitest-environment happy-dom
 import { describe, it, expect, vi, afterEach } from 'vitest'
-
-// vi.hoisted ensures redirectSpy is initialized before vi.mock's hoisted factory runs
-const redirectSpy = vi.hoisted(() => vi.fn())
+import { render, screen, cleanup } from '@testing-library/react'
 
 vi.mock('next/navigation', () => ({
-  redirect: redirectSpy,
+  redirect: vi.fn(),
   useRouter: () => ({ replace: vi.fn(), push: vi.fn(), back: vi.fn() }),
-  usePathname: () => '/',
+  usePathname: () => '/analyze',
   notFound: () => { throw new Error('NEXT_NOT_FOUND') },
   useSearchParams: () => new URLSearchParams(),
 }))
+
+vi.mock('@/components/analyze/AnalyzeLoadingState', () => ({
+  AnalyzeLoadingState: () => null,
+}))
+
+afterEach(() => {
+  cleanup()
+  vi.unstubAllGlobals()
+})
 
 import AnalyzePage from '@/app/(app)/analyze/page'
 import { analyzeUrl } from '@/lib/analyze-url'
@@ -18,8 +26,6 @@ import { analyzeUrl } from '@/lib/analyze-url'
 // analyzeUrl — pure function tests
 // ---------------------------------------------------------------------------
 describe('analyzeUrl', () => {
-  afterEach(() => vi.unstubAllGlobals())
-
   it('returns listingId from a successful response', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce({
       ok: true,
@@ -63,12 +69,21 @@ describe('analyzeUrl', () => {
 })
 
 // ---------------------------------------------------------------------------
-// AnalyzePage — now a server-side redirect to /
+// AnalyzePage — landing page with URL paste form
 // ---------------------------------------------------------------------------
 describe('AnalyzePage', () => {
-  it('redirects to /', () => {
-    redirectSpy.mockClear()
-    AnalyzePage()
-    expect(redirectSpy).toHaveBeenCalledWith('/')
+  it('renders the page heading', () => {
+    render(<AnalyzePage />)
+    expect(screen.getByRole('heading', { level: 1 })).toBeTruthy()
+  })
+
+  it('renders the URL paste input', () => {
+    render(<AnalyzePage />)
+    expect(screen.getByPlaceholderText('Paste a listing URL →')).toBeTruthy()
+  })
+
+  it('renders the Analyze submit button', () => {
+    render(<AnalyzePage />)
+    expect(screen.getByRole('button', { name: /analyze/i })).toBeTruthy()
   })
 })
