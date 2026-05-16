@@ -6,21 +6,51 @@ export default function AboutPage() {
   return (
     <div className="flex min-h-screen flex-col bg-bg-canvas">
       <SimpleUnauthHeader />
-      <div className="flex flex-1 justify-center">
-        <div className="w-full max-w-[720px] px-8 pb-20 pt-24">
-          <p className="mb-[22px] font-serif text-[11px] font-medium uppercase tracking-[0.18em] text-accent-primary">
-            About
+
+      <div className="flex flex-1 justify-center px-6">
+        <div className="w-full max-w-[560px] pb-10 pt-12">
+
+          {/* Block 1 */}
+          <p className="font-serif text-[16px] leading-[1.7] text-text-secondary">
+            A passion project, inspired by my father, an avid Porsche collector. Over the past few
+            years, I&rsquo;ve spent hours with him at Porsche dealerships, watching him point out
+            cars by era and hunt for the right one to drive. Always a manual. The information he
+            needed always existed. It was just scattered.
           </p>
-          <h1 className="mb-[18px] font-serif text-[42px] font-normal leading-[1.1] tracking-[-0.015em] text-text-primary">
-            Project Vintage.
-          </h1>
-          {/* Marketing: replace dek and body paragraph below with finalized copy */}
-          <p className="mb-12 font-serif italic text-[17px] leading-[1.55] text-text-secondary">
-            Editorial-grade data and judgment for serious collectors. More to come from the team.
+          <p className="mt-6 font-serif text-[16px] leading-[1.7] text-text-secondary">
+            Project Vintage is the answer to what one place would look like. Hand-built comp data on
+            every generation, a working catalog of what to watch for, real-time tracking on the cars
+            you own, alerts on the cars you&rsquo;re hunting, the events and specialists worth knowing
+            about, the reading worth your time, and a small bench of real experts when an algorithm
+            reaches its limit.
           </p>
-          <p className="font-serif text-[16px] leading-[1.6] text-text-primary">
-            [Marketing: replace this paragraph with your About copy. The page is ready for long-form prose. Use HTML or MDX as needed.]
+
+          {/* Hairline breaker with centered gold dot */}
+          <div className="relative my-10" aria-hidden="true">
+            <div className="border-t-[0.5px] border-border-subtle" />
+            <div
+              className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-primary"
+              style={{ width: 7, height: 7 }}
+            />
+          </div>
+
+          {/* Block 2 */}
+          <p className="font-serif text-[16px] leading-[1.7] text-text-secondary">
+            Project Vintage doesn&rsquo;t sell user data. Ever. Not in pieces, not aggregated, not in
+            some &ldquo;anonymized&rdquo; form. The comp database is collected by hand, with respect
+            for the sources it draws from. No scraping.
           </p>
+          <p className="mt-6 font-serif text-[16px] leading-[1.7] text-text-secondary">
+            Project Vintage will never host auctions. Partner, not parasite. There&rsquo;s already a
+            strong ecosystem of platforms, registries, and communities serving collectors. This product
+            is built to complement that work, not compete with it.
+          </p>
+
+          {/* Tagline */}
+          <p className="mt-8 text-center font-serif text-[14px] italic text-text-secondary">
+            Algorithms are great. Nothing beats a manual.
+          </p>
+
         </div>
       </div>
     </div>
