@@ -51,9 +51,10 @@ type PageProps = {
 export default async function ListingDetailPage({ params }: PageProps) {
   const supabase = createClient()
 
-  const [listingResult, { tier: viewerTier }] = await Promise.all([
+  const [listingResult, { tier: viewerTier }, sessionResult] = await Promise.all([
     supabase.from('listings').select('*').eq('id', params.id).single(),
     getViewerTier(),
+    supabase.auth.getSession(),
   ])
 
   if (listingResult.error || !listingResult.data) {
@@ -61,6 +62,19 @@ export default async function ListingDetailPage({ params }: PageProps) {
   }
 
   const listing = listingResult.data
+  const session = sessionResult.data.session
+
+  // Check if the authenticated user already has this listing in their watchlist.
+  // Used to set the initial "Watch this car" / "Watching" state without a client-side fetch.
+  const initialWatched = session
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ? await (supabase as any)
+        .from('watchlist')
+        .select('id')
+        .eq('listing_id', listing.id)
+        .maybeSingle()
+        .then((r: { data: unknown }) => !!r.data)
+    : false
 
   const [generationResult, editorialResult, colorData, analysisResult, v2CompsResult, recalls] =
     await Promise.all([
@@ -215,7 +229,12 @@ export default async function ListingDetailPage({ params }: PageProps) {
 
         {viewerTier === 'anonymous' && <AnonymousSignupCTA />}
 
-        <ActionRow listing={listing} viewerTier={viewerTier} />
+        <ActionRow
+          listing={listing}
+          viewerTier={viewerTier}
+          listingId={listing.id}
+          initialWatched={initialWatched}
+        />
       </div>
     </main>
   )

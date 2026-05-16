@@ -1,16 +1,17 @@
-// /watchlist — user's saved listings with lazy refresh of stale live entries.
+// /watchlist — user's watched listings with click-to-expand-to-refresh per row.
 //
-// SAFETY: When this page loads, stale live listings (cache_status = 'live' and
-// last_fetched_at older than 1 hour) are queued for refresh via WatchlistRefresher.
-// The refresh runs sequentially, with 2–3 second delays, triggered only by the
-// user loading this page. Not by any cron, webhook, or background job.
+// COMPLIANCE: no bulk refresh on page mount, no background polling.
+// The page reads stored data (watchlist rows + latest comp_results) and renders
+// collapsed WatchlistRow components. Analysis refresh fires only when the user
+// explicitly clicks a row. See WatchlistRow and /api/watchlist/[listingId]/refresh.
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
-import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
-import { isStale } from '@/lib/listing-cache'
-import { WatchlistRefresher } from '@/components/watchlist/WatchlistRefresher'
-import { WatchlistCard } from '@/components/watchlist/WatchlistCard'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
+import { matchDefects } from '@/lib/originality'
+import { selectTopThree } from '@/lib/watch-for/select-top-three'
+import { filterGenerationItems } from '@/lib/watch-for/filter-generation-items'
+import { WatchlistRow } from '@/components/watchlist/WatchlistRow'
+import { EmptyState } from '@/components/watchlist/EmptyState'
 
 export const metadata = { title: 'Watchlist — Project Vintage' }
 
@@ -20,21 +21,33 @@ type WatchlistListing = {
   make: string | null
   model: string | null
   trim: string | null
+  exterior_color: string | null
+  interior_color: string | null
   mileage: number | null
-  final_price: number | null
   high_bid: number | null
+  final_price: number | null
   listing_status: string | null
-  cache_status: string
-  last_fetched_at: string | null
-  source_platform: string
+  auction_ends_at: string | null
   source_url: string
+  source_platform: string
+  generation_id: string | null
 }
 
-type WatchlistRow = {
+type WatchlistRowData = {
   id: string
-  created_at: string
   listing_id: string
+  created_at: string
+  updated_at: string
   listings: WatchlistListing
+}
+
+type CompResultData = {
+  listing_id: string
+  comp_count: number
+  fair_value_low_cents: number | null
+  fair_value_median_cents: number | null
+  fair_value_high_cents: number | null
+  computed_at: string
 }
 
 export default async function WatchlistPage() {
@@ -47,82 +60,141 @@ export default async function WatchlistPage() {
     redirect('/login?next=/watchlist')
   }
 
-  const supabaseAdmin = createSupabaseAdmin(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  )
+  const supabaseAdmin = createAdminClient()
 
-  // Load watchlist items with listing data.
-  // Service-role client reads listing cache fields without RLS interference.
-  const { data: watchlistRows } = await (
+  // Load watchlist rows with listing data (service-role to bypass RLS on listings)
+  const { data: watchlistRows, error: watchlistError } = await (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (supabaseAdmin as any)
       .from('watchlist')
       .select(`
         id,
-        created_at,
         listing_id,
+        created_at,
+        updated_at,
         listings (
           id,
           year,
           make,
           model,
           trim,
+          exterior_color,
+          interior_color,
           mileage,
-          final_price,
           high_bid,
+          final_price,
           listing_status,
-          cache_status,
-          last_fetched_at,
+          auction_ends_at,
+          source_url,
           source_platform,
-          source_url
+          generation_id
         )
       `)
       .eq('user_id', session.user.id)
       .order('created_at', { ascending: false }) as unknown as Promise<{
-        data: WatchlistRow[] | null
+        data: WatchlistRowData[] | null
+        error: { message: string } | null
       }>
   )
+  console.log('[DEBUG watchlist page]', { userId: session.user.id, count: watchlistRows?.length ?? 0, error: watchlistError?.message ?? null })
 
-  const items: WatchlistRow[] = (watchlistRows ?? []).filter(
-    (w): w is WatchlistRow => w.listings != null,
+  const items = (watchlistRows ?? []).filter(
+    (w): w is WatchlistRowData => w.listings != null,
   )
 
-  // Identify stale live listings — these will be refreshed by WatchlistRefresher.
-  // We pass only IDs to the client component; it calls /api/watchlist/refresh with them.
-  const staleListingIds = items
-    .filter(w => w.listings.cache_status === 'live' && isStale(w.listings.last_fetched_at))
-    .map(w => w.listings.id)
+  // Pre-compute generation-level watch-for items for each listing using the defect catalog.
+  // Used as a fallback in ExpandedPanel when a listing has no per-listing analysis flags.
+  // matchDefects is synchronous and the catalog is cached after first load.
+  const generationWatchForItemsMap = new Map<string, Array<{ title: string; severity: 'high' | 'moderate' | 'low'; description: string }>>()
+  for (const item of items) {
+    const genId = item.listings.generation_id
+    if (genId && !generationWatchForItemsMap.has(genId)) {
+      generationWatchForItemsMap.set(
+        genId,
+        selectTopThree(filterGenerationItems(matchDefects({ generation_id: genId, engine_family: null, year: null, mileage: null })))
+          .map(w => ({ title: w.title, severity: w.severity, description: w.description })),
+      )
+    }
+  }
+
+  // Load latest comp_results for all watched listings (one per listing)
+  // Used for initial verdict pill state — no analysis is re-run on page load.
+  const listingIds = items.map((w) => w.listing_id)
+
+  const compResultsMap = new Map<string, CompResultData>()
+  if (listingIds.length > 0) {
+    const { data: compRows } = await (
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (supabaseAdmin as any)
+        .from('comp_results')
+        .select(
+          'listing_id, comp_count, fair_value_low_cents, fair_value_median_cents, fair_value_high_cents, computed_at',
+        )
+        .in('listing_id', listingIds)
+        .order('computed_at', { ascending: false }) as unknown as Promise<{
+          data: CompResultData[] | null
+        }>
+    )
+    for (const row of compRows ?? []) {
+      if (!compResultsMap.has(row.listing_id)) {
+        compResultsMap.set(row.listing_id, row)
+      }
+    }
+  }
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 lg:px-10">
-      <div className="mb-6 flex items-baseline gap-4">
-        <h1 className="font-serif text-h1 text-text-primary">Watchlist</h1>
-        {staleListingIds.length > 0 && (
-          // Rendered inline near the heading — disappears after router.refresh() fires
-          <WatchlistRefresher staleListingIds={staleListingIds} />
-        )}
+      {/* Page chrome */}
+      <div className="mb-12 flex items-start justify-between">
+        <div>
+          {/* Eyebrow */}
+          <p
+            className="mb-3 font-serif text-[11px] uppercase tracking-[0.18em] text-accent-primary"
+            style={{ fontWeight: 500 }}
+          >
+            The watchlist
+          </p>
+          {/* Headline */}
+          <h1
+            className="font-serif text-[42px] text-text-primary"
+            style={{ lineHeight: '1.1', letterSpacing: '-0.015em', fontWeight: 400 }}
+          >
+            What you&rsquo;re watching.
+          </h1>
+          {/* Dek */}
+          <p
+            className="mt-3 max-w-[520px] font-serif text-[17px] italic text-text-secondary"
+            style={{ lineHeight: '1.55' }}
+          >
+            The cars you&rsquo;re keeping an eye on. We&rsquo;ll surface what moves on each one back on your home.
+          </p>
+        </div>
+
+        {/* Secondary link — aligned with chrome */}
+        <Link
+          href="/analyze"
+          className="mt-1 shrink-0 font-serif text-[14px] italic text-accent-primary underline decoration-[0.5px] underline-offset-2 hover:opacity-70"
+        >
+          Analyze a new listing →
+        </Link>
       </div>
 
+      {/* Content */}
       {items.length === 0 ? (
-        <div className="border-[0.5px] border-[#D4CFC0] px-8 py-12 text-center">
-          <p className="font-serif text-[15px] italic text-text-tertiary">
-            No saved listings yet.
-          </p>
-          <p className="mt-2 font-sans text-[13px] text-text-muted">
-            After analyzing a listing, use the save button to add it here.
-          </p>
-          <Link
-            href="/"
-            className="mt-6 inline-block font-sans text-[13px] text-[#8B6914] hover:opacity-70"
-          >
-            Analyze a listing →
-          </Link>
-        </div>
+        <EmptyState />
       ) : (
-        <div className="space-y-3">
-          {items.map(w => (
-            <WatchlistCard key={w.id} listing={w.listings} />
+        <div>
+          {items.map((w) => (
+            <WatchlistRow
+              key={w.id}
+              watchlistId={w.id}
+              listingId={w.listing_id}
+              listing={w.listings}
+              watchedAt={w.created_at}
+              updatedAt={w.updated_at}
+              initialComp={compResultsMap.get(w.listing_id) ?? null}
+              generationWatchForItems={generationWatchForItemsMap.get(w.listings.generation_id ?? '') ?? []}
+            />
           ))}
         </div>
       )}

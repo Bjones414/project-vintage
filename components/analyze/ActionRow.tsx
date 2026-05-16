@@ -5,25 +5,20 @@ import type { Tables } from '@/lib/supabase/types'
 import { PLATFORM_NAMES } from '@/lib/utils/platforms'
 import type { ViewerTier } from './types'
 import { SignupModal } from './SignupModal'
+import { WatchToggleButton } from './WatchToggleButton'
 
 type Props = {
   listing: Tables<'listings'>
   viewerTier: ViewerTier
+  listingId: string
+  initialWatched: boolean
 }
 
-export function ActionRow({ listing, viewerTier }: Props) {
+export function ActionRow({ listing, viewerTier, listingId, initialWatched }: Props) {
   const [modalOpen, setModalOpen] = useState(false)
 
   const platformName =
     PLATFORM_NAMES[listing.source_platform] ?? listing.source_platform
-
-  function handleWatchClick() {
-    if (viewerTier === 'anonymous') {
-      setModalOpen(true)
-      return
-    }
-    // TODO: persist watch for authenticated members
-  }
 
   function handleSaveClick() {
     if (viewerTier === 'anonymous') {
@@ -44,13 +39,19 @@ export function ActionRow({ listing, viewerTier }: Props) {
         >
           View on {platformName} ↗
         </a>
-        <button
-          type="button"
-          onClick={handleWatchClick}
-          className="inline-flex items-center rounded-button border-[0.5px] border-text-primary bg-transparent px-5 py-[10px] font-sans text-[13px] font-medium tracking-[0.02em] text-text-primary hover:bg-bg-elevated focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2"
-        >
-          Watch this car
-        </button>
+
+        {viewerTier === 'anonymous' ? (
+          <button
+            type="button"
+            onClick={() => setModalOpen(true)}
+            className="inline-flex items-center rounded-button border-[0.5px] border-text-primary bg-transparent px-5 py-[10px] font-sans text-[13px] font-medium tracking-[0.02em] text-text-primary hover:bg-bg-elevated focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2"
+          >
+            Watch this car
+          </button>
+        ) : (
+          <WatchToggleButton listingId={listingId} initialWatched={initialWatched} />
+        )}
+
         <button
           type="button"
           onClick={handleSaveClick}
