@@ -31,6 +31,7 @@ export function runCompEngineV2(
   pool: V2CompCandidate[],        // all candidates for this generation (pre-filtered by recency at fetch time)
   config: EngineConfig,
   asOf: Date = new Date(),
+  maxMonths: number = 36,
 ): V2CompsResult {
   const emptyResult = (
     verdict: V2CompsResult['verdict'],
@@ -144,10 +145,10 @@ export function runCompEngineV2(
     })
   }
 
-  // Stage 5: Recency weighting (drops > 36 months)
+  // Stage 5: Recency weighting (drops > maxMonths)
   // Build soldAt map from pool
   const soldAtMap = new Map<string, string>(afterCohort.map(c => [c.listing_id, c.sold_at]))
-  const afterRecency = applyRecencyWeighting(scored, soldAtMap, asOf)
+  const afterRecency = applyRecencyWeighting(scored, soldAtMap, asOf, maxMonths)
 
   if (afterRecency.length < 3) {
     return emptyResult('insufficient_comps', 'post_recency_drop', {

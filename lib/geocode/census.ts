@@ -1,10 +1,12 @@
-// US Census Geocoder integration.
-// Endpoint: https://geocoding.geo.census.gov/geocoder/locations/onelineaddress
-// Free, no API key required, US addresses only.
-// Spec: geocode failure → signup fails (no graceful null fallback).
+// City+state geocoder using Nominatim (OpenStreetMap).
+// Free, no API key. Nominatim ToS requires a descriptive User-Agent.
+// Returns null on any failure — callers must handle null gracefully.
+//
+// Replaced Census Geocoder: onelineaddress endpoint requires a full street
+// address and returns empty addressMatches for city-only queries.
 
-const CENSUS_GEOCODER_URL =
-  'https://geocoding.geo.census.gov/geocoder/locations/onelineaddress'
+const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search'
+const USER_AGENT = 'ProjectVintage/1.0 (alpha)'
 
 const US_STATES = new Set([
   'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
@@ -15,95 +17,51 @@ const US_STATES = new Set([
   'DC',
 ])
 
-export class GeocodeError extends Error {
-  constructor(message: string) {
-    super(message)
-    this.name = 'GeocodeError'
-  }
-}
+type NominatimResult = { lat: string; lon: string }
 
-export class InvalidAddressError extends GeocodeError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'InvalidAddressError'
-  }
-}
-
-export class GeocodeUnavailableError extends GeocodeError {
-  constructor(message: string) {
-    super(message)
-    this.name = 'GeocodeUnavailableError'
-  }
-}
-
-type CensusResponse = {
-  result?: {
-    addressMatches?: Array<{
-      coordinates?: { x?: number; y?: number }
-    }>
-  }
-}
+const cache = new Map<string, { lat: number; lng: number }>()
+const CACHE_MAX = 1000
 
 export async function geocodeUsAddress(
   city: string,
   state: string,
-): Promise<{ lat: number; lng: number }> {
+): Promise<{ lat: number; lng: number } | null> {
   const normalizedState = state.trim().toUpperCase()
-  if (!US_STATES.has(normalizedState)) {
-    throw new InvalidAddressError(
-      `'${state}' is not a valid 2-letter US state code`,
-    )
-  }
+  if (!US_STATES.has(normalizedState)) return null
 
-  const address = `${city.trim()}, ${normalizedState}`
-  const url = new URL(CENSUS_GEOCODER_URL)
-  url.searchParams.set('address', address)
-  url.searchParams.set('benchmark', 'Public_AR_Current')
+  const cacheKey = `${city.trim().toLowerCase()}|${normalizedState}`
+  const cached = cache.get(cacheKey)
+  if (cached !== undefined) return cached
+
+  const url = new URL(NOMINATIM_URL)
+  url.searchParams.set('q', `${city.trim()}, ${normalizedState}`)
   url.searchParams.set('format', 'json')
+  url.searchParams.set('limit', '1')
+  url.searchParams.set('countrycodes', 'us')
 
-  let response: Response
+  let results: NominatimResult[]
   try {
-    response = await fetch(url.toString())
-  } catch (err) {
-    throw new GeocodeUnavailableError(
-      `Census geocoder unreachable: ${err instanceof Error ? err.message : String(err)}`,
-    )
-  }
-
-  if (!response.ok) {
-    throw new GeocodeUnavailableError(
-      `Census geocoder returned HTTP ${response.status}`,
-    )
-  }
-
-  let body: CensusResponse
-  try {
-    body = (await response.json()) as CensusResponse
+    const response = await fetch(url.toString(), {
+      headers: { 'User-Agent': USER_AGENT },
+    })
+    if (!response.ok) return null
+    results = (await response.json()) as NominatimResult[]
   } catch {
-    throw new GeocodeUnavailableError(
-      'Census geocoder returned a non-JSON response',
-    )
+    return null
   }
 
-  const matches = body?.result?.addressMatches
-  if (!Array.isArray(matches) || matches.length === 0) {
-    throw new InvalidAddressError(`No geocode match found for: ${address}`)
-  }
+  if (!Array.isArray(results) || results.length === 0) return null
 
-  if (matches.length > 1) {
-    // Use first match per spec; log ambiguity for observability
-    console.warn(
-      `[geocode] Ambiguous address '${address}': ${matches.length} matches returned, using first`,
-    )
-  }
+  const lat = parseFloat(results[0].lat)
+  const lng = parseFloat(results[0].lon)
+  if (isNaN(lat) || isNaN(lng)) return null
 
-  const coords = matches[0]?.coordinates
-  if (typeof coords?.x !== 'number' || typeof coords?.y !== 'number') {
-    throw new GeocodeUnavailableError(
-      'Census geocoder returned a match with no coordinates',
-    )
+  const coords = { lat, lng }
+  if (cache.size >= CACHE_MAX) {
+    const firstKey = cache.keys().next().value
+    if (firstKey !== undefined) cache.delete(firstKey)
   }
+  cache.set(cacheKey, coords)
 
-  // Census API convention: x = longitude, y = latitude
-  return { lat: coords.y, lng: coords.x }
+  return coords
 }

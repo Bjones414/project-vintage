@@ -1284,8 +1284,8 @@ export type Database = {
           p_last_name: string
           p_home_city: string
           p_home_state: string
-          p_home_lat: number
-          p_home_lng: number
+          p_home_lat: number | null
+          p_home_lng: number | null
         }
         Returns: Json
       }

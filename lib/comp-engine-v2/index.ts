@@ -27,6 +27,7 @@ function makeAdmin() {
 export async function fetchV2Pool(
   generationId: string,
   excludeListingId: string,
+  maxMonths: number = 36,
 ): Promise<V2CompCandidate[]> {
   const admin = makeAdmin()
 
@@ -59,7 +60,7 @@ export async function fetchV2Pool(
   if (error) throw new Error(`[comp-engine-v2] fetchV2Pool error: ${error.message}`)
 
   const now = new Date()
-  const MAX_MONTHS = 36
+  const MAX_MONTHS = maxMonths
 
   return (data ?? [])
     .filter(row => {
@@ -151,7 +152,16 @@ export async function computeCompsV2(listingId: string): Promise<V2CompsResult> 
     is_comp_resistant: subject.is_comp_resistant ?? false,
   }
 
-  const result = runCompEngineV2(subjectNorm, pool, config)
+  let result = runCompEngineV2(subjectNorm, pool, config)
+
+  // Thin cascade retry: if all 36-month levels yielded insufficient comps, widen to 48 months.
+  // Hard cap at 48 months — no further extension.
+  // sparse_category is excluded: coachbuilt/limited won't gain comps from a wider window.
+  if (result.verdict === 'insufficient_comps' && result.insufficient_reason !== 'sparse_category') {
+    console.log('[comp-engine] thin cascade retry with 48mo window', { generationId, listingId })
+    const pool48 = await fetchV2Pool(generationId, listingId, 48)
+    result = runCompEngineV2(subjectNorm, pool48, config, new Date(), 48)
+  }
 
   // Log every run, no exceptions
   await logCompRun(result, subjectNorm)

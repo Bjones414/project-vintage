@@ -79,6 +79,18 @@ const TRANSITION_RULES: Record<string, Array<{ id: string; pattern: RegExp; reas
       reason: 'Transition 1994: title indicates 993',
     },
   ],
+  // Defensive: after the boundary fix (992.1.year_start=2020) this rule only fires
+  // if DB drift causes both 991.2 and 992.1 to match 2019 again.  All 2019 911s
+  // default to 991.2 — the 992 Targa did not launch until MY2021.
+  // Known edge case: early European 992 deliveries with 2019 build dates exist but
+  // are low-frequency; classifying them as 991.2 is the correct comp-pool default.
+  '911:2019': [
+    {
+      id: '991.2',
+      pattern: /.*/,
+      reason: 'Transition 2019: all 2019 911s are 991.2; 992 Targa did not launch until MY2021',
+    },
+  ],
 }
 
 function disambiguateTransition(

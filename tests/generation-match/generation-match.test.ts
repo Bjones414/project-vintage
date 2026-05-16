@@ -27,7 +27,7 @@ const GENERATIONS = [
   { generation_id: '997.2', model_family: '911', year_start: 2009, year_end: 2013 },
   { generation_id: '991.1', model_family: '911', year_start: 2013, year_end: 2015 },
   { generation_id: '991.2', model_family: '911', year_start: 2016, year_end: 2019 },
-  { generation_id: '992.1', model_family: '911', year_start: 2019, year_end: 2023 },
+  { generation_id: '992.1', model_family: '911', year_start: 2020, year_end: 2023 },
   { generation_id: '992.2', model_family: '911', year_start: 2024, year_end: null },
   // Boxster
   { generation_id: '986',          model_family: 'Boxster', year_start: 1997, year_end: 2004 },
@@ -525,5 +525,44 @@ describe('Additional coverage', () => {
     // Year 1975, family '911', no turbo → g-series-2.7
     expect(result.generation_id).toBe('g-series-2.7')
     expect(result.confidence).toBe('high')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// (k) 991.2 / 992.1 boundary — 2019 uniquely belongs to 991.2 after migration
+// ---------------------------------------------------------------------------
+describe('991.2 / 992.1 boundary (2019 unambiguous fix)', () => {
+  it('2019 911 → 991.2 with high confidence (single candidate after boundary fix)', () => {
+    const result = match({
+      decoded_year: 2019,
+      decoded_make: 'PORSCHE',
+      decoded_model: '911',
+      parsed_title: '2019 Porsche 911 Targa 4 GTS',
+    })
+    expect(result.generation_id).toBe('991.2')
+    expect(result.confidence).toBe('high')
+    expect(result.needs_review).toBe(false)
+  })
+
+  it('2018 911 → 991.2 (sanity: safely inside 991.2 window)', () => {
+    const result = match({
+      decoded_year: 2018,
+      decoded_make: 'PORSCHE',
+      decoded_model: '911',
+    })
+    expect(result.generation_id).toBe('991.2')
+    expect(result.confidence).toBe('high')
+    expect(result.needs_review).toBe(false)
+  })
+
+  it('2020 911 → 992.1 with high confidence (first year of 992.1 after boundary fix)', () => {
+    const result = match({
+      decoded_year: 2020,
+      decoded_make: 'PORSCHE',
+      decoded_model: '911',
+    })
+    expect(result.generation_id).toBe('992.1')
+    expect(result.confidence).toBe('high')
+    expect(result.needs_review).toBe(false)
   })
 })

@@ -18,12 +18,6 @@ const {
 
 vi.mock('@/lib/geocode/census', () => ({
   geocodeUsAddress: mockGeocode,
-  InvalidAddressError: class InvalidAddressError extends Error {
-    constructor(msg: string) { super(msg); this.name = 'InvalidAddressError' }
-  },
-  GeocodeUnavailableError: class GeocodeUnavailableError extends Error {
-    constructor(msg: string) { super(msg); this.name = 'GeocodeUnavailableError' }
-  },
 }))
 
 vi.mock('@supabase/supabase-js', () => ({
@@ -162,22 +156,15 @@ describe('POST /api/auth/signup', () => {
   })
 
   // -------------------------------------------------------------------------
-  // Geocode failures
+  // Geocode soft-fail — null result never blocks signup
   // -------------------------------------------------------------------------
-  it('returns 400 geocode_invalid when city not found', async () => {
-    const { InvalidAddressError } = await import('@/lib/geocode/census')
-    mockGeocode.mockRejectedValue(new InvalidAddressError('No match'))
+  it('geocoding null does not block signup — returns 201 with null lat/lng passed to RPC', async () => {
+    mockGeocode.mockResolvedValue(null)
     const res = await POST(makeRequest(VALID_BODY))
-    expect(res.status).toBe(400)
-    expect((await res.json()).error).toBe('geocode_invalid')
-  })
-
-  it('returns 503 geocode_unavailable when Census API is down', async () => {
-    const { GeocodeUnavailableError } = await import('@/lib/geocode/census')
-    mockGeocode.mockRejectedValue(new GeocodeUnavailableError('Service down'))
-    const res = await POST(makeRequest(VALID_BODY))
-    expect(res.status).toBe(503)
-    expect((await res.json()).error).toBe('geocode_unavailable')
+    expect(res.status).toBe(201)
+    const rpcArgs = mockRpc.mock.calls[0]?.[1] as Record<string, unknown>
+    expect(rpcArgs.p_home_lat).toBeNull()
+    expect(rpcArgs.p_home_lng).toBeNull()
   })
 
   // -------------------------------------------------------------------------

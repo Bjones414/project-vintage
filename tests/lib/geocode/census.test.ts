@@ -1,18 +1,24 @@
-import { describe, it, expect, vi, afterEach } from 'vitest'
-import {
-  geocodeUsAddress,
-  InvalidAddressError,
-  GeocodeUnavailableError,
-} from '@/lib/geocode/census'
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
 
 // ---------------------------------------------------------------------------
-// fetch mock helpers
+// Module isolation — reset per test so the in-module cache starts empty.
 // ---------------------------------------------------------------------------
-function mockFetch(
-  status: number,
-  body: unknown,
-  throws?: Error,
-) {
+let geocodeUsAddress: (
+  city: string,
+  state: string,
+) => Promise<{ lat: number; lng: number } | null>
+
+beforeEach(async () => {
+  vi.resetModules()
+  ;({ geocodeUsAddress } = await import('@/lib/geocode/census'))
+})
+
+afterEach(() => vi.restoreAllMocks())
+
+// ---------------------------------------------------------------------------
+// fetch mock helper
+// ---------------------------------------------------------------------------
+function mockFetch(status: number, body: unknown, throws?: Error) {
   return vi.spyOn(globalThis, 'fetch').mockImplementationOnce(async () => {
     if (throws) throw throws
     return {
@@ -23,104 +29,117 @@ function mockFetch(
   })
 }
 
-const HAPPY_BODY = {
-  result: {
-    addressMatches: [
-      { coordinates: { x: -111.9400, y: 33.4484 } }, // Phoenix, AZ (lng, lat)
-    ],
-  },
-}
+const NOMINATIM_PHOENIX = [{ lat: '33.4484', lon: '-111.9400' }]
+const NOMINATIM_CHANDLER = [{ lat: '33.3062031', lon: '-111.8411850' }]
 
-const AMBIGUOUS_BODY = {
-  result: {
-    addressMatches: [
-      { coordinates: { x: -111.9400, y: 33.4484 } },
-      { coordinates: { x: -112.0000, y: 33.5000 } },
-    ],
-  },
-}
-
-const NO_MATCH_BODY = {
-  result: { addressMatches: [] },
-}
-
-afterEach(() => vi.restoreAllMocks())
-
-describe('geocodeUsAddress', () => {
+describe('geocodeUsAddress (Nominatim)', () => {
+  // -------------------------------------------------------------------------
+  // Success path
+  // -------------------------------------------------------------------------
   it('returns lat/lng for a valid city + state', async () => {
-    mockFetch(200, HAPPY_BODY)
+    mockFetch(200, NOMINATIM_PHOENIX)
     const result = await geocodeUsAddress('Phoenix', 'AZ')
     expect(result).toEqual({ lat: 33.4484, lng: -111.9400 })
   })
 
+  it('returns lat/lng for Chandler, AZ — the root-cause regression case', async () => {
+    mockFetch(200, NOMINATIM_CHANDLER)
+    const result = await geocodeUsAddress('Chandler', 'AZ')
+    expect(result).not.toBeNull()
+    expect(result?.lat).toBeCloseTo(33.3062, 3)
+    expect(result?.lng).toBeCloseTo(-111.8412, 3)
+  })
+
   it('accepts lowercase state code', async () => {
-    mockFetch(200, HAPPY_BODY)
+    mockFetch(200, NOMINATIM_PHOENIX)
     const result = await geocodeUsAddress('Phoenix', 'az')
     expect(result).toEqual({ lat: 33.4484, lng: -111.9400 })
   })
 
-  it('throws InvalidAddressError for an invalid state code', async () => {
-    await expect(geocodeUsAddress('Springfield', 'ZZ')).rejects.toThrow(
-      InvalidAddressError,
-    )
+  // -------------------------------------------------------------------------
+  // Null returns — no exceptions thrown
+  // -------------------------------------------------------------------------
+  it('returns null for an invalid state code — no exception', async () => {
+    const result = await geocodeUsAddress('Springfield', 'ZZ')
+    expect(result).toBeNull()
   })
 
-  it('throws InvalidAddressError when no matches returned', async () => {
-    mockFetch(200, NO_MATCH_BODY)
-    await expect(geocodeUsAddress('Notaplace', 'CA')).rejects.toThrow(
-      InvalidAddressError,
-    )
+  it('returns null when Nominatim returns empty array', async () => {
+    mockFetch(200, [])
+    const result = await geocodeUsAddress('Notaplace', 'CA')
+    expect(result).toBeNull()
   })
 
-  it('uses first match and warns when response is ambiguous', async () => {
-    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    mockFetch(200, AMBIGUOUS_BODY)
-    const result = await geocodeUsAddress('Tempe', 'AZ')
-    expect(result).toEqual({ lat: 33.4484, lng: -111.9400 })
-    expect(warnSpy).toHaveBeenCalledOnce()
-    expect(warnSpy.mock.calls[0][0]).toContain('Ambiguous')
-  })
-
-  it('throws GeocodeUnavailableError on network failure', async () => {
+  it('returns null on network failure — no exception', async () => {
     mockFetch(200, null, new TypeError('fetch failed'))
-    await expect(geocodeUsAddress('Phoenix', 'AZ')).rejects.toThrow(
-      GeocodeUnavailableError,
-    )
+    const result = await geocodeUsAddress('Phoenix', 'AZ')
+    expect(result).toBeNull()
   })
 
-  it('throws GeocodeUnavailableError on non-2xx HTTP status', async () => {
+  it('returns null on non-2xx HTTP status — no exception', async () => {
     mockFetch(503, null)
-    await expect(geocodeUsAddress('Phoenix', 'AZ')).rejects.toThrow(
-      GeocodeUnavailableError,
-    )
+    const result = await geocodeUsAddress('Phoenix', 'AZ')
+    expect(result).toBeNull()
   })
 
-  it('throws GeocodeUnavailableError when response is not valid JSON', async () => {
+  it('returns null when response is not valid JSON — no exception', async () => {
     vi.spyOn(globalThis, 'fetch').mockImplementationOnce(async () => ({
       ok: true,
       status: 200,
-      json: async () => { throw new SyntaxError('Unexpected token') },
-    } as Response))
-    await expect(geocodeUsAddress('Phoenix', 'AZ')).rejects.toThrow(
-      GeocodeUnavailableError,
-    )
+      json: async () => {
+        throw new SyntaxError('Unexpected token')
+      },
+    } as unknown as Response))
+    const result = await geocodeUsAddress('Phoenix', 'AZ')
+    expect(result).toBeNull()
   })
 
-  it('throws GeocodeUnavailableError when match has no coordinates', async () => {
-    const body = { result: { addressMatches: [{ coordinates: null }] } }
-    mockFetch(200, body)
-    await expect(geocodeUsAddress('Phoenix', 'AZ')).rejects.toThrow(
-      GeocodeUnavailableError,
-    )
+  it('returns null when lat/lon values are not parseable numbers', async () => {
+    mockFetch(200, [{ lat: 'bad', lon: 'data' }])
+    const result = await geocodeUsAddress('Phoenix', 'AZ')
+    expect(result).toBeNull()
   })
 
-  it('builds the Census API URL with correct query parameters', async () => {
-    const fetchSpy = mockFetch(200, HAPPY_BODY)
+  // -------------------------------------------------------------------------
+  // URL and User-Agent construction
+  // -------------------------------------------------------------------------
+  it('sends correct Nominatim query parameters', async () => {
+    const fetchSpy = mockFetch(200, NOMINATIM_PHOENIX)
     await geocodeUsAddress('Scottsdale', 'AZ')
     const calledUrl = String(fetchSpy.mock.calls[0][0])
-    expect(calledUrl).toContain('benchmark=Public_AR_Current')
+    expect(calledUrl).toContain('nominatim.openstreetmap.org/search')
     expect(calledUrl).toContain('format=json')
-    expect(calledUrl).toContain('address=')
+    expect(calledUrl).toContain('limit=1')
+    expect(calledUrl).toContain('countrycodes=us')
     expect(calledUrl).toContain('Scottsdale')
+  })
+
+  it('sends a User-Agent header as required by Nominatim ToS', async () => {
+    const fetchSpy = mockFetch(200, NOMINATIM_PHOENIX)
+    await geocodeUsAddress('Phoenix', 'AZ')
+    const init = fetchSpy.mock.calls[0][1] as RequestInit
+    const userAgent = (init?.headers as Record<string, string>)?.['User-Agent']
+    expect(userAgent).toBeTruthy()
+    expect(userAgent).toContain('ProjectVintage')
+  })
+
+  // -------------------------------------------------------------------------
+  // Caching — spy wraps fetch before any calls so both calls are observable
+  // -------------------------------------------------------------------------
+  it('only calls the network once for the same city+state pair', async () => {
+    const fetchSpy = vi
+      .spyOn(globalThis, 'fetch')
+      .mockImplementation(async () => ({
+        ok: true,
+        status: 200,
+        json: async () => [{ lat: '36.1716', lon: '-115.1391' }],
+      } as Response))
+
+    const first = await geocodeUsAddress('Las Vegas', 'NV')
+    const second = await geocodeUsAddress('Las Vegas', 'NV')
+
+    expect(first).not.toBeNull()
+    expect(second).toEqual(first)
+    expect(fetchSpy).toHaveBeenCalledTimes(1)
   })
 })

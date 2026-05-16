@@ -29,7 +29,15 @@ describe('AboutPage', () => {
     })
 
     it('renders the no-auctions statement in block 2', () => {
-      expect(html).toContain('Partner, not parasite')
+      expect(html).toContain('Project Vintage will never host auctions')
+    })
+
+    it('"Partner, not parasite." sentence has been removed', () => {
+      expect(html).not.toContain('Partner, not parasite')
+    })
+
+    it('block 2 retains the ecosystem complement statement', () => {
+      expect(html).toContain('complement that work, not compete with it')
     })
   })
 
@@ -51,13 +59,13 @@ describe('AboutPage', () => {
 
   describe('tagline', () => {
     it('renders the tagline text', () => {
-      expect(html).toContain('Algorithms are great. Nothing beats a manual.')
+      expect(html).toContain('Algorithms have their place. Nothing beats a manual.')
     })
 
     it('tagline element carries the italic and text-center classes', () => {
       // Verify both classes appear in the class attribute directly before the tagline content
       expect(html).toContain('text-center')
-      expect(html).toContain('italic text-text-secondary">Algorithms are great')
+      expect(html).toContain('italic text-text-secondary">Algorithms have their place')
     })
   })
 
@@ -73,6 +81,14 @@ describe('AboutPage', () => {
 
     it('brand link points to /', () => {
       expect(html).toContain('href="/"')
+    })
+
+    it('outer wrapper overrides header inner-div max-width so brand sits at viewport left', () => {
+      // The about page outer div carries [&>header>div]:max-w-none, which overrides
+      // SimpleUnauthHeader's max-w-[480px] so the header spans full viewport width.
+      // renderToString HTML-encodes the class attribute, so we match the bare utility token.
+      // Visual confirmation (brand at far-left, "Sign in" at far-right) requires browser testing.
+      expect(html).toContain('max-w-none')
     })
   })
 

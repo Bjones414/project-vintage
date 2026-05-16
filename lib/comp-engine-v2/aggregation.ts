@@ -18,9 +18,9 @@ const RECENCY_BREAKPOINTS: [number, number][] = [
   [36, 0.4],
 ]
 
-export function recencyWeight(soldAt: string, asOf: Date = new Date()): number {
+export function recencyWeight(soldAt: string, asOf: Date = new Date(), maxMonths: number = 36): number {
   const months = (asOf.getTime() - new Date(soldAt).getTime()) / (1000 * 60 * 60 * 24 * 30.4375)
-  if (months > 36) return 0
+  if (months > maxMonths) return 0
   if (months <= 0) return 1.0
   for (let i = 1; i < RECENCY_BREAKPOINTS.length; i++) {
     const [m0, w0] = RECENCY_BREAKPOINTS[i - 1]
@@ -33,12 +33,12 @@ export function recencyWeight(soldAt: string, asOf: Date = new Date()): number {
   return 0.4
 }
 
-// Drop comps sold > 36 months ago (recency weight = 0)
-export function applyRecencyWeighting(comps: ScoredComp[], soldAts: Map<string, string>, asOf: Date = new Date()): ScoredComp[] {
+// Drop comps sold > maxMonths ago (recency weight = 0)
+export function applyRecencyWeighting(comps: ScoredComp[], soldAts: Map<string, string>, asOf: Date = new Date(), maxMonths: number = 36): ScoredComp[] {
   return comps
     .map(c => {
       const soldAt = soldAts.get(c.listing_id) ?? ''
-      const rw = recencyWeight(soldAt, asOf)
+      const rw = recencyWeight(soldAt, asOf, maxMonths)
       return { ...c, recency_weight: rw, final_weight: c.similarity_score * rw }
     })
     .filter(c => c.final_weight > 0)

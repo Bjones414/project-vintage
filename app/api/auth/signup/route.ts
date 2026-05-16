@@ -1,26 +1,22 @@
 // POST /api/auth/signup
 //
 // Alpha account signup. Accepts six fields: email, password, firstName, lastName,
-// city, state. Geocodes home location via US Census API, then atomically checks
+// city, state. Geocodes home location via Nominatim, then atomically checks
 // the 5-account alpha cap and inserts the user row via RPC.
 //
 // Atomic user creation:
-//   1. Validate inputs + geocode (fail fast — no auth user created yet)
-//   2. Create Supabase auth user (service role admin API)
-//   3. Call RPC create_alpha_user: advisory-lock → cap check → INSERT
-//   4. On any failure after step 2: delete the orphaned auth user
+//   1. Validate inputs (fail fast — no auth user created yet)
+//   2. Geocode city+state — soft-fail: null lat/lng if unreachable or not found
+//   3. Create Supabase auth user (service role admin API)
+//   4. Call RPC create_alpha_user: advisory-lock → cap check → INSERT
+//   5. On any failure after step 3: delete the orphaned auth user
 //
 // Cap-reached response: 403 { error: 'alpha_capacity_reached', message: '...' }
-// Geocode unavailable: 503 { error: 'geocode_unavailable', message: '...' }
 // Validation errors:  400 { error: 'validation_failed', fields: { ... } }
 // Success:           201 { id, account_type, alpha_expires_at }
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient as createAdminClient } from '@supabase/supabase-js'
-import {
-  geocodeUsAddress,
-  InvalidAddressError,
-  GeocodeUnavailableError,
-} from '@/lib/geocode/census'
+import { geocodeUsAddress } from '@/lib/geocode/census'
 import type { Database } from '@/lib/supabase/types'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -81,31 +77,13 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // --- Geocode city + state (fail fast — home location is required) ---
-  let lat: number
-  let lng: number
-  try {
-    const coords = await geocodeUsAddress(city as string, state as string)
-    lat = coords.lat
-    lng = coords.lng
-  } catch (err) {
-    if (err instanceof InvalidAddressError) {
-      return NextResponse.json(
-        { error: 'geocode_invalid', message: err.message },
-        { status: 400 },
-      )
-    }
-    if (err instanceof GeocodeUnavailableError) {
-      return NextResponse.json(
-        { error: 'geocode_unavailable', message: err.message },
-        { status: 503 },
-      )
-    }
-    return NextResponse.json(
-      { error: 'geocode_failed', message: 'Geocoding failed unexpectedly' },
-      { status: 503 },
-    )
+  // --- Geocode city + state — soft-fail so geocoding never blocks signup ---
+  const coords = await geocodeUsAddress(city as string, state as string)
+  if (!coords) {
+    console.warn('[signup] Geocoding returned null for', city, state, '— proceeding with null lat/lng')
   }
+  const homeLat: number | null = coords?.lat ?? null
+  const homeLng: number | null = coords?.lng ?? null
 
   const supabaseAdmin = adminClient()
 
@@ -149,8 +127,8 @@ export async function POST(request: NextRequest) {
       p_last_name:  (lastName as string).trim(),
       p_home_city:  (city as string).trim(),
       p_home_state: (state as string).trim().toUpperCase(),
-      p_home_lat:   lat,
-      p_home_lng:   lng,
+      p_home_lat:   homeLat,
+      p_home_lng:   homeLng,
     })
 
   if (rpcError) {
