@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useTransition } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { analyzeUrl, AnalyzeError } from '@/lib/analyze-url'
 import { AnalyzeLoadingState } from '@/components/analyze/AnalyzeLoadingState'
@@ -10,7 +10,6 @@ export default function AnalyzePage() {
   const [url, setUrl] = useState('')
   const [loadingPromise, setLoadingPromise] = useState<Promise<string> | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [, startTransition] = useTransition()
   const urlRef = useRef(url)
   urlRef.current = url
 
@@ -23,13 +22,9 @@ export default function AnalyzePage() {
   }
 
   function handleSuccess(listingId: string) {
-    // Keep loadingPromise set — the overlay stays visible during navigation.
-    // startTransition signals to React that the push is a low-priority transition;
-    // the current page (and overlay) remain mounted until the new route renders.
-    // The page unmounts naturally on navigation, taking the overlay with it.
-    startTransition(() => {
-      router.push(`/analyze/${listingId}`)
-    })
+    // loadingPromise stays set — the overlay remains visible during navigation.
+    // The page unmounts naturally when the new route renders, taking the overlay with it.
+    router.push(`/analyze/${listingId}`)
   }
 
   function handleError(err: Error) {

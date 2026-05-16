@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useTransition } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import { PVMark } from '@/components/brand/PVMark'
@@ -32,7 +32,6 @@ export function Nav({ initials }: NavProps) {
   const [url, setUrl] = useState('')
   const [loadingPromise, setLoadingPromise] = useState<Promise<string> | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [, startTransition] = useTransition()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const urlRef = useRef(url)
   urlRef.current = url
@@ -76,11 +75,9 @@ export function Nav({ initials }: NavProps) {
   }
 
   function handleSuccess(listingId: string) {
-    // Keep loadingPromise set — overlay stays visible during navigation.
+    // loadingPromise stays set — overlay remains visible during navigation.
     // The pathname useEffect below clears it once the new route lands.
-    startTransition(() => {
-      router.push(`/analyze/${listingId}`)
-    })
+    router.push(`/analyze/${listingId}`)
   }
 
   function handleError(err: Error) {
