@@ -229,6 +229,25 @@ describe('POST /api/auth/signup', () => {
   })
 
   // -------------------------------------------------------------------------
+  // Regression — no zip code in signup flow
+  // -------------------------------------------------------------------------
+  it('accepts city+state with no zip field and succeeds', async () => {
+    // VALID_BODY has no zip_code — this is the canonical no-zip happy path
+    const res = await POST(makeRequest(VALID_BODY))
+    expect(res.status).toBe(201)
+  })
+
+  it('ignores any zip_code field in the payload and does not forward it to the RPC', async () => {
+    const bodyWithZip = { ...VALID_BODY, zip_code: '85251', zipCode: '85251', postal_code: '85251' }
+    const res = await POST(makeRequest(bodyWithZip))
+    expect(res.status).toBe(201)
+    const rpcArgs = mockRpc.mock.calls[0]?.[1] as Record<string, unknown>
+    expect(Object.keys(rpcArgs)).not.toContain('p_zip_code')
+    expect(Object.keys(rpcArgs)).not.toContain('p_home_zip')
+    expect(Object.keys(rpcArgs)).not.toContain('p_postal_code')
+  })
+
+  // -------------------------------------------------------------------------
   // Non-JSON body
   // -------------------------------------------------------------------------
   it('returns 400 for non-JSON body', async () => {
