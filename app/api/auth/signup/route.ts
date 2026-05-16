@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
     await supabaseAdmin.auth.admin.createUser({
       email: (email as string).trim(),
       password: password as string,
-      email_confirm: false,
+      email_confirm: true,
     })
 
   if (authError || !authData?.user) {
