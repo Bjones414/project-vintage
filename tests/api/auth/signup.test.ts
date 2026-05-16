@@ -85,10 +85,12 @@ describe('POST /api/auth/signup', () => {
     const diffDays = (expiry.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
     expect(diffDays).toBeGreaterThan(44)
     expect(diffDays).toBeLessThan(46)
+    expect(mockRpc).toHaveBeenCalledTimes(1)
   })
 
   it('passes all six fields to RPC correctly', async () => {
     await POST(makeRequest(VALID_BODY))
+    expect(mockRpc).toHaveBeenCalledTimes(1)
     expect(mockRpc).toHaveBeenCalledWith('create_alpha_user', {
       p_id:         'auth-user-uuid',
       p_email:      'alpha@example.com',
@@ -162,9 +164,28 @@ describe('POST /api/auth/signup', () => {
     mockGeocode.mockResolvedValue(null)
     const res = await POST(makeRequest(VALID_BODY))
     expect(res.status).toBe(201)
+    expect(mockRpc).toHaveBeenCalledTimes(1)
     const rpcArgs = mockRpc.mock.calls[0]?.[1] as Record<string, unknown>
     expect(rpcArgs.p_home_lat).toBeNull()
     expect(rpcArgs.p_home_lng).toBeNull()
+  })
+
+  // -------------------------------------------------------------------------
+  // Idempotency — infrastructure double-invocation regression (2026-05-16)
+  // -------------------------------------------------------------------------
+  it('idempotent double-invocation: success response from RPC does not trigger orphan cleanup', async () => {
+    // create_alpha_user now returns { success: true } when the user row already
+    // exists (via the EXISTS guard added in the idempotency migration). The route
+    // must treat this as success — return 201, do NOT call deleteUser.
+    // Guards against any future regression where the route adds a second RPC call
+    // or where the RPC error-path is incorrectly triggered on a duplicate row.
+    mockRpc.mockResolvedValue({ data: { success: true }, error: null })
+    const res = await POST(makeRequest(VALID_BODY))
+    const json = await res.json()
+    expect(res.status).toBe(201)
+    expect(json.account_type).toBe('alpha')
+    expect(mockRpc).toHaveBeenCalledTimes(1) // route calls RPC exactly once per HTTP request
+    expect(mockDeleteUser).not.toHaveBeenCalled()
   })
 
   // -------------------------------------------------------------------------
