@@ -19,6 +19,17 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(),
 }))
 
+// ─── Supabase browser client — mock signInWithPassword ───────────────────────
+const { mockSignInWithPassword } = vi.hoisted(() => ({
+  mockSignInWithPassword: vi.fn(),
+}))
+
+vi.mock('@/lib/supabase/client', () => ({
+  createClient: () => ({
+    auth: { signInWithPassword: mockSignInWithPassword },
+  }),
+}))
+
 import SignupPage from '@/app/(signup-flow)/signup/page'
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -42,6 +53,8 @@ async function fillValidForm(user: ReturnType<typeof userEvent.setup>) {
 beforeEach(() => {
   vi.clearAllMocks()
   vi.unstubAllGlobals()
+  // Default: sign-in succeeds; individual tests override when needed
+  mockSignInWithPassword.mockResolvedValue({ error: null })
 })
 
 afterEach(() => {
@@ -63,6 +76,49 @@ describe('SignupPage — happy path', () => {
     await waitFor(() => {
       expect(pushSpy).toHaveBeenCalledWith('/home')
     })
+  })
+
+  it('calls signInWithPassword with email and password before router.push on 201', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockReturnValueOnce(
+      makeFetchResponse(201, { id: 'user-uuid', account_type: 'alpha', alpha_expires_at: new Date().toISOString() }),
+    ))
+    const callOrder: string[] = []
+    mockSignInWithPassword.mockImplementation(async () => {
+      callOrder.push('signIn')
+      return { error: null }
+    })
+    pushSpy.mockImplementation(() => { callOrder.push('push') })
+
+    const user = userEvent.setup()
+    render(<SignupPage />)
+    await fillValidForm(user)
+    await user.click(screen.getByRole('button', { name: /Create account/i }))
+
+    await waitFor(() => expect(callOrder).toContain('push'))
+    expect(mockSignInWithPassword).toHaveBeenCalledWith({
+      email: 'alpha@example.com',
+      password: 'password123',
+    })
+    expect(callOrder.indexOf('signIn')).toBeLessThan(callOrder.indexOf('push'))
+  })
+
+  it('redirects to /login with email prefilled when signInWithPassword fails', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockReturnValueOnce(
+      makeFetchResponse(201, { id: 'user-uuid', account_type: 'alpha', alpha_expires_at: new Date().toISOString() }),
+    ))
+    mockSignInWithPassword.mockResolvedValue({ error: { message: 'Email not confirmed' } })
+
+    const user = userEvent.setup()
+    render(<SignupPage />)
+    await fillValidForm(user)
+    await user.click(screen.getByRole('button', { name: /Create account/i }))
+
+    await waitFor(() => {
+      expect(pushSpy).toHaveBeenCalledWith(
+        `/login?email=${encodeURIComponent('alpha@example.com')}`,
+      )
+    })
+    expect(pushSpy).not.toHaveBeenCalledWith('/home')
   })
 
   it('disables submit button while pending', async () => {

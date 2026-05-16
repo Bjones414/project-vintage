@@ -63,7 +63,7 @@ export default async function WatchlistPage() {
   const supabaseAdmin = createAdminClient()
 
   // Load watchlist rows with listing data (service-role to bypass RLS on listings)
-  const { data: watchlistRows, error: watchlistError } = await (
+  const { data: watchlistRows } = await (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (supabaseAdmin as any)
       .from('watchlist')
@@ -96,8 +96,6 @@ export default async function WatchlistPage() {
         error: { message: string } | null
       }>
   )
-  console.log('[DEBUG watchlist page]', { userId: session.user.id, count: watchlistRows?.length ?? 0, error: watchlistError?.message ?? null })
-
   const items = (watchlistRows ?? []).filter(
     (w): w is WatchlistRowData => w.listings != null,
   )

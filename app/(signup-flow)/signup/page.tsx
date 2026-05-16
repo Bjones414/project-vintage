@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 const US_STATES = [
   'AL','AK','AZ','AR','CA','CO','CT','DE','DC',
@@ -126,6 +127,15 @@ export default function SignupPage() {
       const json = await res.json() as Record<string, unknown>
 
       if (res.status === 201) {
+        const supabase = createClient()
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password,
+        })
+        if (signInError) {
+          router.push(`/login?email=${encodeURIComponent(email.trim())}`)
+          return
+        }
         router.push('/home')
         return
       }

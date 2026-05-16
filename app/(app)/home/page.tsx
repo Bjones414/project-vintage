@@ -42,13 +42,11 @@ export default async function HomePage() {
   // Uses service-role client to bypass RLS — public.users has no SELECT policy
   // for the anon key, so the authenticated session cannot read its own row.
   const supabaseAdmin = createAdminClient()
-  const { data: profile, error: profileError } = await supabaseAdmin
+  const { data: profile } = await supabaseAdmin
     .from('users')
     .select('first_name, last_name, home_city')
     .eq('id', user.id)
     .single()
-
-  console.log('[DEBUG home profile]', { userId: user.id, data: profile, error: profileError })
 
   // Count vehicles (proxy for "has garage entries")
   const { count: vehicleCount } = await supabase
