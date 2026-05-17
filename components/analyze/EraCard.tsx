@@ -236,7 +236,7 @@ export function EraCard({ generation, viewerTier, watchForItems = [], make, mode
 
           <a
             href="/generations/997.2"
-            className="mt-auto block font-serif text-[13px] italic text-accent-primary hover:underline"
+            className="mt-auto block w-full cursor-pointer border-t-[0.5px] border-t-accent-primary pt-[14px] pb-[12px] px-[14px] font-serif italic text-[15px] font-medium text-accent-primary bg-[rgba(139,105,20,0.04)] hover:bg-[rgba(139,105,20,0.10)] transition-colors duration-150 focus:outline focus:outline-2 focus:outline-accent-primary focus:outline-offset-2"
           >
             More on the 997.2 →
           </a>
@@ -331,7 +331,7 @@ export function EraCard({ generation, viewerTier, watchForItems = [], make, mode
           {viewerTier !== 'anonymous' && !!generation?.generation_id && (
             <a
               href={`/generations/${generation.generation_id}`}
-              className="mt-auto block font-serif text-[13px] italic text-accent-primary hover:underline"
+              className="mt-auto block w-full cursor-pointer border-t-[0.5px] border-t-accent-primary pt-[14px] pb-[12px] px-[14px] font-serif italic text-[15px] font-medium text-accent-primary bg-[rgba(139,105,20,0.04)] hover:bg-[rgba(139,105,20,0.10)] transition-colors duration-150 focus:outline focus:outline-2 focus:outline-accent-primary focus:outline-offset-2"
             >
               More on the {formatGenerationDisplay(generation.generation_id)} →
             </a>
@@ -421,7 +421,7 @@ export function EraCard({ generation, viewerTier, watchForItems = [], make, mode
         {viewerTier !== 'anonymous' && (
           <a
             href={`/generations/${generation.generation_id}`}
-            className="mt-auto block font-serif text-[13px] italic text-accent-primary hover:underline"
+            className="mt-auto block w-full cursor-pointer border-t-[0.5px] border-t-accent-primary pt-[14px] pb-[12px] px-[14px] font-serif italic text-[15px] font-medium text-accent-primary bg-[rgba(139,105,20,0.04)] hover:bg-[rgba(139,105,20,0.10)] transition-colors duration-150 focus:outline focus:outline-2 focus:outline-accent-primary focus:outline-offset-2"
           >
             More on the {formatGenerationDisplay(generation.generation_id)} →
           </a>

@@ -547,6 +547,78 @@ describe('EraCard', () => {
     expect(t(html)).toContain('Cooling')
     expect(t(html)).toContain('Air-cooled')
   })
+
+  it('"More on" link — published generation, free tier — serif italic editorial CTA anchored to bottom', () => {
+    const html = renderToString(
+      <EraCard generation={GENERATION_993_PUBLISHED} viewerTier="free" />,
+    )
+    expect(html).toContain('href="/generations/993"')
+    // mt-auto anchors CTA to bottom of flex column
+    expect(html).toContain('mt-auto')
+    // display block + full width = large tap target for older users
+    expect(html).toContain('block')
+    expect(html).toContain('w-full')
+    // hairline rule above (border-t only, not all-sides border)
+    expect(html).toContain('border-t-[0.5px]')
+    expect(html).toContain('border-t-accent-primary')
+    // serif italic at 15px — editorial pull-quote style
+    expect(html).toContain('font-serif')
+    expect(html).toContain('italic')
+    expect(html).toContain('text-[15px]')
+    // CTA-level uppercase + tracking removed (0.08em was unique to the old CTA link)
+    expect(html).not.toContain('tracking-[0.08em]')
+    // hover and focus states
+    expect(html).toContain('hover:bg-[rgba(139,105,20,0.10)]')
+    expect(html).toContain('focus:outline')
+    expect(html).not.toContain('hover:underline')
+  })
+
+  it('"More on" link — draft/fallback generation, free tier — serif italic editorial CTA anchored to bottom', () => {
+    const html = renderToString(
+      <EraCard generation={GENERATION_930} viewerTier="free" />,
+    )
+    expect(html).toContain('href="/generations/930"')
+    expect(html).toContain('mt-auto')
+    expect(html).toContain('block')
+    expect(html).toContain('w-full')
+    expect(html).toContain('border-t-[0.5px]')
+    expect(html).toContain('border-t-accent-primary')
+    expect(html).toContain('font-serif')
+    expect(html).toContain('italic')
+    expect(html).toContain('text-[15px]')
+    expect(html).not.toContain('tracking-[0.08em]')
+    expect(html).toContain('hover:bg-[rgba(139,105,20,0.10)]')
+    expect(html).toContain('focus:outline')
+    expect(html).not.toContain('hover:underline')
+  })
+
+  it('"More on" link — 997.2 hardcoded path — serif italic editorial CTA anchored to bottom', () => {
+    const gen997_2 = { ...GENERATION_982_CAYMAN, generation_id: '997.2' }
+    const html = renderToString(
+      <EraCard generation={gen997_2} viewerTier="free" />,
+    )
+    expect(html).toContain('href="/generations/997.2"')
+    expect(html).toContain('mt-auto')
+    expect(html).toContain('block')
+    expect(html).toContain('w-full')
+    expect(html).toContain('border-t-[0.5px]')
+    expect(html).toContain('border-t-accent-primary')
+    expect(html).toContain('font-serif')
+    expect(html).toContain('italic')
+    expect(html).toContain('text-[15px]')
+    expect(html).not.toContain('tracking-[0.08em]')
+    expect(html).toContain('hover:bg-[rgba(139,105,20,0.10)]')
+    expect(html).toContain('focus:outline')
+    expect(html).not.toContain('hover:underline')
+  })
+
+  it('"More on" link — anonymous — not rendered for published generation', () => {
+    const html = renderToString(
+      <EraCard generation={GENERATION_993_PUBLISHED} viewerTier="anonymous" />,
+    )
+    expect(html).not.toContain('/generations/993')
+    expect(html).not.toContain('More on the')
+  })
 })
 
 // ---------------------------------------------------------------------------
