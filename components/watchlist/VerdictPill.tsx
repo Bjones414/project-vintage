@@ -11,7 +11,7 @@ const PILL_CONFIG: Record<VerdictPillState, PillConfig> = {
   'tracking-fair': { copy: 'Tracking fair',     bg: '#E1E8DC', color: '#3D5A40' },
   'tracking-high': { copy: 'Tracking high',     bg: '#EFD9D2', color: '#8C3A28' },
   'too-early':     { copy: 'Too early to call', bg: 'var(--bg-elevated)', color: 'var(--text-tertiary)' },
-  'sold-above':    { copy: 'Sold above',        bg: '#EFD9D2', color: '#8C3A28' },
+  'sold-above':    { copy: 'Sold strong',       bg: '#EFD9D2', color: '#8C3A28' },
   'sold-below':    { copy: 'Sold below',        bg: '#E1E8DC', color: '#3D5A40' },
   'sold-fair':     { copy: 'Sold fair',         bg: 'var(--bg-elevated)', color: 'var(--text-tertiary)' },
   'no-sale':       { copy: 'No sale',           bg: 'var(--bg-elevated)', color: 'var(--text-tertiary)', isItalicSerif: true },
@@ -19,10 +19,16 @@ const PILL_CONFIG: Record<VerdictPillState, PillConfig> = {
 
 interface Props {
   state: VerdictPillState
+  // For no-sale rows: the high bid at auction close, pre-formatted (e.g. "$107,000").
+  // When provided, the pill reads "Bid to $X (no sale)" instead of "No sale".
+  noSaleBidFormatted?: string
 }
 
-export function VerdictPill({ state }: Props) {
-  const { copy, bg, color, isItalicSerif } = PILL_CONFIG[state]
+export function VerdictPill({ state, noSaleBidFormatted }: Props) {
+  const { bg, color, isItalicSerif } = PILL_CONFIG[state]
+  const copy = state === 'no-sale' && noSaleBidFormatted
+    ? `Bid to ${noSaleBidFormatted} (no sale)`
+    : PILL_CONFIG[state].copy
 
   return (
     <span

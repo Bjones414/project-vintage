@@ -119,6 +119,11 @@ export interface WatchlistRefreshResult {
   updated_at: string               // ISO — new watchlist.updated_at after the run
 }
 
+// Returns true when the row's data is older than 12 hours — used to dim stale rows.
+export function isOlderThan12h(updatedAt: string, nowMs: number = Date.now()): boolean {
+  return nowMs - new Date(updatedAt).getTime() > TWELVE_HOURS_MS
+}
+
 // Format "Updated Xh ago" label from watchlist.updated_at
 export function formatUpdatedAt(updatedAt: string, nowMs: number = Date.now()): string {
   const msAgo = nowMs - new Date(updatedAt).getTime()

@@ -14,6 +14,7 @@ import {
   computeFreshness,
   computeVerdictPillState,
   formatUpdatedAt,
+  isOlderThan12h,
   type WatchlistRefreshResult,
 } from '@/lib/watchlist/state'
 import { VerdictPill } from './VerdictPill'
@@ -105,6 +106,7 @@ export function WatchlistRow({
   if (removed) return null
 
   const freshness  = computeFreshness(currentUpdatedAt, listing.auction_ends_at)
+  const isStale12h = isOlderThan12h(currentUpdatedAt)
   const isFetching = fetchState === 'fetching'
 
   // Verdict pill — use fresh refresh data when available, else fall back to stored comp_results
@@ -138,23 +140,35 @@ export function WatchlistRow({
   const isEnded   = listing.listing_status === 'sold'
   const compMedian = refreshData?.comp_median ?? initialComp?.fair_value_median_cents ?? null
 
-  const displayPrice   = isEnded
-    ? formatPrice(listing.final_price)
-    : formatPrice(compMedian)
-  const priceLabel     = isEnded ? 'Sold for' : 'Expected'
-
   const currentBid = refreshData?.current_bid ?? listing.high_bid
-  const subPrice   = isEnded && compMedian
-    ? `vs ${formatPrice(compMedian)} expected`
-    : isActive && currentBid
-    ? `Current bid ${formatPrice(currentBid)}`
+
+  // Current bid is the actionable number — display it large; expected is the reference below.
+  // For sold rows the final price is primary; for ended-but-no-sale show the high bid if known.
+  const displayPrice = isEnded
+    ? formatPrice(listing.final_price)
+    : currentBid
+    ? formatPrice(currentBid)
+    : formatPrice(compMedian)
+
+  const priceLabel = isEnded
+    ? 'Sold for'
+    : currentBid
+    ? (isActive ? 'Current bid' : 'High bid')
+    : 'Expected'
+
+  const subPrice = compMedian && (isEnded || currentBid !== null)
+    ? `vs expected ${formatPrice(compMedian)}`
     : null
 
   // Countdown
   const countdownText = formatCountdown(listing.auction_ends_at, listing.listing_status)
-  const isUrgentCountdown = isActive && listing.auction_ends_at
-    ? (new Date(listing.auction_ends_at).getTime() - Date.now()) < 24 * 60 * 60 * 1000
-    : false
+  const msUntilEnd = listing.auction_ends_at
+    ? new Date(listing.auction_ends_at).getTime() - Date.now()
+    : Infinity
+  const isUrgentCountdown = isActive && msUntilEnd > 0 && msUntilEnd < 24 * 60 * 60 * 1000
+
+  // For no-sale rows: pass the high bid to the pill so it can render "Bid to $X (no sale)".
+  const noSaleBidFormatted = pillState === 'no-sale' && currentBid ? formatPrice(currentBid) : undefined
 
   // Updated-at label
   const updatedLabel = isFetching
@@ -163,6 +177,8 @@ export function WatchlistRow({
 
   const updatedLabelClass = isFetching
     ? 'font-serif italic text-accent-primary'
+    : isStale12h
+    ? 'font-medium text-text-secondary'
     : freshness === 'stale' || freshness === 'stale-urgent'
     ? 'text-text-tertiary'
     : 'text-text-quaternary'
@@ -227,7 +243,7 @@ export function WatchlistRow({
   }
 
   return (
-    <div className={cn('border-b-[0.5px] border-border-subtle', borderClass)}>
+    <div className={cn('border-b-[0.5px] border-border-subtle', borderClass, isStale12h && !expanded ? 'opacity-60' : '')}>
       {/* Collapsed row — the click target */}
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
       <div
@@ -269,12 +285,22 @@ export function WatchlistRow({
               >
                 {invitationCopy}
               </button>
+              {/* Source listing link — opens original auction page in new tab */}
+              <a
+                href={listing.source_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="font-serif text-[13px] italic text-text-tertiary underline decoration-[0.5px] underline-offset-2 hover:opacity-70"
+              >
+                See listing →
+              </a>
             </div>
           </div>
 
           {/* Middle column: verdict pill */}
           <div className="flex justify-center">
-            <VerdictPill state={pillState} />
+            <VerdictPill state={pillState} noSaleBidFormatted={noSaleBidFormatted} />
           </div>
 
           {/* Right column: countdown, price label, price, subprice */}

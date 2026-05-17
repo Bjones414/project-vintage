@@ -22,9 +22,9 @@ describe('VerdictPill', () => {
     expect(html).toContain('Too early to call')
   })
 
-  it('renders "Sold above" with coral colors', () => {
+  it('renders "Sold strong" with coral colors', () => {
     const html = renderToString(<VerdictPill state="sold-above" />)
-    expect(html).toContain('Sold above')
+    expect(html).toContain('Sold strong')
     expect(html).toContain('#EFD9D2')
   })
 
@@ -39,11 +39,29 @@ describe('VerdictPill', () => {
     expect(html).toContain('Sold fair')
   })
 
-  it('renders "No sale" as italic serif (no uppercase class)', () => {
+  it('renders "No sale" as italic serif (no uppercase class) when no bid provided', () => {
     const html = renderToString(<VerdictPill state="no-sale" />)
     expect(html).toContain('No sale')
     expect(html).toContain('italic')
     expect(html).not.toContain('uppercase')
+  })
+
+  it('renders "Bid to $X (no sale)" when noSaleBidFormatted is provided', () => {
+    const html = renderToString(<VerdictPill state="no-sale" noSaleBidFormatted="$107,000" />)
+    expect(html).toContain('Bid to $107,000 (no sale)')
+    expect(html).toContain('italic')
+  })
+
+  it('falls back to "No sale" when noSaleBidFormatted is undefined', () => {
+    const html = renderToString(<VerdictPill state="no-sale" noSaleBidFormatted={undefined} />)
+    expect(html).toContain('No sale')
+    expect(html).not.toContain('Bid to')
+  })
+
+  it('noSaleBidFormatted is ignored for non-no-sale states', () => {
+    const html = renderToString(<VerdictPill state="tracking-fair" noSaleBidFormatted="$107,000" />)
+    expect(html).toContain('Tracking fair')
+    expect(html).not.toContain('Bid to')
   })
 
   it('all 7 states render without throwing', () => {

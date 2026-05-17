@@ -81,8 +81,8 @@ describe('WatchlistRow — collapsed static render', () => {
 
   it('renders verdict pill inside the row', () => {
     const html = renderToString(<WatchlistRow {...BASE_PROPS} />)
-    // VerdictPill renders one of the 7 state texts
-    expect(html).toMatch(/Tracking fair|Tracking high|Too early to call|Sold above|Sold below|Sold fair|No sale/)
+    // VerdictPill renders one of the 7 state texts (sold-above now renders "Sold strong")
+    expect(html).toMatch(/Tracking fair|Tracking high|Too early to call|Sold strong|Sold below|Sold fair|No sale|Bid to/)
   })
 
   it('renders countdown for auction with end date', () => {
@@ -108,6 +108,53 @@ describe('WatchlistRow — collapsed static render', () => {
     // Cannot test removal interaction without jsdom — just verify it renders
     const html = renderToString(<WatchlistRow {...BASE_PROPS} />)
     expect(html).not.toBe('')
+  })
+
+  it('renders a "See listing" link pointing to source_url', () => {
+    const html = renderToString(<WatchlistRow {...BASE_PROPS} />)
+    expect(html).toContain('See listing')
+    expect(html).toContain('href="https://bringatrailer.com/listing/test"')
+  })
+
+  it('"See listing" link opens in a new tab', () => {
+    const html = renderToString(<WatchlistRow {...BASE_PROPS} />)
+    expect(html).toContain('target="_blank"')
+  })
+
+  it('"See listing" link has rel="noopener noreferrer"', () => {
+    const html = renderToString(<WatchlistRow {...BASE_PROPS} />)
+    expect(html).toContain('rel="noopener noreferrer"')
+  })
+
+  it('price column shows "Current bid" label for active listing with a bid', () => {
+    const html = renderToString(<WatchlistRow {...BASE_PROPS} />)
+    expect(html).toContain('Current bid')
+  })
+
+  it('price column shows "vs expected" sub-line when comp median is available', () => {
+    const html = renderToString(<WatchlistRow {...BASE_PROPS} />)
+    expect(html).toContain('vs expected')
+  })
+
+  it('price column shows "Sold for" label for sold listings', () => {
+    const pastDate = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    const html = renderToString(
+      <WatchlistRow
+        {...BASE_PROPS}
+        listing={{ ...LISTING, listing_status: 'sold', final_price: 32_000_00, auction_ends_at: pastDate }}
+      />,
+    )
+    expect(html).toContain('Sold for')
+  })
+
+  it('no-sale listing shows "High bid" label when a bid is known', () => {
+    const html = renderToString(
+      <WatchlistRow
+        {...BASE_PROPS}
+        listing={{ ...LISTING, listing_status: 'no-sale', high_bid: 25_000_00, final_price: null }}
+      />,
+    )
+    expect(html).toContain('High bid')
   })
 
   it('"Read the take" does not navigate — no href to /analyze/ in collapsed row', () => {
