@@ -10,6 +10,7 @@ import { formatGenerationDisplay, formatGenerationFull } from '@/lib/era-content
 
 type Props = {
   generation: Tables<'porsche_generations'> | null
+  generationId?: string | null
   viewerTier: ViewerTier
   watchForItems?: WatchForItem[]
   make?: string | null
@@ -134,7 +135,7 @@ function WatchForSection({ items }: { items: WatchForItem[] }) {
   )
 }
 
-export function EraCard({ generation, viewerTier, watchForItems = [], make, model }: Props) {
+export function EraCard({ generation, generationId, viewerTier, watchForItems = [], make, model }: Props) {
   // Non-Porsche or out-of-scope Porsche: render limited-support fallback before
   // attempting any generation content. These listings are cached as comp data but
   // no era guide is available.
@@ -171,9 +172,8 @@ export function EraCard({ generation, viewerTier, watchForItems = [], make, mode
     }
   }
 
-  const genLabel = generation?.generation_id
-    ? formatGenerationFull(generation.generation_id)
-    : 'this generation'
+  const effectiveGenId = generation?.generation_id ?? generationId ?? null
+  const genLabel = effectiveGenId ? formatGenerationFull(effectiveGenId) : 'this generation'
   const sectionLabel = `The ${genLabel} generation`
   const liningNums: React.CSSProperties = { fontVariantNumeric: 'lining-nums', fontFeatureSettings: '"lnum"' }
 
@@ -246,12 +246,8 @@ export function EraCard({ generation, viewerTier, watchForItems = [], make, mode
   }
 
   if (generation?.content_status !== 'published' || !generation.notes) {
-    const decadeFallback = generation?.generation_id
-      ? getDecadeFallback(generation.generation_id)
-      : null
-    const genContent = generation?.generation_id
-      ? getGenerationContent(generation.generation_id)
-      : null
+    const decadeFallback = effectiveGenId ? getDecadeFallback(effectiveGenId) : null
+    const genContent = effectiveGenId ? getGenerationContent(effectiveGenId) : null
 
     // Prefer DB fields → decade-fallback → generation-content (richest available source)
     const introText = decadeFallback?.intro ?? genContent?.intro ?? null
@@ -328,12 +324,12 @@ export function EraCard({ generation, viewerTier, watchForItems = [], make, mode
             <WatchForSection items={watchForItems} />
           )}
 
-          {viewerTier !== 'anonymous' && !!generation?.generation_id && (
+          {viewerTier !== 'anonymous' && !!effectiveGenId && (
             <a
-              href={`/generations/${generation.generation_id}`}
+              href={`/generations/${effectiveGenId}`}
               className="mt-auto block w-full cursor-pointer border-t-[0.5px] border-t-accent-primary pt-[14px] pb-[12px] px-[14px] font-serif italic text-[15px] font-medium text-accent-primary bg-[rgba(139,105,20,0.04)] hover:bg-[rgba(139,105,20,0.10)] transition-colors duration-150 focus:outline focus:outline-2 focus:outline-accent-primary focus:outline-offset-2"
             >
-              More on the {formatGenerationDisplay(generation.generation_id)} →
+              More on the {formatGenerationDisplay(effectiveGenId)} →
             </a>
           )}
         </div>
