@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { NextRequest } from 'next/server'
 
 // ---------------------------------------------------------------------------
@@ -267,5 +267,81 @@ describe('POST /api/auth/signup', () => {
     const res = await POST(req)
     expect(res.status).toBe(400)
     expect((await res.json()).error).toBe('bad_request')
+  })
+
+  // -------------------------------------------------------------------------
+  // Orphan cleanup — failed deleteUser logging
+  // -------------------------------------------------------------------------
+  describe('orphan cleanup failure logging', () => {
+    let consoleSpy: ReturnType<typeof vi.spyOn>
+
+    beforeEach(() => {
+      consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    })
+
+    afterEach(() => {
+      consoleSpy.mockRestore()
+    })
+
+    it('logs structured error and returns 500 when deleteUser fails after RPC error', async () => {
+      mockRpc.mockResolvedValue({ data: null, error: { message: 'db connection failed', code: '08006' } })
+      mockDeleteUser.mockResolvedValue({ error: { message: 'admin service unavailable' } })
+
+      const res = await POST(makeRequest(VALID_BODY))
+      expect(res.status).toBe(500)
+      expect((await res.json()).error).toBe('signup_failed')
+
+      expect(consoleSpy).toHaveBeenCalledTimes(1)
+      const [tag, payload] = consoleSpy.mock.calls[0] as [string, string]
+      expect(tag).toBe('[signup] orphan_cleanup_failed')
+      const parsed = JSON.parse(payload)
+      expect(parsed.user_id).toBe('auth-user-uuid')
+      expect(parsed.trigger).toBe('rpc_error')
+      expect(parsed.signup_diagnostic).toMatchObject({ message: 'db connection failed', code: '08006' })
+      expect(parsed.cleanup_error.message).toBe('admin service unavailable')
+      expect(typeof parsed.timestamp).toBe('string')
+    })
+
+    it('logs structured error and returns 403 when deleteUser fails after alpha_capacity_reached', async () => {
+      mockRpc.mockResolvedValue({ data: { error: 'alpha_capacity_reached' }, error: null })
+      mockDeleteUser.mockResolvedValue({ error: { message: 'user not found' } })
+
+      const res = await POST(makeRequest(VALID_BODY))
+      expect(res.status).toBe(403)
+      expect((await res.json()).error).toBe('alpha_capacity_reached')
+
+      expect(consoleSpy).toHaveBeenCalledTimes(1)
+      const [tag, payload] = consoleSpy.mock.calls[0] as [string, string]
+      expect(tag).toBe('[signup] orphan_cleanup_failed')
+      const parsed = JSON.parse(payload)
+      expect(parsed.user_id).toBe('auth-user-uuid')
+      expect(parsed.trigger).toBe('alpha_capacity_reached')
+      expect(parsed.cleanup_error.message).toBe('user not found')
+      expect(typeof parsed.timestamp).toBe('string')
+    })
+
+    it('logs structured error and returns 500 when deleteUser fails after unexpected RPC result', async () => {
+      mockRpc.mockResolvedValue({ data: { unexpected: true }, error: null })
+      mockDeleteUser.mockResolvedValue({ error: { message: 'network timeout' } })
+
+      const res = await POST(makeRequest(VALID_BODY))
+      expect(res.status).toBe(500)
+      expect((await res.json()).error).toBe('signup_failed')
+
+      expect(consoleSpy).toHaveBeenCalledTimes(1)
+      const [tag, payload] = consoleSpy.mock.calls[0] as [string, string]
+      expect(tag).toBe('[signup] orphan_cleanup_failed')
+      const parsed = JSON.parse(payload)
+      expect(parsed.trigger).toBe('rpc_unexpected_result')
+      expect(parsed.cleanup_error.message).toBe('network timeout')
+    })
+
+    it('does NOT log when deleteUser succeeds on cleanup', async () => {
+      mockRpc.mockResolvedValue({ data: { error: 'alpha_capacity_reached' }, error: null })
+      mockDeleteUser.mockResolvedValue({ error: null })
+
+      await POST(makeRequest(VALID_BODY))
+      expect(consoleSpy).not.toHaveBeenCalled()
+    })
   })
 })

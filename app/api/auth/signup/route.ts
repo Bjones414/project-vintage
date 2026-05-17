@@ -29,6 +29,33 @@ function adminClient() {
   )
 }
 
+type AdminSupabase = ReturnType<typeof adminClient>
+
+// Attempt to remove an orphaned auth.users row created before a downstream
+// failure. Logs a structured error on cleanup failure so the orphan can be
+// found and removed in a batch pass — never throws so the original error
+// response still reaches the client.
+async function deleteOrphanedAuthUser(
+  supabase: AdminSupabase,
+  userId: string,
+  trigger: string,
+  signupDiagnostic: Record<string, unknown>,
+): Promise<void> {
+  const { error: cleanupError } = await supabase.auth.admin.deleteUser(userId)
+  if (cleanupError) {
+    console.error(
+      '[signup] orphan_cleanup_failed',
+      JSON.stringify({
+        user_id: userId,
+        trigger,
+        signup_diagnostic: signupDiagnostic,
+        cleanup_error: { message: cleanupError.message },
+        timestamp: new Date().toISOString(),
+      }),
+    )
+  }
+}
+
 export async function POST(request: NextRequest) {
   let body: unknown
   try {
@@ -132,7 +159,10 @@ export async function POST(request: NextRequest) {
     })
 
   if (rpcError) {
-    await supabaseAdmin.auth.admin.deleteUser(authUserId)
+    await deleteOrphanedAuthUser(supabaseAdmin, authUserId, 'rpc_error', {
+      message: rpcError.message,
+      code: rpcError.code,
+    })
     return NextResponse.json(
       { error: 'signup_failed', message: 'Failed to create account. Please try again.' },
       { status: 500 },
@@ -142,7 +172,7 @@ export async function POST(request: NextRequest) {
   const result = rpcResult as { success?: boolean; error?: string } | null
 
   if (result?.error === 'alpha_capacity_reached') {
-    await supabaseAdmin.auth.admin.deleteUser(authUserId)
+    await deleteOrphanedAuthUser(supabaseAdmin, authUserId, 'alpha_capacity_reached', {})
     return NextResponse.json(
       {
         error: 'alpha_capacity_reached',
@@ -153,7 +183,9 @@ export async function POST(request: NextRequest) {
   }
 
   if (!result?.success) {
-    await supabaseAdmin.auth.admin.deleteUser(authUserId)
+    await deleteOrphanedAuthUser(supabaseAdmin, authUserId, 'rpc_unexpected_result', {
+      result,
+    })
     return NextResponse.json(
       { error: 'signup_failed', message: 'Failed to create account. Please try again.' },
       { status: 500 },
