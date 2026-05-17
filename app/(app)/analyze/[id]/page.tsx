@@ -51,10 +51,10 @@ type PageProps = {
 export default async function ListingDetailPage({ params }: PageProps) {
   const supabase = createClient()
 
-  const [listingResult, { tier: viewerTier }, sessionResult] = await Promise.all([
+  const [listingResult, { tier: viewerTier }, userResult] = await Promise.all([
     supabase.from('listings').select('*').eq('id', params.id).single(),
     getViewerTier(),
-    supabase.auth.getSession(),
+    supabase.auth.getUser(),
   ])
 
   if (listingResult.error || !listingResult.data) {
@@ -62,11 +62,11 @@ export default async function ListingDetailPage({ params }: PageProps) {
   }
 
   const listing = listingResult.data
-  const session = sessionResult.data.session
+  const user = userResult.data.user
 
   // Check if the authenticated user already has this listing in their watchlist.
   // Used to set the initial "Watch this car" / "Watching" state without a client-side fetch.
-  const initialWatched = session
+  const initialWatched = user
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ? await (supabase as any)
         .from('watchlist')

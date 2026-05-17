@@ -53,10 +53,10 @@ type CompResultData = {
 export default async function WatchlistPage() {
   const supabase = createClient()
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    data: { user },
+  } = await supabase.auth.getUser()
 
-  if (!session) {
+  if (!user) {
     redirect('/login?next=/watchlist')
   }
 
@@ -90,7 +90,7 @@ export default async function WatchlistPage() {
           generation_id
         )
       `)
-      .eq('user_id', session.user.id)
+      .eq('user_id', user.id)
       .order('created_at', { ascending: false }) as unknown as Promise<{
         data: WatchlistRowData[] | null
         error: { message: string } | null

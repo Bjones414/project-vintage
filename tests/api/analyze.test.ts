@@ -6,7 +6,7 @@ import { NextRequest } from 'next/server'
 // though vi.mock calls are hoisted to the top of the file by Vitest.
 // ---------------------------------------------------------------------------
 const {
-  mockGetSession,
+  mockGetUser,
   mockParseListing,
   mockDecodeVin,
   mockMatchGeneration,
@@ -14,7 +14,7 @@ const {
   mockGetRecalls,
   mockWriteCapture,
 } = vi.hoisted(() => ({
-  mockGetSession:       vi.fn(),
+  mockGetUser:          vi.fn(),
   mockParseListing:     vi.fn(),
   mockDecodeVin:        vi.fn(),
   mockMatchGeneration:  vi.fn(),
@@ -24,7 +24,7 @@ const {
 }))
 
 vi.mock('@/lib/supabase/server', () => ({
-  createClient: () => ({ auth: { getSession: mockGetSession } }),
+  createClient: () => ({ auth: { getUser: mockGetUser } }),
 }))
 
 vi.mock('@/lib/listing-parser', () => ({ parseListing: mockParseListing }))
@@ -120,8 +120,9 @@ const CANONICAL_LISTING = {
 beforeEach(() => {
   vi.clearAllMocks()
 
-  mockGetSession.mockResolvedValue({
-    data: { session: { user: { id: 'user-uuid-001' } } },
+  mockGetUser.mockResolvedValue({
+    data: { user: { id: 'user-uuid-001' } },
+    error: null,
   })
 
   mockParseListing.mockResolvedValue({ success: true, listing: CANONICAL_LISTING })
@@ -151,8 +152,8 @@ beforeEach(() => {
 // Auth guard
 // ---------------------------------------------------------------------------
 describe('POST /api/analyze — auth', () => {
-  it('returns 401 when no session', async () => {
-    mockGetSession.mockResolvedValueOnce({ data: { session: null } })
+  it('returns 401 when no user', async () => {
+    mockGetUser.mockResolvedValueOnce({ data: { user: null }, error: null })
     const res = await POST(makeRequest({ url: 'https://bringatrailer.com/listing/test' }))
     expect(res.status).toBe(401)
     const body = await res.json() as { error: string }
@@ -234,18 +235,16 @@ describe('POST /api/analyze — success', () => {
   it('returns 200 with listingId', async () => {
     const res = await POST(makeRequest({ url: 'https://bringatrailer.com/listing/test' }))
     expect(res.status).toBe(200)
-    const body = await res.json() as { listingId: string; listing: unknown }
+    const body = await res.json() as { listingId: string; cached: boolean }
     expect(body.listingId).toBe('listing-db-uuid-001')
   })
 
-  it('response includes the canonical listing for backward compat', async () => {
+  it('cache-miss response shape matches cache-hit shape (listingId + cached only)', async () => {
     const res = await POST(makeRequest({ url: 'https://bringatrailer.com/listing/test' }))
-    const body = await res.json() as { listingId: string; listing: typeof CANONICAL_LISTING }
-    expect(body.listing).toMatchObject({
-      source_platform: 'bring-a-trailer',
-      make: 'Porsche',
-      model: '718 Cayman',
-    })
+    const body = await res.json() as Record<string, unknown>
+    // Must contain exactly the same keys as the cache-hit path: { listingId, cached }
+    expect(Object.keys(body).sort()).toEqual(['cached', 'listingId'])
+    expect(body.cached).toBe(false)
   })
 
   it('creates a listing_analyses row linked to the upserted listing', async () => {
@@ -262,7 +261,7 @@ describe('POST /api/analyze — success', () => {
     mockInsert = vi.fn().mockResolvedValue({ error: { message: 'insert failed' } })
     const res = await POST(makeRequest({ url: 'https://bringatrailer.com/listing/test' }))
     expect(res.status).toBe(200)
-    const body = await res.json() as { listingId: string }
+    const body = await res.json() as { listingId: string; cached: boolean }
     expect(body.listingId).toBe('listing-db-uuid-001')
   })
 
@@ -305,9 +304,10 @@ describe('POST /api/analyze — data capture', () => {
     expect(body.listingId).toBe('listing-db-uuid-001')
   })
 
-  it('response body does not contain a raw_description key', async () => {
+  it('response body does not expose internal listing fields', async () => {
     const res = await POST(makeRequest({ url: 'https://bringatrailer.com/listing/test' }))
     const body = await res.json() as Record<string, unknown>
     expect(Object.keys(body)).not.toContain('raw_description')
+    expect(Object.keys(body)).not.toContain('listing')
   })
 })

@@ -30,9 +30,9 @@ type WatchlistItem = {
 export async function GET(_request: NextRequest) {
   const supabase = createClient()
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  if (!session) {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
   }
 
@@ -67,9 +67,9 @@ export async function GET(_request: NextRequest) {
 export async function POST(request: NextRequest) {
   const supabase = createClient()
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  if (!session) {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
   }
 
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (supabase as any)
       .from('watchlist')
-      .insert({ user_id: session.user.id, listing_id }) as unknown as Promise<{
+      .insert({ user_id: user.id, listing_id }) as unknown as Promise<{
         error: { code?: string; message: string } | null
       }>
   )
@@ -107,9 +107,9 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   const supabase = createClient()
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  if (!session) {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
   }
 

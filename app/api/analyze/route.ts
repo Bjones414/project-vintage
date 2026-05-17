@@ -46,9 +46,9 @@ export async function POST(request: NextRequest) {
   // Check auth
   const supabase = createClient()
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  if (!session) {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
   }
 
@@ -285,7 +285,7 @@ export async function POST(request: NextRequest) {
   const analysisResult = await (supabaseAdmin
     .from('listing_analyses')
     .insert({
-      user_id: session.user.id,
+      user_id: user.id,
       listing_id: listingId,
       source_url: listing.source_url,
       source_platform: listing.source_platform,
@@ -337,5 +337,5 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  return NextResponse.json({ listingId, listing }, { status: 200 })
+  return NextResponse.json({ listingId, cached: false }, { status: 200 })
 }

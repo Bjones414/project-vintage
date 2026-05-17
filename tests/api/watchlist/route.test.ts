@@ -3,14 +3,14 @@ import { NextRequest } from 'next/server'
 
 // ── vi.hoisted: values available inside vi.mock factories ──────────────────
 
-const { mockGetSession, mockFrom } = vi.hoisted(() => ({
-  mockGetSession: vi.fn(),
-  mockFrom:       vi.fn(),
+const { mockGetUser, mockFrom } = vi.hoisted(() => ({
+  mockGetUser: vi.fn(),
+  mockFrom:    vi.fn(),
 }))
 
 vi.mock('@/lib/supabase/server', () => ({
   createClient: () => ({
-    auth: { getSession: mockGetSession },
+    auth: { getUser: mockGetUser },
     from: mockFrom,
   }),
 }))
@@ -21,13 +21,14 @@ const { GET, POST, DELETE } = await import('@/app/api/watchlist/route')
 // ── helpers ────────────────────────────────────────────────────────────────
 
 function authedSession(userId = 'user-123') {
-  mockGetSession.mockResolvedValue({
-    data: { session: { user: { id: userId } } },
+  mockGetUser.mockResolvedValue({
+    data: { user: { id: userId } },
+    error: null,
   })
 }
 
 function noSession() {
-  mockGetSession.mockResolvedValue({ data: { session: null } })
+  mockGetUser.mockResolvedValue({ data: { user: null }, error: null })
 }
 
 function makeRequest(method: string, url = 'http://localhost/api/watchlist', body?: unknown) {
