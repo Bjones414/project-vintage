@@ -74,4 +74,77 @@ describe('CompRangeViz', () => {
     )
     expect(html).toBe('')
   })
+
+  it('renders median label text', () => {
+    const html = renderToString(<CompRangeViz {...BASE_PROPS} />)
+    expect(html).toContain('median')
+  })
+
+  it('renders top label text', () => {
+    const html = renderToString(<CompRangeViz {...BASE_PROPS} />)
+    expect(html).toContain('top')
+  })
+
+  it('renders bid/sold label even when bid is far outside the comp range', () => {
+    // Bid well below p25 — label must still appear
+    const html = renderToString(
+      <CompRangeViz {...BASE_PROPS} bidCents={8_000_00} />,
+    )
+    expect(html).toContain('bid')
+  })
+
+  it('median and top labels are in separate text elements from the bid label', () => {
+    const html = renderToString(<CompRangeViz {...BASE_PROPS} />)
+    // Each label lives in its own <text> element; split on closing tag to count distinct containers
+    const textElements = html.match(/<text[^>]*>[\s\S]*?<\/text>/g) ?? []
+    const bidEl     = textElements.find(el => el.includes('bid'))
+    const medianEl  = textElements.find(el => el.includes('median'))
+    const topEl     = textElements.find(el => el.includes('top'))
+    expect(bidEl).toBeDefined()
+    expect(medianEl).toBeDefined()
+    expect(topEl).toBeDefined()
+    // All three must be distinct elements — no two share the same reference
+    expect(bidEl).not.toBe(medianEl)
+    expect(bidEl).not.toBe(topEl)
+    expect(medianEl).not.toBe(topEl)
+  })
+
+  it('all three labels are on distinct vertical y-rows', () => {
+    const html = renderToString(<CompRangeViz {...BASE_PROPS} />)
+    // BID_LABEL_Y=10 (above bar), MEDIAN_LABEL_Y=52, TOP_LABEL_Y=70
+    const textElements = html.match(/<text[^>]*>[\s\S]*?<\/text>/g) ?? []
+    const bidEl    = textElements.find(el => el.includes('bid'))
+    const medianEl = textElements.find(el => el.includes('median'))
+    const topEl    = textElements.find(el => el.includes('top'))
+    expect(bidEl).toContain('y="10"')
+    expect(medianEl).toContain('y="52"')
+    expect(topEl).toContain('y="70"')
+    // All three y values are distinct — verified by the different constants above
+    const yValues = [10, 52, 70]
+    expect(new Set(yValues).size).toBe(3)
+  })
+
+  it('all three labels use textAnchor middle to center on their tick position', () => {
+    const html = renderToString(<CompRangeViz {...BASE_PROPS} />)
+    const textElements = html.match(/<text[^>]*>[\s\S]*?<\/text>/g) ?? []
+    const bidEl    = textElements.find(el => el.includes('bid'))
+    const medianEl = textElements.find(el => el.includes('median'))
+    const topEl    = textElements.find(el => el.includes('top'))
+    expect(bidEl).toContain('middle')
+    expect(medianEl).toContain('middle')
+    expect(topEl).toContain('middle')
+  })
+
+  it('all label x coordinates are clamped within viewBox bounds', () => {
+    const html = renderToString(<CompRangeViz {...BASE_PROPS} />)
+    const textElements = html.match(/<text[^>]*>[\s\S]*?<\/text>/g) ?? []
+    for (const el of textElements) {
+      const xMatch = el.match(/\bx="([\d.]+)"/)
+      if (xMatch) {
+        const x = parseFloat(xMatch[1])
+        expect(x).toBeGreaterThanOrEqual(36)   // CLAMP_PAD
+        expect(x).toBeLessThanOrEqual(244)      // TOTAL_W - CLAMP_PAD
+      }
+    }
+  })
 })

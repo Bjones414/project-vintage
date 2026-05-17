@@ -16,7 +16,17 @@ interface Props {
 
 const TOTAL_W = 280
 const TRACK_Y = 22
-const VIZ_H   = 60
+const VIZ_H   = 88
+
+// Four-row label layout — each label occupies its own y-row so collision is geometrically impossible
+const BID_LABEL_Y    = 10   // row 1 (ABOVE bar): "$Xk bid/sold"
+const MEDIAN_LABEL_Y = 52   // row 3 (below bar): "$Yk median"
+const TOP_LABEL_Y    = 70   // row 4 (staggered below median): "$Zk top"
+const CLAMP_PAD      = 36   // min px from viewBox edge to centered-text anchor
+
+function clampX(x: number): number {
+  return Math.max(CLAMP_PAD, Math.min(TOTAL_W - CLAMP_PAD, x))
+}
 
 function formatK(cents: number): string {
   const dollars = Math.round(cents / 100)
@@ -110,11 +120,11 @@ export function CompRangeViz({ p25Cents, medianCents, p75Cents, bidCents, finalP
         </>
       )}
 
-      {/* Labels below track */}
+      {/* Bid/sold label — row 1, ABOVE bar, centered at the bid/sold marker position */}
       {bidX !== null && activePriceCents !== null && (
         <text
-          x={bidX}
-          y={TRACK_Y + 26}
+          x={clampX(bidX)}
+          y={BID_LABEL_Y}
           textAnchor="middle"
           fontSize="11"
           fontFamily="'Source Serif 4', Georgia, serif"
@@ -125,9 +135,11 @@ export function CompRangeViz({ p25Cents, medianCents, p75Cents, bidCents, finalP
           {formatK(activePriceCents)} {bidLabel}
         </text>
       )}
+
+      {/* Median label — row 3, centered at the median tick */}
       <text
-        x={medX}
-        y={TRACK_Y + 26}
+        x={clampX(medX)}
+        y={MEDIAN_LABEL_Y}
         textAnchor="middle"
         fontSize="11"
         fontFamily="'Source Serif 4', Georgia, serif"
@@ -135,9 +147,11 @@ export function CompRangeViz({ p25Cents, medianCents, p75Cents, bidCents, finalP
       >
         {formatK(medianCents)} median
       </text>
+
+      {/* Top label — row 4, centered at the p75 tick (staggered below median row) */}
       <text
-        x={p75X}
-        y={TRACK_Y + 26}
+        x={clampX(p75X)}
+        y={TOP_LABEL_Y}
         textAnchor="middle"
         fontSize="11"
         fontFamily="'Source Serif 4', Georgia, serif"

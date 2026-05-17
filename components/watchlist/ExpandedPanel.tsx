@@ -74,16 +74,7 @@ export function ExpandedPanel({ listingId, listing, refreshData, generationWatch
   }
 
   return (
-    <div className="relative border-t-[0.5px] border-border-default">
-      {/* "Collapse ↑" link — absolute top-right */}
-      <button
-        type="button"
-        onClick={onCollapse}
-        className="absolute right-0 top-[28px] font-serif text-[13px] italic text-text-tertiary underline decoration-[0.5px] underline-offset-2 hover:text-accent-primary"
-      >
-        Collapse ↑
-      </button>
-
+    <div className="border-t-[0.5px] border-border-default">
       {/* Two-column grid: analysis left, comp viz right */}
       <div
         className="grid gap-[56px] pb-8 pt-7 pr-6"
@@ -137,13 +128,24 @@ export function ExpandedPanel({ listingId, listing, refreshData, generationWatch
 
         {/* ── Right column ── */}
         <div>
-          {/* Comp eyebrow */}
-          <p className="mb-3 font-sans text-[10px] uppercase tracking-[0.12em] text-text-tertiary">
-            Comparable sales
-            {refreshData.comp_count > 0 && (
-              <> · {refreshData.comp_count} {listing.trim || listing.model || ''}</>
-            )}
-          </p>
+          {/* Comp eyebrow + Collapse — stacked so they can never share a horizontal row */}
+          <div className="mb-3 flex flex-col gap-1">
+            <p className="font-sans text-[10px] uppercase tracking-[0.12em] text-text-tertiary">
+              Comparable sales
+              {refreshData.comp_count > 0 && (
+                <> · {refreshData.comp_count} {listing.trim || listing.model || ''}</>
+              )}
+            </p>
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={onCollapse}
+                className="font-serif text-[13px] italic text-text-tertiary underline decoration-[0.5px] underline-offset-2 hover:text-accent-primary"
+              >
+                Collapse ↑
+              </button>
+            </div>
+          </div>
 
           {/* Comp range visualization */}
           {hasComps && refreshData.comp_p25 !== null && refreshData.comp_p75 !== null ? (

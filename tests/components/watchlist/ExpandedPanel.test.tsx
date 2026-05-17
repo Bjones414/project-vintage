@@ -100,6 +100,59 @@ describe('ExpandedPanel', () => {
     ).not.toThrow()
   })
 
+  describe('Fix B — Collapse toggle below comp eyebrow, no overlap', () => {
+    it('Collapse button is not absolutely positioned', () => {
+      const html = renderToString(
+        <ExpandedPanel
+          listingId="lst-abc"
+          listing={LISTING}
+          refreshData={REFRESH_DATA}
+          generationWatchForItems={[]}
+          onCollapse={vi.fn()}
+          onRemove={vi.fn()}
+        />,
+      )
+      const collapseButtonMatch = html.match(/<button[^>]*>[\s\S]*?Collapse[\s\S]*?<\/button>/)
+      expect(collapseButtonMatch).not.toBeNull()
+      expect(collapseButtonMatch![0]).not.toContain('absolute')
+    })
+
+    it('Collapse link appears after the comp eyebrow text in DOM order', () => {
+      const html = renderToString(
+        <ExpandedPanel
+          listingId="lst-abc"
+          listing={LISTING}
+          refreshData={REFRESH_DATA}
+          generationWatchForItems={[]}
+          onCollapse={vi.fn()}
+          onRemove={vi.fn()}
+        />,
+      )
+      const eyebrowIdx = html.indexOf('Comparable sales')
+      const collapseIdx = html.indexOf('Collapse')
+      expect(eyebrowIdx).toBeGreaterThanOrEqual(0)
+      expect(collapseIdx).toBeGreaterThanOrEqual(0)
+      expect(collapseIdx).toBeGreaterThan(eyebrowIdx)
+    })
+
+    it('renders both comp eyebrow and Collapse button when trim name is long', () => {
+      const longTrim = 'Carrera 2 Coupe 5-Speed Matching Numbers Fully Documented'
+      const html = renderToString(
+        <ExpandedPanel
+          listingId="lst-abc"
+          listing={{ ...LISTING, trim: longTrim }}
+          refreshData={REFRESH_DATA}
+          generationWatchForItems={[]}
+          onCollapse={vi.fn()}
+          onRemove={vi.fn()}
+        />,
+      )
+      expect(html).toContain('Comparable sales')
+      expect(html).toContain(longTrim)
+      expect(html).toContain('Collapse')
+    })
+  })
+
   describe('Fix C — action row anchored to bottom of left column', () => {
     it('left column element has flex flex-col layout class', () => {
       const html = renderToString(
