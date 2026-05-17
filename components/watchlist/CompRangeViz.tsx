@@ -16,13 +16,18 @@ interface Props {
 
 const TOTAL_W = 280
 const TRACK_Y = 22
-const VIZ_H   = 88
+const VIZ_H   = 68
 
-// Four-row label layout — each label occupies its own y-row so collision is geometrically impossible
-const BID_LABEL_Y    = 10   // row 1 (ABOVE bar): "$Xk bid/sold"
-const MEDIAN_LABEL_Y = 52   // row 3 (below bar): "$Yk median"
-const TOP_LABEL_Y    = 70   // row 4 (staggered below median): "$Zk top"
-const CLAMP_PAD      = 36   // min px from viewBox edge to centered-text anchor
+// Label layout:
+//   Row 1 (y=10, above bar): "$Xk bid/sold" — tracks the bid marker, clamped to viewBox
+//   Row 2 (y=52, below bar): "$Yk median" + "$Zk top" on the SAME line at fixed column centers
+//     Median anchored at x=TOTAL_W/4 (70), top anchored at x=3*TOTAL_W/4 (210).
+//     Fixed columns make overlap geometrically impossible at any price level.
+const BID_LABEL_Y    = 10                             // above bar, tracks bid position
+const BOTTOM_LABEL_Y = 52                             // shared row for median + top
+const MEDIAN_LABEL_X = Math.round(TOTAL_W / 4)        // 70 — left column center
+const TOP_LABEL_X    = Math.round((TOTAL_W * 3) / 4)  // 210 — right column center
+const CLAMP_PAD      = 36   // min px from viewBox edge for the bid label anchor
 
 function clampX(x: number): number {
   return Math.max(CLAMP_PAD, Math.min(TOTAL_W - CLAMP_PAD, x))
@@ -136,10 +141,10 @@ export function CompRangeViz({ p25Cents, medianCents, p75Cents, bidCents, finalP
         </text>
       )}
 
-      {/* Median label — row 3, centered at the median tick */}
+      {/* Median label — fixed left column, same row as top */}
       <text
-        x={clampX(medX)}
-        y={MEDIAN_LABEL_Y}
+        x={MEDIAN_LABEL_X}
+        y={BOTTOM_LABEL_Y}
         textAnchor="middle"
         fontSize="11"
         fontFamily="'Source Serif 4', Georgia, serif"
@@ -148,10 +153,10 @@ export function CompRangeViz({ p25Cents, medianCents, p75Cents, bidCents, finalP
         {formatK(medianCents)} median
       </text>
 
-      {/* Top label — row 4, centered at the p75 tick (staggered below median row) */}
+      {/* Top label — fixed right column, same row as median */}
       <text
-        x={clampX(p75X)}
-        y={TOP_LABEL_Y}
+        x={TOP_LABEL_X}
+        y={BOTTOM_LABEL_Y}
         textAnchor="middle"
         fontSize="11"
         fontFamily="'Source Serif 4', Georgia, serif"

@@ -109,19 +109,19 @@ describe('CompRangeViz', () => {
     expect(medianEl).not.toBe(topEl)
   })
 
-  it('all three labels are on distinct vertical y-rows', () => {
+  it('bid label is above the bar; median and top share the same bottom row', () => {
     const html = renderToString(<CompRangeViz {...BASE_PROPS} />)
-    // BID_LABEL_Y=10 (above bar), MEDIAN_LABEL_Y=52, TOP_LABEL_Y=70
+    // BID_LABEL_Y=10 (above bar), BOTTOM_LABEL_Y=52 (both median + top on the same line)
     const textElements = html.match(/<text[^>]*>[\s\S]*?<\/text>/g) ?? []
     const bidEl    = textElements.find(el => el.includes('bid'))
     const medianEl = textElements.find(el => el.includes('median'))
     const topEl    = textElements.find(el => el.includes('top'))
     expect(bidEl).toContain('y="10"')
     expect(medianEl).toContain('y="52"')
-    expect(topEl).toContain('y="70"')
-    // All three y values are distinct — verified by the different constants above
-    const yValues = [10, 52, 70]
-    expect(new Set(yValues).size).toBe(3)
+    expect(topEl).toContain('y="52"')  // same row as median — fixed-column layout
+    // Two distinct y-rows: above bar (10) and bottom labels (52)
+    const uniqueYRows = new Set([10, 52, 52])
+    expect(uniqueYRows.size).toBe(2)
   })
 
   it('all three labels use textAnchor middle to center on their tick position', () => {
