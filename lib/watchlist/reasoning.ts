@@ -116,9 +116,19 @@ export function buildReasoning(input: ReasoningInput, nowMs: number = Date.now()
           `The current bid is running above the median of ${median}, which is notable for this spec.`
         )
       } else if (bid < predicted_p25!) {
-        sentences.push(
-          `The current bid is below the expected floor, which may represent value if the car checks out.`
-        )
+        const endsAtMs = listing.auction_ends_at ? new Date(listing.auction_ends_at).getTime() : null
+        const msRemaining = endsAtMs !== null ? endsAtMs - nowMs : null
+        if (msRemaining !== null && msRemaining >= 24 * 3600 * 1000) {
+          const daysRemaining = Math.floor(msRemaining / (24 * 3600 * 1000))
+          const dayLabel = daysRemaining === 1 ? '1 day' : `${daysRemaining} days`
+          sentences.push(
+            `With ${dayLabel} remaining, the bid could still move higher before close.`
+          )
+        } else {
+          sentences.push(
+            `The current bid is below the expected floor, which may represent value if the car checks out.`
+          )
+        }
       } else {
         sentences.push(
           `The current bid sits near the median, which is fair for a car with this spec.`

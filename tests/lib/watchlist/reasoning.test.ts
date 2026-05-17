@@ -107,6 +107,86 @@ describe('buildReasoning', () => {
     expect(result.length).toBeGreaterThan(0)
   })
 
+  describe('below floor branch (not significantly-below) — time-aware framing', () => {
+    // bid $25,000 is below p25 ($28,000) but above 80% threshold ($22,400)
+    const fixedNow       = new Date('2026-05-15T12:00:00Z').getTime()
+    const sixDaysOut     = '2026-05-21T12:00:00Z'
+    const oneDayOut      = '2026-05-16T12:00:00Z' // exactly 24 h → still hedged (> 24h boundary)
+    const eighteenHoursOut = '2026-05-16T06:00:00Z'
+    const thirtyMinOut   = '2026-05-15T12:30:00Z'
+    const pastDate       = '2026-05-10T12:00:00Z'
+    const belowBid       = 25_000_00
+
+    it('>24h: produces hedged copy mentioning days remaining', () => {
+      const result = buildReasoning({
+        listing: { ...baseListing, high_bid: belowBid, auction_ends_at: sixDaysOut },
+        comps: baseComps,
+      }, fixedNow)
+      expect(result).toContain('6 days remaining')
+      expect(result).toContain('could still move higher before close')
+      expect(result).not.toContain('below the expected floor')
+    })
+
+    it('>24h: singular "1 day remaining" form', () => {
+      const result = buildReasoning({
+        listing: { ...baseListing, high_bid: belowBid, auction_ends_at: oneDayOut },
+        comps: baseComps,
+      }, fixedNow)
+      expect(result).toContain('With 1 day remaining')
+      expect(result).not.toContain('1 days')
+      expect(result).not.toContain('below the expected floor')
+    })
+
+    it('<24h: produces sharp "below the expected floor" copy', () => {
+      const result = buildReasoning({
+        listing: { ...baseListing, high_bid: belowBid, auction_ends_at: eighteenHoursOut },
+        comps: baseComps,
+      }, fixedNow)
+      expect(result).toContain('below the expected floor')
+      expect(result).toContain('may represent value')
+      expect(result).not.toContain('days remaining')
+    })
+
+    it('< 1h remaining: still uses sharp copy', () => {
+      const result = buildReasoning({
+        listing: { ...baseListing, high_bid: belowBid, auction_ends_at: thirtyMinOut },
+        comps: baseComps,
+      }, fixedNow)
+      expect(result).toContain('below the expected floor')
+      expect(result).not.toContain('days remaining')
+    })
+
+    it('null auction_ends_at: falls back to sharp copy', () => {
+      const result = buildReasoning({
+        listing: { ...baseListing, high_bid: belowBid, auction_ends_at: null },
+        comps: baseComps,
+      }, fixedNow)
+      expect(result).toContain('below the expected floor')
+      expect(result).not.toContain('days remaining')
+    })
+
+    it('past auction_ends_at: falls back to sharp copy', () => {
+      const result = buildReasoning({
+        listing: { ...baseListing, high_bid: belowBid, auction_ends_at: pastDate },
+        comps: baseComps,
+      }, fixedNow)
+      expect(result).toContain('below the expected floor')
+      expect(result).not.toContain('days remaining')
+    })
+
+    it('first sentence still names the car and position regardless of time', () => {
+      // sentence 1 is always "This … is tracking at $X — below the expected …"
+      for (const endsAt of [sixDaysOut, eighteenHoursOut, null]) {
+        const result = buildReasoning({
+          listing: { ...baseListing, high_bid: belowBid, auction_ends_at: endsAt },
+          comps: baseComps,
+        }, fixedNow)
+        expect(result).toContain('$25,000')
+        expect(result).toContain('below')
+      }
+    })
+  })
+
   describe('significantly below branch', () => {
     // Fixed reference point for deterministic time-remaining tests
     const fixedNow  = new Date('2026-05-15T12:00:00Z').getTime()
@@ -133,18 +213,25 @@ describe('buildReasoning', () => {
         listing: { ...baseListing, high_bid: 22_400_00, auction_ends_at: sixDaysOut },
         comps: baseComps,
       }, fixedNow)
-      expect(result).not.toContain('days remaining')
-      expect(result).not.toContain('[VIEW_FULL_ANALYSIS]')
+      // significantly-below branch must not fire (no ramp copy or "sell around" phrase)
+      expect(result).not.toContain('Bidding typically ramps')
+      expect(result).not.toContain('sell around')
+      // falls into below-floor branch: 6 days out → hedged copy
+      expect(result).toContain('6 days remaining')
     })
 
     it('does not trigger when bid is between p25*0.8 and p25', () => {
-      // bid $25,000 is below p25 ($28,000) but above 80% ($22,400) — use existing below branch
+      // bid $25,000 is below p25 ($28,000) but above 80% ($22,400) — use below-floor branch
       const result = buildReasoning({
         listing: { ...baseListing, high_bid: 25_000_00, auction_ends_at: sixDaysOut },
         comps: baseComps,
       }, fixedNow)
-      expect(result).not.toContain('[VIEW_FULL_ANALYSIS]')
-      expect(result).toContain('below the expected floor')
+      // significantly-below branch must not fire
+      expect(result).not.toContain('Bidding typically ramps')
+      expect(result).not.toContain('sell around')
+      // below-floor branch: 6 days out → hedged copy
+      expect(result).toContain('below')
+      expect(result).toContain('6 days remaining')
     })
 
     it('includes the current bid amount in significantly-below output', () => {
