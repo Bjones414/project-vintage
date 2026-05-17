@@ -71,7 +71,10 @@ describe('TopNav — post-redirect cleanup', () => {
 
     // setLoadingPromise(null) called before router.push → loading overlay gone, nav form back
     expect(screen.queryByTestId('mock-loading-state')).toBeNull()
-    expect(screen.getByPlaceholderText(/paste a listing url/i)).toBeTruthy()
+    const input = screen.getByPlaceholderText(/paste a listing url/i) as HTMLInputElement
+    expect(input).toBeTruthy()
+    // Input was cleared on submit — it must come back empty, not pre-filled
+    expect(input.value).toBe('')
     expect(pushSpy).toHaveBeenCalledWith('/analyze/listing-abc-123')
   })
 })

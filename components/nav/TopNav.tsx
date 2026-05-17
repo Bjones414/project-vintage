@@ -4,14 +4,17 @@ import { useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import { analyzeUrl } from '@/lib/analyze-url'
+import { computeInitials } from '@/lib/initials'
 import { createClient } from '@/lib/supabase/client'
 import { AnalyzeLoadingState } from '@/components/analyze/AnalyzeLoadingState'
 
 type Props = {
   userEmail: string | null
+  firstName?: string | null
+  lastName?: string | null
 }
 
-export function TopNav({ userEmail }: Props) {
+export function TopNav({ userEmail, firstName = null, lastName = null }: Props) {
   const pathname = usePathname()
   const router = useRouter()
   const [url, setUrl] = useState('')
@@ -26,8 +29,10 @@ export function TopNav({ userEmail }: Props) {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError(null)
-    const promise = analyzeUrl(urlRef.current.trim())
-    setLoadingPromise(promise)
+    const trimmed = urlRef.current.trim()
+    if (!trimmed) return
+    setUrl('')
+    setLoadingPromise(analyzeUrl(trimmed))
   }
 
   function handleSuccess(listingId: string) {
@@ -46,7 +51,7 @@ export function TopNav({ userEmail }: Props) {
     router.push('/login')
   }
 
-  const initials = userEmail ? userEmail.slice(0, 2).toUpperCase() : null
+  const initials = computeInitials(firstName, lastName, userEmail)
 
   if (loadingPromise) {
     return (
@@ -128,13 +133,30 @@ export function TopNav({ userEmail }: Props) {
          */}
         {!hideUrlField && (
           <form onSubmit={handleSubmit} className="w-full min-w-0 sm:w-auto sm:flex-1">
-            <input
-              type="url"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="Paste a listing URL to analyze another…"
-              className="w-full rounded-button border-[0.5px] border-border-default bg-bg-surface px-3.5 py-2 font-sans text-[13px] text-text-primary placeholder:text-text-muted focus:border-accent-primary focus:outline-none"
-            />
+            <div className="flex">
+              <input
+                type="url"
+                value={url}
+                onChange={(e) => { setUrl(e.target.value); setError(null) }}
+                placeholder="Paste a listing URL to analyze another…"
+                className="min-w-0 flex-1 rounded-l-button border-[0.5px] border-r-0 border-border-default bg-bg-surface px-3.5 py-2 font-sans text-[13px] text-text-primary placeholder:text-text-muted focus:border-accent-primary focus:outline-none"
+              />
+              <button
+                type="submit"
+                disabled={!url.trim()}
+                aria-disabled={!url.trim()}
+                aria-label="Analyze listing"
+                className={`flex w-9 shrink-0 items-center justify-center rounded-r-button border-[0.5px] border-l-0 transition-colors ${
+                  url.trim()
+                    ? 'border-transparent bg-accent-primary text-bg-canvas hover:opacity-90 cursor-pointer'
+                    : 'border-border-default bg-transparent text-text-muted cursor-default opacity-30'
+                }`}
+              >
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+                  <path d="M1.5 5.5h8M6.5 2.5l3 3-3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
             {error && (
               <p className="mt-1 font-sans text-xs text-severity-concern">{error}</p>
             )}

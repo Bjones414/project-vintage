@@ -86,6 +86,20 @@ describe('TopNav', () => {
     expect(screen.queryByRole('link', { name: /^sign up$/i })).toBeNull()
   })
 
+  it('uses computeInitials — email-only shows single char, not email.slice(0,2)', () => {
+    render(<TopNav userEmail="blake@example.com" />)
+    const btn = screen.getByRole('button', { name: /open account menu/i })
+    // computeInitials(null, null, 'blake@example.com') → 'B'
+    // email.slice(0, 2).toUpperCase() would produce 'BL'
+    expect(btn.textContent).toBe('B')
+  })
+
+  it('uses firstName + lastName props via computeInitials', () => {
+    render(<TopNav userEmail="blake@example.com" firstName="Blake" lastName="Jones" />)
+    const btn = screen.getByRole('button', { name: /open account menu/i })
+    expect(btn.textContent).toBe('BJ')
+  })
+
   it('renders on /analyze/[id] result page with URL field', () => {
     pathnameMock.mockReturnValue('/analyze/some-listing-id')
     render(<TopNav userEmail={null} />)
@@ -137,6 +151,70 @@ describe('TopNav', () => {
       expect(screen.getByText('Unsupported platform')).toBeTruthy()
     })
     expect(pushSpy).not.toHaveBeenCalled()
+  })
+
+  it('renders a submit button when URL field is present', () => {
+    pathnameMock.mockReturnValue('/analyze/some-listing-id')
+    render(<TopNav userEmail={null} />)
+    expect(screen.getByRole('button', { name: /analyze listing/i })).toBeTruthy()
+  })
+
+  it('submit button is disabled when input is empty', () => {
+    pathnameMock.mockReturnValue('/analyze/some-listing-id')
+    render(<TopNav userEmail={null} />)
+    const btn = screen.getByRole('button', { name: /analyze listing/i }) as HTMLButtonElement
+    expect(btn.disabled).toBe(true)
+  })
+
+  it('submit button click triggers the same submit as Enter key', async () => {
+    pathnameMock.mockReturnValue('/analyze/some-listing-id')
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ listingId: 'listing-btn-123' }),
+    }))
+
+    const user = userEvent.setup()
+    render(<TopNav userEmail={null} />)
+
+    await user.type(
+      screen.getByPlaceholderText(/paste a listing url/i),
+      'https://bringatrailer.com/listing/test',
+    )
+    await user.click(screen.getByRole('button', { name: /analyze listing/i }))
+
+    await waitFor(() => {
+      expect(screen.getByText('Identifying the listing')).toBeTruthy()
+    })
+  })
+
+  it('submit button has bg-transparent and border-border-default when input is empty', () => {
+    pathnameMock.mockReturnValue('/analyze/some-listing-id')
+    render(<TopNav userEmail={null} />)
+    const btn = screen.getByRole('button', { name: /analyze listing/i })
+    expect(btn.className).toContain('bg-transparent')
+    expect(btn.className).toContain('border-border-default')
+    expect(btn.className).not.toContain('border-transparent')
+  })
+
+  it('submit button has bg-accent-primary and border-transparent when input has content', async () => {
+    pathnameMock.mockReturnValue('/analyze/some-listing-id')
+    const user = userEvent.setup()
+    render(<TopNav userEmail={null} />)
+    await user.type(screen.getByPlaceholderText(/paste a listing url/i), 'https://bringatrailer.com/listing/test')
+    const btn = screen.getByRole('button', { name: /analyze listing/i })
+    expect(btn.className).toContain('bg-accent-primary')
+    expect(btn.className).toContain('border-transparent')
+    expect(btn.className).not.toContain('bg-transparent')
+  })
+
+  it('aria-disabled is true when empty, false when input has content', async () => {
+    pathnameMock.mockReturnValue('/analyze/some-listing-id')
+    const user = userEvent.setup()
+    render(<TopNav userEmail={null} />)
+    const btn = screen.getByRole('button', { name: /analyze listing/i })
+    expect(btn.getAttribute('aria-disabled')).toBe('true')
+    await user.type(screen.getByPlaceholderText(/paste a listing url/i), 'https://bringatrailer.com/listing/test')
+    expect(btn.getAttribute('aria-disabled')).toBe('false')
   })
 
   it('shows loading state (not the nav form) while fetch is in-flight', async () => {

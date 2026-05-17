@@ -71,6 +71,7 @@ export function Nav({ initials }: NavProps) {
     setError(null)
     const trimmed = urlRef.current.trim()
     if (!trimmed) return
+    setUrl('')
     setLoadingPromise(analyzeUrl(trimmed))
   }
 
@@ -181,13 +182,30 @@ export function Nav({ initials }: NavProps) {
           <div className="flex flex-1 items-center justify-end gap-4">
             {/* URL input: full-width on xl, narrower on lg, icon on md, hidden on sm */}
             <form onSubmit={handleSubmit} className="hidden lg:block">
-              <input
-                type="text"
-                value={url}
-                onChange={(e) => { setUrl(e.target.value); setError(null) }}
-                placeholder="Paste a listing URL →"
-                className="w-56 xl:w-72 border-[0.5px] border-border-default bg-bg-canvas px-[18px] py-[9px] font-serif text-[13px] italic text-text-tertiary placeholder:text-text-tertiary focus:border-accent-primary focus:outline-none"
-              />
+              <div className="flex">
+                <input
+                  type="text"
+                  value={url}
+                  onChange={(e) => { setUrl(e.target.value); setError(null) }}
+                  placeholder="Paste a listing URL →"
+                  className="w-56 xl:w-72 border-[0.5px] border-r-0 border-border-default bg-bg-canvas px-[18px] py-[9px] font-serif text-[13px] italic text-text-tertiary placeholder:text-text-tertiary focus:border-accent-primary focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  disabled={!url.trim()}
+                  aria-disabled={!url.trim()}
+                  aria-label="Analyze listing"
+                  className={`flex w-9 shrink-0 items-center justify-center border-[0.5px] border-l-0 transition-colors ${
+                    url.trim()
+                      ? 'border-transparent bg-accent-primary text-bg-canvas hover:opacity-90 cursor-pointer'
+                      : 'border-border-default bg-transparent text-text-quaternary cursor-default opacity-30'
+                  }`}
+                >
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+                    <path d="M1.5 5.5h8M6.5 2.5l3 3-3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </div>
               {error && (
                 <p className="mt-1 font-sans text-xs text-severity-concern">{error}</p>
               )}
