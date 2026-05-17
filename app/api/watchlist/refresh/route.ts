@@ -29,9 +29,9 @@ type ListingRow = {
 export async function POST(request: NextRequest) {
   const supabase = createClient()
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  if (!session) {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
   }
 

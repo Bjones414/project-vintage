@@ -15,23 +15,23 @@ function makeAdmin() {
 
 async function requireAdmin(): Promise<{ userId: string } | NextResponse> {
   const supabase = createClient()
-  const { data: { session } } = await supabase.auth.getSession()
-  if (!session) {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
   }
 
   const admin = makeAdmin()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: user } = await (admin as any)
+  const { data: profile } = await (admin as any)
     .from('users')
     .select('role')
-    .eq('id', session.user.id)
+    .eq('id', user.id)
     .single() as { data: { role: string } | null; error: unknown }
 
-  if (!user || user.role !== 'admin') {
+  if (!profile || profile.role !== 'admin') {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
-  return { userId: session.user.id }
+  return { userId: user.id }
 }
 
 export async function GET() {
