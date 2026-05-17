@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "./types";
+import { createServiceRoleClient } from "./service-role";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
@@ -43,7 +44,12 @@ export async function updateSession(request: NextRequest) {
   // supabase.auth.admin.updateUserById to sync app_metadata on downgrade.
   if (user) {
     try {
-      const { data: profile } = await supabase
+      // Service-role client bypasses RLS for both the SELECT and the UPDATE.
+      // The anon client's SELECT on public.users is silently filtered when no
+      // permissive SELECT policy exists for the authenticated session (RLS gap).
+      const adminClient = createServiceRoleClient();
+
+      const { data: profile } = await adminClient
         .from("users")
         .select("account_type, alpha_expires_at")
         .eq("id", user.id)
@@ -54,15 +60,7 @@ export async function updateSession(request: NextRequest) {
         profile.alpha_expires_at !== null &&
         new Date() > new Date(profile.alpha_expires_at)
       ) {
-        // Downgrade requires service role — account_type is write-protected from
-        // the user's own session key.
-        const supabaseAdmin = createServerClient<Database>(
-          process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.SUPABASE_SERVICE_ROLE_KEY!,
-          { cookies: { getAll: () => [], setAll: () => {} } }
-        );
-
-        await supabaseAdmin
+        await adminClient
           .from("users")
           .update({ account_type: "free" })
           .eq("id", user.id);

@@ -11,7 +11,14 @@ const mockSingle = vi.fn()
 const mockUpdate = vi.fn()
 const mockUpdateEq = vi.fn()
 
-// Builder chain returned by .from('users') on the anon client (SELECT path)
+// Track which client type called .from() to verify RLS-bypass client is used
+// for DB reads, not the anon client.
+let anonFromCalled = false
+let adminFromCalled = false
+
+// Builder chain returned by .from('users') on the anon client.
+// After the service-role fix this should never be reached — anon client is
+// used only for auth.getUser().
 function makeAnonBuilder() {
   return {
     select: mockSelect.mockReturnValue({
@@ -22,9 +29,15 @@ function makeAnonBuilder() {
   }
 }
 
-// Builder chain returned by .from('users') on the admin client (UPDATE path)
+// Builder chain returned by .from('users') on the service-role client.
+// Handles both the SELECT (alpha expiry check) and the UPDATE (downgrade).
 function makeAdminBuilder() {
   return {
+    select: mockSelect.mockReturnValue({
+      eq: mockEq.mockReturnValue({
+        single: mockSingle,
+      }),
+    }),
     update: mockUpdate.mockReturnValue({
       eq: mockUpdateEq.mockResolvedValue({ error: null }),
     }),
@@ -40,7 +53,15 @@ vi.mock('@supabase/ssr', () => ({
     const isServiceRole = key === 'test-service-role-key'
     return {
       auth: { getUser: mockGetUser },
-      from: () => (isServiceRole ? makeAdminBuilder() : makeAnonBuilder()),
+      from: () => {
+        if (isServiceRole) {
+          adminFromCalled = true
+          return makeAdminBuilder()
+        } else {
+          anonFromCalled = true
+          return makeAnonBuilder()
+        }
+      },
     }
   },
 }))
@@ -72,6 +93,8 @@ const FORTY_FOUR_DAYS_FROM_NOW = new Date(
 beforeEach(() => {
   vi.clearAllMocks()
   capturedClients = []
+  anonFromCalled = false
+  adminFromCalled = false
 })
 
 describe('updateSession — lazy alpha expiration', () => {
@@ -116,6 +139,21 @@ describe('updateSession — lazy alpha expiration', () => {
     expect(mockUpdateEq).toHaveBeenCalledWith('id', 'user-1')
   })
 
+  it('uses service role client for the alpha expiry SELECT (RLS bypass)', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } } })
+    mockSingle.mockResolvedValue({
+      data: {
+        account_type: 'alpha',
+        alpha_expires_at: FORTY_FOUR_DAYS_FROM_NOW,
+      },
+    })
+    await updateSession(makeRequest())
+    // SELECT must go through the service-role client, never the anon client
+    expect(adminFromCalled).toBe(true)
+    expect(anonFromCalled).toBe(false)
+    expect(mockSingle).toHaveBeenCalled()
+  })
+
   it('uses service role client for the downgrade UPDATE', async () => {
     mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } } })
     mockSingle.mockResolvedValue({
@@ -130,6 +168,8 @@ describe('updateSession — lazy alpha expiration', () => {
       (c) => c.key === 'test-service-role-key',
     )
     expect(serviceClients.length).toBeGreaterThan(0)
+    // And the anon client must not have called from()
+    expect(anonFromCalled).toBe(false)
   })
 
   it('does not downgrade an admin account_type', async () => {
