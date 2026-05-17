@@ -1,15 +1,9 @@
-import { createClient } from '@/lib/supabase/server'
-import { TopNav } from '@/components/nav/TopNav'
+import { SimpleUnauthHeader } from '@/components/chrome/SimpleUnauthHeader'
 
-export default async function AuthLayout({ children }: { children: React.ReactNode }) {
-  const supabase = createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col bg-bg-canvas">
-      <TopNav userEmail={user?.email ?? null} />
+      <SimpleUnauthHeader />
       <div className="flex flex-1 flex-col items-center justify-center px-4 py-12">
         <div className="w-full max-w-[420px]">
           {children}
