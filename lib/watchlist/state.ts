@@ -12,8 +12,9 @@ export type VerdictPillState =
   | 'sold-fair'
   | 'no-sale'
 
-const SIX_HOURS_MS   = 6  * 60 * 60 * 1000
-const TWELVE_HOURS_MS = 12 * 60 * 60 * 1000
+const SIX_HOURS_MS        =  6 * 60 * 60 * 1000
+const TWELVE_HOURS_MS     = 12 * 60 * 60 * 1000
+const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000
 
 // Classify row freshness based on watchlist.updated_at and the auction end time.
 export function computeFreshness(
@@ -68,21 +69,35 @@ export function computeVerdictPillState(params: VerdictPillInput): VerdictPillSt
     verdict !== 'insufficient_comps' &&
     verdict !== 'uncomparable'
 
-  if (!hasComps) return 'too-early'
+  // In the final 24h, suppress 'too-early' unless the cascade explicitly returned
+  // insufficient_comps. Thin-comp signal loses its excuse once the auction is nearly over.
+  const msUntilEnd = auctionEndsAt
+    ? new Date(auctionEndsAt).getTime() - nowMs
+    : Infinity
+  const inFinalDay = msUntilEnd > 0 && msUntilEnd <= TWENTY_FOUR_HOURS_MS
+
+  if (!hasComps) {
+    if (verdict === 'insufficient_comps') return 'too-early'  // always, regardless of time
+    if (!inFinalDay) return 'too-early'
+    // Final day + weak (but not explicitly insufficient) data: fall through to verdict
+  }
 
   const isEnded = listingStatus === 'sold'
 
   if (isEnded) {
     const price = finalPriceCents ?? 0
-    if (price > compP75Cents!) return 'sold-above'
-    if (price < compP25Cents!) return 'sold-below'
+    if (compP75Cents !== null && price > compP75Cents) return 'sold-above'
+    if (compP25Cents !== null && price < compP25Cents) return 'sold-below'
     return 'sold-fair'
   }
 
   // Active listing — bid below range counts as "tracking fair" (buyer-favorable, not a concern)
   const bid = currentBidCents
-  if (!bid) return 'too-early'
-  if (bid > compP75Cents!) return 'tracking-high'
+  if (!bid) {
+    if (inFinalDay) return 'tracking-fair'  // no bid in final 24h — don't stall on too-early
+    return 'too-early'
+  }
+  if (compP75Cents !== null && bid > compP75Cents) return 'tracking-high'
   return 'tracking-fair'
 }
 

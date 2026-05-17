@@ -159,6 +159,66 @@ describe('computeVerdictPillState', () => {
   })
 })
 
+// ── computeVerdictPillState — final-day suppression ───────────────────────────
+
+describe('computeVerdictPillState — final-day suppression', () => {
+  const now = new Date('2026-05-15T12:00:00Z').getTime()
+
+  // Base with sparse comps (count 2 < threshold of 3, but p25/p75 present)
+  const sparseBase = {
+    listingStatus:   'live' as string | null,
+    currentBidCents: 30_000_00,
+    finalPriceCents: null as number | null,
+    compP25Cents:    28_000_00,
+    compP75Cents:    36_000_00,
+    compCount:       2,
+    verdict:         'priced_fairly' as string | null,
+  }
+
+  it('returns a real verdict (not too-early) when hoursRemaining = 23 and comps are sparse', () => {
+    const auctionEndsAt = new Date(now + 23 * 60 * 60 * 1000).toISOString()
+    expect(computeVerdictPillState({ ...sparseBase, auctionEndsAt, nowMs: now })).not.toBe('too-early')
+  })
+
+  it('returns tracking-fair when hoursRemaining = 23 and bid is within range (sparse comps)', () => {
+    const auctionEndsAt = new Date(now + 23 * 60 * 60 * 1000).toISOString()
+    expect(computeVerdictPillState({ ...sparseBase, auctionEndsAt, nowMs: now })).toBe('tracking-fair')
+  })
+
+  it('returns tracking-high when hoursRemaining = 23 and bid exceeds p75 (sparse comps)', () => {
+    const auctionEndsAt = new Date(now + 23 * 60 * 60 * 1000).toISOString()
+    expect(computeVerdictPillState({
+      ...sparseBase, currentBidCents: 40_000_00, auctionEndsAt, nowMs: now,
+    })).toBe('tracking-high')
+  })
+
+  it('returns too-early when hoursRemaining = 25 and comps are sparse', () => {
+    const auctionEndsAt = new Date(now + 25 * 60 * 60 * 1000).toISOString()
+    expect(computeVerdictPillState({ ...sparseBase, auctionEndsAt, nowMs: now })).toBe('too-early')
+  })
+
+  it('returns a real verdict in the final 30 minutes with thin comps', () => {
+    const auctionEndsAt = new Date(now + 0.5 * 60 * 60 * 1000).toISOString()
+    expect(computeVerdictPillState({ ...sparseBase, auctionEndsAt, nowMs: now })).not.toBe('too-early')
+  })
+
+  it('returns tracking-fair when final day + no current bid (not too-early)', () => {
+    const auctionEndsAt = new Date(now + 12 * 60 * 60 * 1000).toISOString()
+    expect(computeVerdictPillState({
+      ...sparseBase, currentBidCents: null, auctionEndsAt, nowMs: now,
+    })).toBe('tracking-fair')
+  })
+
+  it('always returns too-early when verdict is insufficient_comps, even in final day', () => {
+    const auctionEndsAt = new Date(now + 12 * 60 * 60 * 1000).toISOString()
+    expect(computeVerdictPillState({
+      ...sparseBase,
+      compCount: 0, compP25Cents: null, compP75Cents: null,
+      verdict: 'insufficient_comps', auctionEndsAt, nowMs: now,
+    })).toBe('too-early')
+  })
+})
+
 // ── formatUpdatedAt ───────────────────────────────────────────────────────────
 
 describe('formatUpdatedAt', () => {
