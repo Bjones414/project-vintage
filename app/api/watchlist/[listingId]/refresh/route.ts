@@ -6,11 +6,12 @@
 //
 // What it does:
 //   1. Auth + ownership check (user must have the listing in their watchlist)
-//   2. Re-runs computeCompsV2 against the current comp pool (no BaT re-fetch)
-//   3. Reads the latest listing_analyses.findings for watch-for items
-//   4. Builds a template-based reasoning paragraph
-//   5. Updates watchlist.updated_at = now() for freshness tracking
-//   6. Returns all data needed to render the expanded panel
+//   2. Re-fetches live data from source platform if the listing is stale (same TTL as /analyze)
+//   3. Re-runs computeCompsV2 against the current comp pool
+//   4. Reads the latest listing_analyses.findings for watch-for items
+//   5. Builds a template-based reasoning paragraph
+//   6. Updates watchlist.updated_at = now() for freshness tracking
+//   7. Returns all data needed to render the expanded panel
 //
 // SAFETY: This endpoint is called exclusively from WatchlistRow.handleRowClick(),
 // which only fires on an explicit user click event. No bulk invocation is possible
@@ -20,6 +21,8 @@ import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
 import { computeCompsV2 } from '@/lib/comp-engine-v2'
 import { buildReasoning } from '@/lib/watchlist/reasoning'
+import { parseListing } from '@/lib/listing-parser'
+import { shouldRefetch, toCacheStatus } from '@/lib/listing-cache'
 
 type FindingItem = {
   rule_id: string
@@ -55,8 +58,8 @@ export async function POST(
 
   // Auth check
   const supabase = createClient()
-  const { data: { session } } = await supabase.auth.getSession()
-  if (!session) {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
   }
 
@@ -67,7 +70,7 @@ export async function POST(
   const { data: watchlistRow } = await (supabaseAdmin as any)
     .from('watchlist')
     .select('id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .eq('listing_id', listingId)
     .maybeSingle() as { data: { id: string } | null }
 
@@ -79,7 +82,7 @@ export async function POST(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: listing, error: listingError } = await (supabaseAdmin as any)
     .from('listings')
-    .select('id, year, make, model, trim, high_bid, final_price, listing_status, auction_ends_at, mileage, exterior_color')
+    .select('id, year, make, model, trim, high_bid, final_price, listing_status, auction_ends_at, mileage, exterior_color, source_url, cache_status, last_fetched_at')
     .eq('id', listingId)
     .single() as {
       data: {
@@ -94,6 +97,9 @@ export async function POST(
         auction_ends_at: string | null
         mileage: number | null
         exterior_color: string | null
+        source_url: string
+        cache_status: string
+        last_fetched_at: string | null
       } | null
       error: { message: string } | null
     }
@@ -102,7 +108,42 @@ export async function POST(
     return NextResponse.json({ error: 'Listing not found' }, { status: 404 })
   }
 
-  // Re-run comp engine against current pool (not a BaT re-fetch)
+  // Re-fetch from source platform if the listing is live and the cache is stale.
+  // Mirrors the same TTL logic used by /analyze and the batch watchlist refresher.
+  let activeBid    = listing.high_bid
+  let activeStatus = listing.listing_status
+  let activeFinal  = listing.final_price
+
+  if (shouldRefetch({ cache_status: listing.cache_status, last_fetched_at: listing.last_fetched_at })) {
+    try {
+      const fetchResult = await parseListing(listing.source_url)
+      if (fetchResult.success) {
+        const fresh = fetchResult.listing
+        activeBid    = fresh.high_bid_cents
+        activeStatus = fresh.listing_status
+        activeFinal  = fresh.sold_price_cents ?? null
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (supabaseAdmin as any)
+          .from('listings')
+          .update({
+            listing_status:   fresh.listing_status,
+            final_price:      fresh.sold_price_cents,
+            high_bid:         fresh.high_bid_cents,
+            auction_ends_at:  fresh.auction_end_date,
+            last_verified_at: new Date().toISOString(),
+            last_fetched_at:  new Date().toISOString(),
+            cache_status:     toCacheStatus(fresh.listing_status),
+          })
+          .eq('id', listingId)
+      }
+    } catch (e) {
+      // Non-fatal — fall back to cached values so the panel still renders
+      console.error('[watchlist per-listing refresh] parseListing failed:', e instanceof Error ? e.message : String(e))
+    }
+  }
+
+  // Re-run comp engine against current pool
   let compsResult = null
   try {
     compsResult = await computeCompsV2(listingId)
@@ -154,16 +195,16 @@ export async function POST(
       description: f.body,
     }))
 
-  // Build template reasoning paragraph
+  // Build template reasoning paragraph using live values (post-fetch if applicable)
   const reasoning = buildReasoning({
     listing: {
       year: listing.year,
       make: listing.make,
       model: listing.model,
       trim: listing.trim,
-      listing_status: listing.listing_status,
-      high_bid: listing.high_bid,
-      final_price: listing.final_price,
+      listing_status: activeStatus,
+      high_bid:       activeBid,
+      final_price:    activeFinal,
     },
     comps: {
       predicted_median: compsResult?.predicted_median ?? null,
@@ -184,11 +225,11 @@ export async function POST(
   await (supabaseAdmin as any)
     .from('watchlist')
     .update({ updated_at: updatedAt })
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .eq('listing_id', listingId)
 
   return NextResponse.json({
-    current_bid:      listing.high_bid,
+    current_bid:      activeBid,
     comp_median:      compsResult?.predicted_median ?? null,
     comp_p25:         compsResult?.predicted_p25    ?? null,
     comp_p75:         compsResult?.predicted_p75    ?? null,
