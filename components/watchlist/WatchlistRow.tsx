@@ -10,6 +10,7 @@
 
 import { useState } from 'react'
 import { cn } from '@/lib/utils/cn'
+import { PLATFORM_NAMES } from '@/lib/utils/platforms'
 import {
   computeFreshness,
   computeVerdictPillState,
@@ -206,6 +207,8 @@ export function WatchlistRow({
     .filter(Boolean)
     .join(' ') || 'Untitled listing'
 
+  const sourceName = PLATFORM_NAMES[listing.source_platform] ?? listing.source_platform
+
   // Left-border state
   const hasBorder = expanded || freshness === 'stale-urgent'
   const borderClass = hasBorder
@@ -293,7 +296,7 @@ export function WatchlistRow({
                 onClick={(e) => e.stopPropagation()}
                 className="font-serif text-[13px] italic text-text-tertiary underline decoration-[0.5px] underline-offset-2 hover:opacity-70"
               >
-                See listing →
+                {`View on ${sourceName} →`}
               </a>
             </div>
           </div>

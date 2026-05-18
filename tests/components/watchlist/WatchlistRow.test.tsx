@@ -20,7 +20,7 @@ const LISTING: WatchlistRowProps['listing'] = {
   listing_status: 'live',
   auction_ends_at: null,
   source_url: 'https://bringatrailer.com/listing/test',
-  source_platform: 'bring_a_trailer',
+  source_platform: 'bring-a-trailer',
   generation_id: null,
 }
 
@@ -110,18 +110,18 @@ describe('WatchlistRow — collapsed static render', () => {
     expect(html).not.toBe('')
   })
 
-  it('renders a "See listing" link pointing to source_url', () => {
+  it('renders a "View on {Source}" link pointing to source_url', () => {
     const html = renderToString(<WatchlistRow {...BASE_PROPS} />)
-    expect(html).toContain('See listing')
+    expect(html).toContain('View on Bring a Trailer →')
     expect(html).toContain('href="https://bringatrailer.com/listing/test"')
   })
 
-  it('"See listing" link opens in a new tab', () => {
+  it('"View on {Source}" link opens in a new tab', () => {
     const html = renderToString(<WatchlistRow {...BASE_PROPS} />)
     expect(html).toContain('target="_blank"')
   })
 
-  it('"See listing" link has rel="noopener noreferrer"', () => {
+  it('"View on {Source}" link has rel="noopener noreferrer"', () => {
     const html = renderToString(<WatchlistRow {...BASE_PROPS} />)
     expect(html).toContain('rel="noopener noreferrer"')
   })
