@@ -40,7 +40,7 @@ export const GENERATION_DEFS: GenerationDef[] = [
   },
   {
     genId: '997.2', model: '911', yearStart: 2009, yearEnd: 2012,
-    trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Carrera 4 GTS', 'Targa 4', 'Targa 4S', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS', 'GT2 RS', 'R'],
+    trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Carrera 4 GTS', 'Targa 4', 'Targa 4S', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS', 'GT3 RS 4.0', 'GT2 RS', 'R', 'Sport Classic', 'Speedster'],
   },
   {
     genId: '991.1', model: '911', yearStart: 2012, yearEnd: 2016,

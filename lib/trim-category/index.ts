@@ -160,6 +160,7 @@ function derive997(trim: string): TrimCategory | null {
 
   if (t.includes('gt2 rs')) return 'gt2_rs'
   if (t.includes('gt2')) return 'gt2'
+  if (t.includes('gt3 rs 4.0')) return 'gt3_rs_40'
   if (t.includes('gt3 rs')) return 'gt3_rs'
   if (t.includes('gt3')) return 'gt3'
   if (t.includes('sport classic')) return 'sport_classic'

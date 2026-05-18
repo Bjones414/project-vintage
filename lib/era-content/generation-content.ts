@@ -872,6 +872,22 @@ const CONTENT: Record<string, GenerationContent> = {
         production: '500 worldwide cap; 142 North America (132 US + 10 Canada)',
         description: '3.6L Mezger twin-turbo; 6MT only; 500 units worldwide cap. The final road-going Mezger turbocharged engine ever. Developed from the GT1 racing program lineage that began with the 996 GT3 Mk1. An irreplaceable end-of-an-era road car.',
       },
+      {
+        name: 'Sport Classic',
+        years: '2010',
+        drivetrain: 'RWD',
+        power: '408 hp',
+        production: '250 worldwide (RoW only — not US-federalized from factory)',
+        description: 'X51 Power Kit (408 hp), 6MT only. Produced exclusively in Sport Classic Grey; no other color option. Double-bubble roof, ducktail rear spoiler, Fuchs-style 19-inch alloys, PCCB ceramic brakes standard. Based on the Carrera GTS specification, delivered exclusively through Porsche Exclusive. All 250 units sold within 48 hours of order opening. Not federalized for US sale — examples appearing on US auction platforms arrived via Show and Display exemption or grey-market import pathways.',
+      },
+      {
+        name: 'Speedster',
+        years: '2011',
+        drivetrain: 'RWD',
+        power: '408 hp',
+        production: '356 worldwide; ~108 US',
+        description: '7-speed PDK only (no manual option). Wide C4 rear body on RWD chassis. Raked windscreen (60–77 mm lower than Cabriolet), manually folding roof with double-bubble tonneau cover. X51 Power Kit (408 hp). Available exclusively in Pure Blue or Carrara White. Production count of 356 is a deliberate tribute to the original Porsche 356 — the fourth production 911 Speedster in the model\'s history. Lightest of the 997.2 open variants.',
+      },
     ],
     engineering: [
       '9A1 direct-injection engine eliminates the intermediate shaft: The 9A1 redesigns the cam drive architecture from the ground up, routing cam timing directly from the crankshaft without an intermediate shaft. No intermediate shaft means no IMS bearing, eliminating the primary concern of the M96/M97 era entirely. The 9A1 also uses a closed-deck Alusil block with a different oiling architecture — the M96/M97-pattern bore-scoring failure mode is not documented on the 9A1.',
