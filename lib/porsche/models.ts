@@ -80,7 +80,7 @@ export const GENERATION_DEFS: GenerationDef[] = [
   // ── 718 Boxster ───────────────────────────────────────────────────────────────
   {
     genId: '982-boxster', model: '718 Boxster', yearStart: 2017, yearEnd: PRESENT,
-    trims: ['Base', 'S', 'GTS 4.0', 'Spyder'],
+    trims: ['Base', 'S', 'GTS', 'GTS 4.0', 'Spyder', 'Spyder RS'],
   },
 
   // ── Cayman ────────────────────────────────────────────────────────────────────
@@ -100,7 +100,7 @@ export const GENERATION_DEFS: GenerationDef[] = [
   // ── 718 Cayman ────────────────────────────────────────────────────────────────
   {
     genId: '982-cayman', model: '718 Cayman', yearStart: 2017, yearEnd: PRESENT,
-    trims: ['Base', 'S', 'GTS 4.0', 'GT4', 'GT4 RS'],
+    trims: ['Base', 'S', 'GTS', 'GTS 4.0', 'GT4', 'GT4 RS'],
   },
 
   // ── Cayenne ───────────────────────────────────────────────────────────────────
