@@ -17,6 +17,10 @@ const SPECS: Record<string, FactorySpec> = {
   '993:turbo':       { hp: '408 hp', torque: '398 lb-ft', zero_to_sixty: '4.5s', engine: '3.6L M64 twin-turbo flat-six',       curb_weight_lb: '3,307 lb', top_speed_mph: '180 mph', redline_rpm: '6,500 rpm' },
   '993:gt2':         { hp: '430 hp', torque: '398 lb-ft', zero_to_sixty: '4.4s', engine: '3.6L M64 twin-turbo flat-six',       curb_weight_lb: '3,042 lb', top_speed_mph: '183 mph', redline_rpm: '6,500 rpm' },
   '993:rs':          { hp: '300 hp', torque: '262 lb-ft', zero_to_sixty: '5.0s', engine: '3.8L M64 flat-six',                  curb_weight_lb: '2,844 lb', top_speed_mph: '168 mph', redline_rpm: '6,600 rpm' },
+  // [VERIFY] RS engine: multiple sources disagree 3.6L vs 3.8L — requires Porsche AG engine-code cross-reference against known RS VINs.
+  // [VERIFY] RS Touring / Clubsport split: combined ~1,124 worldwide; individual split uncertain across sources.
+  '993:rs_touring':  { hp: '300 hp', torque: '262 lb-ft', zero_to_sixty: '5.0s', engine: '3.8L M64 flat-six [VERIFY displacement 3.6 vs 3.8] (Touring — A/C available — ~1,014 units [VERIFY])', curb_weight_lb: '2,844 lb', top_speed_mph: '168 mph', redline_rpm: '6,600 rpm' },
+  '993:rs_clubsport': { hp: '300 hp', torque: '262 lb-ft', zero_to_sixty: '4.9s', engine: '3.8L M64 flat-six [VERIFY displacement] (Clubsport — full roll cage, A/C delete — ~110 units [VERIFY])', curb_weight_lb: '2,712 lb', top_speed_mph: '168 mph', redline_rpm: '6,600 rpm' },
   '993:carrera_4s':  { hp: '285 hp', torque: '250 lb-ft', zero_to_sixty: '5.1s', engine: '3.6L M64 flat-six (Varioram)',       curb_weight_lb: '3,197 lb', top_speed_mph: '168 mph', redline_rpm: '6,100 rpm' },
   '993:carrera_s':   { hp: '285 hp', torque: '250 lb-ft', zero_to_sixty: '5.1s', engine: '3.6L M64 flat-six (Varioram)',       curb_weight_lb: '3,064 lb', top_speed_mph: '168 mph', redline_rpm: '6,100 rpm' },
   '993:carrera_4':   { hp: '272 hp', torque: '243 lb-ft', zero_to_sixty: '5.6s', engine: '3.6L M64 flat-six',                  curb_weight_lb: '3,108 lb', top_speed_mph: '161 mph', redline_rpm: '6,100 rpm' },
@@ -300,7 +304,11 @@ const SPECS: Record<string, FactorySpec> = {
 
   // 964 (1989–1994)
   // NA Carrera: 247 hp / 250 PS. Turbo 3.3: 320 hp. Turbo 3.6: 355 hp. Turbo S Leichtbau: 381 hp.
-  '964:turbo_s_leichtbau': { hp: '381 hp', torque: '369 lb-ft', zero_to_sixty: '4.6s', engine: '3.3L M30/69 SL turbo flat-six (Weissach spec — 86 cars)',                                    curb_weight_lb: '2,954 lb', top_speed_mph: '174 mph', redline_rpm: '5,750 rpm' },
+  // [VERIFY] Turbo S Leichtbau HP: some sources cite 360 DIN (same as Turbo 3.6); Weissach docs are authority.
+  // [VERIFY] Turbo 3.6 S (X88) unit count: 93 total (39 US Flachbau + 27 RoW + 10 Japan + 17 US Package).
+  '964:turbo_s_leichtbau': { hp: '381 hp', torque: '369 lb-ft', zero_to_sixty: '4.6s', engine: '3.3L M30/69 SL turbo flat-six (Weissach spec — 86 cars [VERIFY] — Leichtbau lightweight)',  curb_weight_lb: '2,954 lb', top_speed_mph: '174 mph', redline_rpm: '5,750 rpm' },
+  // 'Turbo 3.6 S' normalises to turbo_36_s — explicit key prevents fallback to turbo_36 (355 hp base Turbo 3.6)
+  '964:turbo_36_s':         { hp: '380 hp', torque: '369 lb-ft', zero_to_sixty: '4.7s', engine: '3.6L turbo flat-six X88 spec (Exclusiv Flachbau/Package — MY1994 — ~93 units [VERIFY])',   curb_weight_lb: '3,109 lb', top_speed_mph: '174 mph', redline_rpm: '5,750 rpm' },
   '964:turbo_s':            { hp: '380 hp', torque: '369 lb-ft', zero_to_sixty: '4.7s', engine: '3.6L turbo flat-six X88 spec (Turbo 3.6 S Flachbau / Package — MY1994 Exclusiv)',           curb_weight_lb: '3,109 lb', top_speed_mph: '174 mph', redline_rpm: '5,750 rpm' },
   '964:turbo_36':           { hp: '355 hp', torque: '384 lb-ft', zero_to_sixty: '4.7s', engine: '3.6L M64-derived single-turbo flat-six (MY1993–1994)',                                      curb_weight_lb: '3,131 lb', top_speed_mph: '174 mph', redline_rpm: '5,750 rpm' },
   '964:turbo_33':           { hp: '320 hp', torque: '332 lb-ft', zero_to_sixty: '4.8s', engine: '3.3L Type 930/60 single-turbo flat-six (K-Jet — MY1991–1992)',                              curb_weight_lb: '3,197 lb', top_speed_mph: '162 mph', redline_rpm: '5,500 rpm' },
@@ -312,6 +320,8 @@ const SPECS: Record<string, FactorySpec> = {
   '964:carrera_2':          { hp: '247 hp', torque: '228 lb-ft', zero_to_sixty: '5.7s', engine: '3.6L M64 flat-six (RWD — G50 5MT or Tiptronic 4AT)',                                        curb_weight_lb: '3,020 lb', top_speed_mph: '162 mph', redline_rpm: '5,900 rpm' },
   '964:speedster':          { hp: '247 hp', torque: '228 lb-ft', zero_to_sixty: '5.8s', engine: '3.6L M64 flat-six (Carrera 2 spec — steeply-raked windscreen, MY1993–1994)',                 curb_weight_lb: '3,042 lb', top_speed_mph: '162 mph', redline_rpm: '5,900 rpm' },
   '964:carrera':            { hp: '247 hp', torque: '228 lb-ft', zero_to_sixty: '5.7s', engine: '3.6L M64 flat-six (Carrera 2 RWD — catch-all)',                                              curb_weight_lb: '3,020 lb', top_speed_mph: '162 mph', redline_rpm: '5,900 rpm' },
+  // [VERIFY] 30 Jahre drivetrain: generation-content records Carrera 4 AWD in Turbo widebody; research doc Section B shows RWD [VERIFY] — AWD per internal catalog is more specific.
+  '964:30_jahre_911':       { hp: '247 hp', torque: '228 lb-ft', zero_to_sixty: '5.7s', engine: '3.6L M64/01 flat-six (Carrera 4 AWD — Turbo widebody — 911 units MY1993 [VERIFY] drivetrain)', curb_weight_lb: '3,175 lb', top_speed_mph: '162 mph', redline_rpm: '5,900 rpm' },
 }
 
 function normalizeTrim(trim: string): string {

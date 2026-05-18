@@ -70,8 +70,18 @@ function derive964(trim: string): TrimCategory | null {
   // The decoded_body_class='Speedster' also provides body-style isolation.
   if (t.includes('speedster')) return 'limited'
 
-  // Turbo S before base Turbo (Turbo S X85, Turbo S Lightweight, etc.)
-  if (t.includes('turbo s')) return 'turbo_s'
+  // Anniversary — 911-unit Carrera 4 widebody (distinct collector comp pool, not a Turbo)
+  if (t.includes('30 jahre')) return 'anniversary'
+
+  // Turbo Look appearance package: wide body WITHOUT turbo drivetrain — must not land in turbo_base.
+  // Route C4 Turbo Look to carrera_4_narrow; C2 Turbo Look to carrera_2_narrow.
+  if (t.includes('turbo look') || t.includes('turbolook')) {
+    return t.includes('carrera 4') ? 'carrera_4_narrow' : 'carrera_2_narrow'
+  }
+
+  // Turbo S variants: catch 'Turbo S Leichtbau' (contains 'turbo s') and 'Turbo 3.6 S'
+  // (does NOT contain 'turbo s' adjacently — substring check handles it explicitly).
+  if (t.includes('turbo s') || t.includes('turbo 3.6 s')) return 'turbo_s'
   if (t.includes('turbo')) return 'turbo_base'
 
   // RS America (US-market lightweight base, different from homologation RS)
