@@ -322,6 +322,44 @@ const SPECS: Record<string, FactorySpec> = {
   '964:carrera':            { hp: '247 hp', torque: '228 lb-ft', zero_to_sixty: '5.7s', engine: '3.6L M64 flat-six (Carrera 2 RWD — catch-all)',                                              curb_weight_lb: '3,020 lb', top_speed_mph: '162 mph', redline_rpm: '5,900 rpm' },
   // [VERIFY] 30 Jahre drivetrain: generation-content records Carrera 4 AWD in Turbo widebody; research doc Section B shows RWD [VERIFY] — AWD per internal catalog is more specific.
   '964:30_jahre_911':       { hp: '247 hp', torque: '228 lb-ft', zero_to_sixty: '5.7s', engine: '3.6L M64/01 flat-six (Carrera 4 AWD — Turbo widebody — 911 units MY1993 [VERIFY] drivetrain)', curb_weight_lb: '3,175 lb', top_speed_mph: '162 mph', redline_rpm: '5,900 rpm' },
+
+  // cayenne-i (955+957, 2003–2010) — new trims only; existing 5 trims get specs in a future pass
+  // Diesel: 957 era only (MY2009–2010); EU market; no North America sales
+  'cayenne-i:diesel':        { hp: '237 hp', torque: '406 lb-ft', zero_to_sixty: '8.4s', engine: '3.0L V6 TDI (VW Group EA897 — EU market only; MY2009–2010 957 era)', curb_weight_lb: '4,740 lb', top_speed_mph: '131 mph' },
+  // [VERIFY] Transsyberia 0-60 / top speed against Porsche AG press — ~500 units [VERIFY]
+  'cayenne-i:transsyberia':  { hp: '399 hp', torque: '369 lb-ft', zero_to_sixty: '6.3s', engine: '4.8L V8 NA M48.01 (GTS engine; raised suspension + underbody protection — MY2009–2010 957 [VERIFY] ~500 units)', curb_weight_lb: '4,960 lb', top_speed_mph: '148 mph' },
+
+  // cayenne-ii (958, 2011–2017) — new trims only
+  // S Hybrid: non-PHEV parallel hybrid MY2012–2013 (958.1 only); replaced by PHEV S E-Hybrid at 958.2
+  'cayenne-ii:s_hybrid':     { hp: '375 hp', torque: '428 lb-ft', zero_to_sixty: '6.1s', engine: '3.0L SC V6 + 47 kW electric (non-PHEV parallel hybrid — MY2012–2013 958.1 only)', curb_weight_lb: '5,203 lb', top_speed_mph: '151 mph' },
+  // Diesel: 245 PS (958.1) / 262 PS (958.2); highest-volume Cayenne trim in EU
+  'cayenne-ii:diesel':       { hp: '245 hp', torque: '406 lb-ft', zero_to_sixty: '7.8s', engine: '3.0L V6 TDI EA897 (245 PS 958.1 / 262 PS 958.2 — EU market only)', curb_weight_lb: '4,850 lb', top_speed_mph: '139 mph' },
+  // S Diesel: V8 TDI — higher-performance diesel; distinct from V6 Diesel
+  'cayenne-ii:s_diesel':     { hp: '380 hp', torque: '627 lb-ft', zero_to_sixty: '5.6s', engine: '4.2L V8 TDI 385 PS (EU market only [VERIFY exact MY range])', curb_weight_lb: '5,181 lb', top_speed_mph: '151 mph' },
+
+  // cayenne-iii (9Y0, 2018–present) — Coupé sub-trims; [VERIFY production confirmation on all four]
+  'cayenne-iii:s_coup':               { hp: '434 hp', torque: '406 lb-ft', zero_to_sixty: '4.9s', engine: '2.9L V6 biturbo (S Coupé body — MY2020+ [VERIFY])', curb_weight_lb: '4,586 lb', top_speed_mph: '168 mph' },
+  'cayenne-iii:gts_coup':             { hp: '454 hp', torque: '457 lb-ft', zero_to_sixty: '4.4s', engine: '4.0L V8 biturbo (GTS Coupé — MY2021+ [VERIFY])', curb_weight_lb: '4,784 lb', top_speed_mph: '168 mph' },
+  'cayenne-iii:ehybrid_coup':         { hp: '455 hp', torque: '516 lb-ft', zero_to_sixty: '4.9s', engine: '3.0L V6 turbo + 100 kW electric PHEV (E-Hybrid Coupé — MY2020+ [VERIFY])', curb_weight_lb: '5,071 lb', top_speed_mph: '157 mph' },
+  'cayenne-iii:turbo_s_ehybrid_coup': { hp: '670 hp', torque: '663 lb-ft', zero_to_sixty: '3.7s', engine: '4.0L V8 biturbo + 100 kW electric PHEV (Turbo S E-Hybrid Coupé — MY2020+ [VERIFY])', curb_weight_lb: '5,500 lb', top_speed_mph: '183 mph' },
+
+  // panamera-i (970, 2010–2016) — new trims only
+  // S: V8 NA 400 PS RWD (MY2010–2013) / V6 biturbo 420 PS RWD (MY2014–2016 970.2); distinct from 4S (AWD)
+  'panamera-i:s':            { hp: '394 hp', torque: '369 lb-ft', zero_to_sixty: '5.3s', engine: '4.8L V8 NA M48.01 (MY2010–2013) / 3.0L V6 biturbo 420 PS (MY2014–2016 970.2) — RWD 7-spd PDK', curb_weight_lb: '3,792 lb', top_speed_mph: '173 mph' },
+  // S Hybrid: non-PHEV; 3.0L SC V6 + 34 kW electric; MY2012–2013 only; 8-spd Tiptronic AWD
+  'panamera-i:s_hybrid':     { hp: '375 hp', torque: '369 lb-ft', zero_to_sixty: '5.9s', engine: '3.0L SC V6 + 34 kW electric (non-PHEV parallel hybrid — MY2012–2013; 8-spd Tiptronic)', curb_weight_lb: '4,057 lb', top_speed_mph: '168 mph' },
+  // Executive: LWB +15 cm; 4S / Turbo / Turbo S / TSEH powertrains; added MY2014 at 970.2
+  'panamera-i:executive':    { hp: '420 hp', torque: '369 lb-ft', zero_to_sixty: '5.5s', engine: 'Multiple (LWB Executive +15 cm — 4S / Turbo / Turbo S / TSEH drivetrains; MY2014–2016)', curb_weight_lb: '4,101 lb', top_speed_mph: '168 mph' },
+
+  // panamera-ii (971, 2017–present) — new trims only
+  // [VERIFY] S 971 US availability — may be EU/RoW only; flag for US comp matching
+  'panamera-ii:s':                       { hp: '434 hp', torque: '406 lb-ft', zero_to_sixty: '4.6s', engine: '2.9L V6 biturbo RWD (440 PS [VERIFY] — US market availability unconfirmed)', curb_weight_lb: '3,814 lb', top_speed_mph: '179 mph' },
+  // Sport Turismo: wagon body MY2018+; base sedan drivetrain as catch-all; comp market distinct from sedan
+  'panamera-ii:sport_turismo':           { hp: '330 hp', torque: '331 lb-ft', zero_to_sixty: '5.8s', engine: '3.0L V6 turbo (Sport Turismo wagon body — MY2018+; all sedan drivetrains available)', curb_weight_lb: '3,989 lb', top_speed_mph: '167 mph' },
+  // 4 E-Hybrid Sport Turismo: wagon PHEV; highest EU/Asia auction volume of any 971 body variant
+  'panamera-ii:4_ehybrid_sport_turismo': { hp: '455 hp', torque: '516 lb-ft', zero_to_sixty: '4.6s', engine: '2.9L V6 + 100 kW electric PHEV (Sport Turismo wagon — 462 PS combined; MY2018+)', curb_weight_lb: '4,321 lb', top_speed_mph: '173 mph' },
+  // Executive: LWB; 4 / 4S / Turbo / Turbo S / TSHE powertrains; MY2017+
+  'panamera-ii:executive':               { hp: '330 hp', torque: '331 lb-ft', zero_to_sixty: '5.9s', engine: 'Multiple (LWB Executive — 4 / 4S / Turbo / Turbo S / TSHE drivetrains; MY2017+)', curb_weight_lb: '4,144 lb', top_speed_mph: '167 mph' },
 }
 
 function normalizeTrim(trim: string): string {

@@ -43,6 +43,11 @@ export function deriveTrimCategory(
     case '987.2-cayman': return deriveCayman987(trim)
     case '981-cayman':
     case '982-cayman': return deriveCayman718(trim)
+    case 'cayenne-i': return deriveCayenneI(trim)
+    case 'cayenne-ii': return deriveCayenneII(trim)
+    case 'cayenne-iii': return deriveCayenneIII(trim)
+    case 'panamera-i': return derivePanameraI(trim)
+    case 'panamera-ii': return derivePanameraII(trim)
     default: return null
   }
 }
@@ -296,4 +301,90 @@ function deriveCayman718(trim: string): TrimCategory | null {
   if (t.includes('gts') || t.includes('cayman s') || t.includes('718 s')) return 'cayman_s'
   if (t.includes('cayman') || t.includes('718')) return 'cayman_base'
   return null
+}
+
+// ─── Cayenne (2003–present) ──────────────────────────────────────────────────
+
+function deriveCayenneI(trim: string): TrimCategory | null {
+  const t = trim.toLowerCase()
+  if (t.includes('transsyberia')) return 'transsyberia'  // special edition before turbo_s
+  if (t.includes('turbo s')) return 'turbo_s'
+  if (t.includes('turbo')) return 'turbo_base'
+  if (t.includes('gts')) return 'gts'
+  if (t.includes('diesel')) return 'diesel'
+  if (t.includes('s')) return 's'
+  if (t.includes('base')) return 'base'
+  return null
+}
+
+function deriveCayenneII(trim: string): TrimCategory | null {
+  const t = trim.toLowerCase()
+  // Turbo S E-Hybrid before Turbo S before Turbo; S Hybrid before S; S Diesel before Diesel
+  if (t.includes('turbo s e-hybrid') || t.includes('turbo s ehybrid')) return 'turbo_s_e_hybrid'
+  if (t.includes('turbo s')) return 'turbo_s'
+  if (t.includes('turbo')) return 'turbo_base'
+  if (t.includes('gts')) return 'gts'
+  if (t.includes('e-hybrid') || t.includes('e hybrid')) return 'e_hybrid'
+  if (t.includes('s hybrid')) return 's_hybrid'
+  if (t.includes('s diesel')) return 's_diesel'
+  if (t.includes('diesel')) return 'diesel'
+  if (t.includes('s')) return 's'
+  if (t.includes('base')) return 'base'
+  return null
+}
+
+function deriveCayenneIII(trim: string): TrimCategory | null {
+  const t = trim.toLowerCase()
+  // Coupé variants must be checked before generic trim names (longer match wins in comp engine)
+  if (t.includes('turbo s e-hybrid') && t.includes('coup')) return 'turbo_s_e_hybrid_coupe'
+  if (t.includes('turbo s e-hybrid') || t.includes('turbo s ehybrid')) return 'turbo_s_e_hybrid'
+  if (t.includes('e-hybrid') && t.includes('coup')) return 'e_hybrid_coupe'
+  if (t.includes('gts') && t.includes('coup')) return 'gts_coupe'
+  // Turbo Coupé before generic Turbo; S Coupé before generic S
+  if (t.includes('turbo') && t.includes('coup')) return 'turbo_coupe'
+  if (t.includes('s') && t.includes('coup')) return 's_coupe'
+  if (t.includes('coup')) return 'coupe'
+  if (t.includes('turbo s')) return 'turbo_s'
+  if (t.includes('turbo')) return 'turbo_base'
+  if (t.includes('gts')) return 'gts'
+  if (t.includes('e-hybrid') || t.includes('e hybrid')) return 'e_hybrid'
+  if (t.includes('s')) return 's'
+  if (t.includes('base')) return 'base'
+  return null
+}
+
+// ─── Panamera (2010–present) ─────────────────────────────────────────────────
+
+function derivePanameraI(trim: string): TrimCategory | null {
+  const t = trim.toLowerCase()
+  // Turbo S E-Hybrid before Turbo S before Turbo; S Hybrid before S; 4S before 4
+  if (t.includes('turbo s e-hybrid') || t.includes('turbo s ehybrid')) return 'turbo_s_e_hybrid'
+  if (t.includes('turbo s')) return 'turbo_s'
+  if (t.includes('turbo')) return 'turbo'
+  if (t.includes('gts')) return 'gts'
+  if (t.includes('4 e-hybrid') || t.includes('4_e-hybrid') || t.includes('4 ehybrid')) return 'awd_e_hybrid'
+  if (t.includes('s hybrid')) return 's_hybrid'
+  if (t.includes('executive')) return 'executive'
+  if (t.includes('4s')) return 'awd_s'
+  if (t === 's' || (t.includes('s') && !t.includes('4'))) return 'rwd_s'
+  if (t.includes('4')) return 'awd_base'
+  return 'rwd_base'
+}
+
+function derivePanameraII(trim: string): TrimCategory | null {
+  const t = trim.toLowerCase()
+  // Sport Turismo variants before sedan equivalents
+  if ((t.includes('turbo s e-hybrid') || t.includes('turbo s ehybrid')) && t.includes('sport turismo')) return 'turbo_s_e_hybrid_st'
+  if (t.includes('4 e-hybrid') && t.includes('sport turismo')) return 'awd_e_hybrid_st'
+  if (t.includes('sport turismo')) return 'sport_turismo'
+  if (t.includes('turbo s e-hybrid') || t.includes('turbo s ehybrid')) return 'turbo_s_e_hybrid'
+  if (t.includes('turbo s')) return 'turbo_s'
+  if (t.includes('turbo')) return 'turbo'
+  if (t.includes('gts')) return 'gts'
+  if (t.includes('4 e-hybrid') || t.includes('4_e-hybrid') || t.includes('4 ehybrid')) return 'awd_e_hybrid'
+  if (t.includes('executive')) return 'executive'
+  if (t.includes('4s')) return 'awd_s'
+  if (t === 's' || (t.includes('s') && !t.includes('4') && !t.includes('turbo'))) return 'rwd_s'
+  if (t.includes('4')) return 'awd_base'
+  return 'rwd_base'
 }
