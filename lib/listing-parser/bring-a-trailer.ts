@@ -749,6 +749,15 @@ export function parseBatHtml(html: string, sourceUrl: string): CanonicalListing 
     sold_price_cents = null
   }
 
+  // A sold listing has a final_price — not a current_bid.
+  // JSON-LD offers.price (extracted in Step 3) is authoritative for completed sales,
+  // overriding text-order heuristics that can mis-classify when "Current Bid $X"
+  // appears earlier in visible page text than "Sold for $X".
+  if (listing_status !== 'no-sale' && sold_price_cents !== null) {
+    listing_status = 'sold'
+    high_bid_cents = null
+  }
+
   // Step 12 — Assemble CanonicalListing
   return {
     source_platform: 'bring-a-trailer',
