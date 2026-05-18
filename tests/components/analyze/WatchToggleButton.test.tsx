@@ -30,12 +30,12 @@ describe('WatchToggleButton', () => {
     expect(html).toContain('text-accent-primary')
   })
 
-  it('applies standard border when not watching', () => {
+  it('applies gold fill when not watching', () => {
     const html = renderToString(
       <WatchToggleButton listingId="lst-1" initialWatched={false} />,
     )
-    expect(html).toContain('border-text-primary')
-    expect(html).toContain('text-text-primary')
+    expect(html).toContain('bg-accent-primary')
+    expect(html).toContain('text-bg-canvas')
   })
 
   it('renders a button element', () => {

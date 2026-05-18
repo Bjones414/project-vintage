@@ -44,7 +44,7 @@ export function ActionRow({ listing, viewerTier, listingId, initialWatched }: Pr
           <button
             type="button"
             onClick={() => setModalOpen(true)}
-            className="inline-flex items-center rounded-button border-[0.5px] border-text-primary bg-transparent px-5 py-[10px] font-sans text-[13px] font-medium tracking-[0.02em] text-text-primary hover:bg-bg-elevated focus:outline-none focus-visible:ring-2 focus-visible:ring-text-primary focus-visible:ring-offset-2"
+            className="inline-flex items-center rounded-button border-[0.5px] border-accent-primary bg-accent-primary px-5 py-[10px] font-sans text-[13px] font-medium tracking-[0.02em] text-bg-canvas hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
           >
             Watch this car
           </button>

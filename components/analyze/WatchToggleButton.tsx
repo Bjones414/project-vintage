@@ -48,7 +48,7 @@ export function WatchToggleButton({ listingId, initialWatched }: Props) {
         'disabled:opacity-40',
         watching
           ? 'border-accent-primary bg-transparent text-accent-primary'
-          : 'border-text-primary bg-transparent text-text-primary hover:bg-bg-elevated',
+          : 'border-accent-primary bg-accent-primary text-bg-canvas hover:opacity-90',
       ].join(' ')}
     >
       {watching ? 'Watching' : 'Watch this car'}

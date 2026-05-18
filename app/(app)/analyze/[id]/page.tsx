@@ -180,6 +180,13 @@ export default async function ListingDetailPage({ params }: PageProps) {
           viewerTier={viewerTier}
         />
 
+        <ActionRow
+          listing={listing}
+          viewerTier={viewerTier}
+          listingId={listing.id}
+          initialWatched={initialWatched}
+        />
+
         {/* Two-column: Chassis Identity | Era Card — stretch so both cards share the taller height */}
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div id="chassis">
@@ -228,13 +235,6 @@ export default async function ListingDetailPage({ params }: PageProps) {
         />
 
         {viewerTier === 'anonymous' && <AnonymousSignupCTA />}
-
-        <ActionRow
-          listing={listing}
-          viewerTier={viewerTier}
-          listingId={listing.id}
-          initialWatched={initialWatched}
-        />
       </div>
     </main>
   )
