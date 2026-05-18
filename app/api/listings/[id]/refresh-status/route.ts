@@ -1,14 +1,11 @@
 // POST /api/listings/[id]/refresh-status
 // Re-fetches the listing page at or near T-0 and updates listing_status, final_price,
 // and auction_ends_at. Called by the client-side AuctionCountdown component once at T-0.
-// No auth required — anonymous clients may call this.
-//
-// TODO (Task 8): Add per-IP rate limiting before launch. No rate limit middleware
-// (Upstash, Vercel, etc.) exists in this repo yet. Without it a client can spam this
-// endpoint. One call per listing per session is the intended usage pattern.
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
+import { createClient } from '@/lib/supabase/server'
 import { parseListing } from '@/lib/listing-parser'
+import { checkRateLimit } from '@/lib/api/rate-limit'
 
 const TEN_MINUTES_MS = 10 * 60 * 1000
 
@@ -17,6 +14,16 @@ export async function POST(
   { params }: { params: { id: string } },
 ) {
   const { id } = params
+
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+  }
+
+  if (!checkRateLimit(user.id)) {
+    return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
+  }
 
   const supabaseAdmin = createSupabaseAdmin(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
