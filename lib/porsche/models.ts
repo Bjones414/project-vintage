@@ -32,7 +32,7 @@ export const GENERATION_DEFS: GenerationDef[] = [
   },
   {
     genId: '996.2', model: '911', yearStart: 2002, yearEnd: 2005,
-    trims: ['Carrera', 'Carrera 4', 'Carrera 4S', 'Targa', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS', 'GT2'],
+    trims: ['Carrera', 'Carrera 4', 'Carrera 4S', 'Targa', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS', 'GT2', '40 Jahre 911'],
   },
   {
     genId: '997.1', model: '911', yearStart: 2005, yearEnd: 2008,

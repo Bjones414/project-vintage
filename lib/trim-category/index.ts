@@ -141,6 +141,7 @@ function derive996(trim: string): TrimCategory | null {
   if (t.includes('turbo s')) return 'turbo_s'
   if (t.includes('turbo')) return 'turbo_base'
   if (t.includes('targa')) return 'targa'
+  if (t.includes('40 jahre') || t.includes('anniversary')) return '40_jahre'
   if (t.includes('carrera 4s')) return 'carrera_4s'
   if (t.includes('carrera s')) return 'carrera_s'
   if (t.includes('cabriolet') || t.includes('convertible') || t.includes('cabrio')) {

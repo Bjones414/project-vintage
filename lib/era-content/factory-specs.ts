@@ -39,6 +39,8 @@ const SPECS: Record<string, FactorySpec> = {
   '996.2:carrera_s': { hp: '320 hp', torque: '273 lb-ft', zero_to_sixty: '5.0s', engine: '3.6L M96 flat-six',                  curb_weight_lb: '3,042 lb', top_speed_mph: '174 mph', redline_rpm: '6,750 rpm' },
   '996.2:carrera_4': { hp: '320 hp', torque: '273 lb-ft', zero_to_sixty: '5.2s', engine: '3.6L M96 flat-six',                  curb_weight_lb: '3,109 lb', top_speed_mph: '174 mph', redline_rpm: '6,750 rpm' },
   '996.2:carrera':   { hp: '320 hp', torque: '273 lb-ft', zero_to_sixty: '5.2s', engine: '3.6L M96 flat-six',                  curb_weight_lb: '2,976 lb', top_speed_mph: '174 mph', redline_rpm: '6,750 rpm' },
+  // [VERIFY] torque, 0-60, and top-speed against Porsche AG X51 Power Kit press sheet — X51 primarily improves high-rpm output; torque gain is modest
+  '996.2:40_jahre_911': { hp: '345 hp', torque: '284 lb-ft', zero_to_sixty: '5.0s', engine: '3.6L M96/03 flat-six X51 Power Kit (narrow-body RWD, LSD, M030 suspension — 1,963 units MY2004)', curb_weight_lb: '2,976 lb', top_speed_mph: '177 mph', redline_rpm: '6,750 rpm' },
 
   // 997.1 (2005–2008)
   '997.1:turbo':     { hp: '480 hp', torque: '457 lb-ft', zero_to_sixty: '3.9s', engine: '3.6L Mezger twin-turbo flat-six',    curb_weight_lb: '3,494 lb', top_speed_mph: '193 mph', redline_rpm: '6,750 rpm' },
