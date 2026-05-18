@@ -268,9 +268,11 @@ function deriveBoxster987(trim: string): TrimCategory | null {
 
 function deriveBoxster718(trim: string): TrimCategory | null {
   const t = trim.toLowerCase()
+  if (t.includes('spyder rs')) return 'boxster_spyder_rs'  // must precede generic 'spyder'
   if (t.includes('spyder')) return 'boxster_spyder'
   if (t.includes('gt4 rs')) return 'boxster_gt4_rs'  // 718 Boxster GT4 RS
   if (t.includes('gt4')) return 'boxster_gt4'          // 718 Boxster GT4
+  if (t.includes('gts 4.0')) return 'boxster_gts_40'  // must precede generic 'gts' — different engine/era
   if (t.includes('gts') || t.includes('boxster s') || t.includes('718 s')) return 'boxster_s'
   if (t.includes('boxster') || t.includes('718')) return 'boxster_base'
   return null
@@ -290,6 +292,7 @@ function deriveCayman718(trim: string): TrimCategory | null {
   const t = trim.toLowerCase()
   if (t.includes('gt4 rs')) return 'cayman_gt4_rs'
   if (t.includes('gt4')) return 'cayman_gt4'
+  if (t.includes('gts 4.0')) return 'cayman_gts_40'  // must precede generic 'gts' — different engine/era
   if (t.includes('gts') || t.includes('cayman s') || t.includes('718 s')) return 'cayman_s'
   if (t.includes('cayman') || t.includes('718')) return 'cayman_base'
   return null
