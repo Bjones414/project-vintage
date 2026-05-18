@@ -20,7 +20,7 @@ export const GENERATION_DEFS: GenerationDef[] = [
   },
   {
     genId: '964', model: '911', yearStart: 1989, yearEnd: 1993,
-    trims: ['Carrera 2', 'Carrera 4', 'Carrera 4S', 'Turbo', 'Turbo 3.3', 'RS', 'RS America', 'Speedster', 'Targa'],
+    trims: ['Carrera 2', 'Carrera 4', 'Turbo', 'Turbo 3.3', 'RS', 'RS America', 'Speedster', 'Targa'],
   },
   {
     genId: '993', model: '911', yearStart: 1994, yearEnd: 1998,
@@ -28,30 +28,30 @@ export const GENERATION_DEFS: GenerationDef[] = [
   },
   {
     genId: '996.1', model: '911', yearStart: 1999, yearEnd: 2001,
-    trims: ['Carrera', 'Carrera 4', 'Carrera 4S', 'Turbo', 'GT3'],
+    trims: ['Carrera', 'Carrera 4', 'Turbo', 'GT3'],
   },
   {
-    genId: '996.2', model: '911', yearStart: 2002, yearEnd: 2004,
-    trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Targa', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS', 'GT2'],
+    genId: '996.2', model: '911', yearStart: 2002, yearEnd: 2005,
+    trims: ['Carrera', 'Carrera 4', 'Carrera 4S', 'Targa', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS', 'GT2'],
   },
   {
     genId: '997.1', model: '911', yearStart: 2005, yearEnd: 2008,
-    trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Targa 4', 'Targa 4S', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS', 'GT2'],
+    trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Targa 4', 'Targa 4S', 'Turbo', 'GT3', 'GT3 RS', 'GT2'],
   },
   {
     genId: '997.2', model: '911', yearStart: 2009, yearEnd: 2012,
     trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Carrera 4 GTS', 'Targa 4', 'Targa 4S', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS', 'GT2 RS', 'R'],
   },
   {
-    genId: '991.1', model: '911', yearStart: 2012, yearEnd: 2015,
+    genId: '991.1', model: '911', yearStart: 2012, yearEnd: 2016,
     trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Carrera 4 GTS', 'Targa 4', 'Targa 4S', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS'],
   },
   {
-    genId: '991.2', model: '911', yearStart: 2016, yearEnd: 2018,
+    genId: '991.2', model: '911', yearStart: 2016, yearEnd: 2019,
     trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Carrera 4 GTS', 'Targa 4', 'Targa 4S', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS', 'GT2 RS', 'R'],
   },
   {
-    genId: '992.1', model: '911', yearStart: 2019, yearEnd: 2023,
+    genId: '992.1', model: '911', yearStart: 2019, yearEnd: 2024,
     trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Carrera 4 GTS', 'Targa 4', 'Targa 4S', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS'],
   },
   {
@@ -69,7 +69,7 @@ export const GENERATION_DEFS: GenerationDef[] = [
     trims: ['Base', 'S'],
   },
   {
-    genId: '987.2-boxster', model: 'Boxster', yearStart: 2009, yearEnd: 2011,
+    genId: '987.2-boxster', model: 'Boxster', yearStart: 2009, yearEnd: 2012,
     trims: ['Base', 'S', 'Spyder'],
   },
   {
@@ -94,7 +94,7 @@ export const GENERATION_DEFS: GenerationDef[] = [
   },
   {
     genId: '981-cayman', model: 'Cayman', yearStart: 2013, yearEnd: 2016,
-    trims: ['Base', 'S', 'GTS', 'GT4', 'GT4 RS'],
+    trims: ['Base', 'S', 'GTS', 'GT4'],
   },
 
   // ── 718 Cayman ────────────────────────────────────────────────────────────────
