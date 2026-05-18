@@ -12,6 +12,7 @@ import type {
   MileageBand,
   TrimTaxonomyEntry,
   FactorName,
+  GenerationPrior,
 } from './types'
 import { ALL_FACTORS as FACTORS } from './types'
 
@@ -110,6 +111,45 @@ export async function loadEngineConfig(generationId: string): Promise<EngineConf
   ])
 
   return { weights, bands, taxonomy, generationUsed }
+}
+
+/**
+ * Load the generation-level median prior for prior blending.
+ * Returns null if the generation_priors table does not exist yet (Session 2
+ * adds the nightly seeding job) or if no row exists for this generation.
+ * blendWithPrior() handles null gracefully by using regression-only.
+ */
+export async function loadGenerationPrior(
+  generationId: string,
+): Promise<GenerationPrior | null> {
+  const client = makeAdmin()
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error } = await (client as any)
+      .from('generation_priors')
+      .select('generation_id, median_cents, sample_size, computed_at')
+      .eq('generation_id', generationId)
+      .maybeSingle() as {
+        data: { generation_id: string; median_cents: number; sample_size: number; computed_at: string } | null
+        error: { message: string } | null
+      }
+
+    if (error) {
+      // Table may not exist yet — warn and continue with no prior
+      console.warn('[comp-engine-v2] loadGenerationPrior:', error.message)
+      return null
+    }
+    if (!data) return null
+
+    return {
+      generation_id: data.generation_id,
+      median_cents: data.median_cents,
+      sample_size: data.sample_size,
+      computed_at: data.computed_at,
+    }
+  } catch {
+    return null
+  }
 }
 
 // For backtest: load all configs in one pass. Returns map by generation_id.

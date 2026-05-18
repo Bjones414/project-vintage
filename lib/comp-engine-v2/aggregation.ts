@@ -3,10 +3,15 @@
 //
 // Stage 5: Recency weighting (reuses V1 breakpoints from spec).
 // Stage 6: Weighted median + P25/P75 + high_variance flag.
+//          V2: computeRidgeFairValue adds adaptive Ridge regression
+//              with prior blending as primary estimator.
 // Stage 7: Confidence score 0-100 (computed, not surfaced in V1 UI).
 // ============================================================
 
-import type { ScoredComp, FairValueV2, ConfidenceComponents } from './types'
+import type { ScoredComp, FairValueV2, ConfidenceComponents, V2CompCandidate, GenerationPrior } from './types'
+import { getAllFeatures, extractFeatureVector } from './feature-registry'
+import { fitRidge, predictRidge, computeResiduals } from './ridge'
+import { adaptiveAlpha, blendWithPrior } from './prior-blend'
 
 // ---- Stage 5: Recency -----------------------------------------------
 
@@ -120,4 +125,124 @@ export function computeConfidence(
 export function capConfidenceForCount(score: number, compCount: number): number {
   if (compCount >= 3 && compCount <= 4) return Math.min(score, 40)
   return score
+}
+
+// ---- Ridge V2: Stage 6 alternative estimator --------------------------------
+
+// Base regularisation strength. Adaptive alpha scales this by (k / poolSize).
+const BASE_RIDGE_ALPHA = 1.0
+
+export interface RidgeFairValueResult {
+  fairValue: FairValueV2
+  /** Per-feature contribution to log(price). Key = feature name. */
+  featureContributions: Record<string, number>
+}
+
+/**
+ * Compute fair value via adaptive Ridge regression + prior blending.
+ *
+ * Uses all features registered in the feature registry. Comps where
+ * any feature is null are silently dropped from the design matrix.
+ * Returns null when fewer than 3 comps have complete feature data,
+ * or when the Ridge solve fails (singular matrix) — engine.ts falls
+ * back to computeWeightedFairValue in that case.
+ *
+ * subject      — the listing being analysed (for point prediction)
+ * comps        — scored comps after recency weighting
+ * candidateMap — listing_id → V2CompCandidate for feature extraction
+ * prior        — generation-level median prior (null until Session 2 seeding)
+ * poolSize     — total generation pool size (for adaptive alpha)
+ * referenceDate — anchor date for age_months feature
+ */
+export function computeRidgeFairValue(
+  subject: V2CompCandidate,
+  comps: ScoredComp[],
+  candidateMap: Map<string, V2CompCandidate>,
+  prior: GenerationPrior | null,
+  poolSize: number,
+  referenceDate: Date = new Date(),
+): RidgeFairValueResult | null {
+  const features = getAllFeatures()
+  if (features.length === 0) return null
+
+  // Feature names including intercept for contribution labelling
+  const featureNames = ['intercept', ...features.map(f => f.name)]
+
+  // Build design matrix rows and log-price targets
+  const xRows: number[][] = []
+  const yVals: number[] = []
+
+  for (const comp of comps) {
+    const candidate = candidateMap.get(comp.listing_id)
+    if (!candidate) continue
+
+    const featureVec = extractFeatureVector(candidate, features, referenceDate)
+    if (featureVec === null) continue  // missing data — skip comp
+
+    if (comp.price_cents <= 0) continue
+    xRows.push([1, ...featureVec])    // prepend intercept
+    yVals.push(Math.log(comp.price_cents))
+  }
+
+  // Require at least as many observations as features (including intercept column)
+  // to avoid an underdetermined system. Ridge regularisation handles the n≈p case.
+  const minComps = features.length + 1
+  if (xRows.length < minComps) return null
+
+  const k = xRows.length
+  const alpha = adaptiveAlpha(BASE_RIDGE_ALPHA, k, poolSize)
+  const fit = fitRidge(xRows, yVals, alpha)
+  if (!fit) return null
+
+  // Extract subject feature vector
+  const subjectFeatureVec = extractFeatureVector(subject, features, referenceDate)
+  if (subjectFeatureVec === null) return null
+
+  const xSubject = [1, ...subjectFeatureVec]
+  const predResult = predictRidge(xSubject, fit, featureNames)
+
+  // Blend with generation-level prior (null → regression only, with console.warn)
+  const blendedMedianCents = blendWithPrior(
+    predResult.predictedCents,
+    prior,
+    k,
+  )
+
+  // P25/P75 from in-sample residuals distribution
+  const sortedResiduals = computeResiduals(xRows, yVals, fit, featureNames)
+  const n = sortedResiduals.length
+  const eps25 = sortedResiduals[Math.max(0, Math.floor(n * 0.25) - 1)] ?? 0
+  const eps75 = sortedResiduals[Math.min(n - 1, Math.floor(n * 0.75))] ?? 0
+
+  const logMedian = Math.log(blendedMedianCents)
+  const p25Cents  = Math.round(Math.exp(logMedian + eps25))
+  const p75Cents  = Math.round(Math.exp(logMedian + eps75))
+  const highVariance = blendedMedianCents > 0 &&
+    (p75Cents - p25Cents) / blendedMedianCents > 0.25
+
+  // Build feature contribution map (non-intercept log-price contributions)
+  const featureContributions: Record<string, number> = {}
+  for (const c of predResult.featureContributions) {
+    if (c.featureName === 'intercept') continue
+    featureContributions[c.featureName] = c.contributionLogPrice
+  }
+
+  // Console-log the contribution record for observability (persisted logging: Session 3)
+  console.log('[ridge-v2] feature contributions', JSON.stringify({
+    pool_size: poolSize,
+    k,
+    alpha: alpha.toFixed(4),
+    predicted_cents: Math.round(blendedMedianCents),
+    contributions: featureContributions,
+  }))
+
+  return {
+    fairValue: {
+      median_cents: Math.round(blendedMedianCents),
+      p25_cents:    Math.max(1, p25Cents),
+      p75_cents:    p75Cents,
+      high_variance: highVariance,
+    },
+    featureContributions,
+  }
 }

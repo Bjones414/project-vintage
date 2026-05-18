@@ -27,6 +27,8 @@ export async function logCompRun(
     recency_weight: c.recency_weight,
     final_weight: c.final_weight,
     price_cents: c.price_cents,
+    // Include per-factor similarity scores for observability
+    factor_scores: c.factor_scores,
   }))
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,6 +49,8 @@ export async function logCompRun(
       was_backtest: options.wasBacktest ?? false,
       verdict: result.verdict,
       cascade_level: result.cascade_level ?? null,
+      // Ridge V2 feature contributions (null when Ridge fell back to weighted percentile)
+      feature_contributions_json: result.feature_contributions ?? null,
     })
     .select('id')
     .single()

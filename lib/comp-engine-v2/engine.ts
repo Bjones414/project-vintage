@@ -13,6 +13,7 @@ import type {
   EngineConfig,
   ScoredComp,
   CascadeLevel,
+  GenerationPrior,
 } from './types'
 import { applyHardFilters } from './hard-filter'
 import { applyCohortSeparation } from './mileage-cohort'
@@ -20,6 +21,7 @@ import { applySimilarityScoring } from './similarity'
 import {
   applyRecencyWeighting,
   computeWeightedFairValue,
+  computeRidgeFairValue,
   computeConfidence,
   capConfidenceForCount,
 } from './aggregation'
@@ -32,6 +34,7 @@ export function runCompEngineV2(
   config: EngineConfig,
   asOf: Date = new Date(),
   maxMonths: number = 36,
+  prior: GenerationPrior | null = null,
 ): V2CompsResult {
   const emptyResult = (
     verdict: V2CompsResult['verdict'],
@@ -161,8 +164,25 @@ export function runCompEngineV2(
   // Stage 2 continued: low confidence for 3–4 comps
   const lowConfidence = afterRecency.length >= 3 && afterRecency.length <= 4
 
-  // Stage 6: Weighted median + P25/P75
-  const fairValue = computeWeightedFairValue(afterRecency)
+  // Stage 6: Fair value — Ridge (primary) with weighted-percentile fallback.
+  // Wiring: parallel-run mode. Ridge runs first; if it returns null (e.g.,
+  // insufficient comps with complete feature data, or singular matrix),
+  // the engine falls back to the existing weighted percentile.
+  const candidateMap = new Map<string, V2CompCandidate>(
+    afterCohort.map(c => [c.listing_id, c]),
+  )
+  const ridgeResult = computeRidgeFairValue(
+    subject,
+    afterRecency,
+    candidateMap,
+    prior,
+    pool.length,
+    asOf,
+  )
+
+  const fairValue = ridgeResult ? ridgeResult.fairValue : computeWeightedFairValue(afterRecency)
+  const featureContributions = ridgeResult?.featureContributions ?? undefined
+
   if (!fairValue) {
     return emptyResult('insufficient_comps', 'fair_value_computation_failed', {
       cascade_level: cascadeLevel,
@@ -214,5 +234,6 @@ export function runCompEngineV2(
     weights_used: config.weights.weights,
     cascade_level: cascadeLevel,
     cascade_caveat,
+    feature_contributions: featureContributions,
   }
 }

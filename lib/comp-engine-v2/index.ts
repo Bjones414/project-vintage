@@ -7,13 +7,13 @@
 
 import { createClient } from '@supabase/supabase-js'
 import type { V2Subject, V2CompCandidate, V2CompsResult } from './types'
-import { loadEngineConfig } from './config-loader'
+import { loadEngineConfig, loadGenerationPrior } from './config-loader'
 import { runCompEngineV2 } from './engine'
 import { logCompRun } from './logger'
 
-export type { V2CompsResult, V2Subject, V2CompCandidate, EngineConfig, CascadeLevel } from './types'
+export type { V2CompsResult, V2Subject, V2CompCandidate, EngineConfig, CascadeLevel, GenerationPrior } from './types'
 export { runCompEngineV2 } from './engine'
-export { loadEngineConfig, loadAllConfigs } from './config-loader'
+export { loadEngineConfig, loadAllConfigs, loadGenerationPrior } from './config-loader'
 export { MODEL_VERSION } from './types'
 
 function makeAdmin() {
@@ -121,9 +121,11 @@ export async function computeCompsV2(listingId: string): Promise<V2CompsResult> 
   }
 
   const generationId: string = subject.generation_id ?? 'default'
-  const config = await loadEngineConfig(generationId)
-
-  const pool = await fetchV2Pool(generationId, listingId)
+  const [config, prior, pool] = await Promise.all([
+    loadEngineConfig(generationId),
+    loadGenerationPrior(generationId),
+    fetchV2Pool(generationId, listingId),
+  ])
 
   const subjectNorm: V2Subject = {
     id: subject.id,
@@ -152,7 +154,7 @@ export async function computeCompsV2(listingId: string): Promise<V2CompsResult> 
     is_comp_resistant: subject.is_comp_resistant ?? false,
   }
 
-  let result = runCompEngineV2(subjectNorm, pool, config)
+  let result = runCompEngineV2(subjectNorm, pool, config, new Date(), 36, prior)
 
   // Thin cascade retry: if all 36-month levels yielded insufficient comps, widen to 48 months.
   // Hard cap at 48 months — no further extension.
@@ -160,7 +162,7 @@ export async function computeCompsV2(listingId: string): Promise<V2CompsResult> 
   if (result.verdict === 'insufficient_comps' && result.insufficient_reason !== 'sparse_category') {
     console.log('[comp-engine] thin cascade retry with 48mo window', { generationId, listingId })
     const pool48 = await fetchV2Pool(generationId, listingId, 48)
-    result = runCompEngineV2(subjectNorm, pool48, config, new Date(), 48)
+    result = runCompEngineV2(subjectNorm, pool48, config, new Date(), 48, prior)
   }
 
   // Log every run, no exceptions

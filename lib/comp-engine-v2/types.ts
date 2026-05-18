@@ -4,6 +4,29 @@
 
 export const MODEL_VERSION = 'v1.0'
 
+// ---- V2 era taxonomy (see era.ts for mapping logic) -------------------------
+export type Era = 'air_cooled' | 'water_cooled_na' | 'water_cooled_gt' | 'modern_turbo'
+
+// ---- Feature registry types (see feature-registry.ts) -----------------------
+export type FeatureTransformation = 'linear' | 'log' | 'polynomial' | 'binary' | 'interaction'
+
+export interface FeatureRegistryEntry {
+  name: string
+  description: string
+  transformation: FeatureTransformation
+}
+
+// ---- Generation-level prior (loaded from generation_priors table) -----------
+// Session 2 adds the nightly refresh hook that populates this table.
+// Until then, loadGenerationPrior() returns null and blendWithPrior()
+// falls back to regression-only.
+export interface GenerationPrior {
+  generation_id: string
+  median_cents: number
+  sample_size: number
+  computed_at: string   // ISO 8601
+}
+
 // Factor names matching generation_weight_config.factor_name
 export type FactorName =
   | 'mileage_similarity'
@@ -157,4 +180,8 @@ export interface V2CompsResult {
   // Cascade metadata
   cascade_level: CascadeLevel | null
   cascade_caveat: string | null     // displayed on analyze page when level > 2
+  // Per-prediction feature contributions (Ridge V2, optional).
+  // Key = feature name, value = beta × x_std contribution to log(price).
+  // Persisted logging is a later session; console-logged for now.
+  feature_contributions?: Record<string, number>
 }
