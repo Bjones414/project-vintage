@@ -119,12 +119,12 @@ export const GENERATION_DEFS: GenerationDef[] = [
 
   // ── Macan ─────────────────────────────────────────────────────────────────────
   {
-    genId: 'macan-i', model: 'Macan', yearStart: 2014, yearEnd: 2021,
-    trims: ['Base', 'S', 'GTS', 'Turbo'],
+    genId: 'macan-i', model: 'Macan', yearStart: 2014, yearEnd: 2023,  // US ICE final MY2023; EU ~2024 [VERIFY]
+    trims: ['Base', 'S', 'GTS', 'Turbo', 'S Diesel', 'T', 'Turbo Performance Package'],
   },
   {
-    genId: 'macan-ii', model: 'Macan', yearStart: 2022, yearEnd: PRESENT,
-    trims: ['Base', 'S', 'GTS', 'Turbo'],
+    genId: 'macan-ii', model: 'Macan', yearStart: 2024, yearEnd: PRESENT,
+    trims: ['Macan 4', 'Macan Turbo', 'Macan 4S', 'Macan Electric'],
   },
 
   // ── Panamera ──────────────────────────────────────────────────────────────────
@@ -140,7 +140,7 @@ export const GENERATION_DEFS: GenerationDef[] = [
   // ── Taycan ────────────────────────────────────────────────────────────────────
   {
     genId: 'taycan-i', model: 'Taycan', yearStart: 2020, yearEnd: PRESENT,
-    trims: ['Base', '4S', 'GTS', 'Turbo', 'Turbo S', 'Cross Turismo', 'Sport Turismo'],
+    trims: ['Base', '4', '4S', 'GTS', 'Turbo', 'Turbo S', 'Cross Turismo', 'Sport Turismo', 'Turbo GT'],
   },
 ]
 

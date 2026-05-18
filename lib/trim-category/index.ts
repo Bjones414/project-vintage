@@ -43,6 +43,9 @@ export function deriveTrimCategory(
     case '987.2-cayman': return deriveCayman987(trim)
     case '981-cayman':
     case '982-cayman': return deriveCayman718(trim)
+    case 'macan-i': return deriveMacanI(trim)
+    case 'macan-ii': return deriveMacanII(trim)
+    case 'taycan-i': return deriveTaycan(trim)
     default: return null
   }
 }
@@ -292,5 +295,46 @@ function deriveCayman718(trim: string): TrimCategory | null {
   if (t.includes('gt4')) return 'cayman_gt4'
   if (t.includes('gts') || t.includes('cayman s') || t.includes('718 s')) return 'cayman_s'
   if (t.includes('cayman') || t.includes('718')) return 'cayman_base'
+  return null
+}
+
+// ─── Macan 95B (macan-i, 2014–2023) ─────────────────────────────────────────
+
+function deriveMacanI(trim: string): TrimCategory | null {
+  const t = trim.toLowerCase()
+  if (t.includes('performance package')) return 'turbo_pp'  // must precede 'turbo'
+  if (t.includes('turbo')) return 'turbo'
+  if (t.includes('gts')) return 'gts'
+  if (t.includes('s diesel') || t.includes('diesel')) return 's_diesel'
+  if (t === 's') return 's'
+  if (t === 't') return 't'
+  if (t.includes('base')) return 'base'
+  return null
+}
+
+// ─── Macan EV (macan-ii, 2024–present) ──────────────────────────────────────
+
+function deriveMacanII(trim: string): TrimCategory | null {
+  const t = trim.toLowerCase()
+  if (t.includes('turbo')) return 'turbo'
+  if (t.includes('4s')) return '4s'           // must precede '4'
+  if (t.includes('4')) return '4'
+  if (t.includes('electric')) return 'electric_rwd'
+  return null
+}
+
+// ─── Taycan J1 (taycan-i, 2020–present) ─────────────────────────────────────
+
+function deriveTaycan(trim: string): TrimCategory | null {
+  const t = trim.toLowerCase()
+  if (t.includes('turbo gt')) return 'turbo_gt'   // must precede 'turbo s' and 'turbo'
+  if (t.includes('turbo s')) return 'turbo_s'     // must precede 'turbo'
+  if (t.includes('turbo')) return 'turbo'
+  if (t.includes('gts')) return 'gts'
+  if (t.includes('cross turismo')) return 'cross_turismo'
+  if (t.includes('sport turismo')) return 'sport_turismo'
+  if (t === '4s' || t.includes('4s')) return '4s' // must precede '4'
+  if (t === '4') return '4'
+  if (t.includes('base')) return 'rwd'
   return null
 }

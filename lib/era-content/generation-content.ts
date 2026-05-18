@@ -4112,6 +4112,239 @@ const CONTENT: Record<string, GenerationContent> = {
     ],
   },
 
+  // ──────────────────────────────────────────────────────────────────────────
+  // macan-i (Macan 95B, 2014–2023)
+  // Source: docs/overnight/family-macan-taycan-halo.md §B.1 + §C.1
+  // ──────────────────────────────────────────────────────────────────────────
+  'macan-i': {
+    positioning: 'Porsche\'s best-selling model on the VW Group MLB Evo platform',
+    intro: 'The 95B Macan launched in 2014 as Porsche\'s compact luxury SUV, becoming the brand\'s best-selling model throughout its run. Built on the MLB Evo platform shared with the Audi Q5, it earned genuine driver praise — the only car in its segment regularly cited for Porsche-like driving feel.',
+    production_years: '2014–2023',
+    body_styles: '5-door SUV',
+    engine: '2.0L I4 turbo (Base/T) · 2.9–3.0L V6 biturbo (S/GTS) · 3.0L TDI V6 (S Diesel, EU only) · 3.6L/2.9L V6 biturbo (Turbo)',
+    cooling: 'Water-cooled',
+    units_produced: '~360,000 worldwide [VERIFY: Porsche cited 350,000–390,000 depending on counting cutoff]',
+    notes: [
+      'The 95B launched on the VW Group MLB Evo platform — shared with the Audi Q5 — but Porsche tuned suspension, transmission calibration, and powertrain to produce a genuinely sporty compact SUV. For its generation, the Macan had no real rival for driving feel in the compact luxury SUV segment.',
+      'A meaningful Phase 2 refresh arrived for MY2019: S and GTS moved from the 3.0L V6 to the 2.9L EA839 biturbo (shared with the Panamera and 911 Carrera S). The Turbo moved from the 3.6L to the same 2.9L at a higher state of tune. These engine changes are spec-materially significant for comp queries — a 2017 Macan GTS (3.0L, 360 PS) and a 2020 Macan GTS (2.9L, 380 PS) have different powertrain provenance.',
+      'US ICE production ended with MY2023, overlapping with the launch announcement of the all-electric PPE-platform Macan EV. The Macan T trim was added for MY2022–2023 as a sportier-positioned end-of-life ICE model with distinct visual treatment. The S Diesel (EU-only, 2014–2018) was discontinued post-Dieselgate and had zero US allocation.',
+    ],
+    variants: [
+      { name: 'Macan (Base)', years: '2014–2023', drivetrain: 'AWD, 7-spd PDK', power: '252 PS (Ph1) / 261 PS (Ph2)', description: 'I4 entry trim. PDK valve body issues known in early Ph1 examples; addressed by software update.' },
+      { name: 'Macan S', years: '2014–2023', drivetrain: 'AWD, 7-spd PDK', power: '340 PS (Ph1) / 354 PS (Ph2)', production: '~150,000 est [VERIFY]', description: 'V6 sweet spot; most popular 95B specification. Ph1 chain tensioner concern on early examples.' },
+      { name: 'Macan GTS', years: '2016–2021', drivetrain: 'AWD, 7-spd PDK', power: '360 PS (Ph1 3.0L) / 380 PS (Ph2 2.9L)', production: '~40,000 est [VERIFY]', description: 'Sport-focused with PASM and Sport Chrono standard. Ph1/Ph2 engine change is a known comp differentiator.' },
+      { name: 'Macan Turbo', years: '2014–2021', drivetrain: 'AWD, 7-spd PDK', power: '400 PS (Ph1 3.6L) / 440 PS (Ph2 2.9L)', production: '~60,000 est [VERIFY]', description: 'Fastest 95B. Ph2 Turbo made the Performance Package output standard. PDCC air suspension on most examples.' },
+      { name: 'Macan Turbo w/ Performance Package', years: '2016–2018', drivetrain: 'AWD, 7-spd PDK', power: '440 PS / 600 Nm', production: 'Subset of Turbo total [VERIFY]', description: 'Factory option on Ph1 Turbo; bump from 400 to 440 PS with Torque Vectoring+. Ph2 Turbo made this output standard for all Turbos.' },
+      { name: 'Macan S Diesel', years: '2014–2018', drivetrain: 'AWD, 7-spd PDK', power: '258 PS / 580 Nm', production: '~25,000 est [VERIFY]', description: 'EU-only; zero US allocation. 3.0L TDI with highest torque in 95B family. Discontinued after Dieselgate recall campaign.' },
+      { name: 'Macan T', years: '2022–2023', drivetrain: 'AWD, 7-spd PDK', power: '261 PS / 400 Nm', production: '~15,000 est [VERIFY]', description: 'Late-cycle I4 trim with 20" RS Spyder wheels standard and optional crest delete. End-of-life ICE positioning.' },
+    ],
+    engineering: [
+      'MLB Evo platform shared with Audi Q5 (Mk3), with Porsche-specific PASM adaptive dampers (GTS/Turbo standard), Porsche Torque Vectoring Plus on the Performance Package, and Porsche-tuned seven-speed wet-clutch PDK.',
+      'Phase 2 (MY2019) engine transition: S/GTS moved to 2.9L EA839 biturbo from 3.0L; Turbo moved from 3.6L to 2.9L. The EA839 family is shared with the Panamera 4S and 911 Carrera S — a meaningful upgrade in both outputs and refinement.',
+      'The S Diesel used the 3.0L TDI V6 with 580 Nm — the highest torque of any 95B model. It was excluded from the US market throughout its production life and discontinued globally after the Dieselgate emissions recall.',
+    ],
+    watch_for: [
+      {
+        title: 'PDK valve body (early I4 models)',
+        severity: 'concern',
+        body: 'Early 95B Base and T models with the 2.0L I4 experienced PDK valve body wear and software-related shift hesitation. Porsche dealer software updates and replacement valve bodies addressed most cases, but verify service history includes the PDK campaign on any pre-2018 example.',
+        buyer_question: 'Has the PDK valve body been inspected, updated, or replaced? Any history of rough shifts or delayed engagement at low speeds?',
+      },
+      {
+        title: 'V6 timing chain tensioner (Phase 1 S and GTS)',
+        severity: 'concern',
+        body: 'Phase 1 S and GTS models (2014–2018) with the 3.0L V6 have documented timing chain tensioner wear. Cold-start rattle is the primary symptom. Porsche extended warranty coverage and issued updated parts for affected VIN ranges; verify the repair was completed on any Phase 1 V6 example.',
+        buyer_question: 'Has the timing chain tensioner been inspected or replaced? Any cold-start rattle? Dealer records for this campaign?',
+      },
+      {
+        title: 'PDCC air suspension (Turbo)',
+        severity: 'caution',
+        body: 'Turbos equipped with PDCC active suspension are expensive to maintain at high mileage. Air strut failure is common beyond 60,000 miles. Replacement runs $3,000–$6,000 per corner at independent shops. Inspect all four corners before purchase.',
+        buyer_question: 'Is the air suspension functional? When were the struts last inspected? Any warning lights on the suspension or chassis?',
+      },
+      {
+        title: 'Transfer case wear (Turbo and GTS)',
+        severity: 'caution',
+        body: 'High-mileage Turbo and GTS examples can develop transfer case wear — particularly with a history of repeated hard launches or occasional off-road use. Vibration under acceleration load is the primary symptom.',
+        buyer_question: 'Any vibration under acceleration? Transfer case fluid service history documented?',
+      },
+      {
+        title: 'S Diesel recall and AdBlue system (EU only)',
+        severity: 'concern',
+        body: 'The S Diesel is subject to ongoing Dieselgate-related emissions recall work in Europe. The AdBlue SCR system is a documented failure point; repair is costly. Confirm all recall campaigns are completed and the AdBlue system is fully functional before purchase.',
+        buyer_question: 'Have all Porsche recall campaigns been completed? Is the AdBlue SCR system fully functional? Any recent DEF/AdBlue warning lights?',
+      },
+    ],
+    service: [
+      'All 95B Macans benefit from oil service at 7,500–10,000 mile intervals. The PDK requires fluid changes every 40,000 miles — it is not a lifetime fill despite some dealer claims. Transfer case and front differential fluid should be serviced by 60,000 miles.',
+      'Phase 1 V6 S and GTS models (2014–2018) should have timing chain tensioner history confirmed at purchase. If no documentation exists, budget for inspection before buying.',
+      'Air suspension-equipped Turbos should be pressure-tested at every pre-purchase inspection. Porsche-trained technicians can assess individual corner condition. Factor deferred air suspension cost into any offer.',
+    ],
+    value_drivers: [
+      {
+        name: 'Phase 2 engine (MY2019+)',
+        description: 'Phase 2 models with the 2.9L EA839 biturbo (S, GTS, Turbo) are generally preferred over Phase 1 for the more current powertrain, resolved early-car reliability concerns, and the spec connection to 911 Carrera S. Phase 2 GTS and Turbo typically carry a slight premium over comparable-mileage Phase 1.',
+        applies_to: { trim_categories: ['s', 'gts', 'turbo'] },
+      },
+      {
+        name: 'Turbo Performance Package (Phase 1)',
+        description: 'Factory-optioned Phase 1 Turbos with the Performance Package (440 PS, Torque Vectoring+) command a modest premium over the base Phase 1 Turbo (400 PS). Confirm via COA or factory build sheet — aftermarket tunes do not qualify.',
+        applies_to: { trim_categories: ['turbo_pp'] },
+      },
+      {
+        name: 'S Diesel (EU market only)',
+        description: 'EU-market S Diesel examples have a distinct buyer population on European auction platforms. Zero US market relevance. The diesel powertrain, discontinued status, and highest-torque 95B spec create niche collector interest in Europe.',
+        applies_to: { trim_categories: ['s_diesel'] },
+      },
+    ],
+  },
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // macan-ii (Macan EV / PPE platform, 2024–present)
+  // Source: docs/overnight/family-macan-taycan-halo.md §B.2 + §C.2
+  // ──────────────────────────────────────────────────────────────────────────
+  'macan-ii': {
+    positioning: 'All-electric Macan on Porsche–Audi PPE platform',
+    intro: 'The second-generation Macan (Type 1Y) is a purpose-built electric SUV on the Premium Platform Electric (PPE) architecture co-developed with Audi. Unrelated to the 95B mechanically — new platform, 800V charging, and Taycan-derived powertrain thinking. Launched MY2024.',
+    production_years: '2024–present',
+    body_styles: '5-door SUV (EV)',
+    engine: 'Dual-motor electric AWD (Macan 4 / 4S / Turbo) · Single-motor electric RWD (Macan Electric)',
+    cooling: 'Electric (800V architecture)',
+    units_produced: 'Ongoing [VERIFY annual delivery figures when available]',
+    notes: [
+      'The Type 1Y Macan shares the PPE platform with the Audi Q6 e-tron. Porsche-specific tuning includes Sport Chrono, PASM, and rear-axle steering options on Turbo variants. The 800V charging architecture matches the Taycan and enables high-rate DC charging up to 270 kW.',
+      'The lineup launched MY2024 with Macan 4 (AWD) and Macan Turbo (AWD high-output). Macan 4S and Macan Electric (RWD entry) were added for MY2025 in select markets. HP figures represent overboost (launch control) output; standard output is lower in normal driving.',
+      'Comp isolation from the 95B ICE Macan is critical: different platform, powertrain, price tier, and market. The genId split (macan-i vs macan-ii) handles this correctly. Do not compare ICE and EV Macan auction results in the same comp pool.',
+    ],
+    variants: [
+      { name: 'Macan Turbo', years: '2024–', drivetrain: 'AWD, 2-spd front + 1-spd rear', power: '639 PS std / ~630 hp overboost [VERIFY]', description: 'Flagship EV Macan. 0–60 ~3.1s. Fastest production Macan to date.' },
+      { name: 'Macan 4S', years: '2025–', drivetrain: 'AWD, 2-spd front + 1-spd rear', power: '509 PS overboost [VERIFY]', description: 'MY2025 addition filling GTS-like gap between Macan 4 and Turbo. Specs [VERIFY] pending Porsche AG release.' },
+      { name: 'Macan 4', years: '2024–', drivetrain: 'AWD, 2-spd front + 1-spd rear', power: '435 PS overboost', description: 'Launch-edition AWD base EV Macan. Softer character than Turbo; strong range with optional heat pump.' },
+      { name: 'Macan Electric', years: '2025–', drivetrain: 'RWD, 1-spd', power: '~335 PS [VERIFY]', description: 'Entry RWD EV; select markets only. US availability [VERIFY]. Range-focused positioning.' },
+    ],
+    engineering: [
+      'PPE platform (Premium Platform Electric) is a co-development between Porsche and Audi, shared with the Audi Q6 e-tron. The rear motor uses a single-speed reduction; the front motor uses a two-speed transmission for improved low-speed torque and highway efficiency on AWD variants.',
+      '800V charging architecture supports up to 270 kW DC peak charging rate, matching the Taycan. This enables ~10–80% charging in approximately 21 minutes under ideal conditions.',
+      'The Macan Turbo uses uprated stators and power electronics relative to the Macan 4, producing ~639 PS in standard mode and higher under overboost — the same architecture used in the Audi Q6 e-tron RS.',
+    ],
+    watch_for: [
+      {
+        title: 'Early-build software quality',
+        severity: 'caution',
+        body: 'MY2024 launch examples have reported OTA software bugs affecting infotainment, charging behavior, and ADAS calibration. Most have been resolved via OTA updates, but verify that all software updates are current before purchase. Porsche\'s online update history for the VIN should be confirmed.',
+        buyer_question: 'Is the vehicle\'s software fully up to date? Any OTA update failures or persistent fault codes?',
+      },
+      {
+        title: 'Long-term battery health (ongoing)',
+        severity: 'caution',
+        body: 'The Type 1Y is too new for long-term battery degradation data. For high-mileage examples, check the battery health report via the Porsche Vehicle History portal or a dealer scan. PPE battery warranty covers 8 years / 100,000 miles to 70% capacity.',
+        buyer_question: 'What is the current battery state of health (SoH)? Is the battery warranty still active?',
+      },
+    ],
+    service: [
+      'The Macan EV has no traditional oil service, but brake fluid requires replacement every two years, coolant loops should be inspected per Porsche EV service schedule, and tire wear on EV Macans can be accelerated by regenerative braking patterns. Annual Porsche service check recommended.',
+      'Battery health should be verified at pre-purchase inspection for any example beyond 30,000 miles. A Porsche dealer can produce a battery health report from the vehicle\'s BMS data.',
+    ],
+    value_drivers: [
+      {
+        name: 'Macan Turbo over Macan 4',
+        description: 'The Macan Turbo commands a significant premium over the Macan 4 at launch ($103,600 vs $75,900). In the used market, Turbo examples are expected to hold stronger values as the performance halo of the EV lineup.',
+        applies_to: { trim_categories: ['turbo'] },
+      },
+      {
+        name: 'MY2024 launch examples',
+        description: 'First-year EV examples carry both early-adopter novelty and early-build risk. No strong market signal yet on whether MY2024 commands a premium or discount vs MY2025. Monitor as the used market develops.',
+      },
+    ],
+  },
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // taycan-i (Taycan J1, 2020–present)
+  // Source: docs/overnight/family-macan-taycan-halo.md §B.3 + §C.3
+  // ──────────────────────────────────────────────────────────────────────────
+  'taycan-i': {
+    positioning: 'Porsche\'s first production EV on the bespoke J1 platform',
+    intro: 'The Taycan is Porsche\'s first production electric vehicle, built on the bespoke J1 platform with 800V charging architecture. Available as sedan, raised-ride Cross Turismo wagon, and low-profile Sport Turismo wagon. The Turbo GT added in MY2024 set an EV lap record at the Nürburgring.',
+    production_years: '2020–present',
+    body_styles: 'Sedan · Cross Turismo (raised wagon, +59 mm) · Sport Turismo (low wagon)',
+    engine: 'Single-motor electric (RWD — Base) · Dual-motor electric (AWD — 4, 4S, GTS, Turbo, Turbo S, Turbo GT)',
+    cooling: 'Electric (800V architecture)',
+    units_produced: '~134,000 through 2023 (20,015 · 41,296 · 34,801 · 37,526 by year)',
+    notes: [
+      'The Taycan launched for MY2020 with 4S, Turbo, and Turbo S sedan variants. MY2021 added the RWD base Taycan, the Taycan 4, and the Cross Turismo body style. MY2022 brought the Sport Turismo body and the GTS. MY2024 added the Turbo GT — the most powerful Taycan and the fastest production EV around the Nürburgring at its launch.',
+      'Power figures vary significantly by battery specification (Performance Battery vs Performance Battery Plus) and whether Sport Boost overboost is active. Figures cited in this catalog reflect Performance Battery Plus maximum rated output — standard output is materially lower.',
+      'Body-style ambiguity is the highest-impact comp-accuracy issue for the Taycan: a Taycan 4S Sedan and a Taycan 4S Cross Turismo have materially different values (CT typically carries a $3,000–$5,000 premium). The current catalog models Cross Turismo and Sport Turismo as monolithic body-style entries — a Phase 2.5 design item to resolve.',
+    ],
+    variants: [
+      { name: 'Taycan (RWD / Base)', years: '2021–', drivetrain: 'RWD, 1-spd rear', power: '476 PS PB+ overboost / 300 PS std', production: '~20,000 est [VERIFY]', description: 'Most efficient Taycan; ~283 mi EPA with PB+. Added MY2021.' },
+      { name: 'Taycan 4', years: '2021–', drivetrain: 'AWD, 2-spd front + 1-spd rear', power: '530 PS PB+ overboost', production: '~15,000 est [VERIFY]', description: 'AWD entry tier; absent from catalog before this release. Slots between RWD and 4S.' },
+      { name: 'Taycan 4S', years: '2020–', drivetrain: 'AWD, 2-spd front + 1-spd rear', power: '571 PS PB+ overboost', production: '~25,000 est [VERIFY]', description: 'Launch edition; first J1 sold to customers. Balanced performance/range sweet spot.' },
+      { name: 'Taycan GTS', years: '2022–', drivetrain: 'AWD, 2-spd front + 1-spd rear', power: '590 PS', production: '~8,000 est [VERIFY]', description: 'Track-tuned chassis; GTS suspension calibration standard. Sedan and Sport Turismo only [VERIFY CT availability].' },
+      { name: 'Taycan Turbo', years: '2020–', drivetrain: 'AWD, 2-spd front + 1-spd rear', power: '680 PS overboost', production: '~12,000 est [VERIFY]', description: '0–60 ~3.0s; PDCC standard. Strong daily usability at the high-performance tier.' },
+      { name: 'Taycan Turbo S', years: '2020–', drivetrain: 'AWD, 2-spd front + 1-spd rear', power: '761 PS PB+ overboost', production: '~6,000 est [VERIFY]', description: '0–60 ~2.6s; ceramic brakes standard. Weissach Package option on sedan adds carbon components and aero.' },
+      { name: 'Taycan Turbo GT', years: '2024–', drivetrain: 'AWD, 2-spd front + 1-spd rear', power: '~1,019 PS Weissach overboost [VERIFY]', production: '~2,000 est [VERIFY]', description: 'Nürburgring EV lap record holder at launch. Sedan-only. 0–60 ~2.2s. Weissach Package may be standard or option [VERIFY].' },
+      { name: 'Cross Turismo', years: '2021–', drivetrain: 'AWD', power: 'Mirrors sedan tiers (4 / 4S / Turbo / Turbo S)', description: 'Raised-ride wagon (+59 mm); gravel/unpaved mode option. Power level ambiguous in current monolithic catalog entry — Phase 2.5 design item.' },
+      { name: 'Sport Turismo', years: '2022–', drivetrain: 'AWD', power: 'Mirrors sedan tiers (4 / 4S / GTS / Turbo / Turbo S)', description: 'Low-profile wagon body. Lower and sportier than Cross Turismo. Power level ambiguous in current monolithic catalog entry — Phase 2.5 design item.' },
+    ],
+    engineering: [
+      'J1 platform is Porsche-bespoke (later evolved into PPE for the Macan EV). 800V architecture enables up to 270 kW DC charging. The two-speed front gearbox on AWD variants provides torque for launch while allowing a relaxed gear ratio at highway speeds.',
+      'The Turbo GT uses uprated stators and inverters relative to the Turbo S — the same mechanical approach as the Mission E race program. Weissach Package (carbon wheels, aero wing, reduced weight) targets the Nürburgring record configuration.',
+      'All Taycans use regenerative braking integrated into the blended brake pedal. Ceramic brakes are standard on Turbo S; available on Turbo. The GTS uses a tuned suspension calibration distinct from the Turbo family.',
+    ],
+    watch_for: [
+      {
+        title: 'Charging software (early MY2020 batches)',
+        severity: 'caution',
+        body: 'Early MY2020 Taycans had OTA software issues affecting charge rate management and displayed range. Most have been resolved via dealer OTA updates. Confirm software version is current and verify charging behavior with a DC fast-charge test before purchase.',
+        buyer_question: 'Is the vehicle fully updated to the latest Porsche Connect software? Any history of charging errors or unexpected charge interruptions?',
+      },
+      {
+        title: 'Battery health on high-mileage examples',
+        severity: 'caution',
+        body: 'Taycan battery degradation data is now available for 2020–2021 models at 50,000+ miles. Battery health reports are accessible via Porsche dealer scan. Taycan battery warranty covers 8 years / 100,000 miles to 70% capacity under the original Porsche warranty.',
+        buyer_question: 'What is the current battery state of health (SoH) from a dealer scan? Is the original battery warranty still active?',
+      },
+      {
+        title: 'Turbo GT Weissach Package verification',
+        severity: 'caution',
+        body: 'The Turbo GT Weissach Package commands a premium and includes carbon wheels and aero components. Confirm factory specification via Porsche COA. The Weissach configuration on the Turbo GT [VERIFY whether it is standard or an option — Porsche launch materials are ambiguous].',
+        buyer_question: 'Is the Weissach Package confirmed on the factory COA? Are the carbon wheels original factory specification?',
+      },
+      {
+        title: 'Body-style comp isolation (Cross Turismo / Sport Turismo)',
+        severity: 'caution',
+        body: 'Cross Turismo and Sport Turismo variants carry price premiums over comparable sedan variants (typically $3,000–$5,000 for CT). The current catalog models these as monolithic body-style entries — comp queries may undervalue CT/ST examples until body-style isolation is added in Phase 2.5.',
+        buyer_question: 'Is the body style (sedan vs CT vs ST) correctly identified in the listing? Cross-reference the VIN body code.',
+      },
+    ],
+    service: [
+      'Taycan has no oil service, but brake fluid must be replaced every two years regardless of mileage — a common EV owner oversight. Coolant loop inspection per Porsche EV schedule. Tire wear can be higher than expected for an EV due to regenerative braking patterns and vehicle weight (~5,000 lb).',
+      'Pre-purchase inspection should include a battery health scan from a Porsche dealer or trained EV technician. For Turbo and Turbo S examples, confirm PDCC system function and ceramic brake pad thickness.',
+      'The GTS and Turbo GT have unique chassis tuning. Alignment and suspension inspection is recommended at purchase for any track-driven example.',
+    ],
+    value_drivers: [
+      {
+        name: 'Turbo GT over Turbo S',
+        description: 'The Turbo GT commands a strong premium over the Turbo S, driven by the Nürburgring record, sedan-only production, and significantly higher output. Weissach-equipped examples carry additional premium. Long-term values will depend on production totals [VERIFY] — estimated ~2,000 units.',
+        applies_to: { trim_categories: ['turbo_gt'] },
+      },
+      {
+        name: 'Cross Turismo premium over sedan',
+        description: 'Cross Turismo variants (all power tiers) typically carry a $3,000–$5,000 premium over comparable sedan variants in the used market. The premium reflects the rarer body style, the gravel mode option, and stronger SUV-buyer crossover demand.',
+        applies_to: { trim_categories: ['cross_turismo'] },
+      },
+      {
+        name: 'Taycan 4 — absent from catalog until Phase 2',
+        description: 'The Taycan 4 was absent from the catalog prior to this release. Any Taycan 4 auction listings ingested before this update may have been misclassified as Base/RWD or 4S. Flag listings with uncertain trim classification from before the Phase 2 catalog update.',
+        applies_to: { trim_categories: ['4'] },
+      },
+      {
+        name: 'Performance Battery Plus specification',
+        description: 'All Taycan variants perform significantly better with Performance Battery Plus (PB+). A 4S with PB+ is spec-materially different from a 4S with standard Performance Battery. Confirm PB+ from the factory build sheet — it affects power, range, and comp pool.',
+      },
+    ],
+  },
+
 }
 
 export function getGenerationContent(id: string): GenerationContent | null {
