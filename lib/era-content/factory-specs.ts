@@ -360,6 +360,38 @@ const SPECS: Record<string, FactorySpec> = {
   'panamera-ii:4_ehybrid_sport_turismo': { hp: '455 hp', torque: '516 lb-ft', zero_to_sixty: '4.6s', engine: '2.9L V6 + 100 kW electric PHEV (Sport Turismo wagon — 462 PS combined; MY2018+)', curb_weight_lb: '4,321 lb', top_speed_mph: '173 mph' },
   // Executive: LWB; 4 / 4S / Turbo / Turbo S / TSHE powertrains; MY2017+
   'panamera-ii:executive':               { hp: '330 hp', torque: '331 lb-ft', zero_to_sixty: '5.9s', engine: 'Multiple (LWB Executive — 4 / 4S / Turbo / Turbo S / TSHE drivetrains; MY2017+)', curb_weight_lb: '4,144 lb', top_speed_mph: '167 mph' },
+
+  // macan-i (95B, 2014–2023 — MLB Evo platform)
+  // Phase 1 (2014–2018): Base 2.0L I4 / S 3.0L V6 / GTS 3.0L V6 / Turbo 3.6L V6
+  // Phase 2 (2019–2023): S/GTS→2.9L biturbo / Turbo→2.9L biturbo. Figures below = Phase 2 catch-all.
+  'macan-i:turbo_performance_package': { hp: '434 hp', torque: '443 lb-ft', zero_to_sixty: '4.4s', engine: '3.6L V6 biturbo (Phase 1 only, 2016–2018; 440 PS; Torque Vectoring+ std)', curb_weight_lb: '4,365 lb', top_speed_mph: '165 mph' },
+  'macan-i:turbo':   { hp: '434 hp', torque: '443 lb-ft', zero_to_sixty: '4.5s', engine: '2.9L V6 biturbo (Phase 2, 440 PS) / 3.6L V6 biturbo (Phase 1, 400 PS / 394 hp) [VERIFY Ph1 vs Ph2]', curb_weight_lb: '4,365 lb', top_speed_mph: '165 mph' },
+  'macan-i:gts':     { hp: '375 hp', torque: '384 lb-ft', zero_to_sixty: '4.7s', engine: '2.9L V6 biturbo (Phase 2, 380 PS) / 3.0L V6 biturbo (Phase 1, 360 PS / 355 hp)', curb_weight_lb: '4,255 lb', top_speed_mph: '157 mph' },
+  'macan-i:s_diesel': { hp: '254 hp', torque: '428 lb-ft', zero_to_sixty: '6.1s', engine: '3.0L TDI V6 (EU-only, 2014–2018; 258 PS; zero US allocation; discontinued post-Dieselgate)', curb_weight_lb: '4,322 lb', top_speed_mph: '142 mph' },
+  'macan-i:s':       { hp: '349 hp', torque: '354 lb-ft', zero_to_sixty: '5.1s', engine: '2.9L V6 biturbo (Phase 2, 354 PS) / 3.0L V6 biturbo (Phase 1, 340 PS / 335 hp)', curb_weight_lb: '4,233 lb', top_speed_mph: '155 mph' },
+  'macan-i:t':       { hp: '257 hp', torque: '295 lb-ft', zero_to_sixty: '6.2s', engine: '2.0L I4 turbo (MY2022–2023 end-of-line T spec; 261 PS; 20" RS Spyder wheels std) [VERIFY 0-60]', curb_weight_lb: '4,123 lb', top_speed_mph: '140 mph' },
+  'macan-i:base':    { hp: '257 hp', torque: '295 lb-ft', zero_to_sixty: '6.7s', engine: '2.0L I4 turbo (Phase 2, 261 PS) / 2.0L I4 (Phase 1, 252 PS / 248 hp)', curb_weight_lb: '4,079 lb', top_speed_mph: '144 mph' },
+
+  // macan-ii (Macan EV / PPE platform, 2024–present)
+  // 800V charging; dual-motor AWD (Macan 4 / 4S / Turbo) / single-motor RWD (Macan Electric)
+  // HP = overboost (launch control) output; standard output is lower
+  'macan-ii:macan_turbo':    { hp: '630 hp', torque: '833 lb-ft', zero_to_sixty: '3.1s', engine: 'Dual-motor electric (639 PS / ~630 hp overboost; PPE platform) [VERIFY overboost hp vs PS]', curb_weight_lb: '4,817 lb', top_speed_mph: '167 mph' },
+  'macan-ii:macan_4s':       { hp: '502 hp', torque: '439 lb-ft', zero_to_sixty: '3.9s', engine: 'Dual-motor electric (509 PS overboost; MY2025+; PPE platform) [VERIFY specs]', curb_weight_lb: '4,717 lb', top_speed_mph: '155 mph' },
+  'macan-ii:macan_4':        { hp: '429 hp', torque: '383 lb-ft', zero_to_sixty: '5.2s', engine: 'Dual-motor electric (435 PS overboost; PPE platform)', curb_weight_lb: '4,663 lb', top_speed_mph: '137 mph' },
+  'macan-ii:macan_electric': { hp: '330 hp', torque: '295 lb-ft', zero_to_sixty: '6.0s', engine: 'Single-motor electric (RWD; ~335 PS; MY2025+ select markets) [VERIFY HP and US availability]', curb_weight_lb: '4,553 lb', top_speed_mph: '130 mph' },
+
+  // taycan-i (Taycan J1, 2020–present)
+  // 800V; AWD = 2-spd front + 1-spd rear. HP = Performance Battery Plus overboost (max rated).
+  // Cross Turismo / Sport Turismo are monolithic entries; powertrain mirrors sedan tiers; spec = Turbo tier.
+  'taycan-i:turbo_gt':      { hp: '1,019 hp', torque: '988 lb-ft', zero_to_sixty: '2.2s', engine: 'Dual-motor electric (760 PS std / ~1,019 PS Weissach overboost; MY2024+) [VERIFY Weissach output]', curb_weight_lb: '5,070 lb', top_speed_mph: '190 mph' },
+  'taycan-i:turbo_s':       { hp: '750 hp', torque: '774 lb-ft', zero_to_sixty: '2.6s', engine: 'Dual-motor electric (761 PS PB+ overboost)', curb_weight_lb: '5,102 lb', top_speed_mph: '162 mph' },
+  'taycan-i:turbo':         { hp: '670 hp', torque: '627 lb-ft', zero_to_sixty: '3.0s', engine: 'Dual-motor electric (680 PS overboost)', curb_weight_lb: '5,060 lb', top_speed_mph: '162 mph' },
+  'taycan-i:gts':           { hp: '581 hp', torque: '627 lb-ft', zero_to_sixty: '3.3s', engine: 'Dual-motor electric (590 PS; GTS chassis tune; sedan/Sport Turismo only) [VERIFY CT availability]', curb_weight_lb: '5,016 lb', top_speed_mph: '155 mph' },
+  'taycan-i:4s':            { hp: '563 hp', torque: '472 lb-ft', zero_to_sixty: '3.8s', engine: 'Dual-motor electric (571 PS PB+ overboost)', curb_weight_lb: '5,060 lb', top_speed_mph: '155 mph' },
+  'taycan-i:4':             { hp: '523 hp', torque: '369 lb-ft', zero_to_sixty: '4.0s', engine: 'Dual-motor electric (530 PS PB+ overboost; MY2021+)', curb_weight_lb: '4,938 lb', top_speed_mph: '143 mph' },
+  'taycan-i:base':          { hp: '469 hp', torque: '254 lb-ft', zero_to_sixty: '5.1s', engine: 'Single-motor electric (476 PS PB+ overboost; RWD; MY2021+)', curb_weight_lb: '4,883 lb', top_speed_mph: '143 mph' },
+  'taycan-i:cross_turismo': { hp: '670 hp', torque: '627 lb-ft', zero_to_sixty: '3.1s', engine: 'Dual-motor electric (raised-wagon +59mm; powertrain mirrors sedan tiers; spec shown = Turbo tier) [VERIFY body-style ambiguity — Phase 2.5]', curb_weight_lb: '5,170 lb', top_speed_mph: '155 mph' },
+  'taycan-i:sport_turismo': { hp: '670 hp', torque: '627 lb-ft', zero_to_sixty: '3.1s', engine: 'Dual-motor electric (low-wagon body; powertrain mirrors sedan tiers; spec shown = Turbo tier; MY2022+) [VERIFY body-style ambiguity — Phase 2.5]', curb_weight_lb: '5,160 lb', top_speed_mph: '155 mph' },
 }
 
 function normalizeTrim(trim: string): string {
