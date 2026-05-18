@@ -188,14 +188,18 @@ function derive991(trim: string): TrimCategory | null {
 
   if (t.includes('gt2 rs')) return 'gt2_rs'
   if (t.includes('gt3 rs')) return 'gt3_rs'
+  if (t.includes('gt3 touring')) return 'gt3_touring'  // must precede generic 'gt3'
   if (t.includes('gt3')) return 'gt3'
   if (t.includes('sport classic')) return 'sport_classic'
   if (t.includes('speedster')) return 'speedster'
   if (/\br\b/.test(t) && !t.includes('turbo') && !t.includes('carrera')) return 'r'
   if (t.includes('turbo s')) return 'turbo_s'
   if (t.includes('turbo')) return 'turbo_base'
+  if (t.includes('targa') && t.includes('gts')) return 'targa_4_gts'  // must precede generic 'gts'
   if (t.includes('gts')) return 'gts'
   if (t.includes('targa')) return 'targa'
+  if (t.includes('50th') || t.includes('anniversary')) return 'anniversary'
+  if (t.includes('carrera t')) return 'carrera_t'  // must precede generic 'carrera'
   if (t.includes('carrera 4s')) return 'carrera_4s'
   if (t.includes('carrera s')) return 'carrera_s'
   if (t.includes('cabriolet') || t.includes('convertible') || t.includes('cabrio')) {
@@ -213,11 +217,17 @@ function derive992(trim: string): TrimCategory | null {
   const t = trim.toLowerCase()
 
   if (t.includes('gt3 rs')) return 'gt3_rs'
+  if (t.includes('gt3 touring')) return 'gt3_touring'  // must precede generic 'gt3'
   if (t.includes('gt3')) return 'gt3'
+  if (t.includes('sport classic')) return 'sport_classic'
+  if (t.includes('dakar')) return 'dakar'
+  if (t.includes('s/t')) return 'st'
   if (t.includes('turbo s')) return 'turbo_s'
   if (t.includes('turbo')) return 'turbo_base'
+  if (t.includes('targa') && t.includes('gts')) return 'targa_4_gts'  // must precede generic 'gts'
   if (t.includes('gts')) return 'gts'
   if (t.includes('targa')) return 'targa'
+  if (t.includes('carrera t')) return 'carrera_t'  // must precede generic 'carrera'
   if (t.includes('carrera 4s')) return 'carrera_4s'
   if (t.includes('carrera s')) return 'carrera_s'
   if (t.includes('cabriolet') || t.includes('convertible') || t.includes('cabrio')) {

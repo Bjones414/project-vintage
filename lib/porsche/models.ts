@@ -44,19 +44,19 @@ export const GENERATION_DEFS: GenerationDef[] = [
   },
   {
     genId: '991.1', model: '911', yearStart: 2012, yearEnd: 2016,
-    trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Carrera 4 GTS', 'Targa 4', 'Targa 4S', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS'],
+    trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Carrera 4 GTS', 'Targa 4', 'Targa 4S', 'Targa 4 GTS', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS', '50th Anniversary Edition'],
   },
   {
     genId: '991.2', model: '911', yearStart: 2016, yearEnd: 2019,
-    trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Carrera 4 GTS', 'Targa 4', 'Targa 4S', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS', 'GT2 RS', 'R'],
+    trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Carrera 4 GTS', 'Targa 4', 'Targa 4S', 'Targa 4 GTS', 'Turbo', 'Turbo S', 'GT3', 'GT3 Touring', 'GT3 RS', 'GT2 RS', 'R', 'Speedster'],
   },
   {
     genId: '992.1', model: '911', yearStart: 2019, yearEnd: 2024,
-    trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Carrera 4 GTS', 'Targa 4', 'Targa 4S', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS'],
+    trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Carrera 4 GTS', 'Carrera T', 'Targa 4', 'Targa 4S', 'Targa 4 GTS', 'Turbo', 'Turbo S', 'GT3', 'GT3 Touring', 'GT3 RS', 'Sport Classic', 'Dakar', 'S/T'],
   },
   {
     genId: '992.2', model: '911', yearStart: 2024, yearEnd: PRESENT,
-    trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Carrera 4 GTS', 'Targa 4', 'Targa 4S', 'Turbo', 'Turbo S', 'GT3', 'GT3 RS'],
+    trims: ['Carrera', 'Carrera S', 'Carrera 4', 'Carrera 4S', 'Carrera GTS', 'Carrera 4 GTS', 'Carrera T', 'Targa 4', 'Targa 4S', 'Targa 4 GTS', 'Turbo', 'Turbo S', 'GT3', 'GT3 Touring', 'GT3 RS'],
   },
 
   // ── Boxster ───────────────────────────────────────────────────────────────────

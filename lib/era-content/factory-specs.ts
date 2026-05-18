@@ -83,6 +83,10 @@ const SPECS: Record<string, FactorySpec> = {
   '991.1:carrera_4': { hp: '350 hp', torque: '288 lb-ft', zero_to_sixty: '4.9s', engine: '3.4L flat-six',                      curb_weight_lb: '3,351 lb', top_speed_mph: '182 mph', redline_rpm: '7,800 rpm' },
   '991.1:targa_4':   { hp: '350 hp', torque: '288 lb-ft', zero_to_sixty: '5.0s', engine: '3.4L flat-six',                      curb_weight_lb: '3,439 lb', top_speed_mph: '179 mph', redline_rpm: '7,800 rpm' },
   '991.1:carrera':   { hp: '350 hp', torque: '288 lb-ft', zero_to_sixty: '4.8s', engine: '3.4L flat-six',                      curb_weight_lb: '3,042 lb', top_speed_mph: '182 mph', redline_rpm: '7,800 rpm' },
+  // [VERIFY: curb_weight and 0-60 interpolated from Targa 4S baseline (3,439 lb) + GTS tune; primary Targa 4 GTS spec sheet not confirmed]
+  '991.1:targa_4_gts':              { hp: '430 hp', torque: '325 lb-ft', zero_to_sixty: '4.2s', engine: '3.8L NA flat-six',                                   curb_weight_lb: '3,461 lb', top_speed_mph: '182 mph', redline_rpm: '7,800 rpm' },
+  // [VERIFY: curb_weight estimated from Carrera S + wide-body offset; wide-body RWD platform; 0-60 not primary-sourced; 1,963 units MY2013]
+  '991.1:50th_anniversary_edition': { hp: '430 hp', torque: '325 lb-ft', zero_to_sixty: '4.2s', engine: '3.8L NA flat-six (X51, wide-body RWD, 1,963 units)', curb_weight_lb: '3,351 lb', top_speed_mph: '188 mph', redline_rpm: '7,800 rpm' },
 
   // 991.2 (2016–2019)
   '991.2:turbo_s':   { hp: '580 hp', torque: '553 lb-ft', zero_to_sixty: '2.9s', engine: '3.8L twin-turbo flat-six',           curb_weight_lb: '3,571 lb', top_speed_mph: '205 mph', redline_rpm: '7,200 rpm' },
@@ -93,6 +97,8 @@ const SPECS: Record<string, FactorySpec> = {
   '991.2:r':         { hp: '500 hp', torque: '338 lb-ft', zero_to_sixty: '3.7s', engine: '4.0L flat-six',                      curb_weight_lb: '3,042 lb', top_speed_mph: '200 mph', redline_rpm: '8,500 rpm' },
   '991.2:speedster': { hp: '500 hp', torque: '339 lb-ft', zero_to_sixty: '4.0s', engine: '4.0L flat-six',                      curb_weight_lb: '3,175 lb', top_speed_mph: '192 mph', redline_rpm: '9,000 rpm' },
   '991.2:gts':       { hp: '450 hp', torque: '406 lb-ft', zero_to_sixty: '3.8s', engine: '3.0L twin-turbo flat-six',           curb_weight_lb: '3,263 lb', top_speed_mph: '193 mph', redline_rpm: '7,500 rpm' },
+  // [VERIFY: curb_weight and 0-60 interpolated from Targa 4S baseline (3,395 lb) + GTS tune; primary Targa 4 GTS spec sheet not confirmed]
+  '991.2:targa_4_gts':  { hp: '450 hp', torque: '406 lb-ft', zero_to_sixty: '3.9s', engine: '3.0L twin-turbo flat-six',       curb_weight_lb: '3,439 lb', top_speed_mph: '187 mph', redline_rpm: '7,500 rpm' },
   '991.2:carrera_4s':{ hp: '420 hp', torque: '368 lb-ft', zero_to_sixty: '4.1s', engine: '3.0L twin-turbo flat-six',           curb_weight_lb: '3,373 lb', top_speed_mph: '190 mph', redline_rpm: '7,500 rpm' },
   '991.2:carrera_s': { hp: '420 hp', torque: '368 lb-ft', zero_to_sixty: '4.1s', engine: '3.0L twin-turbo flat-six',           curb_weight_lb: '3,241 lb', top_speed_mph: '191 mph', redline_rpm: '7,500 rpm' },
   '991.2:targa_4s':  { hp: '420 hp', torque: '368 lb-ft', zero_to_sixty: '4.2s', engine: '3.0L twin-turbo flat-six',           curb_weight_lb: '3,395 lb', top_speed_mph: '188 mph', redline_rpm: '7,500 rpm' },
