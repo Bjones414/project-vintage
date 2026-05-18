@@ -106,15 +106,15 @@ export const GENERATION_DEFS: GenerationDef[] = [
   // ── Cayenne ───────────────────────────────────────────────────────────────────
   {
     genId: 'cayenne-i', model: 'Cayenne', yearStart: 2003, yearEnd: 2010,
-    trims: ['Base', 'S', 'GTS', 'Turbo', 'Turbo S'],
+    trims: ['Base', 'S', 'GTS', 'Turbo', 'Turbo S', 'Diesel', 'Transsyberia'],
   },
   {
     genId: 'cayenne-ii', model: 'Cayenne', yearStart: 2011, yearEnd: 2017,
-    trims: ['Base', 'S', 'GTS', 'Turbo', 'Turbo S', 'E-Hybrid', 'Turbo S E-Hybrid'],
+    trims: ['Base', 'S', 'GTS', 'Turbo', 'Turbo S', 'E-Hybrid', 'Turbo S E-Hybrid', 'S Hybrid', 'Diesel', 'S Diesel'],
   },
   {
     genId: 'cayenne-iii', model: 'Cayenne', yearStart: 2018, yearEnd: PRESENT,
-    trims: ['Base', 'S', 'GTS', 'Turbo', 'Turbo S', 'E-Hybrid', 'Turbo S E-Hybrid', 'Coupé', 'Turbo Coupé'],
+    trims: ['Base', 'S', 'GTS', 'Turbo', 'Turbo S', 'E-Hybrid', 'Turbo S E-Hybrid', 'Coupé', 'Turbo Coupé', 'S Coupé', 'GTS Coupé', 'E-Hybrid Coupé', 'Turbo S E-Hybrid Coupé'],
   },
 
   // ── Macan ─────────────────────────────────────────────────────────────────────
@@ -130,11 +130,11 @@ export const GENERATION_DEFS: GenerationDef[] = [
   // ── Panamera ──────────────────────────────────────────────────────────────────
   {
     genId: 'panamera-i', model: 'Panamera', yearStart: 2010, yearEnd: 2016,
-    trims: ['Base', '4', '4S', 'GTS', 'Turbo', 'Turbo S', '4 E-Hybrid', 'Turbo S E-Hybrid'],
+    trims: ['Base', '4', 'S', '4S', 'GTS', 'Turbo', 'Turbo S', '4 E-Hybrid', 'Turbo S E-Hybrid', 'S Hybrid', 'Executive'],
   },
   {
     genId: 'panamera-ii', model: 'Panamera', yearStart: 2017, yearEnd: PRESENT,
-    trims: ['Base', '4', '4S', 'GTS', 'Turbo', 'Turbo S', '4 E-Hybrid', 'Turbo S E-Hybrid'],
+    trims: ['Base', '4', 'S', '4S', 'GTS', 'Turbo', 'Turbo S', '4 E-Hybrid', 'Turbo S E-Hybrid', 'Sport Turismo', '4 E-Hybrid Sport Turismo', 'Executive'],
   },
 
   // ── Taycan ────────────────────────────────────────────────────────────────────

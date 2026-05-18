@@ -4112,6 +4112,255 @@ const CONTENT: Record<string, GenerationContent> = {
     ],
   },
 
+  // ──────────────────────────────────────────────────────────────────────────
+  // cayenne-i (955 + 957, 2003–2010)
+  // ──────────────────────────────────────────────────────────────────────────
+  'cayenne-i': {
+    positioning: 'Porsche\'s first SUV — PL71 platform with sports-car DNA',
+    intro: 'The 955 launched in 2003 as Porsche\'s controversial first SUV, co-developed with Volkswagen on the PL71 platform shared with the Touareg and Audi Q7. The 957 facelift (MY2008) introduced the 4.8L V8 family and the GTS model. Despite initial purist skepticism, the Cayenne became the brand\'s best-selling nameplate and funded continued 911 development.',
+    production_years: '2003–2010',
+    body_styles: 'SUV (5-door)',
+    engine: '3.2L V6 (955 Base) / 3.6L V6 (957 Base) / 4.5L V8 (955 S/Turbo) / 4.8L V8 (957 S/GTS/Turbo) / 3.0L V6 TDI (957 Diesel, EU only)',
+    cooling: 'Water-cooled',
+    units_produced: '~152,000 combined 955+957 [VERIFY]',
+    notes: [
+      'The 955 (MY2003–2007) was built at Magna Steyr in Graz, Austria — the same facility later used for the 718 Spyder. It shared its PL71 platform with the VW Touareg and first-generation Audi Q7. The base model used a 3.2L V6 producing 250 PS; the S used a 4.5L V8 producing 340 PS. The Turbo with its 450 PS twin-turbocharged 4.5L V8 and VTG turbos was the performance flagship. A Turbo S was offered for MY2006 only with 521 PS, making it one of the shortest-production Cayenne special variants.',
+      'The 957 (MY2008–2010) replaced the 4.5L V8 with an all-new 4.8L V8 family, adding 45–50 PS across the range and introducing the GTS model. The GTS brought the Cayenne closer to sports car territory with a 20mm lower suspension, PASM standard, sport exhaust, and 405 PS. The Diesel (EU only, MY2009–2010) was the first diesel Cayenne and quickly became the highest-volume variant in European markets. The Transsyberia, introduced for MY2009, was a factory-approved special edition based on the GTS with raised suspension and underbody protection, inspired by the off-road endurance rally of the same name.',
+    ],
+    variants: [
+      { name: 'Base (955)', years: 'MY2003–2007', drivetrain: 'AWD', power: '250 PS / 247 hp', description: '3.2L V6. Entry-level Cayenne; V6 discontinued at the 957 transition. Transfer case wear at high mileage is the primary concern.' },
+      { name: 'Base (957)', years: 'MY2008–2010', drivetrain: 'AWD', power: '290 PS / 286 hp', description: '3.6L V6. Enlarged from 3.2L at 957. Only 955 base trim remaining in the lineup alongside larger GTS/Turbo siblings.' },
+      { name: 'S (955)', years: 'MY2003–2007', drivetrain: 'AWD', power: '340 PS / 335 hp', description: '4.5L V8 NA. Volume model. 4.5L V8 rod bearings are a documented concern above 100k miles.' },
+      { name: 'S (957)', years: 'MY2008–2010', drivetrain: 'AWD', power: '385 PS / 380 hp', description: '4.8L V8 NA. New engine family replacing 4.5L; crankcase vent and cam housing seal are known service items.' },
+      { name: 'GTS', years: 'MY2008–2010', drivetrain: 'AWD', power: '405 PS / 399 hp', description: '4.8L V8 sport-tuned. 957 era only. 20mm lower suspension; PASM standard; sport exhaust. Most driver-focused non-Turbo 957.' },
+      { name: 'Turbo (955)', years: 'MY2003–2007', drivetrain: 'AWD', power: '450 PS / 444 hp', description: '4.5L twin-turbo V8. VTG turbos provide strong response. Air suspension compressor failure common after 8–10 years.' },
+      { name: 'Turbo (957)', years: 'MY2008–2010', drivetrain: 'AWD', power: '500 PS / 493 hp', description: '4.8L twin-turbo V8. 50 PS gain over 955 Turbo. Same air suspension concern applies.' },
+      { name: 'Turbo S (955)', years: 'MY2006 only', drivetrain: 'AWD', power: '521 PS / 514 hp', production: '~3,900 [VERIFY]', description: 'Single model year. First Cayenne Turbo S. Limited production; air suspension compressor failure documented.' },
+      { name: 'Turbo S (957)', years: 'MY2008–2009 [VERIFY]', drivetrain: 'AWD', power: '550 PS / 542 hp', description: 'Uprated 4.8L TT. Production years and volume unclear [VERIFY against Porsche AG records].' },
+      { name: 'Diesel', years: 'MY2009–2010 (957 era only)', drivetrain: 'AWD', power: '240 PS / 237 hp', description: '3.0L V6 TDI. EU market only; not sold in North America. First Cayenne diesel; debuted Paris 2009. High-volume EU auction car.' },
+      { name: 'Transsyberia', years: 'MY2009–2010 [VERIFY]', drivetrain: 'AWD', power: '405 PS / 399 hp', production: '~500 [VERIFY]', description: 'Factory-approved special edition. GTS engine, raised suspension, underbody protection. Rally-inspired livery option. Limited collector attention to date.' },
+    ],
+    engineering: [
+      'PL71 platform shared with VW Touareg and first-gen Audi Q7; Porsche retained PTM all-wheel drive system with rear-biased torque split',
+      'Tiptronic S 6-speed automatic only throughout the generation — no manual option in any Cayenne, ever',
+      'Air suspension (PDCC optional) requires bladder and compressor replacement every 80–100k miles — budget-line item for any used purchase',
+      '4.5L V8 (955) rod bearing concern at very high mileage; 4.8L V8 (957) improved bearing journals but not fully immune',
+    ],
+    watch_for: [
+      { title: 'Air suspension failure', severity: 'concern', body: 'Air spring bladder cracks and compressor wear are the single most common expensive repair on all 955/957 Cayennes. Symptoms: car sits low overnight or after parking; compressor runs audibly at startup.', buyer_question: 'When was the air suspension last serviced? Has the compressor been replaced?' },
+      { title: '4.5L V8 rod bearings', severity: 'caution', body: 'The 955 S and Turbo 4.5L V8 is documented with rod bearing wear at high mileage (typically 120k+ miles). Pre-purchase inspection should include oil analysis for bearing material.', buyer_question: 'Do you have oil analysis records? Any lifter tick or knock at idle?' },
+      { title: 'Transfer case seal', severity: 'caution', body: 'Output shaft seals on the transfer case are a routine failure point. Oil leak from the transfer case area is common on examples with deferred maintenance.', buyer_question: 'Any evidence of transfer case oil leak? Has the PTM fluid been changed on schedule?' },
+    ],
+    service: [
+      'Air suspension inspection every 40,000 miles; bladder and compressor replacement budget at 80–100k miles',
+      'Transfer case fluid service every 30,000 miles',
+      'Tiptronic fluid and mechatronics seal inspection at 60,000 miles',
+      '4.5L V8 (955): oil analysis recommended at purchase to assess rod bearing condition',
+      'Plastic coolant expansion tank replacement at first signs of seepage; crack failure can cause sudden coolant loss',
+    ],
+  },
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // cayenne-ii (958, 2011–2017)
+  // ──────────────────────────────────────────────────────────────────────────
+  'cayenne-ii': {
+    positioning: 'MLB platform Cayenne — last with naturally aspirated V8',
+    intro: 'The 958 Cayenne (MY2011–2018) moved to the VW Group MLB platform shared with the 2010 Audi Q7. The 958.1 (MY2011–2014) offered the last naturally-aspirated V8 in the S and GTS trim lines; the 958.2 facelift (MY2015–2018) replaced those V8s with V6 biturbo engines and added the PHEV S E-Hybrid, presaging the electrification direction of the 9Y0.',
+    production_years: '2011–2018',
+    body_styles: 'SUV (5-door)',
+    engine: '3.6L V6 NA / 4.8L V8 NA (958.1 S/GTS) / 3.6L V6 biturbo (958.2 S/GTS) / 4.8L TT V8 (Turbo/Turbo S) / 3.0L SC V6 hybrid (S Hybrid) / 3.0L SC V6 PHEV (S E-Hybrid) / 3.0L V6 TDI (Diesel, EU) / 4.2L V8 TDI (S Diesel, EU)',
+    cooling: 'Water-cooled',
+    units_produced: '~170,000 combined 958.1+958.2 [VERIFY]',
+    notes: [
+      'The 958 represented a full platform change from the 955/957\'s PL71 to the MLB aluminum-intensive architecture. The Cayenne S and Turbo gained 8-speed Tiptronic automatics and significant interior refinement. The 958.1 S used the final version of the naturally-aspirated 4.8L V8 — a configuration collectors note as more engaging than the turbocharged V6 that replaced it at 958.2.',
+      'At the 958.2 facelift (MY2015), Porsche replaced the naturally-aspirated 4.8L V8 in the S and GTS with a 3.6L V6 biturbo — the same engine-family substitution that occurred in the Panamera simultaneously. This drew comparison to the 996/997 NA-to-turbo S transitions. The 958.2 also introduced the S E-Hybrid PHEV, replacing the non-PHEV S Hybrid. The diesel lineup (Diesel and S Diesel) was available throughout the 958 generation in EU markets and represents high auction volume on Collecting Cars and PCarMarket EU listings.',
+    ],
+    variants: [
+      { name: 'Base', years: 'MY2011–2018', drivetrain: 'AWD', power: '300 PS / 296 hp', description: '3.6L V6 NA. Same engine throughout both 958.1 and 958.2. Entry market; lower collector interest.' },
+      { name: 'S (958.1)', years: 'MY2011–2014', drivetrain: 'AWD', power: '400 PS / 394 hp', description: '4.8L V8 NA. Last naturally-aspirated V8 S Cayenne. Collector distinction over 958.2 S.' },
+      { name: 'S (958.2)', years: 'MY2015–2018', drivetrain: 'AWD', power: '420 PS / 414 hp', description: '3.6L V6 biturbo. Engine family switch at 958.2 facelift. Different character than 958.1 V8 S.' },
+      { name: 'S Hybrid', years: 'MY2012–2013 (958.1 only)', drivetrain: 'AWD', power: '380 PS / 375 hp combined', description: '3.0L supercharged V6 + 47 kW electric motor. Non-PHEV parallel hybrid; no plug-in capability. Replaced by PHEV S E-Hybrid at 958.2. Auction volume lower than later PHEV.' },
+      { name: 'E-Hybrid (S E-Hybrid)', years: 'MY2014–2017 (958.2)', drivetrain: 'AWD', power: '416 PS / 410 hp combined', description: '3.0L SC V6 + 70 kW electric PHEV. First plug-in Cayenne. Catalog entry is "E-Hybrid"; factory name was "S E-Hybrid".' },
+      { name: 'GTS (958.1)', years: 'MY2013–2014', drivetrain: 'AWD', power: '420 PS / 414 hp', description: '4.8L V8 NA uprated. Added MY2013; not available 2011–2012. Sport exhaust, PASM, lowered.' },
+      { name: 'GTS (958.2)', years: 'MY2015–2018', drivetrain: 'AWD', power: '440 PS / 434 hp', description: '3.6L V6 biturbo uprated. Same engine-family change as S; GTS fans note the V8 absence.' },
+      { name: 'Turbo (958.1)', years: 'MY2011–2014', drivetrain: 'AWD', power: '500 PS / 493 hp', description: '4.8L TT V8.' },
+      { name: 'Turbo (958.2)', years: 'MY2015–2018', drivetrain: 'AWD', power: '520 PS / 513 hp', description: '4.8L TT V8 uprated at 958.2.' },
+      { name: 'Turbo S (958.1)', years: 'MY2013–2014', drivetrain: 'AWD', power: '550 PS / 542 hp', description: '4.8L TT V8 uprated. Added MY2013.' },
+      { name: 'Turbo S (958.2)', years: 'MY2015–2018', drivetrain: 'AWD', power: '570 PS / 562 hp', description: '4.8L TT V8 further uprated.' },
+      { name: 'Turbo S E-Hybrid', years: 'MY2014–2017 (958.2) [VERIFY]', drivetrain: 'AWD', power: 'Unknown [VERIFY]', description: 'Existence in 958 era is unconfirmed [VERIFY against Porsche AG press]. May be 9Y0 exclusive. Do not rely on this entry for comp matching until verified.' },
+      { name: 'Diesel', years: 'MY2011–2018', drivetrain: 'AWD', power: '245–262 PS / 242–258 hp', description: '3.0L V6 TDI. EU market only. 245 PS (958.1) / 262 PS (958.2). Most popular Cayenne trim in EU by volume.' },
+      { name: 'S Diesel', years: 'MY2012–2018 [VERIFY range]', drivetrain: 'AWD', power: '385 PS / 380 hp', description: '4.2L V8 TDI. EU market only. Distinct from base Diesel; higher auction value. [VERIFY exact model year range against Porsche AG press].' },
+    ],
+    engineering: [
+      'MLB aluminum-intensive platform shared with 2010 Audi Q7; significant reduction in unsprung weight versus 955/957',
+      '8-speed Tiptronic replaced 6-speed; noticeably smoother motorway behavior',
+      '958.2 engine-family change (V8 NA → V6 biturbo in S and GTS) paralleled Panamera contemporaneously — shared powertrain strategy decision',
+      'Air suspension continues from 955/957; same bladder-and-compressor lifecycle concern',
+      '3.0L V6 TDI diesel: highest-volume EU Cayenne; requires adBlue fluid service on some market configurations',
+    ],
+    watch_for: [
+      { title: 'Air suspension wear', severity: 'concern', body: 'Bladder cracking and compressor wear carry over from 955/957. Same symptoms and budget: plan for air suspension service at 80–100k miles.', buyer_question: 'Air spring and compressor service history?' },
+      { title: '4.8L V8 rod bearings (958.1 S/GTS/Turbo)', severity: 'caution', body: 'The 4.8L naturally-aspirated and twin-turbo V8s share similar rod bearing design concerns to the 955\'s 4.5L at very high mileage. Oil analysis at purchase is advisable.', buyer_question: 'Oil analysis records available? Any ticking at cold start?' },
+      { title: '3.6L V6 biturbo timing chain (958.2)', severity: 'caution', body: 'The 958.2 S and GTS V6 biturbo has a service interval for timing chain tensioner inspection. Deferred service can lead to chain elongation noise.', buyer_question: 'Has the timing chain been inspected per schedule? Any chain rattle at cold start?' },
+    ],
+    service: [
+      'Air suspension inspection every 40,000 miles; budget for full replacement at 80–100k miles',
+      '958.2 V6 biturbo: timing chain inspection per Porsche schedule (approximately 60,000 miles)',
+      'Tiptronic 8-speed fluid service every 30,000–40,000 miles',
+      'Transfer case output shaft seal inspection at each service interval',
+      'S Hybrid (non-PHEV): supercharger belt tensioner inspection every 30,000 miles',
+      'Plastic coolant tank inspection annually; replace at first sign of seepage',
+    ],
+  },
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // cayenne-iii (9Y0 + 9YA, 2018–present)
+  // Note: 9YA (2024 facelift) is grouped here; a gen split at MY2024 is a Phase 2.5 item
+  // ──────────────────────────────────────────────────────────────────────────
+  'cayenne-iii': {
+    positioning: 'MLB Evo platform — fully modern SUV with Coupé body option',
+    intro: 'The 9Y0 Cayenne (MY2018–2023) moved to Audi/Porsche\'s MLB Evo platform, introducing an all-new 3.0L turbo V6 (EA839), the 2.9L V6 biturbo, and 4.0L twin-turbo V8. The fastback Coupé body (9YB) was added MY2020. The 9YA facelift (MY2024) restructured the powertrain tier toward electrification. All trims marked [VERIFY] require confirmation against Porsche AG press materials.',
+    production_years: '2018–present',
+    body_styles: 'SUV (5-door), Coupé (fastback 5-door, MY2020+)',
+    engine: '3.0L V6 turbo EA839 / 2.9L V6 biturbo / 4.0L V8 biturbo / 3.0L V6 + 100 kW electric PHEV / 4.0L V8 + 100 kW electric PHEV',
+    cooling: 'Water-cooled',
+    notes: [
+      'The 9Y0 represents the most capable Cayenne to date. The EA839 3.0L V6 turbo base engine is shared with several Audi products but tuned distinctively. The 2.9L V6 biturbo S shares architecture with the Panamera 4S and delivers 440 PS. The 4.0L twin-turbo V8 in GTS (MY2021+), Turbo, and Turbo S E-Hybrid configurations returns the GTS to V8 power after the 958.2\'s controversial V6 substitution.',
+      'The Coupé body (9YB factory code) was introduced at MY2020 with a fastback roofline and active rear spoiler. All sedan trim lines received Coupé equivalents: S Coupé, GTS Coupé, E-Hybrid Coupé, Turbo Coupé, and Turbo S E-Hybrid Coupé. Coupé variants typically command a slight premium over same-spec SUV bodies in the current market. The Turbo S as a standalone ICE trim is disputed [VERIFY] — the flagship ICE car may simply be the Turbo; the PHEV flagship is the Turbo S E-Hybrid.',
+    ],
+    variants: [
+      { name: 'Base', years: 'MY2018–2023', drivetrain: 'AWD', power: '340 PS / 335 hp', description: '3.0L EA839 V6 turbo. Entry; 3.0L water pump — inspect at service.' },
+      { name: 'S', years: 'MY2018–2023', drivetrain: 'AWD', power: '440 PS / 434 hp', description: '2.9L V6 biturbo.' },
+      { name: 'GTS', years: 'MY2021–2023', drivetrain: 'AWD', power: '460 PS / 454 hp', description: '4.0L V8 biturbo. Added MY2021; not available 2018–2020. Returns GTS to V8 power.' },
+      { name: 'E-Hybrid', years: 'MY2018–2023', drivetrain: 'AWD', power: '462 PS / 455 hp combined', description: '3.0L V6 + 100 kW electric PHEV. ~14-mile EV range. 12V auxiliary battery drain documented.' },
+      { name: 'Turbo', years: 'MY2018–2023', drivetrain: 'AWD', power: '550 PS / 542 hp', description: '4.0L V8 biturbo.' },
+      { name: 'Turbo S', years: '[VERIFY — standalone ICE may not exist]', drivetrain: 'AWD', power: '[VERIFY]', description: 'Standalone non-hybrid Turbo S disputed. Flagship ICE may be the Turbo only; PHEV flagship is Turbo S E-Hybrid. [VERIFY against Porsche AG press before using for comp matching].' },
+      { name: 'Turbo S E-Hybrid', years: 'MY2018–2023', drivetrain: 'AWD', power: '680 PS / 670 hp combined', description: '4.0L V8 biturbo + 100 kW electric PHEV. Flagship. Complex thermal management; PHEV coolant sensor documented issue.' },
+      { name: 'Coupé', years: 'MY2020–2023', drivetrain: 'AWD', power: '340 PS / 335 hp', description: '3.0L V6 turbo. Fastback body; active rear spoiler; panoramic fixed glass roof standard.' },
+      { name: 'Turbo Coupé', years: 'MY2020–2023', drivetrain: 'AWD', power: '550 PS / 542 hp', description: '4.0L V8 biturbo. Coupé body.' },
+      { name: 'S Coupé', years: 'MY2020–2023 [VERIFY]', drivetrain: 'AWD', power: '440 PS / 434 hp', description: '2.9L V6 biturbo. Coupé body [VERIFY production confirmation].' },
+      { name: 'GTS Coupé', years: 'MY2021–2023 [VERIFY]', drivetrain: 'AWD', power: '460 PS / 454 hp', description: '4.0L V8 biturbo. GTS Coupé [VERIFY production confirmation].' },
+      { name: 'E-Hybrid Coupé', years: 'MY2020–2023 [VERIFY]', drivetrain: 'AWD', power: '462 PS / 455 hp combined', description: '3.0L V6 PHEV. Coupé body [VERIFY production confirmation].' },
+      { name: 'Turbo S E-Hybrid Coupé', years: 'MY2020–2023 [VERIFY]', drivetrain: 'AWD', power: '680 PS / 670 hp combined', description: '4.0L V8 PHEV flagship. Coupé body [VERIFY production confirmation].' },
+    ],
+    engineering: [
+      'MLB Evo platform: stiffer, lighter than 958 MLB; shared with Audi Q7 gen 2 and Bentley Bentayga',
+      'Rear-axle steering standard on Turbo and Turbo S E-Hybrid; optional on other trims',
+      'PHEV system (E-Hybrid and Turbo S E-Hybrid): 100 kW electric motor integrated into 8-speed Tiptronic; 14.1 kWh battery',
+      '4.0L V8 twin-turbo: two turbos in the valley between cylinder banks (hot-vee configuration); fast spool, high thermal load',
+      'GTS MY2021+ reinstates V8 after 958.2 V6 substitution — significant spec distinction for buyers',
+    ],
+    watch_for: [
+      { title: '3.0L EA839 water pump', severity: 'caution', body: 'The EA839 3.0L turbo V6 water pump is a known service item. Inspect at every major service interval; premature failure can cause overheating.', buyer_question: 'Has the water pump been inspected or replaced? Service records?' },
+      { title: 'PHEV 12V auxiliary battery (E-Hybrid)', severity: 'caution', body: 'Cayenne E-Hybrid and Turbo S E-Hybrid 12V aux battery drain is a documented pattern, especially on cars that sit unused. Symptoms: infotainment lockup, PHEV system faults.', buyer_question: 'Any PHEV system fault codes? When was the 12V battery last replaced?' },
+    ],
+    service: [
+      'EA839 3.0L V6: water pump inspection at every major service; replacement if any signs of bearing play or seepage',
+      'PHEV models: high-voltage battery health check; 12V aux battery replacement on schedule (typically every 3–4 years)',
+      '8-speed Tiptronic fluid service every 40,000 miles',
+      'Rear-axle steering (if equipped): actuator and sensor inspection at 60,000 miles',
+    ],
+  },
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // panamera-i (970, 2010–2016)
+  // ──────────────────────────────────────────────────────────────────────────
+  'panamera-i': {
+    positioning: 'Four-door Porsche sport saloon — first generation',
+    intro: 'The 970 Panamera debuted at Shanghai 2009 for MY2010. A four-door fastback hatchback body built in Leipzig alongside the 911 and Boxster. The base, S, and Turbo used PDK; the hybrid variants used an 8-speed Tiptronic. A 970.2 mid-cycle refresh at MY2014 changed the S and 4S engines from naturally-aspirated V8 to V6 biturbo and added the long-wheelbase Executive and the first PHEV (4 E-Hybrid).',
+    production_years: '2010–2016',
+    body_styles: 'Fastback sedan (4-door hatchback)',
+    engine: '3.6L V6 NA / 4.8L V8 NA (S/4S/GTS/Turbo/Turbo S pre-970.2) / 3.0L V6 biturbo (S/4S post-970.2) / 3.0L SC V6 hybrid / 4.8L TT V8 + electric PHEV',
+    cooling: 'Water-cooled',
+    units_produced: '~65,000 [VERIFY]',
+    notes: [
+      'The 970 was Porsche\'s boldest new model since the Cayenne. The S and 4S used the naturally-aspirated 4.8L V8 (same family as 957 Cayenne) for MY2010–2013; at the 970.2 refresh both received the 3.0L V6 biturbo with higher power output but different character. The key collector distinction in the 970 is RWD vs. AWD: the S is the RWD variant, the 4S is AWD; both use the same engine family. The 970 S (RWD) is absent from the original catalog, causing comp misclassification of 970 S auction results as the base V6.',
+      'The GTS (added MY2012) used the naturally-aspirated 4.8L V8 throughout both 970.1 and 970.2, making it the last Panamera generation with a V8 GTS. The Turbo S (added MY2012) used an uprated TT V8 producing 570 PS — the most powerful road Panamera at launch. The S Hybrid (MY2012–2013) was a non-PHEV parallel hybrid; it was replaced at MY2014 by the true PHEV 4 E-Hybrid, which charged from an external source and offered a short all-electric range.',
+    ],
+    variants: [
+      { name: 'Base (Panamera)', years: 'MY2010–2016', drivetrain: 'RWD', power: '300 PS / 296 hp', description: '3.6L V6 NA. 7-spd PDK. Entry model; RWD only.' },
+      { name: 'S', years: 'MY2010–2013 (V8) / MY2014–2016 (V6T)', drivetrain: 'RWD', power: '400 PS (V8) / 420 PS (V6T)', description: 'RWD counterpart to the AWD 4S. V8 NA (MY2010–2013) changed to V6 biturbo at 970.2 (MY2014). Missing from original catalog — causes comp misclassification.' },
+      { name: '4', years: 'MY2011–2016', drivetrain: 'AWD', power: '300 PS / 296 hp', description: '3.6L V6 NA. AWD base. Added MY2011.' },
+      { name: '4S', years: 'MY2010–2013 (V8) / MY2014–2016 (V6T)', drivetrain: 'AWD', power: '400 PS (V8) / 420 PS (V6T)', description: 'AWD equivalent of the S; same engine-family change at 970.2.' },
+      { name: 'GTS', years: 'MY2012–2016', drivetrain: 'AWD', power: '430 PS / 424 hp', description: '4.8L V8 NA uprated. AWD. Added MY2012. M-differential; sport exhaust. V8 retained throughout 970.1 and 970.2.' },
+      { name: 'Turbo', years: 'MY2010–2016', drivetrain: 'AWD', power: '500 PS / 493 hp', description: '4.8L TT V8. AWD.' },
+      { name: 'Turbo S', years: 'MY2012–2016', drivetrain: 'AWD', power: '570 PS / 562 hp', description: '4.8L TT V8 uprated. Added MY2012. Most powerful road Panamera at launch.' },
+      { name: 'S Hybrid', years: 'MY2012–2013', drivetrain: 'AWD', power: '380 PS / 375 hp combined', description: '3.0L SC V6 + 34 kW electric motor. Non-PHEV parallel hybrid; 8-spd Tiptronic AWD. Replaced by PHEV 4 E-Hybrid at MY2014.' },
+      { name: '4 E-Hybrid', years: 'MY2014–2016', drivetrain: 'AWD', power: '416 PS / 410 hp combined', description: '3.0L SC V6 + 70 kW electric PHEV. First plug-in Panamera.' },
+      { name: 'Turbo S E-Hybrid', years: 'MY2014–2016', drivetrain: 'AWD', power: '680 PS / 670 hp combined', description: '4.8L TT V8 + 70 kW electric PHEV. Most powerful Panamera at time of launch.' },
+      { name: 'Executive', years: 'MY2014–2016 (970.2)', drivetrain: 'Various', power: 'Multiple', description: 'LWB +15 cm wheelbase. Available on 4S, Turbo, Turbo S, Turbo S E-Hybrid drivetrains. Added MY2014 at 970.2 refresh.' },
+    ],
+    engineering: [
+      'PDK 7-speed standard on ICE models; 8-speed Tiptronic on hybrid variants — unique among the lineup',
+      'RWD vs. AWD is the primary comp-engine differentiator: Base and S are RWD; 4, 4S, GTS, Turbo, Turbo S are AWD',
+      '970.2 engine-family change: V8 NA replaced by V6 biturbo in S and 4S at MY2014; GTS retained V8 throughout',
+      'Leipzig production facility; same building as contemporary 911 and Boxster manufacturing',
+    ],
+    watch_for: [
+      { title: 'PDK oil seal', severity: 'caution', body: 'PDK 7-speed oil seal failures are documented on high-mileage 970 examples. Symptoms include gear hesitation and fluid leakage from the transmission bellhousing area.', buyer_question: 'PDK fluid change history? Any hesitation in gear changes?' },
+      { title: 'V8 coolant pipe routing', severity: 'caution', body: '4.8L V8 (both NA and TT) has a coolant cross-pipe routing failure point behind the engine. Not easily visible; check service records for this preventive replacement.', buyer_question: 'Has the coolant cross-pipe been replaced? Any overheating history?' },
+      { title: 'Plastic coolant expansion tank', severity: 'concern', body: 'Plastic coolant tank is a common crack failure point across the 970 lineup. Replace at first sign of seepage; sudden failure causes rapid coolant loss.', buyer_question: 'Has the coolant tank been replaced? Any coolant loss or low-coolant warnings?' },
+    ],
+    service: [
+      'PDK fluid service every 30,000 miles; seal inspection at 60,000 miles',
+      'V8 coolant cross-pipe preventive replacement — ideally done at 80,000–100,000 miles',
+      'Coolant expansion tank replacement at first signs of discoloration or seepage',
+      'S Hybrid 3.0L SC V6: supercharger belt tensioner inspection every 30,000 miles',
+      '8-speed Tiptronic (hybrid models): fluid service every 40,000 miles',
+    ],
+  },
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // panamera-ii (971 + 972, 2017–present)
+  // Note: 972 (2024 facelift) is grouped here; a gen split at MY2024 is a Phase 2.5 item
+  // ──────────────────────────────────────────────────────────────────────────
+  'panamera-ii': {
+    positioning: 'Type 971 — Sport Turismo wagon, biturbo V6/V8 across the range',
+    intro: 'The entirely new Type 971 body (MY2017) is longer, wider, and lower than the 970. The Sport Turismo wagon body was added MY2018 — the only true Panamera wagon and a significant auction volume contributor in EU/Asia markets. The 971.2 Tech facelift (MY2021) brought minor exterior updates and powertrain refinements. The 972 (MY2024) restructured the tier toward E-Hybrid leadership.',
+    production_years: '2017–present',
+    body_styles: 'Fastback sedan (4-door), Sport Turismo (wagon, MY2018+), Executive (LWB sedan)',
+    engine: '3.0L V6 turbo EA839 / 2.9L V6 biturbo / 4.0L V8 biturbo / 2.9L V6 + 100 kW electric PHEV / 4.0L V8 + 100 kW electric PHEV',
+    cooling: 'Water-cooled',
+    units_produced: '~65,000+ [VERIFY — includes all body styles and powertrains]',
+    notes: [
+      'The 971 uses a new 8-speed PDK throughout (replacing the prior 7-speed PDK and 8-speed Tiptronic split). The 2.9L V6 biturbo in the 4S and S replaces the prior V6T; the 4.0L twin-turbo V8 debuts in the GTS (added MY2019) and Turbo tiers. The GTS returning to V8 power echoed the same decision in the Cayenne 9Y0.',
+      'The Sport Turismo wagon (MY2018+) shares all sedan drivetrains, adding roughly 4,800 USD/EUR to the base sedan price. It accounts for a disproportionate share of EU and Asian auction volume on BaT, PCarMarket, and Collecting Cars. The 4 E-Hybrid Sport Turismo is the single highest-volume PHEV green-plate Panamera variant in European auction data. The Executive LWB is present throughout the 971 but rarely appears at US auction; more common in EU/Middle East markets.',
+    ],
+    variants: [
+      { name: 'Base (Panamera)', years: 'MY2017–2023', drivetrain: 'RWD', power: '330 PS / 325 hp', description: '3.0L EA839 V6 turbo. 8-spd PDK.' },
+      { name: 'S', years: 'MY2017–2023 [VERIFY US availability]', drivetrain: 'RWD', power: '440 PS [VERIFY]', description: '2.9L V6 biturbo RWD. [VERIFY US market availability — may be EU/RoW only.] Distinct from AWD 4S.' },
+      { name: '4', years: 'MY2017–2023', drivetrain: 'AWD', power: '330 PS / 325 hp', description: '3.0L EA839 V6 turbo. AWD base.' },
+      { name: '4S', years: 'MY2017–2023', drivetrain: 'AWD', power: '440 PS / 434 hp', description: '2.9L V6 biturbo. AWD.' },
+      { name: 'GTS', years: 'MY2019–2023', drivetrain: 'AWD', power: '460 PS / 454 hp', description: '4.0L V8 biturbo. Added MY2019; not available 2017–2018. Returns to V8.' },
+      { name: 'Turbo', years: 'MY2017–2023', drivetrain: 'AWD', power: '550 PS / 542 hp', description: '4.0L V8 biturbo.' },
+      { name: 'Turbo S', years: 'MY2019–2023', drivetrain: 'AWD', power: '620 PS / 611 hp', description: '4.0L V8 biturbo uprated. Added MY2019.' },
+      { name: '4 E-Hybrid', years: 'MY2017–2023', drivetrain: 'AWD', power: '462 PS / 455 hp combined', description: '2.9L V6 + 100 kW electric PHEV.' },
+      { name: 'Turbo S E-Hybrid', years: 'MY2018–2023', drivetrain: 'AWD', power: '680 PS / 670 hp combined', description: '4.0L V8 + 100 kW electric PHEV.' },
+      { name: 'Sport Turismo', years: 'MY2018–2023', drivetrain: 'Various', power: 'Multiple', description: 'Wagon body. All sedan ICE and PHEV drivetrains available. ~+4,800 USD/EUR vs. sedan at equivalent spec. Distinct comp market.' },
+      { name: '4 E-Hybrid Sport Turismo', years: 'MY2018–2023', drivetrain: 'AWD', power: '462 PS / 455 hp combined', description: '2.9L V6 PHEV in Sport Turismo wagon body. Highest EU/Asia auction volume of any 971 variant.' },
+      { name: 'Executive', years: 'MY2017–2023', drivetrain: 'Various', power: 'Multiple', description: 'LWB sedan +10 cm wheelbase. All major drivetrain configurations available. Primarily EU/Middle East market.' },
+    ],
+    engineering: [
+      '8-speed PDK throughout (971 eliminated the 8-speed Tiptronic split from 970 — all variants now PDK)',
+      '4.0L twin-turbo V8 in hot-vee configuration; same engine family as 992 911 Turbo and Cayenne Turbo',
+      '2.9L V6 biturbo: turbo inlet hose split is a documented early failure (approx. 40,000 miles); inexpensive repair if caught early',
+      'PHEV: 2.9L V6 + 100 kW electric motor; 14.1 kWh battery (same pack as Cayenne E-Hybrid); ~25 km EV range',
+      'Sport Turismo: identical platform and body sealing as sedan to roof line; wagon extension adds structural reinforcement at D-pillar',
+    ],
+    watch_for: [
+      { title: '4.0L V8 timing chain (high mileage)', severity: 'caution', body: 'The 4.0L twin-turbo V8 timing chain is documented with elongation at high mileage (typically 80,000+ miles). Symptom: cold-start rattle from engine front. Pre-purchase oil analysis and inspection recommended on high-mileage examples.', buyer_question: 'Any cold-start rattle? Timing chain inspection history?' },
+      { title: '2.9L V6 biturbo turbo inlet hose', severity: 'caution', body: 'The turbo inlet hose on the 2.9L V6 biturbo is prone to splitting at the joint. Symptoms include boost loss and whistling under acceleration. The hose is inexpensive; the failure mode is well-documented and easy to diagnose.', buyer_question: 'Has the turbo inlet hose been replaced or inspected? Any boost hesitation?' },
+      { title: 'PHEV coolant temperature sensor', severity: 'caution', body: 'PHEV models (4 E-Hybrid and Turbo S E-Hybrid) have documented coolant temp sensor failures generating false overheating warnings. Verify against actual coolant temperature before replacing expensive components.', buyer_question: 'Any PHEV-related warning lights? Coolant temp sensor history?' },
+    ],
+    service: [
+      '2.9L V6 biturbo: turbo inlet hose inspection at 40,000 miles; replacement as preventive measure',
+      '4.0L V8: timing chain inspection at 80,000 miles on higher-mileage examples',
+      '8-speed PDK fluid service every 40,000 miles',
+      'PHEV models: high-voltage battery health check; coolant temp sensor inspection at annual service',
+      'Airmatic suspension (if equipped): height sensor and actuator inspection at 60,000 miles',
+    ],
+  },
+
 }
 
 export function getGenerationContent(id: string): GenerationContent | null {
