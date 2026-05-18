@@ -87,6 +87,9 @@ const SPECS: Record<string, FactorySpec> = {
   '991.1:carrera_4': { hp: '350 hp', torque: '288 lb-ft', zero_to_sixty: '4.9s', engine: '3.4L flat-six',                      curb_weight_lb: '3,351 lb', top_speed_mph: '182 mph', redline_rpm: '7,800 rpm' },
   '991.1:targa_4':   { hp: '350 hp', torque: '288 lb-ft', zero_to_sixty: '5.0s', engine: '3.4L flat-six',                      curb_weight_lb: '3,439 lb', top_speed_mph: '179 mph', redline_rpm: '7,800 rpm' },
   '991.1:carrera':   { hp: '350 hp', torque: '288 lb-ft', zero_to_sixty: '4.8s', engine: '3.4L flat-six',                      curb_weight_lb: '3,042 lb', top_speed_mph: '182 mph', redline_rpm: '7,800 rpm' },
+  // [VERIFY: 0-60 interpolated from Carrera S baseline; curb_weight assumed = S/4S baseline; primary spec sheet not confirmed]
+  '991.1:carrera_gts':   { hp: '430 hp', torque: '325 lb-ft', zero_to_sixty: '4.0s', engine: '3.8L NA flat-six (Sport Chrono, PASM Sport std; MY2015 only)', curb_weight_lb: '3,307 lb', top_speed_mph: '188 mph', redline_rpm: '7,800 rpm' },
+  '991.1:carrera_4_gts': { hp: '430 hp', torque: '325 lb-ft', zero_to_sixty: '4.1s', engine: '3.8L NA flat-six (AWD, wide body; MY2015 only)',                curb_weight_lb: '3,351 lb', top_speed_mph: '185 mph', redline_rpm: '7,800 rpm' },
   // [VERIFY: curb_weight and 0-60 interpolated from Targa 4S baseline (3,439 lb) + GTS tune; primary Targa 4 GTS spec sheet not confirmed]
   '991.1:targa_4_gts':              { hp: '430 hp', torque: '325 lb-ft', zero_to_sixty: '4.2s', engine: '3.8L NA flat-six',                                   curb_weight_lb: '3,461 lb', top_speed_mph: '182 mph', redline_rpm: '7,800 rpm' },
   // [VERIFY: curb_weight estimated from Carrera S + wide-body offset; wide-body RWD platform; 0-60 not primary-sourced; 1,963 units MY2013]
@@ -126,7 +129,7 @@ const SPECS: Record<string, FactorySpec> = {
   '992.1:carrera':       { hp: '379 hp', torque: '331 lb-ft', zero_to_sixty: '4.2s', engine: '3.0L 9A2 Evo twin-turbo flat-six', curb_weight_lb: '3,351 lb', top_speed_mph: '182 mph', redline_rpm: '7,500 rpm' },
   '992.1:carrera_t':     { hp: '379 hp', torque: '331 lb-ft', zero_to_sixty: '4.2s', engine: '3.0L 9A2 Evo twin-turbo flat-six', curb_weight_lb: '3,263 lb', top_speed_mph: '182 mph', redline_rpm: '7,500 rpm' },
   '992.1:gt3_touring':   { hp: '502 hp', torque: '347 lb-ft', zero_to_sixty: '3.4s', engine: '4.0L NA flat-six',               curb_weight_lb: '3,263 lb', top_speed_mph: '198 mph', redline_rpm: '9,000 rpm' },
-  '992.1:targa_4_gts':   { hp: '473 hp', torque: '420 lb-ft', zero_to_sixty: '3.6s', engine: '2.9L twin-turbo flat-six',       curb_weight_lb: '3,549 lb', top_speed_mph: '188 mph', redline_rpm: '7,500 rpm' },
+  '992.1:targa_4_gts':   { hp: '473 hp', torque: '420 lb-ft', zero_to_sixty: '3.6s', engine: '3.0L 9A2 Evo twin-turbo flat-six', curb_weight_lb: '3,549 lb', top_speed_mph: '188 mph', redline_rpm: '7,500 rpm' },
   '992.1:sport_classic': { hp: '543 hp', torque: '442 lb-ft', zero_to_sixty: '3.5s', engine: '3.7L 9A2 Evo twin-turbo flat-six (7MT, wide-body)', curb_weight_lb: '3,373 lb', top_speed_mph: '196 mph', redline_rpm: '7,000 rpm' },
   '992.1:dakar':         { hp: '473 hp', torque: '420 lb-ft', zero_to_sixty: '3.5s', engine: '3.0L 9A2 Evo twin-turbo flat-six', curb_weight_lb: '3,527 lb', top_speed_mph: '150 mph', redline_rpm: '7,500 rpm' },
   '992.1:st':            { hp: '525 hp', torque: '347 lb-ft', zero_to_sixty: '3.2s', engine: '4.0L NA flat-six (GT3 RS engine, 6MT short-ratio)', curb_weight_lb: '3,263 lb', top_speed_mph: '193 mph', redline_rpm: '9,000 rpm' },
